@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @InternalSerializationApi
 @Serializable
 data class SolplyLocalData(
-    val autoSignIn: Boolean = false,
+    val autoSignIn: Boolean = false
 )

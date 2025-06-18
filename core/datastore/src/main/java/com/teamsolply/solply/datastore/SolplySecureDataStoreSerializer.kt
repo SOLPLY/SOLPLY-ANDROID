@@ -70,7 +70,7 @@ class SolplySecureDataStoreSerializer : Serializer<SolplyLocalData> {
             val decryptedBytes = cipher.doFinal(encryptedData)
             Json.decodeFromString(
                 deserializer = SolplyLocalData.serializer(),
-                string = decryptedBytes.decodeToString(),
+                string = decryptedBytes.decodeToString()
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -82,7 +82,7 @@ class SolplySecureDataStoreSerializer : Serializer<SolplyLocalData> {
         try {
             val serializedData = Json.encodeToString(
                 serializer = SolplyLocalData.serializer(),
-                value = t,
+                value = t
             )
 
             val cipher = Cipher.getInstance(TRANSFORMATION)

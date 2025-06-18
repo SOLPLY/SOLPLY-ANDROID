@@ -24,7 +24,7 @@ class SolplyColors(
         private set
 }
 
-fun SolplyColor(
+fun solplyColor(
     white: Color = White,
     black: Color = Black
 ) = SolplyColors(
@@ -68,7 +68,7 @@ fun ProvideColorsAndTypography(
 
 @Composable
 fun SolplyTheme(content: @Composable () -> Unit) {
-    val colors = SolplyColor()
+    val colors = solplyColor()
     val typography = SolplyTypography()
     ProvideColorsAndTypography(colors, typography) {
         MaterialTheme(content = content)

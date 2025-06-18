@@ -30,9 +30,9 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .windowInsetsPadding(
                             WindowInsets.systemBars.only(
-                                WindowInsetsSides.Vertical,
-                            ),
-                        ),
+                                WindowInsetsSides.Vertical
+                            )
+                        )
                 )
             }
         }

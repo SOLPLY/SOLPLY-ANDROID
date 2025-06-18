@@ -32,10 +32,11 @@ object NetworkModule {
     @Singleton
     fun provideLoggingInterceptor(buildConfigFieldProvider: BuildConfigFieldProvider): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
-            level = if (buildConfigFieldProvider.get().isDebug)
+            level = if (buildConfigFieldProvider.get().isDebug) {
                 HttpLoggingInterceptor.Level.BODY
-            else
+            } else {
                 HttpLoggingInterceptor.Level.NONE
+            }
         }
 
     @Provides

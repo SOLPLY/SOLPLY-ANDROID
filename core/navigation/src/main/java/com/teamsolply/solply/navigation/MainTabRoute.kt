@@ -1,3 +1,3 @@
 package com.teamsolply.solply.navigation
 
-interface MainTabRoute: Route
+interface MainTabRoute : Route

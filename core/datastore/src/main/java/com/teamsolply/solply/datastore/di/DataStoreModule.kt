@@ -22,10 +22,10 @@ object DataStoreModule {
     @Singleton
     fun providesDataStore(
         @ApplicationContext context: Context,
-        solplySecureDataStoreSerializer: SolplySecureDataStoreSerializer,
+        solplySecureDataStoreSerializer: SolplySecureDataStoreSerializer
     ): DataStore<SolplyLocalData> =
         DataStoreFactory.create(
-            serializer = solplySecureDataStoreSerializer,
+            serializer = solplySecureDataStoreSerializer
         ) {
             context.dataStoreFile(DATASTORE_PREFERENCES)
         }

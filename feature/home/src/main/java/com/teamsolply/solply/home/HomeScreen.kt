@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun HomeRoute(
-    paddingValues: PaddingValues,
+    paddingValues: PaddingValues
 ) {
     HomeScreen()
 }
