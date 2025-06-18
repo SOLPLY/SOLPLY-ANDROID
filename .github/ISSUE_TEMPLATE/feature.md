@@ -1,7 +1,7 @@
 ---
 name: Feature
 about: 앱에서 추가할 기능을 설명해주세요.
-title: 'feature: Feature Request'
+title: '[Feature] Feature Request'
 labels: ''
 assignees: ''
 

@@ -1,7 +1,7 @@
 ---
 name: Refactor
 about: 앱에서 리팩토링할 내용을 설명해주세요.
-title: 'refactor: Refactor Request'
+title: '[Refactor] Refactor Request'
 labels: ''
 assignees: ''
 

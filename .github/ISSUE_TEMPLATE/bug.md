@@ -1,7 +1,7 @@
 ---
 name: Bug
 about: 앱에서 발생한 Issue를 설명해주세요.
-title: 'bugs: App Bug Report'
+title: '[Bugs] App Bug Report'
 labels: ''
 assignees: ''
 

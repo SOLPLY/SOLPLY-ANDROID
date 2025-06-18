@@ -1,7 +1,7 @@
 ---
 name: Docs
 about: 문서 작성 관련 작업내용을 설명해주세요.
-title: 'docs: Docs Task'
+title: '[Docs] Docs Task'
 labels: ''
 assignees: ''
 
