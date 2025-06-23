@@ -37,6 +37,7 @@ fun OauthRoute(
                 OauthSideEffect.StartKakaoLogin -> startKakaoLogin(
                     context = context,
                     onSuccess = { accessToken, refreshToken ->
+                        Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
                         Log.d(
                             "asdasdasd",
                             "accessToken: ${accessToken}\n refreshToken: $refreshToken"
