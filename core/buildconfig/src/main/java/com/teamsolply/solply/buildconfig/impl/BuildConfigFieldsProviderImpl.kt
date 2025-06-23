@@ -1,6 +1,7 @@
 package com.teamsolply.solply.buildconfig.impl
 
-import com.teamsolply.solply.buildconfig.BuildConfig
+import com.teamsolply.solply.buildconfig.BuildConfig.BASE_URL
+import com.teamsolply.solply.buildconfig.BuildConfig.KAKAO_NATIVE_KEY
 import com.teamsolply.solply.common.buildconfig.BuildConfigFieldProvider
 import com.teamsolply.solply.common.buildconfig.BuildConfigFields
 import javax.inject.Inject
@@ -8,7 +9,8 @@ import javax.inject.Inject
 class BuildConfigFieldsProviderImpl @Inject constructor() : BuildConfigFieldProvider {
     override fun get(): BuildConfigFields =
         BuildConfigFields(
-            baseUrl = BuildConfig.BASE_URL,
+            baseUrl = BASE_URL,
+            kakaoNativeKey = KAKAO_NATIVE_KEY,
             isDebug = true
         )
 }
