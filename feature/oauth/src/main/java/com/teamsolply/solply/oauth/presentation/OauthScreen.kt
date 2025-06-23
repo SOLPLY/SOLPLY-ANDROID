@@ -39,7 +39,7 @@ fun OauthRoute(
                     onSuccess = { accessToken, refreshToken ->
                         Log.d(
                             "asdasdasd",
-                            "accessToken: ${accessToken}\n refreshToken: ${refreshToken}"
+                            "accessToken: ${accessToken}\n refreshToken: $refreshToken"
                         )
                     },
                     onFailure = { error ->
