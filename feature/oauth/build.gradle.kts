@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.teamsolply.solply.oauth"
 }
+
+dependencies {
+    implementation(libs.kakao.login)
+}
