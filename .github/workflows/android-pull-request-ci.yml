@@ -22,8 +22,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Create local.properties with base.url
-        run: echo "base.url=https://ci-placeholder.local" >> local.properties
+      - name: Create local.properties with base.url and kakao.native.key
+        run: |
+          echo "base.url=https://ci-placeholder.local" >> local.properties
+          echo "kakao.native.key=${{ secrets.KAKAO_NATIVE_KEY }}" >> local.properties
 
       - name: Run ktlint
         run: ./gradlew ktlintCheck

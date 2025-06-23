@@ -21,4 +21,6 @@ dependencies {
     implementation(projects.remote)
     implementation(projects.domain)
     implementation(projects.feature.main)
+
+    implementation(libs.kakao.login)
 }

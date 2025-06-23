@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.home.navigation.homeNavGraph
 import com.teamsolply.solply.main.component.MainBottomBar
+import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -33,6 +34,7 @@ internal fun MainScreen(
                     .background(color = SolplyTheme.colors.white)
                     .fillMaxSize()
             ) {
+                oauthNavGraph(paddingValues = innerPadding)
                 homeNavGraph(paddingValues = innerPadding)
             }
         },
