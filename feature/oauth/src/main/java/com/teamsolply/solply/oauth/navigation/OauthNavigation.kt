@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.navigation.Route
-import com.teamsolply.solply.oauth.presentation.OauthRoute
+import com.teamsolply.solply.oauth.OauthRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateOauth(

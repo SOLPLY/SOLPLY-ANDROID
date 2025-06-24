@@ -1,4 +1,4 @@
-package com.teamsolply.solply.oauth.presentation
+package com.teamsolply.solply.oauth
 
 import android.app.Activity
 import android.content.Context
@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.teamsolply.solply.oauth.OauthViewModel
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest

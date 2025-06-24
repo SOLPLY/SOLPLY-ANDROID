@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.teamsolply.solply.home"
+    namespace = "com.teamsolply.solply.place"
 }

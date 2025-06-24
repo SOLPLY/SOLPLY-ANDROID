@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.teamsolply.solply.home.navigation.navigateHome
 import com.teamsolply.solply.oauth.navigation.Oauth
+import com.teamsolply.solply.oauth.navigation.navigateOauth
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -36,11 +36,8 @@ internal class MainNavigator(
         }
 
         when (tab) {
-            MainNavTab.HOME -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute1 -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute2 -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute3 -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute4 -> navController.navigateHome(navOptions)
+            MainNavTab.HOME -> navController.navigateOauth(navOptions)
+            MainNavTab.DummyRoute1 -> navController.navigateOauth(navOptions)
         }
     }
 

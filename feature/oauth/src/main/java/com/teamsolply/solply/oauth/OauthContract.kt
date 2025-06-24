@@ -1,4 +1,4 @@
-package com.teamsolply.solply.oauth.presentation
+package com.teamsolply.solply.oauth
 
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent

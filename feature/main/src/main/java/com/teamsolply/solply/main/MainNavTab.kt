@@ -1,8 +1,8 @@
 package com.teamsolply.solply.main
 
 import androidx.compose.runtime.Composable
-import com.teamsolply.solply.home.navigation.Home
 import com.teamsolply.solply.navigation.Route
+import com.teamsolply.solply.oauth.navigation.Oauth
 
 internal enum class MainNavTab(
     val iconResId: Int,
@@ -12,27 +12,12 @@ internal enum class MainNavTab(
     HOME(
         iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
         contentDescription = "HOME",
-        Home
+        Oauth
     ),
     DummyRoute1(
         iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
         contentDescription = "DummyRoute1",
-        Home
-    ),
-    DummyRoute2(
-        iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
-        contentDescription = "DummyRoute2",
-        Home
-    ),
-    DummyRoute3(
-        iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
-        contentDescription = "DummyRoute3",
-        Home
-    ),
-    DummyRoute4(
-        iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
-        contentDescription = "DummyRoute4",
-        Home
+        Oauth
     );
 
     companion object {
