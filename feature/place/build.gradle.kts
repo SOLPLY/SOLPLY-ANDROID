@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.teamsolply.solply.place"
 }
+
+dependencies {
+    implementation(projects.domain.place)
+}
