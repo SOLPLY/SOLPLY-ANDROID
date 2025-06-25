@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.data.main)
     implementation(projects.data.oauth)
     implementation(projects.data.place)
+    implementation(projects.local.main)
     implementation(projects.local.oauth)
     implementation(projects.local.place)
     implementation(projects.remote)
