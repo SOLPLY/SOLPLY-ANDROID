@@ -20,7 +20,7 @@ fun NavGraphBuilder.splashNavGraph(
     composable<Splash> {
         SplashScreen(
             navigateToOauth = navigateToOauth,
-            navigateToPlace = navigateToPlace,
+            navigateToPlace = navigateToPlace
         )
     }
 }

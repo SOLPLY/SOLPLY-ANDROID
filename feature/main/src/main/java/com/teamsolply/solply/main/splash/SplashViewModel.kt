@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
+    private val mainRepository: MainRepository
 ) : ViewModel() {
     private val _sideEffect = MutableSharedFlow<SplashSideEffect>()
     val sideEffect: SharedFlow<SplashSideEffect> get() = _sideEffect.asSharedFlow()
@@ -21,8 +21,11 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             mainRepository.getAutoSignIn().onSuccess { autoSignIn ->
                 _sideEffect.emit(
-                    if (autoSignIn) SplashSideEffect.NavigateToPlace
-                    else SplashSideEffect.NavigateToOauth
+                    if (autoSignIn) {
+                        SplashSideEffect.NavigateToPlace
+                    } else {
+                        SplashSideEffect.NavigateToOauth
+                    }
                 )
             }
         }

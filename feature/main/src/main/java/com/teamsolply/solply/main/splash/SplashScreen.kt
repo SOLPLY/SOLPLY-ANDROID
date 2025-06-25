@@ -35,7 +35,7 @@ fun SplashScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Splash",
+            text = "Splash"
         )
     }
 }

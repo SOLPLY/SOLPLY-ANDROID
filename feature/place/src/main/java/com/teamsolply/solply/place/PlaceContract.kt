@@ -8,8 +8,6 @@ data class PlaceState(
     val g: String = ""
 ) : UiState
 
-sealed interface PlaceIntent : UiIntent {
-}
+sealed interface PlaceIntent : UiIntent
 
-sealed interface PlaceSideEffect : SideEffect {
-}
+sealed interface PlaceSideEffect : SideEffect
