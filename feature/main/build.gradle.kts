@@ -8,5 +8,9 @@ android {
 
 dependencies {
     implementation(projects.feature.oauth)
-    implementation(projects.feature.home)
+    implementation(projects.feature.onboarding)
+    implementation(projects.feature.place)
+    implementation(projects.feature.course)
+    implementation(projects.feature.maps)
+    implementation(projects.feature.mypage)
 }

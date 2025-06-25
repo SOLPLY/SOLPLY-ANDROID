@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(libs.kakao.login)
+    implementation(projects.domain.oauth)
 }

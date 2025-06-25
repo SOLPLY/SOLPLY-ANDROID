@@ -4,26 +4,24 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import com.teamsolply.solply.datastore.SolplyLocalData
 import com.teamsolply.solply.datastore.SolplySecureDataStoreSerializer
+import com.teamsolply.solply.datastore.SolplyTokenData
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.InternalSerializationApi
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
-    @OptIn(InternalSerializationApi::class)
     @Provides
     @Singleton
     fun providesDataStore(
         @ApplicationContext context: Context,
         solplySecureDataStoreSerializer: SolplySecureDataStoreSerializer
-    ): DataStore<SolplyLocalData> =
+    ): DataStore<SolplyTokenData> =
         DataStoreFactory.create(
             serializer = solplySecureDataStoreSerializer
         ) {

@@ -9,7 +9,6 @@ android {
 dependencies {
     implementation(projects.core.network)
     implementation(projects.core.model)
-    implementation(projects.data)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)

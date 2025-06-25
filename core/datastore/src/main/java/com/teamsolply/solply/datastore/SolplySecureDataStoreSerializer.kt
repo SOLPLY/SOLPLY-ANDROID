@@ -3,7 +3,6 @@ package com.teamsolply.solply.datastore
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.datastore.core.Serializer
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
@@ -12,9 +11,9 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
+import javax.inject.Inject
 
-@OptIn(InternalSerializationApi::class)
-class SolplySecureDataStoreSerializer : Serializer<SolplyLocalData> {
+class SolplySecureDataStoreSerializer @Inject constructor() : Serializer<SolplyTokenData> {
     companion object {
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
         private const val KEY_ALIAS = "data-store-key"
@@ -49,10 +48,10 @@ class SolplySecureDataStoreSerializer : Serializer<SolplyLocalData> {
         keyGenerator.generateKey()
     }
 
-    override val defaultValue: SolplyLocalData
-        get() = SolplyLocalData()
+    override val defaultValue: SolplyTokenData
+        get() = SolplyTokenData()
 
-    override suspend fun readFrom(input: InputStream): SolplyLocalData {
+    override suspend fun readFrom(input: InputStream): SolplyTokenData {
         return try {
             val encryptedDataWithIv = input.readBytes()
             if (encryptedDataWithIv.size < IV_SIZE) {
@@ -69,7 +68,7 @@ class SolplySecureDataStoreSerializer : Serializer<SolplyLocalData> {
 
             val decryptedBytes = cipher.doFinal(encryptedData)
             Json.decodeFromString(
-                deserializer = SolplyLocalData.serializer(),
+                deserializer = SolplyTokenData.serializer(),
                 string = decryptedBytes.decodeToString()
             )
         } catch (e: Exception) {
@@ -78,10 +77,10 @@ class SolplySecureDataStoreSerializer : Serializer<SolplyLocalData> {
         }
     }
 
-    override suspend fun writeTo(t: SolplyLocalData, output: OutputStream) {
+    override suspend fun writeTo(t: SolplyTokenData, output: OutputStream) {
         try {
             val serializedData = Json.encodeToString(
-                serializer = SolplyLocalData.serializer(),
+                serializer = SolplyTokenData.serializer(),
                 value = t
             )
 

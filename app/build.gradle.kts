@@ -16,11 +16,19 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.navigation)
 
-    implementation(projects.data)
-    implementation(projects.local)
+    implementation(projects.domain.oauth)
+
+    implementation(projects.data.oauth)
+    implementation(projects.local.oauth)
     implementation(projects.remote)
-    implementation(projects.domain)
+
     implementation(projects.feature.main)
+    implementation(projects.feature.oauth)
+    implementation(projects.feature.onboarding)
+    implementation(projects.feature.place)
+    implementation(projects.feature.course)
+    implementation(projects.feature.mypage)
+    implementation(projects.feature.maps)
 
     implementation(libs.kakao.login)
 }

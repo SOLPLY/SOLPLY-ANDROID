@@ -4,13 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.teamsolply.solply.home.navigation.navigateHome
+import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.oauth.navigation.Oauth
+import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
+import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -28,7 +30,8 @@ internal class MainNavigator(
 
     fun navigate(tab: MainNavTab) {
         val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
+            popUpTo(navController.graph.id) {
+                inclusive = false
                 saveState = true
             }
             launchSingleTop = true
@@ -36,12 +39,17 @@ internal class MainNavigator(
         }
 
         when (tab) {
-            MainNavTab.HOME -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute1 -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute2 -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute3 -> navController.navigateHome(navOptions)
-            MainNavTab.DummyRoute4 -> navController.navigateHome(navOptions)
+            MainNavTab.PLACE -> navController.navigatePlace(navOptions)
+            MainNavTab.COURSE -> navController.navigateCourse(navOptions)
         }
+    }
+
+    fun navigateToOnboarding(navOptions: NavOptions) {
+        navController.navigateOnBoarding(navOptions)
+    }
+
+    fun navigateToPlace(navOptions: NavOptions) {
+        navController.navigatePlace(navOptions)
     }
 
     @Composable
