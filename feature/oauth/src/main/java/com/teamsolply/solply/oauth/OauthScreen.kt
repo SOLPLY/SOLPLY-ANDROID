@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.teamsolply.solply.oauth.OauthViewModel
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -39,17 +38,23 @@ fun OauthRoute(
                 OauthSideEffect.StartKakaoLogin -> startKakaoLogin(
                     context = context,
                     onSuccess = { accessToken, refreshToken ->
-                        Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+                        viewModel.sendIntent(
+                            OauthIntent.KakaoLoginSuccess(
+                                accessToken = accessToken,
+                                refreshToken = refreshToken
+                            )
+                        )
                         Log.d(
                             "asdasdasd",
                             "accessToken: ${accessToken}\n refreshToken: $refreshToken"
                         )
-                        navigateToOnBoarding()
                     },
                     onFailure = { error ->
                         Log.d("asdasdasd", error.toString())
                     }
                 )
+
+                OauthSideEffect.NavigateToOnBoarding -> navigateToOnBoarding()
             }
         }
     }

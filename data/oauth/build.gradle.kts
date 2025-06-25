@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.solply.feature)
+    alias(libs.plugins.solply.data)
 }
 
 android {
@@ -7,6 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.kakao.login)
+    implementation(projects.core.datastore)
     implementation(projects.domain.oauth)
 }
