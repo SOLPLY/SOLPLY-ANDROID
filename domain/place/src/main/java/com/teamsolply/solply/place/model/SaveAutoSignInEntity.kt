@@ -1,5 +1,5 @@
 package com.teamsolply.solply.place.model
 
-data class AutoSignInEntity(
+data class SaveAutoSignInEntity(
     val autoSignIn: Boolean
 )

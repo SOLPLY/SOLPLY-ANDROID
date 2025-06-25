@@ -1,7 +1,7 @@
 package com.teamsolply.solply.place
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.place.model.AutoSignInEntity
+import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ class PlaceViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            placeRepository.saveAutoSignIn(autoSignIn = AutoSignInEntity(autoSignIn = true))
+            placeRepository.saveAutoSignIn(autoSignIn = SaveAutoSignInEntity(autoSignIn = true))
         }
     }
 
