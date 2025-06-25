@@ -11,9 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
+import com.teamsolply.solply.course.navigation.courseNavGraph
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
+import com.teamsolply.solply.maps.navigation.mapsNavGraph
+import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
+import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
+import com.teamsolply.solply.place.navigation.placeNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -33,7 +39,31 @@ internal fun MainScreen(
                     .background(color = SolplyTheme.colors.white)
                     .fillMaxSize()
             ) {
-                oauthNavGraph(paddingValues = innerPadding)
+                oauthNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToOnBoarding = {
+                        val navOptions = navOptions {
+                            launchSingleTop = true
+                        }
+                        navigator.navigateToOnboarding(navOptions)
+                    }
+                )
+                onBoardingNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToPlace = {
+                        val navOptions = navOptions {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                        navigator.navigateToPlace(navOptions = navOptions)
+                    }
+                )
+                placeNavGraph(paddingValues = innerPadding)
+                courseNavGraph(paddingValues = innerPadding)
+                mypageNavGraph(paddingValues = innerPadding)
+                mapsNavGraph(paddingValues = innerPadding)
             }
         },
         bottomBar = {

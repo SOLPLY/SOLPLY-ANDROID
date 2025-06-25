@@ -6,11 +6,14 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.oauth.navigation.Oauth
-import com.teamsolply.solply.oauth.navigation.navigateOauth
+import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
+import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -28,7 +31,8 @@ internal class MainNavigator(
 
     fun navigate(tab: MainNavTab) {
         val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
+            popUpTo(navController.graph.id) {
+                inclusive = false
                 saveState = true
             }
             launchSingleTop = true
@@ -36,9 +40,17 @@ internal class MainNavigator(
         }
 
         when (tab) {
-            MainNavTab.HOME -> navController.navigateOauth(navOptions)
-            MainNavTab.DummyRoute1 -> navController.navigateOauth(navOptions)
+            MainNavTab.PLACE -> navController.navigatePlace(navOptions)
+            MainNavTab.COURSE -> navController.navigateCourse(navOptions)
         }
+    }
+
+    fun navigateToOnboarding(navOptions: NavOptions) {
+        navController.navigateOnBoarding(navOptions)
+    }
+
+    fun navigateToPlace(navOptions: NavOptions) {
+        navController.navigatePlace(navOptions)
     }
 
     @Composable

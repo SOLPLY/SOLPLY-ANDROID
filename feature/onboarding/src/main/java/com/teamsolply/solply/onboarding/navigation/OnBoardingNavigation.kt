@@ -1,4 +1,4 @@
-package com.teamsolply.solply.oauth.navigation
+package com.teamsolply.solply.onboarding.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
@@ -6,26 +6,26 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.navigation.Route
-import com.teamsolply.solply.oauth.OauthRoute
+import com.teamsolply.solply.onboarding.OnBoardingRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateOauth(
+fun NavController.navigateOnBoarding(
     navOptions: NavOptions
 ) {
-    navigate(Oauth, navOptions)
+    navigate(OnBoarding, navOptions)
 }
 
-fun NavGraphBuilder.oauthNavGraph(
+fun NavGraphBuilder.onBoardingNavGraph(
     paddingValues: PaddingValues,
-    navigateToOnBoarding: () -> Unit,
+    navigateToPlace: () -> Unit,
 ) {
-    composable<Oauth> {
-        OauthRoute(
+    composable<OnBoarding> {
+        OnBoardingRoute(
             paddingValues = paddingValues,
-            navigateToOnBoarding = navigateToOnBoarding
+            navigateToPlace = navigateToPlace
         )
     }
 }
 
 @Serializable
-data object Oauth : Route
+data object OnBoarding : Route

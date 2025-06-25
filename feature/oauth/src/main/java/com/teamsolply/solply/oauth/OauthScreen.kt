@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun OauthRoute(
     paddingValues: PaddingValues,
+    navigateToOnBoarding: () -> Unit,
     viewModel: OauthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -43,6 +44,7 @@ fun OauthRoute(
                             "asdasdasd",
                             "accessToken: ${accessToken}\n refreshToken: $refreshToken"
                         )
+                        navigateToOnBoarding()
                     },
                     onFailure = { error ->
                         Log.d("asdasdasd", error.toString())
