@@ -27,6 +27,8 @@ class SplashViewModel @Inject constructor(
                         SplashSideEffect.NavigateToOauth
                     }
                 )
+            }.onFailure {
+                _sideEffect.emit(SplashSideEffect.NavigateToOauth)
             }
         }
     }
