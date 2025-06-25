@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.domain.oauth)
     implementation(projects.domain.place)
     implementation(projects.data.oauth)
+    implementation(projects.data.place)
     implementation(projects.local.oauth)
     implementation(projects.remote)
     implementation(projects.feature.main)
