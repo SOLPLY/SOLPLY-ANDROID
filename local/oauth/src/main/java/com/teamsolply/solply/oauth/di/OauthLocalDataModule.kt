@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class AuthLocalDataModule {
+abstract class OauthLocalDataModule {
     @Binds
     @Singleton
     abstract fun bindsOauthLocalDataSource(authLocalDataSource: OauthLocalDataSourceImpl): OauthLocalDataSource

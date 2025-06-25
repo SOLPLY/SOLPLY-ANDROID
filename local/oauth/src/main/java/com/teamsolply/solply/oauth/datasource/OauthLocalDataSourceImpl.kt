@@ -9,6 +9,11 @@ class OauthLocalDataSourceImpl @Inject constructor(
     private val oauthLocalDataSource: DataStore<SolplyTokenData>
 ) : OauthLocalDataSource {
     override suspend fun setAuthLocalData(jwtToken: SolplyTokenData) {
-        oauthLocalDataSource.updateData { jwtToken }
+        oauthLocalDataSource.updateData { old ->
+            old.copy(
+                accessToken = jwtToken.accessToken,
+                refreshToken = jwtToken.refreshToken
+            )
+        }
     }
 }

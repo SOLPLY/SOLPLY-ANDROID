@@ -15,6 +15,7 @@ import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.courseNavGraph
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
+import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
@@ -39,6 +40,26 @@ internal fun MainScreen(
                     .background(color = SolplyTheme.colors.white)
                     .fillMaxSize()
             ) {
+                splashNavGraph(
+                    navigateToOauth = {
+                        val navOptions = navOptions {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                        navigator.navigateToOauth(navOptions = navOptions)
+                    },
+                    navigateToPlace = {
+                        val navOptions = navOptions {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                        navigator.navigateToPlace(navOptions = navOptions)
+                    }
+                )
                 oauthNavGraph(
                     paddingValues = innerPadding,
                     navigateToOnBoarding = {

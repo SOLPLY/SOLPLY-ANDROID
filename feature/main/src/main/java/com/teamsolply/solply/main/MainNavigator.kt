@@ -10,7 +10,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.navigateCourse
-import com.teamsolply.solply.oauth.navigation.Oauth
+import com.teamsolply.solply.main.splash.Splash
+import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
 
@@ -21,7 +22,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Oauth
+    val startDestination = Splash
 
     val currentTab: MainNavTab?
         @Composable get() = MainNavTab.find { tab ->
@@ -42,6 +43,10 @@ internal class MainNavigator(
             MainNavTab.PLACE -> navController.navigatePlace(navOptions)
             MainNavTab.COURSE -> navController.navigateCourse(navOptions)
         }
+    }
+
+    fun navigateToOauth(navOptions: NavOptions) {
+        navController.navigateOauth(navOptions)
     }
 
     fun navigateToOnboarding(navOptions: NavOptions) {
