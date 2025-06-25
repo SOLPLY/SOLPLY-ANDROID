@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SplashScreen(
@@ -17,6 +19,16 @@ fun SplashScreen(
     modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            delay(1000)
+            when (sideEffect) {
+                SplashSideEffect.NavigateToOauth -> navigateToOauth()
+                SplashSideEffect.NavigateToPlace -> navigateToPlace()
+            }
+        }
+    }
+
     Column(
         modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -24,18 +36,6 @@ fun SplashScreen(
     ) {
         Text(
             text = "Splash",
-        )
-        Text(
-            text = "navigate to ouath",
-            modifier = Modifier.customClickable(
-                onClick = navigateToOauth
-            )
-        )
-        Text(
-            text = "navigate to place",
-            modifier = Modifier.customClickable(
-                onClick = navigateToPlace
-            )
         )
     }
 }

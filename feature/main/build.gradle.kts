@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.domain.main)
     implementation(projects.feature.oauth)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.place)
