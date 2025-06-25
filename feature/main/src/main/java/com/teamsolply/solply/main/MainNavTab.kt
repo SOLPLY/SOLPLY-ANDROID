@@ -19,7 +19,7 @@ internal enum class MainNavTab(
         iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
         contentDescription = "COURSE",
         Course
-    ),;
+    ) ;
 
     companion object {
         @Composable

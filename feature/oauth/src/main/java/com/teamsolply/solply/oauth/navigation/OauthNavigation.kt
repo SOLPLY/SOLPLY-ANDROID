@@ -17,7 +17,7 @@ fun NavController.navigateOauth(
 
 fun NavGraphBuilder.oauthNavGraph(
     paddingValues: PaddingValues,
-    navigateToOnBoarding: () -> Unit,
+    navigateToOnBoarding: () -> Unit
 ) {
     composable<Oauth> {
         OauthRoute(

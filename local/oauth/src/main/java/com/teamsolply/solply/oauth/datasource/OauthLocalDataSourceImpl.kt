@@ -6,7 +6,7 @@ import com.teamsolply.solply.oauth.source.OauthLocalDataSource
 import javax.inject.Inject
 
 class OauthLocalDataSourceImpl @Inject constructor(
-    private val oauthLocalDataSource: DataStore<SolplyTokenData>,
+    private val oauthLocalDataSource: DataStore<SolplyTokenData>
 ) : OauthLocalDataSource {
     override suspend fun setAuthLocalData(jwtToken: SolplyTokenData) {
         oauthLocalDataSource.updateData { jwtToken }

@@ -17,7 +17,7 @@ fun NavController.navigateOnBoarding(
 
 fun NavGraphBuilder.onBoardingNavGraph(
     paddingValues: PaddingValues,
-    navigateToPlace: () -> Unit,
+    navigateToPlace: () -> Unit
 ) {
     composable<OnBoarding> {
         OnBoardingRoute(
