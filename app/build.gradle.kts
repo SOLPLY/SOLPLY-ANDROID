@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.data.onboarding)
     implementation(projects.data.place)
     implementation(projects.data.course)
+    implementation(projects.data.mypage)
     implementation(projects.local.main)
     implementation(projects.local.oauth)
     implementation(projects.local.place)
