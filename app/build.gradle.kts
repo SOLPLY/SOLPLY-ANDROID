@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.domain.oauth)
     implementation(projects.domain.onboarding)
     implementation(projects.domain.place)
+    implementation(projects.domain.course)
     implementation(projects.data.main)
     implementation(projects.data.oauth)
     implementation(projects.data.onboarding)
