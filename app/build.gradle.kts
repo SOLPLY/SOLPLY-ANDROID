@@ -35,6 +35,7 @@ dependencies {
     implementation(projects.remote.onboarding)
     implementation(projects.remote.course)
     implementation(projects.remote.mypage)
+    implementation(projects.remote.maps)
     implementation(projects.feature.main)
     implementation(projects.feature.oauth)
     implementation(projects.feature.onboarding)
