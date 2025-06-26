@@ -8,11 +8,11 @@ import javax.inject.Inject
 class OauthLocalDataSourceImpl @Inject constructor(
     private val oauthLocalDataSource: DataStore<SolplyTokenData>
 ) : OauthLocalDataSource {
-    override suspend fun setAuthLocalData(jwtToken: SolplyTokenData) {
+    override suspend fun setAuthLocalData(accessToken: String, refreshToken: String) {
         oauthLocalDataSource.updateData { old ->
             old.copy(
-                accessToken = jwtToken.accessToken,
-                refreshToken = jwtToken.refreshToken
+                accessToken = accessToken,
+                refreshToken = refreshToken
             )
         }
     }
