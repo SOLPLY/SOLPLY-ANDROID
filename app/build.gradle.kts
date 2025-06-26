@@ -28,6 +28,7 @@ dependencies {
     implementation(projects.data.place)
     implementation(projects.data.course)
     implementation(projects.data.mypage)
+    implementation(projects.data.maps)
     implementation(projects.local.main)
     implementation(projects.local.oauth)
     implementation(projects.local.place)
