@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class MapsRemoteDataSourceImpl @Inject constructor(
     private val mapsService: MapsService
-): MapsRemoteDataSource {
+) : MapsRemoteDataSource {
     override suspend fun saveCourse(courseInfo: String) = mapsService.saveCourse(
         SaveCourseRequestDto(courseName = courseInfo)
     )

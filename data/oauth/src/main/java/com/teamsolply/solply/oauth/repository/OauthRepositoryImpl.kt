@@ -10,7 +10,7 @@ class OauthRepositoryImpl @Inject constructor(
     override suspend fun saveJwtToken(jwtToken: TokenEntity): Result<Unit> = runCatching {
         oauthLocalDataSource.setAuthLocalData(
             accessToken = jwtToken.accessToken,
-            refreshToken = jwtToken.refreshToken,
+            refreshToken = jwtToken.refreshToken
         )
     }
 }

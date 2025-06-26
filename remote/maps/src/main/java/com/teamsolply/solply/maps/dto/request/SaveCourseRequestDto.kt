@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SaveCourseRequestDto(
     @SerialName("courseName")
-    val courseName: String,
+    val courseName: String
 )
