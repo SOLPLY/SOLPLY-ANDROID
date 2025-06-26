@@ -33,6 +33,7 @@ dependencies {
     implementation(projects.local.oauth)
     implementation(projects.local.place)
     implementation(projects.remote.onboarding)
+    implementation(projects.remote.place)
     implementation(projects.remote.course)
     implementation(projects.remote.mypage)
     implementation(projects.remote.maps)
