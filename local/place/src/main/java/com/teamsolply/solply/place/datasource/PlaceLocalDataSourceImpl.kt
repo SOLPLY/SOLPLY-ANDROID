@@ -8,10 +8,10 @@ import javax.inject.Inject
 class PlaceLocalDataSourceImpl @Inject constructor(
     private val placeLocalDataSource: DataStore<SolplyTokenData>
 ) : PlaceLocalDataSource {
-    override suspend fun saveAutoSignIn(autoSignIn: SolplyTokenData) {
+    override suspend fun saveAutoSignIn(autoSignIn: Boolean) {
         placeLocalDataSource.updateData { old ->
             old.copy(
-                autoSignIn = autoSignIn.autoSignIn
+                autoSignIn = autoSignIn
             )
         }
     }

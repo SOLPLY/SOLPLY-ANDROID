@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.solply.data)
+    alias(libs.plugins.solply.local)
 }
 
 android {

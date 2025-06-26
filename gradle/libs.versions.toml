@@ -115,6 +115,8 @@ solply-android-hilt = { id = "solply.android.hilt", version = "unspecified"}
 solply-java-library = { id = "solply.java.library", version = "unspecified" }
 solply-feature = { id = "solply.feature", version = "unspecified" }
 solply-data = { id = "solply.data", version = "unspecified" }
+solply-local = { id = "solply.local", version = "unspecified" }
+solply-remote = { id = "solply.remote", version = "unspecified" }
 solply-plugin-android-test = { id = "solply.plugin.android.test", version = "unspecified" }
 solply-plugin-test = { id = "solply.plugin.test", version = "unspecified" }
 solply-plugin-build-config = { id = "solply.plugin.build.config", version = "unspecified" }
