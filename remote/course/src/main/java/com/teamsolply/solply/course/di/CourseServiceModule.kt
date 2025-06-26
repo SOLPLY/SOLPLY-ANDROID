@@ -1,7 +1,7 @@
-package com.teamsolply.solply.onboarding.di
+package com.teamsolply.solply.course.di
 
+import com.teamsolply.solply.course.service.CourseService
 import com.teamsolply.solply.network.di.Auth
-import com.teamsolply.solply.onboarding.service.OnBoardingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,9 +11,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object OnBoardingApiModule {
+object CourseServiceModule {
     @Provides
     @Singleton
-    fun providesOnBoardingApi(@Auth retrofit: Retrofit): OnBoardingService =
-        retrofit.create(OnBoardingService::class.java)
+    fun providesCourseService(@Auth retrofit: Retrofit): CourseService =
+        retrofit.create(CourseService::class.java)
 }

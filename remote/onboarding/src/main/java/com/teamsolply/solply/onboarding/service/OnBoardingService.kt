@@ -1,9 +1,10 @@
 package com.teamsolply.solply.onboarding.service
 
-import retrofit2.http.POST
+import com.teamsolply.solply.onboarding.dto.request.SignUpRequestDto
 
 interface OnBoardingService {
 
-    @POST("")
-    suspend fun signUp()
+    suspend fun signUp(
+        signUpRequestDto: SignUpRequestDto
+    )
 }
