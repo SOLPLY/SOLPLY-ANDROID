@@ -67,5 +67,15 @@ gradlePlugin {
             id = "solply.data"
             implementationClass = "SolplyDataPlugin"
         }
+
+        register("solplyLocal") {
+            id = "solply.local"
+            implementationClass = "SolplyLocalPlugin"
+        }
+
+        register("solplyRemote") {
+            id = "solply.remote"
+            implementationClass = "SolplyRemotePlugin"
+        }
     }
 }
