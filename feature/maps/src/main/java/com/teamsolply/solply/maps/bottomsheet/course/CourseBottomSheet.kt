@@ -34,7 +34,7 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.component.bottomsheet.BasicBottomSheet
+import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBottomSheet
 import com.teamsolply.solply.maps.bottomsheet.course.extension.dragContainer
 import com.teamsolply.solply.maps.bottomsheet.course.extension.draggableItems
 import com.teamsolply.solply.maps.bottomsheet.course.interaction.rememberDragDropState
@@ -78,7 +78,7 @@ fun CourseBottomSheet(
     )
 
     if (sheetState.isVisible) {
-        BasicBottomSheet(
+        SolplyBottomSheet(
             onDismissRequest = onDismissRequest,
             sheetState = sheetState
         ) {
