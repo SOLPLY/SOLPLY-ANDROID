@@ -4,33 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-
-@Stable
-class SolplyColors(
-    white: Color,
-    black: Color
-) {
-    var white by mutableStateOf(white)
-        private set
-
-    var black by mutableStateOf(black)
-        private set
-}
-
-fun solplyColor(
-    white: Color = White,
-    black: Color = Black
-) = SolplyColors(
-    white = white,
-    black = black
-)
 
 private val LocalSolplyColors =
     staticCompositionLocalOf<SolplyColors> { error("provide none color") }
@@ -56,12 +31,14 @@ fun ProvideColorsAndTypography(
     typography: SolplyTypography,
     content: @Composable () -> Unit
 ) {
-    val provideColors = remember { colors }
-    val provideTypography = remember { typography }
+    val provideColors = remember { colors.copy() }
+    provideColors.update(colors)
+    val provideTypography = remember { typography.copy() }
+    provideTypography.update(typography)
 
     CompositionLocalProvider(
-        LocalSolplyColors provides colors,
-        LocalSolplyTypography provides typography,
+        LocalSolplyColors provides provideColors,
+        LocalSolplyTypography provides provideTypography,
         content = content
     )
 }
