@@ -83,7 +83,7 @@ private fun RowScope.MainBottomBarItem(
         )
         Text(
             text = tab.contentDescription,
-            style = SolplyTheme.typography.bodyMedium17,
+            style = SolplyTheme.typography.body16M,
             color = bottomBarColor,
             textAlign = TextAlign.Center
         )
