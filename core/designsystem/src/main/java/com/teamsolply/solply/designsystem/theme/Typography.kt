@@ -10,9 +10,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.teamsolply.solply.designsystem.R
 
-val PretendardRegular = FontFamily(Font(R.font.pretendard_regular))
-val PretendardMedium = FontFamily(Font(R.font.pretendard_medium))
-val PretendardSemiBold = FontFamily(Font(R.font.pretendard_semibold))
+val PretendardRegular = FontFamily(Font(R.font.pretendard_regular, FontWeight.Normal))
+val PretendardMedium = FontFamily(Font(R.font.pretendard_medium, FontWeight.Medium))
+val PretendardSemiBold = FontFamily(Font(R.font.pretendard_semibold, FontWeight.SemiBold))
 
 @Stable
 class SolplyTypography internal constructor(
