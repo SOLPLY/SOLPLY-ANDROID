@@ -24,6 +24,31 @@ data class MapsState(
             courseId = 3,
             courseName = "3번"
         ),
+        CourseInfo(
+            courseId = 4,
+            courseName = "4번"
+        ),
+        CourseInfo(
+            courseId = 5,
+            courseName = "5번"
+        ),
+        CourseInfo(
+            courseId = 6,
+            courseName = "6번"
+        ),
+        CourseInfo(
+            courseId = 7,
+            courseName = "7번"
+        ),CourseInfo(
+            courseId = 8,
+            courseName = "8번"
+        ),
+        CourseInfo(
+            courseId = 9,
+            courseName = "9번"
+        ),
+
+
     ),
     val iconVisibility: Boolean = false,
 ) : UiState

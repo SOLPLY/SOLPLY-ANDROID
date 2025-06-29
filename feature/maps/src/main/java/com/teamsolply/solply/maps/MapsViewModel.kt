@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps
 
+import android.util.Log
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,9 +17,12 @@ class MapsViewModel @Inject constructor() :
                 toIndex = intent.toIndex
             )
 
-            is MapsIntent.RemoveCourseItem -> removeCourseItem(
+            is MapsIntent.RemoveCourseItem -> {
+                Log.d("MapsViewModel", "RemoveCourseItem: index=${intent.itemToRemove}")
+
+                removeCourseItem(
                 itemToRemove = intent.itemToRemove
-            )
+            )}
         }
     }
 
@@ -33,8 +37,10 @@ class MapsViewModel @Inject constructor() :
 
     private fun removeCourseItem(itemToRemove: Int) {
         reduce {
+            val newList = uiState.value.course.toMutableList()
+            newList.removeAt(itemToRemove)
             copy(
-                course = course.filterNot { it.courseId == itemToRemove }
+                course = newList
             )
         }
     }
