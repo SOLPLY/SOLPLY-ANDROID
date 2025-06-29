@@ -110,8 +110,8 @@ fun ProvideColorsAndTypography(
     val provideTypography = remember { typography }
 
     CompositionLocalProvider(
-        LocalSolplyColors provides colors,
-        LocalSolplyTypography provides typography,
+        LocalSolplyColors provides provideColors,
+        LocalSolplyTypography provides provideTypography,
         content = content
     )
 }
