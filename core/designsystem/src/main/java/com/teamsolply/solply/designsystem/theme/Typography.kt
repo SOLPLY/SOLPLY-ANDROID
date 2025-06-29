@@ -101,7 +101,6 @@ class SolplyTypography internal constructor(
     var caption10R: TextStyle by mutableStateOf(caption10R)
         private set
 
-
     fun copy(
         display24Sb: TextStyle = this.display24Sb,
         display20Sb: TextStyle = this.display20Sb,
@@ -345,4 +344,3 @@ fun SolplyTypography(): SolplyTypography {
         )
     )
 }
-
