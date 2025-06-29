@@ -66,13 +66,8 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
     }
 }
 
-fun Modifier.ignoreNextModifiers(): Modifier {
-    return object : Modifier by this {
-
-        override fun then(other: Modifier): Modifier {
-            return this
-        }
-    }
+fun Modifier.conditional(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
+    return if (condition) this.modifier() else this
 }
 
 fun Modifier.shimmer(
