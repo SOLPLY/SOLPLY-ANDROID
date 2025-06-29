@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.bottomsheet.course.CourseBottomSheet
 import com.teamsolply.solply.maps.model.CourseInfo
 import com.teamsolply.solply.ui.extension.vibrate
@@ -113,6 +114,8 @@ fun MapsScreen(
     ) {
         Text(
             text = "showBottomSheet",
+            style = SolplyTheme.typography.display24Sb,
+            color = SolplyTheme.colors.yellow200,
             modifier = Modifier
                 .background(color = Color.Red)
                 .clickable {
