@@ -35,10 +35,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.bottomsheet.BasicBottomSheet
+import com.teamsolply.solply.maps.bottomsheet.course.extension.dragContainer
+import com.teamsolply.solply.maps.bottomsheet.course.extension.draggableItems
+import com.teamsolply.solply.maps.bottomsheet.course.interaction.rememberDragDropState
 import com.teamsolply.solply.maps.component.CourseItem
-import com.teamsolply.solply.maps.extension.dragContainer
-import com.teamsolply.solply.maps.extension.draggableItems
-import com.teamsolply.solply.maps.interaction.rememberDragDropState
 import com.teamsolply.solply.maps.model.CourseInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
