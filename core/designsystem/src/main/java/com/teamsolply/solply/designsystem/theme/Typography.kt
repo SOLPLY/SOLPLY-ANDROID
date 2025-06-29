@@ -4,13 +4,15 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.teamsolply.solply.designsystem.R
 
-val PretendardMedium = FontFamily.Serif
-val PretendardSemiBold = FontFamily.Serif
-val PretendardRegular = FontFamily.Serif
+val PretendardRegular = FontFamily(Font(R.font.pretendard_regular))
+val PretendardMedium = FontFamily(Font(R.font.pretendard_medium))
+val PretendardSemiBold = FontFamily(Font(R.font.pretendard_semibold))
 
 @Stable
 class SolplyTypography internal constructor(
