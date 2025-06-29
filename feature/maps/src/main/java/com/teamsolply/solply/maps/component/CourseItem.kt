@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CourseItem(
     modifier: Modifier = Modifier,
-    name: String,
+    name: String
 ) {
     Row(
         modifier = modifier

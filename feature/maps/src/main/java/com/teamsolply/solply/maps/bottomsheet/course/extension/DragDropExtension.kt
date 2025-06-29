@@ -17,12 +17,12 @@ import com.teamsolply.solply.maps.model.DraggableItem
 inline fun <T : Any> LazyListScope.draggableItems(
     items: List<T>,
     dragDropState: DragDropState,
-    crossinline content: @Composable (Modifier, T) -> Unit,
+    crossinline content: @Composable (Modifier, T) -> Unit
 ) {
     itemsIndexed(
         items = items,
-        contentType = { index, _ -> DraggableItem(index = index) })
-    { index, item ->
+        contentType = { index, _ -> DraggableItem(index = index) }
+    ) { index, item ->
         val modifier = if (dragDropState.draggingItemIndex == index) {
             Modifier
                 .zIndex(1f)
@@ -46,21 +46,23 @@ inline fun <T : Any> LazyListScope.draggableItems(
 
 @SuppressLint("SuspiciousModifierThen")
 fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
-    return this.then(pointerInput(dragDropState) {
-        detectDragGesturesAfterLongPress(
-            onDrag = { change, offset ->
-                change.consume()
-                dragDropState.onDrag(offset = offset)
-            },
-            onDragStart = { offset ->
-                dragDropState.onDragStart(offset)
-            },
-            onDragEnd = {
-                dragDropState.onDragInterrupted()
-            },
-            onDragCancel = {
-                dragDropState.onDragInterrupted()
-            }
-        )
-    })
+    return this.then(
+        pointerInput(dragDropState) {
+            detectDragGesturesAfterLongPress(
+                onDrag = { change, offset ->
+                    change.consume()
+                    dragDropState.onDrag(offset = offset)
+                },
+                onDragStart = { offset ->
+                    dragDropState.onDragStart(offset)
+                },
+                onDragEnd = {
+                    dragDropState.onDragInterrupted()
+                },
+                onDragCancel = {
+                    dragDropState.onDragInterrupted()
+                }
+            )
+        }
+    )
 }

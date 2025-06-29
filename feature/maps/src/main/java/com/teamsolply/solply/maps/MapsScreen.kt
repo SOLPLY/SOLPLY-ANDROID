@@ -49,7 +49,6 @@ fun MapsRoute(
                 MapsSideEffect.DisabledRemoveCourse -> {
                     Toast.makeText(context, "Cannot delete course", Toast.LENGTH_SHORT).show()
                 }
-
             }
         }
     }
@@ -66,7 +65,7 @@ fun MapsRoute(
         },
         removeCourse = { remove ->
             viewModel.sendIntent(MapsIntent.RemoveCourseItem(itemToRemove = remove))
-        },
+        }
     )
 }
 
@@ -87,7 +86,7 @@ fun MapsScreen(
 
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+        skipPartiallyExpanded = true
     )
 
     LaunchedEffect(scrollToIndex) {
@@ -121,7 +120,8 @@ fun MapsScreen(
                     scope.launch {
                         sheetState.show()
                     }
-                })
+                }
+        )
     }
 
     CourseBottomSheet(

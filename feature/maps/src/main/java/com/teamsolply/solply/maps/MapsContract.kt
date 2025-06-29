@@ -47,9 +47,9 @@ data class MapsState(
         CourseInfo(
             courseId = 9,
             courseName = "9번"
-        ),
+        )
     ),
-    val iconVisibility: Boolean = false,
+    val iconVisibility: Boolean = false
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
@@ -63,10 +63,10 @@ sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     data class RemoveCourseItem(
-        val itemToRemove: Int,
+        val itemToRemove: Int
     ) : MapsIntent
 }
 
 sealed interface MapsSideEffect : SideEffect {
-    data object DisabledRemoveCourse: MapsSideEffect
+    data object DisabledRemoveCourse : MapsSideEffect
 }

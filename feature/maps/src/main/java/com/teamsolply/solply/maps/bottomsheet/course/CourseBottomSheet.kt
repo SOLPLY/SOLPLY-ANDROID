@@ -118,7 +118,7 @@ fun CourseBottomSheet(
                         ) { modifier, item ->
                             CourseItem(
                                 modifier = modifier,
-                                name = item.courseName,
+                                name = item.courseName
                             )
                         }
                     }

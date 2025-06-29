@@ -33,7 +33,7 @@ fun BasicBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BottomSheetDefaults.run { DragHandle() }
             }

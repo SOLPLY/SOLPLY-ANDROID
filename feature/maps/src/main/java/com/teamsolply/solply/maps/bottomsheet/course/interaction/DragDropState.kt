@@ -26,7 +26,6 @@ fun rememberDragDropState(
     onRemove: (Int) -> Unit,
     isInRemoveAreaProvider: () -> Boolean
 ): DragDropState {
-
     val state = remember(lazyListState) {
         DragDropState(
             context = context,
@@ -101,8 +100,8 @@ class DragDropState(
 
         val targetItem = stateList.layoutInfo.visibleItemsInfo.find { item ->
             middleOffset.toInt() in item.offset..item.offset + item.size &&
-                    currentDraggingItem.index != item.index &&
-                    item.contentType is DraggableItem
+                currentDraggingItem.index != item.index &&
+                item.contentType is DraggableItem
         }
 
         if (targetItem != null) {
