@@ -1,14 +1,26 @@
 package com.teamsolply.solply.ui.extension
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,5 +55,43 @@ fun Modifier.customClickable(
             },
             interactionSource = remember { MutableInteractionSource() }
         )
+    }
+}
+
+fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
+    return this.pointerInput(Unit) {
+        detectTapGestures(onTap = {
+            focusManager.clearFocus()
+        })
+    }
+}
+
+fun Modifier.conditional(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
+    return if (condition) this.modifier() else this
+}
+
+fun Modifier.shimmer(
+    baseColor: Color,
+    highlightColor: Color,
+    animationDuration: Int = 1000
+): Modifier = composed {
+    val transition = rememberInfiniteTransition()
+    val translateAnim = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(animationDuration, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+
+    drawWithContent {
+        drawContent()
+        val brush = Brush.linearGradient(
+            colors = listOf(baseColor, highlightColor, baseColor),
+            start = Offset(translateAnim.value - 300f, 0f),
+            end = Offset(translateAnim.value, size.height)
+        )
+        drawRect(brush = brush, alpha = 0.6f)
     }
 }
