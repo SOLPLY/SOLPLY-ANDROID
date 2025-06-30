@@ -1,6 +1,5 @@
 package com.teamsolply.solply.network
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.datastore.core.DataStore
 import com.teamsolply.solply.datastore.SolplyTokenData
@@ -14,7 +13,6 @@ class AccessTokenInterceptor @Inject constructor(
     private val dataStore: DataStore<SolplyTokenData>
 ) : Interceptor {
 
-    @SuppressLint("LogTagMismatch")
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
@@ -34,10 +32,17 @@ class AccessTokenInterceptor @Inject constructor(
             originalRequest
         }
 
-        if (Log.isLoggable("AccessTokenInterceptor", Log.DEBUG)) {
-            Log.d("AccessTokenInterceptor", "Request URL: ${newRequest.url}")
-            Log.d("AccessTokenInterceptor", "Authorization header: ${newRequest.header("Authorization")}")
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "Request URL: ${newRequest.url}")
+            Log.d(
+                TAG,
+                "Authorization header: ${if (newRequest.header("Authorization") != null) "Bearer [REDACTED]" else "null"}"
+            )
         }
         return chain.proceed(newRequest)
+    }
+
+    companion object {
+        private const val TAG = "AccessTokenInterceptor"
     }
 }
