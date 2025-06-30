@@ -2,24 +2,26 @@ package com.teamsolply.solply.main
 
 import androidx.compose.runtime.Composable
 import com.teamsolply.solply.course.navigation.Course
+import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.navigation.Route
 import com.teamsolply.solply.place.navigation.Place
 
 internal enum class MainNavTab(
-    val iconResId: Int,
     internal val contentDescription: String,
     val route: Route
 ) {
     PLACE(
-        iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
-        contentDescription = "PLACE",
-        Place
+        contentDescription = "장소",
+        route = Place
     ),
     COURSE(
-        iconResId = com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy,
-        contentDescription = "COURSE",
-        Course
-    ) ;
+        contentDescription = "코스",
+        route = Course
+    ),
+    MYPAGE(
+        contentDescription = "마이페이지",
+        route = Mypage
+    );
 
     companion object {
         @Composable

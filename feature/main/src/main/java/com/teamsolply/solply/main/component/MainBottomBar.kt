@@ -1,27 +1,30 @@
 package com.teamsolply.solply.main.component
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.MainNavTab
+import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
@@ -32,60 +35,94 @@ internal fun MainBottomBar(
     currentTab: MainNavTab?,
     onTabSelected: (MainNavTab) -> Unit
 ) {
-    AnimatedVisibility(
-        visible = visible
-    ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            tabs.forEach { tab ->
-                MainBottomBarItem(
-                    tab = tab,
-                    selected = tab == currentTab,
-                    onClick = { onTabSelected(tab) }
-                )
+    AnimatedVisibility(visible = visible) {
+        Box(modifier = modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .background(
+                        color = SolplyTheme.colors.gray300,
+                        shape = CircleShape
+                    )
+                    .wrapContentWidth()
+                    .align(Alignment.Center)
+                    .height(50.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                tabs.filter { it != MainNavTab.MYPAGE }.forEach { tab ->
+                    TabItem(
+                        tab = tab,
+                        isSelected = tab == currentTab,
+                        onClick = { onTabSelected(tab) }
+                    )
+                }
             }
+            MypageButton(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                onClick = { onTabSelected(MainNavTab.MYPAGE) }
+            )
         }
     }
 }
 
 @Composable
-private fun RowScope.MainBottomBarItem(
-    modifier: Modifier = Modifier,
+private fun TabItem(
     tab: MainNavTab,
-    selected: Boolean,
+    isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val bottomBarColor = SolplyTheme.colors.black.copy(alpha = if (selected) 1f else 0.4f)
-    Column(
-        modifier = modifier
-            .weight(1f)
-            .fillMaxHeight()
-            .selectable(
-                selected = selected,
-                indication = null,
-                role = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+    val paddingValues = when (tab) {
+        MainNavTab.PLACE -> PaddingValues(start = 4.dp)
+        else -> PaddingValues(end = 4.dp)
+    }
+
+    Box(
+        modifier = Modifier
+            .padding(paddingValues)
+            .background(
+                color = if (isSelected) SolplyTheme.colors.gray500 else SolplyTheme.colors.gray300,
+                shape = CircleShape
+            )
+            .wrapContentWidth()
     ) {
-        Icon(
-            painter = painterResource(tab.iconResId),
-            contentDescription = tab.contentDescription,
-            modifier = Modifier
-                .size(30.dp)
-                .padding(bottom = 5.dp),
-            tint = bottomBarColor
-        )
         Text(
             text = tab.contentDescription,
             style = SolplyTheme.typography.button16M,
-            color = bottomBarColor,
-            textAlign = TextAlign.Center
+            color = SolplyTheme.colors.black,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(horizontal = 26.dp, vertical = 10.dp)
+                .customClickable(
+                    rippleEnabled = false,
+                    onClick = onClick
+                )
+        )
+    }
+}
+
+@Composable
+private fun MypageButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .padding(end = 15.dp)
+            .size(50.dp)
+            .background(
+                color = SolplyTheme.colors.gray300,
+                shape = CircleShape
+            )
+            .customClickable(
+                rippleEnabled = false,
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_mypage),
+            contentDescription = "mypage",
+            tint = Color.Unspecified
         )
     }
 }
