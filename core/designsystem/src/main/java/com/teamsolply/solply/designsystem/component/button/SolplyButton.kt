@@ -1,0 +1,192 @@
+package com.teamsolply.solply.designsystem.component.button
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.ui.extension.customClickable
+
+@Composable
+private fun BaseButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color,
+    shape: Shape = CircleShape,
+    borderColor: Color? = null,
+    borderWidth: Float = 0f,
+    content: @Composable () -> Unit
+) {
+    val baseModifier = modifier
+        .background(color = backgroundColor, shape = shape)
+        .customClickable(rippleEnabled = false) { onClick() }
+
+    val finalModifier = if (borderColor != null) {
+        baseModifier.border(
+            width = borderWidth.dp,
+            color = borderColor,
+            shape = shape
+        )
+    } else {
+        baseModifier
+    }
+
+    Box(
+        modifier = finalModifier,
+        contentAlignment = Alignment.Center
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun SolplyBasicButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    selected: Boolean = true,
+    textColor: Color = SolplyTheme.colors.white,
+    textStyle: TextStyle = SolplyTheme.typography.button16M,
+    textPadding: PaddingValues = PaddingValues(vertical = 24.dp),
+    enabledBackgroundColor: Color = SolplyTheme.colors.gray700,
+    disabledBackgroundColor: Color = SolplyTheme.colors.gray500,
+) {
+    val backgroundColor = if (selected) enabledBackgroundColor else disabledBackgroundColor
+
+    BaseButton(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        backgroundColor = backgroundColor
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(textPadding),
+            style = textStyle,
+            color = textColor
+        )
+    }
+}
+
+@Composable
+fun AddLocalAreaButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isShowMore: Boolean = false,
+    selected: Boolean = false,
+) {
+    val backgroundColor = when {
+        isShowMore -> SolplyTheme.colors.gray200
+        selected -> SolplyTheme.colors.gray400
+        else -> SolplyTheme.colors.gray200
+    }
+
+    BaseButton(
+        onClick = onClick,
+        modifier = modifier.size(74.dp),
+        backgroundColor = backgroundColor
+    ) {
+        if (isShowMore) {
+            Icon(
+                painter = painterResource(R.drawable.ic_cross),
+                contentDescription = "show_more",
+                tint = Color.Unspecified
+            )
+        } else {
+            Text(
+                text = text,
+                style = SolplyTheme.typography.body16R,
+                color = SolplyTheme.colors.black
+            )
+        }
+    }
+}
+
+@Composable
+fun OnBoardingSkipButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BaseButton(
+        onClick = onClick,
+        modifier = modifier,
+        backgroundColor = SolplyTheme.colors.white,
+        borderColor = SolplyTheme.colors.gray500,
+        borderWidth = 1f
+    ) {
+        Text(
+            text = "건너뛰기",
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
+            style = SolplyTheme.typography.body14M,
+            color = SolplyTheme.colors.gray700
+        )
+    }
+}
+
+@Composable
+fun RecommendedPlaceButton(
+    placeType: PlaceType,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    selected: Boolean = false,
+) {
+    val iconImage = when (placeType) {
+        PlaceType.CAFE -> painterResource(R.drawable.ic_caffe)
+        PlaceType.FOOD -> painterResource(R.drawable.ic_food)
+        PlaceType.BOOK -> painterResource(R.drawable.ic_book)
+        PlaceType.WALK -> painterResource(R.drawable.ic_walk)
+        PlaceType.SHOPPING -> painterResource(R.drawable.ic_shopping)
+        PlaceType.UNIQUE -> painterResource(R.drawable.ic_unique)
+    }
+
+    val textColor = if (selected) SolplyTheme.colors.yellow300 else SolplyTheme.colors.black
+    val iconColor = if (selected) SolplyTheme.colors.yellow300 else SolplyTheme.colors.black
+    val borderColor = if (selected) SolplyTheme.colors.yellow300 else SolplyTheme.colors.black
+    val backgroundColor = if (selected) SolplyTheme.colors.yellow100 else SolplyTheme.colors.white
+
+    BaseButton(
+        onClick = onClick,
+        modifier = modifier.size(96.dp),
+        backgroundColor = backgroundColor,
+        shape = RoundedCornerShape(16.dp),
+        borderColor = borderColor,
+        borderWidth = 1f
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (selected) {
+                Icon(
+                    painter = iconImage,
+                    contentDescription = "recommended_place",
+                    tint = iconColor
+                )
+            }
+            Text(
+                text = placeType.displayName,
+                style = SolplyTheme.typography.body16R,
+                color = textColor
+            )
+        }
+    }
+}
