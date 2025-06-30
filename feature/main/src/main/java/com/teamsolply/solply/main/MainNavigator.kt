@@ -41,9 +41,11 @@ internal class MainNavigator(
                 navController.navigateCourse(navOptions)
             }
             MainNavTab.MYPAGE -> {
-                navController.navigateMypage(navOptions {
-                    launchSingleTop = true
-                })
+                navController.navigateMypage(
+                    navOptions {
+                        launchSingleTop = true
+                    }
+                )
             }
         }
     }
