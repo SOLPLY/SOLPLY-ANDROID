@@ -10,9 +10,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.navigateCourse
-import com.teamsolply.solply.maps.navigation.Maps
+import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
+import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(
@@ -22,7 +23,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Maps
+    val startDestination = Place
 
     val currentTab: MainNavTab?
         @Composable get() = MainNavTab.find { tab ->
@@ -30,19 +31,30 @@ internal class MainNavigator(
         }
 
     fun navigate(tab: MainNavTab) {
-        val navOptions = navOptions {
-            popUpTo(navController.graph.id) {
-                inclusive = false
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-
         when (tab) {
-            MainNavTab.PLACE -> navController.navigatePlace(navOptions)
-            MainNavTab.COURSE -> navController.navigateCourse(navOptions)
+            MainNavTab.PLACE -> {
+                val navOptions = createTabNavOptions()
+                navController.navigatePlace(navOptions)
+            }
+            MainNavTab.COURSE -> {
+                val navOptions = createTabNavOptions()
+                navController.navigateCourse(navOptions)
+            }
+            MainNavTab.MYPAGE -> {
+                navController.navigateMypage(navOptions {
+                    launchSingleTop = true
+                })
+            }
         }
+    }
+
+    private fun createTabNavOptions() = navOptions {
+        popUpTo(navController.graph.id) {
+            inclusive = false
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 
     fun navigateToOauth(navOptions: NavOptions) {
@@ -58,8 +70,11 @@ internal class MainNavigator(
     }
 
     @Composable
-    fun setBottomBarVisibility() = MainNavTab.contains {
-        currentDestination?.hasRoute(it::class) == true
+    fun setBottomBarVisibility(): Boolean {
+        return when (currentTab) {
+            MainNavTab.MYPAGE -> false
+            else -> true
+        }
     }
 }
 
