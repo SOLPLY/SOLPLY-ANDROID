@@ -1,7 +1,7 @@
 package com.teamsolply.solply.course.di
 
 import com.teamsolply.solply.course.service.CourseService
-import com.teamsolply.solply.network.di.Auth
+import com.teamsolply.solply.network.di.AccessToken
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object CourseServiceModule {
     @Provides
     @Singleton
-    fun providesCourseService(@Auth retrofit: Retrofit): CourseService =
+    fun providesCourseService(@AccessToken retrofit: Retrofit): CourseService =
         retrofit.create(CourseService::class.java)
 }

@@ -4,8 +4,8 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class Auth
+annotation class AccessToken
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class NoneAuth
+annotation class NoneAccessToken

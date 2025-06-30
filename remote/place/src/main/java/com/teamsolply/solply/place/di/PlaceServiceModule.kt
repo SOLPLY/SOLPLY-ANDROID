@@ -1,6 +1,6 @@
 package com.teamsolply.solply.place.di
 
-import com.teamsolply.solply.network.di.Auth
+import com.teamsolply.solply.network.di.AccessToken
 import com.teamsolply.solply.place.service.PlaceService
 import dagger.Module
 import dagger.Provides
@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object PlaceServiceModule {
     @Provides
     @Singleton
-    fun providesPlaceService(@Auth retrofit: Retrofit): PlaceService =
+    fun providesPlaceService(@AccessToken retrofit: Retrofit): PlaceService =
         retrofit.create(PlaceService::class.java)
 }

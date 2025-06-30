@@ -1,7 +1,7 @@
 package com.teamsolply.solply.maps.di
 
 import com.teamsolply.solply.maps.service.MapsService
-import com.teamsolply.solply.network.di.Auth
+import com.teamsolply.solply.network.di.AccessToken
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object MapsServiceModule {
     @Provides
     @Singleton
-    fun providesMapsService(@Auth retrofit: Retrofit): MapsService =
+    fun providesMapsService(@AccessToken retrofit: Retrofit): MapsService =
         retrofit.create(MapsService::class.java)
 }

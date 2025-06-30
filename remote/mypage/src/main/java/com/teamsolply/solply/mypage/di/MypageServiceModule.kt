@@ -1,7 +1,7 @@
 package com.teamsolply.solply.mypage.di
 
 import com.teamsolply.solply.mypage.service.MypageService
-import com.teamsolply.solply.network.di.Auth
+import com.teamsolply.solply.network.di.AccessToken
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object MypageServiceModule {
     @Provides
     @Singleton
-    fun providesMypageService(@Auth retrofit: Retrofit): MypageService =
+    fun providesMypageService(@AccessToken retrofit: Retrofit): MypageService =
         retrofit.create(MypageService::class.java)
 }
