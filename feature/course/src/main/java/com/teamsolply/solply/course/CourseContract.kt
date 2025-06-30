@@ -8,9 +8,6 @@ data class CourseState(
     val g: String = ""
 ) : UiState
 
-sealed interface CourseIntent : UiIntent {
+sealed interface CourseIntent : UiIntent
 
-}
-
-sealed interface CourseSideEffect : SideEffect {
-}
+sealed interface CourseSideEffect : SideEffect

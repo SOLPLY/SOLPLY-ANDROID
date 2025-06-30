@@ -38,7 +38,6 @@ object NetworkModule {
         dataStore: DataStore<SolplyTokenData>
     ): AccessTokenInterceptor = AccessTokenInterceptor(dataStore)
 
-
     @Provides
     @Singleton
     fun provideLoggingInterceptor(buildConfigFieldProvider: BuildConfigFieldProvider): HttpLoggingInterceptor =
