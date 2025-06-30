@@ -18,7 +18,7 @@ import javax.inject.Inject
 class TokenRefreshAuthenticator @Inject constructor(
     private val dataStore: DataStore<SolplyTokenData>,
     private val tokenRefreshService: TokenRefreshService,
-    @ApplicationContext private val context: Context,
+    @ApplicationContext private val context: Context
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -65,7 +65,6 @@ class TokenRefreshAuthenticator @Inject constructor(
                     .header("Authorization", "Bearer ${refreshResponse.accessToken}")
                     .header("X-Token-Refresh-Attempt", "true")
                     .build()
-
             } catch (e: Exception) {
                 Log.e("TokenRefreshAuthenticator", "Token refresh failed", e)
 
