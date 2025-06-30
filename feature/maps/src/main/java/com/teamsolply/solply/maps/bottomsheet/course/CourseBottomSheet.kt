@@ -125,7 +125,7 @@ fun CourseBottomSheet(
                 }
                 if (removeIconVisible) {
                     Icon(
-                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_remove_floting),
+                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating),
                         contentDescription = "remove",
                         modifier = Modifier
                             .size(if (isInRemoveIconArea.value) 200.dp else 100.dp)
