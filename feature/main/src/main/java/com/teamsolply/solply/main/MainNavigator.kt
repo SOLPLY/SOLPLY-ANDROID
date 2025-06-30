@@ -10,9 +10,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.navigateCourse
-import com.teamsolply.solply.maps.navigation.Maps
 import com.teamsolply.solply.mypage.navigation.navigateMypage
-import com.teamsolply.solply.oauth.navigation.Oauth
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.Place

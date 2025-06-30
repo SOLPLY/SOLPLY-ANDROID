@@ -45,7 +45,7 @@ private fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     singleLine: Boolean = true,
     maxLines: Int = 1,
-    trailingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
     val finalModifier = modifier
         .background(color = backgroundColor, shape = shape)
@@ -107,7 +107,7 @@ fun SolplyNicknameTextField(
     modifier: Modifier = Modifier,
     placeholder: String = "여기에 입력하세요.",
     maxLength: Int = 8,
-    onDuplicateCheck: (String) -> Boolean,
+    onDuplicateCheck: (String) -> Boolean
 ) {
     var isDuplicate by remember { mutableStateOf(false) }
 
@@ -140,14 +140,13 @@ fun SolplyNicknameTextField(
                 SolplyTheme.colors.red600
             )
 
-
             else -> Triple(
                 SolplyTheme.colors.green200,
                 SolplyTheme.colors.green500,
                 SolplyTheme.colors.gray500
             )
         }
-    
+
     Box(modifier = modifier) {
         BaseTextField(
             value = value,

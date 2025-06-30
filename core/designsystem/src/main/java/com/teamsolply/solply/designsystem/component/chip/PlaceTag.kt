@@ -17,7 +17,7 @@ fun PlaceTag(
     text: String,
     textColor: Color,
     backGroundColor: Color,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

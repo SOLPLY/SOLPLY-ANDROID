@@ -68,7 +68,7 @@ fun SolplyBasicButton(
     textStyle: TextStyle = SolplyTheme.typography.button16M,
     textPadding: PaddingValues = PaddingValues(vertical = 24.dp),
     enabledBackgroundColor: Color = SolplyTheme.colors.gray700,
-    disabledBackgroundColor: Color = SolplyTheme.colors.gray500,
+    disabledBackgroundColor: Color = SolplyTheme.colors.gray500
 ) {
     val backgroundColor = if (selected) enabledBackgroundColor else disabledBackgroundColor
 
@@ -92,7 +92,7 @@ fun AddLocalAreaButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isShowMore: Boolean = false,
-    selected: Boolean = false,
+    selected: Boolean = false
 ) {
     val backgroundColor = when {
         isShowMore -> SolplyTheme.colors.gray200
@@ -124,7 +124,7 @@ fun AddLocalAreaButton(
 @Composable
 fun OnBoardingSkipButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     BaseButton(
         onClick = onClick,
@@ -147,7 +147,7 @@ fun RecommendedPlaceButton(
     placeType: PlaceType,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    selected: Boolean = false,
+    selected: Boolean = false
 ) {
     val iconImage = when (placeType) {
         PlaceType.CAFE -> painterResource(R.drawable.ic_caffe)
