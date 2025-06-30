@@ -84,6 +84,10 @@ private fun TabItem(
                 shape = CircleShape
             )
             .wrapContentWidth()
+            .customClickable(
+                rippleEnabled = false,
+                onClick = onClick
+            )
     ) {
         Text(
             text = tab.contentDescription,
@@ -92,10 +96,6 @@ private fun TabItem(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(horizontal = 26.dp, vertical = 10.dp)
-                .customClickable(
-                    rippleEnabled = false,
-                    onClick = onClick
-                )
         )
     }
 }

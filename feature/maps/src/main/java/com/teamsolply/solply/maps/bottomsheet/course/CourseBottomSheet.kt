@@ -125,7 +125,7 @@ fun CourseBottomSheet(
                 }
                 if (removeIconVisible) {
                     Icon(
-                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_bottom_nav_dummy),
+                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating),
                         contentDescription = "remove",
                         modifier = Modifier
                             .size(if (isInRemoveIconArea.value) 200.dp else 100.dp)
@@ -139,7 +139,7 @@ fun CourseBottomSheet(
                                     size = Size(size.width.toFloat(), size.height.toFloat())
                                 )
                             },
-                        tint = if (isInRemoveIconArea.value) Color.Green else Color.Gray
+                        tint = if (isInRemoveIconArea.value) Color.Green else Color.Unspecified
                     )
                 } else {
                     removeIconBounds = null

@@ -73,10 +73,9 @@ internal class MainNavigator(
 
     @Composable
     fun setBottomBarVisibility(): Boolean {
-        return when (currentTab) {
-            MainNavTab.MYPAGE -> false
-            else -> true
-        }
+        return MainNavTab.entries
+            .filterNot { it == MainNavTab.MYPAGE }
+            .any { currentDestination?.hasRoute(it.route::class) == true }
     }
 }
 
