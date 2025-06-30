@@ -1,6 +1,6 @@
 package com.teamsolply.solply.onboarding.di
 
-import com.teamsolply.solply.network.di.Auth
+import com.teamsolply.solply.network.di.AccessToken
 import com.teamsolply.solply.onboarding.service.OnBoardingService
 import dagger.Module
 import dagger.Provides
@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object OnBoardingServiceModule {
     @Provides
     @Singleton
-    fun providesOnBoardingService(@Auth retrofit: Retrofit): OnBoardingService =
+    fun providesOnBoardingService(@AccessToken retrofit: Retrofit): OnBoardingService =
         retrofit.create(OnBoardingService::class.java)
 }
