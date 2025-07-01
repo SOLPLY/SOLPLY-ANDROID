@@ -1,5 +1,6 @@
 package com.teamsolply.solply.designsystem.component.bottomsheet
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -28,12 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.BottomSheetState
 import kotlin.math.abs
 
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
 fun SolplyBasicBottomSheet(
     modifier: Modifier = Modifier,
@@ -44,9 +47,10 @@ fun SolplyBasicBottomSheet(
     var dragOffset by remember { mutableFloatStateOf(0f) }
     val density = LocalDensity.current
     val collapsedHeight = with(density) { 0.dp.toPx() }
-    val halfExpandedHeight = with(density) { 300.dp.toPx() }
-    val expandedHeight = with(density) { 650.dp.toPx() }
-
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val halfExpandedHeight = with(density) { (screenHeight * 0.35f).toPx() }
+    val expandedHeight = with(density) { (screenHeight * 0.76f).toPx() }
     val currentHeight = when (currentState) {
         BottomSheetState.COLLAPSED -> collapsedHeight
         BottomSheetState.HALF_EXPANDED -> halfExpandedHeight
