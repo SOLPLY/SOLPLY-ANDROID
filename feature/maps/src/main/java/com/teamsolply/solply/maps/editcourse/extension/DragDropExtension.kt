@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.bottomsheet.course.extension
+package com.teamsolply.solply.maps.editcourse.extension
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
-import com.teamsolply.solply.maps.bottomsheet.course.interaction.DragDropState
+import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
 import com.teamsolply.solply.maps.model.DraggableItem
 
 inline fun <T : Any> LazyListScope.draggableItems(
