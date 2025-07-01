@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -186,6 +189,102 @@ fun RecommendedPlaceButton(
                 text = placeType.displayName,
                 style = SolplyTheme.typography.body16R,
                 color = textColor
+            )
+        }
+    }
+}
+
+@Composable
+fun AddPlaceButton(
+    onClick: () -> Unit,
+    isPlace: Boolean,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val text = if (isPlace) "내 코스에 추가" else "장소 저장"
+    val (backgroundColor, textColor, iconColor) = if (selected) {
+        Triple(
+            SolplyTheme.colors.purple400,
+            SolplyTheme.colors.purple800,
+            SolplyTheme.colors.purple700
+        )
+    } else {
+        Triple(
+            SolplyTheme.colors.white,
+            SolplyTheme.colors.gray400,
+            SolplyTheme.colors.gray400
+        )
+    }
+
+    BaseButton(
+        onClick = onClick,
+        modifier = modifier
+            .width(140.dp)
+            .height(49.dp),
+        backgroundColor = backgroundColor,
+        shape = RoundedCornerShape(26.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+        ) {
+            Text(
+                text = text,
+                style = SolplyTheme.typography.body14M,
+                color = textColor,
+                maxLines = 1
+            )
+            if (isPlace) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_marker),
+                    contentDescription = "add_place",
+                    modifier = Modifier.padding(start = 8.dp),
+                    tint = iconColor
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun AddCourseButton(
+    onClick: () -> Unit,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val text = if (selected) "저장된 코스" else "코스 저장"
+    val backgroundColor = if (selected) SolplyTheme.colors.red100 else SolplyTheme.colors.white
+    val textColor = if (selected) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
+    val iconColor = if (selected) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
+    val paddingValues = if (selected) PaddingValues(end = 8.dp) else PaddingValues(end = 12.dp)
+
+    BaseButton(
+        onClick = onClick,
+        modifier = modifier.width(126.dp),
+        backgroundColor = backgroundColor,
+        shape = RoundedCornerShape(26.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier.padding(paddingValues),
+                style = SolplyTheme.typography.button14M,
+                color = textColor
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_marker),
+                modifier = Modifier.padding(end = 12.dp),
+                contentDescription = "add_course",
+                tint = iconColor
             )
         }
     }

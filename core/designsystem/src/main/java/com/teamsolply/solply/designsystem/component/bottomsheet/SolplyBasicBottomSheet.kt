@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -92,11 +91,14 @@ fun SolplyBasicBottomSheet(
                 }
             }
     ) {
-        Row {
-            Text("asdasddas")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp, end = 18.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
             menuContent()
         }
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()

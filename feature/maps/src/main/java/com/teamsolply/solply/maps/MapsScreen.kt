@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.NaverMap
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
+import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.editcourse.DraggableCourse
 import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
@@ -143,8 +145,13 @@ fun MapsScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val topBarTitle = when (mapsType) {
+                MapsType.ADD_COURSE -> "코스 상세보기"
+                MapsType.EDIT_COURSE -> "수집함"
+                else -> "장소 상세이름"
+            }
             MapsTopBar(
-                title = mapsType.name,
+                title = topBarTitle,
                 onBackClick = { },
                 onHomeClick = { navigatePlaceDetail() }
             )
@@ -155,7 +162,15 @@ fun MapsScreen(
 
         SolplyBasicBottomSheet(
             modifier = Modifier.align(Alignment.BottomCenter),
-            menuContent = {},
+            menuContent = {
+                Row {
+                    AddCourseButton(
+                        onClick = {},
+                        selected = true
+                    )
+                    //TODO("저장된 코스")
+                }
+            },
             content = {
                 DraggableCourse(
                     course = course,
