@@ -10,10 +10,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.navigateCourse
+import com.teamsolply.solply.main.splash.Splash
+import com.teamsolply.solply.maps.navigation.Maps
+import com.teamsolply.solply.maps.navigation.navigateMaps
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
-import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(
@@ -23,7 +26,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Place
+    val startDestination = Splash
 
     val currentTab: MainNavTab?
         @Composable get() = MainNavTab.find { tab ->
@@ -36,10 +39,12 @@ internal class MainNavigator(
                 val navOptions = createTabNavOptions()
                 navController.navigatePlace(navOptions)
             }
+
             MainNavTab.COURSE -> {
                 val navOptions = createTabNavOptions()
                 navController.navigateCourse(navOptions)
             }
+
             MainNavTab.MYPAGE -> {
                 navController.navigateMypage(
                     navOptions {
@@ -69,6 +74,16 @@ internal class MainNavigator(
 
     fun navigateToPlace(navOptions: NavOptions) {
         navController.navigatePlace(navOptions)
+    }
+
+    fun navigateToMaps(
+        mapsType: String,
+        navOptions: NavOptions
+    ) {
+        navController.navigateMaps(
+            mapsType = mapsType,
+            navOptions = navOptions
+        )
     }
 
     @Composable

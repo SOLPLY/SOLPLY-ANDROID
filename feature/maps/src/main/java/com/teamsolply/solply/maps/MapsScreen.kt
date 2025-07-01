@@ -5,12 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -32,6 +27,7 @@ import com.naver.maps.map.compose.NaverMap
 import com.teamsolply.solply.maps.bottomsheet.course.CourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +36,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MapsRoute(
+    mapsType: MapsType,
     paddingValues: PaddingValues,
     viewModel: MapsViewModel = hiltViewModel()
 ) {
@@ -57,6 +54,7 @@ fun MapsRoute(
     }
 
     MapsScreen(
+        mapsType = mapsType,
         context = context,
         course = uiState.course,
         removeIconVisible = uiState.iconVisibility,
@@ -75,6 +73,7 @@ fun MapsRoute(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
 fun MapsScreen(
+    mapsType: MapsType,
     context: Context,
     course: List<CourseInfo>,
     removeIconVisible: Boolean,
@@ -114,9 +113,9 @@ fun MapsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MapsTopBar(
-            title = "코스 상세보기",
+            title = mapsType.name,
             onBackClick = {},
-            onGoToHome = {}
+            onHomeClick = {}
         )
         NaverMap(
             modifier = Modifier.fillMaxSize(),

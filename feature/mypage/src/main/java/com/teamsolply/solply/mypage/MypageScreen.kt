@@ -8,18 +8,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun MypageRoute(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateToMaps: (String) -> Unit
 ) {
-    MypageScreen()
+    MypageScreen(
+        navigateToMaps = navigateToMaps
+    )
 }
 
 @Composable
 fun MypageScreen(
+    navigateToMaps: (String) -> Unit,
     modifier: Modifier = Modifier
-
 ) {
     Column(
         modifier.fillMaxSize(),
@@ -27,7 +32,8 @@ fun MypageScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Mypage"
+            text = "Mypage",
+            modifier = Modifier.customClickable { navigateToMaps(MapsType.EDIT_COURSE.name) }
         )
     }
 }

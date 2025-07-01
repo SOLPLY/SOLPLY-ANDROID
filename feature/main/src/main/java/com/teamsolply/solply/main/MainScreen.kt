@@ -81,9 +81,29 @@ internal fun MainScreen(
                         navigator.navigateToPlace(navOptions = navOptions)
                     }
                 )
-                placeNavGraph(paddingValues = innerPadding)
-                courseNavGraph(paddingValues = innerPadding)
-                mypageNavGraph(paddingValues = innerPadding)
+                placeNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToMaps = { mapsType ->
+                        val navOptions = navOptions {
+                        }
+                        navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                    }
+                )
+                courseNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToMaps = { mapsType ->
+                        val navOptions = navOptions {
+                        }
+                        navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+
+                    })
+                mypageNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToMaps = { mapsType ->
+                        val navOptions = navOptions {
+                        }
+                        navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                    })
                 mapsNavGraph(paddingValues = innerPadding)
             }
         },
