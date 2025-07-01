@@ -19,6 +19,11 @@ internal fun Project.configureBuildConfig(
                 "KAKAO_NATIVE_KEY",
                 gradleLocalProperties(rootDir, providers).getProperty("kakao.native.key")
             )
+            buildConfigField(
+                "String",
+                "NAVER_CLIENT_ID",
+                gradleLocalProperties(rootDir, providers).getProperty("naver.client.id")
+            )
         }
 
         buildFeatures {
