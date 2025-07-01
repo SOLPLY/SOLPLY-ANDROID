@@ -84,7 +84,7 @@ fun MapsRoute(
         removeCourse = { remove ->
             viewModel.sendIntent(MapsIntent.RemoveCourseItem(itemToRemove = remove))
         },
-        navigatePlaceDetail = navigatePlaceDetail,
+        navigatePlaceDetail = navigatePlaceDetail
     )
 }
 
@@ -168,7 +168,7 @@ fun MapsScreen(
                         onClick = {},
                         selected = true
                     )
-                    //TODO("저장된 코스")
+                    // TODO("저장된 코스")
                 }
             },
             content = {

@@ -199,7 +199,7 @@ fun AddPlaceButton(
     onClick: () -> Unit,
     isPlace: Boolean,
     selected: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val text = if (isPlace) "내 코스에 추가" else "장소 저장"
     val (backgroundColor, textColor, iconColor) = if (selected) {
@@ -222,7 +222,7 @@ fun AddPlaceButton(
             .width(140.dp)
             .height(49.dp),
         backgroundColor = backgroundColor,
-        shape = RoundedCornerShape(26.dp),
+        shape = RoundedCornerShape(26.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -253,7 +253,7 @@ fun AddPlaceButton(
 fun AddCourseButton(
     onClick: () -> Unit,
     selected: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val text = if (selected) "저장된 코스" else "코스 저장"
     val backgroundColor = if (selected) SolplyTheme.colors.red100 else SolplyTheme.colors.white
@@ -265,7 +265,7 @@ fun AddCourseButton(
         onClick = onClick,
         modifier = modifier.width(126.dp),
         backgroundColor = backgroundColor,
-        shape = RoundedCornerShape(26.dp),
+        shape = RoundedCornerShape(26.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

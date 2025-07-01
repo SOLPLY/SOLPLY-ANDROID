@@ -31,9 +31,9 @@ data class MapsState(
         CourseInfo(
             courseId = 5,
             courseName = "5번"
-        ),
+        )
     ),
-    val iconVisibility: Boolean = false,
+    val iconVisibility: Boolean = false
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
