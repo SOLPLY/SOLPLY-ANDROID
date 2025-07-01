@@ -19,12 +19,14 @@ fun NavController.navigateMaps(
 }
 
 fun NavGraphBuilder.mapsNavGraph(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateToPlaceDetail: () -> Unit
 ) {
     composable<Maps> { backStackEntry ->
         val mapsType = MapsType.valueOf(backStackEntry.toRoute<Maps>().mapsType)
         MapsRoute(
             mapsType = mapsType,
+            navigatePlaceDetail = navigateToPlaceDetail,
             paddingValues = paddingValues
         )
     }

@@ -11,9 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.main.splash.Splash
-import com.teamsolply.solply.maps.navigation.Maps
 import com.teamsolply.solply.maps.navigation.navigateMaps
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding

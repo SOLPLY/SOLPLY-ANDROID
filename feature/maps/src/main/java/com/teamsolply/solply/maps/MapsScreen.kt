@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MapsRoute(
     mapsType: MapsType,
+    navigatePlaceDetail: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: MapsViewModel = hiltViewModel()
 ) {
@@ -66,7 +67,8 @@ fun MapsRoute(
         },
         removeCourse = { remove ->
             viewModel.sendIntent(MapsIntent.RemoveCourseItem(itemToRemove = remove))
-        }
+        },
+        navigatePlaceDetail = navigatePlaceDetail
     )
 }
 
@@ -80,6 +82,7 @@ fun MapsScreen(
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
+    navigatePlaceDetail: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -114,8 +117,8 @@ fun MapsScreen(
     ) {
         MapsTopBar(
             title = mapsType.name,
-            onBackClick = {},
-            onHomeClick = {}
+            onBackClick = { },
+            onHomeClick = { navigatePlaceDetail( )}
         )
         NaverMap(
             modifier = Modifier.fillMaxSize(),

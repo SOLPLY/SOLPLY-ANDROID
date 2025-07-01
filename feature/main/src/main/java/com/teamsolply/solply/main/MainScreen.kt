@@ -17,6 +17,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
 import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
@@ -104,7 +105,16 @@ internal fun MainScreen(
                         }
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                     })
-                mapsNavGraph(paddingValues = innerPadding)
+                mapsNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToPlaceDetail = {
+                        val navOptions = navOptions {}
+                        navigator.navigateToMaps(
+                            mapsType = MapsType.PLACE_DETAIL.name,
+                            navOptions = navOptions
+                        )
+                    }
+                )
             }
         },
         bottomBar = {
