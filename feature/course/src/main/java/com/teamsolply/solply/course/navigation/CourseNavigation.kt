@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.course.CourseRoute
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 

@@ -96,15 +96,16 @@ internal fun MainScreen(
                         val navOptions = navOptions {
                         }
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-
-                    })
+                    }
+                )
                 mypageNavGraph(
                     paddingValues = innerPadding,
                     navigateToMaps = { mapsType ->
                         val navOptions = navOptions {
                         }
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                    })
+                    }
+                )
                 mapsNavGraph(
                     paddingValues = innerPadding,
                     navigateToPlaceDetail = {

@@ -118,10 +118,10 @@ fun MapsScreen(
         MapsTopBar(
             title = mapsType.name,
             onBackClick = { },
-            onHomeClick = { navigatePlaceDetail( )}
+            onHomeClick = { navigatePlaceDetail() }
         )
         NaverMap(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
         )
     }
 
