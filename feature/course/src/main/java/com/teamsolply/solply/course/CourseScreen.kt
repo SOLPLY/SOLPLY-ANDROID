@@ -9,19 +9,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun CourseRoute(
     paddingValues: PaddingValues,
+    navigateToMaps: (String) -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
-    CourseScreen()
+    CourseScreen(
+        navigateToMaps = navigateToMaps
+    )
 }
 
 @Composable
 fun CourseScreen(
+    navigateToMaps: (String) -> Unit,
     modifier: Modifier = Modifier
-
 ) {
     Column(
         modifier.fillMaxSize(),
@@ -29,7 +34,8 @@ fun CourseScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Course"
+            text = "Course",
+            modifier = Modifier.customClickable { navigateToMaps(MapsType.ADD_COURSE.name) }
         )
     }
 }

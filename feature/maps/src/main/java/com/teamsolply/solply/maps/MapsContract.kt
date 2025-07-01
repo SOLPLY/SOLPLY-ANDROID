@@ -31,22 +31,6 @@ data class MapsState(
         CourseInfo(
             courseId = 5,
             courseName = "5번"
-        ),
-        CourseInfo(
-            courseId = 6,
-            courseName = "6번"
-        ),
-        CourseInfo(
-            courseId = 7,
-            courseName = "7번"
-        ),
-        CourseInfo(
-            courseId = 8,
-            courseName = "8번"
-        ),
-        CourseInfo(
-            courseId = 9,
-            courseName = "9번"
         )
     ),
     val iconVisibility: Boolean = false

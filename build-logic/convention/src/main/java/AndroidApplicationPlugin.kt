@@ -25,7 +25,12 @@ internal class AndroidApplicationPlugin : Plugin<Project> {
                     targetSdk = libs.getVersion("targetSdk").requiredVersion.toInt()
                     versionCode = libs.getVersion("versionCode").requiredVersion.toInt()
                     versionName = libs.getVersion("versionName").requiredVersion
-                    manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir, providers).getProperty("kakao.native.key").replace("\"", "")
+                    manifestPlaceholders["KAKAO_NATIVE_KEY"] =
+                        gradleLocalProperties(rootDir, providers).getProperty("kakao.native.key")
+                            .replace("\"", "")
+                    manifestPlaceholders["NAVER_CLIENT_ID"] =
+                        gradleLocalProperties(rootDir, providers).getProperty("naver.client.id")
+                            .replace("\"", "")
                 }
             }
 

@@ -16,11 +16,13 @@ fun NavController.navigatePlace(
 }
 
 fun NavGraphBuilder.placeNavGraph(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateToMaps: (String) -> Unit
 ) {
     composable<Place> {
         PlaceRoute(
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            navigateToMaps = navigateToMaps
         )
     }
 }

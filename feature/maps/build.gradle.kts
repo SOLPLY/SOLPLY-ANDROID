@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.domain.maps)
+    implementation(libs.bundles.naver.maps)
 }

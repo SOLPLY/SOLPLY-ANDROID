@@ -9,19 +9,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
+    navigateToMaps: (String) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
-    PlaceScreen()
+    PlaceScreen(
+        navigateToMaps = navigateToMaps
+    )
 }
 
 @Composable
 fun PlaceScreen(
+    navigateToMaps: (String) -> Unit,
     modifier: Modifier = Modifier
-
 ) {
     Column(
         modifier.fillMaxSize(),
@@ -29,7 +34,8 @@ fun PlaceScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Place"
+            text = "Place",
+            modifier = Modifier.customClickable { navigateToMaps(MapsType.PLACE_DETAIL.name) }
         )
     }
 }
