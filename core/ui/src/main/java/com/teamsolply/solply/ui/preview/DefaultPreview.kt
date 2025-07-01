@@ -8,4 +8,6 @@ import androidx.compose.ui.tooling.preview.Preview
     showBackground = true,
     backgroundColor = 0xFFFFFF
 )
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FUNCTION)
 annotation class DefaultPreview

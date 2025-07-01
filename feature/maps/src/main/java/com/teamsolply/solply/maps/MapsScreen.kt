@@ -1,17 +1,18 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,12 +24,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.NaverMap
 import com.teamsolply.solply.maps.bottomsheet.course.CourseBottomSheet
+import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.model.CourseInfo
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
@@ -70,7 +72,7 @@ fun MapsRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
 fun MapsScreen(
     context: Context,
@@ -108,22 +110,16 @@ fun MapsScreen(
             }
     }
     Column(
-        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "showBottomSheet",
-            style = SolplyTheme.typography.display24Sb,
-            color = SolplyTheme.colors.yellow200,
-            modifier = Modifier
-                .background(color = Color.Red)
-                .clickable {
-                    Log.d("asdasdasd", "asd")
-                    scope.launch {
-                        sheetState.show()
-                    }
-                }
+        MapsTopBar(
+            title = "코스 상세보기",
+            onBackClick = {},
+            onGoToHome = {}
+        )
+        NaverMap(
+            modifier = Modifier.fillMaxSize(),
         )
     }
 
