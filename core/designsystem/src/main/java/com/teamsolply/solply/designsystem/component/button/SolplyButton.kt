@@ -197,24 +197,19 @@ fun RecommendedPlaceButton(
 @Composable
 fun AddPlaceButton(
     onClick: () -> Unit,
-    isPlace: Boolean,
+    isAddPlace: Boolean,
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val text = if (isPlace) "내 코스에 추가" else "장소 저장"
-    val (backgroundColor, textColor, iconColor) = if (selected) {
-        Triple(
-            SolplyTheme.colors.purple400,
-            SolplyTheme.colors.purple800,
-            SolplyTheme.colors.purple700
-        )
-    } else {
-        Triple(
-            SolplyTheme.colors.white,
-            SolplyTheme.colors.gray400,
-            SolplyTheme.colors.gray400
-        )
-    }
+    val text = if (isAddPlace) "장소 저장" else "내 코스에 추가"
+    val backgroundColor = if (isAddPlace) {
+        SolplyTheme.colors.white}
+        else {
+            if (selected) {SolplyTheme.colors.purple400} else {SolplyTheme.colors.white}
+        }
+
+    val textColor = if (selected) SolplyTheme.colors.purple800 else SolplyTheme.colors.gray400
+    val iconColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.gray400
 
     BaseButton(
         onClick = onClick,
@@ -237,7 +232,7 @@ fun AddPlaceButton(
                 color = textColor,
                 maxLines = 1
             )
-            if (isPlace) {
+            if (isAddPlace) {
                 Icon(
                     painter = painterResource(R.drawable.ic_marker),
                     contentDescription = "add_place",
