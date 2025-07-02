@@ -2,15 +2,17 @@ package com.teamsolply.solply.maps
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,11 +42,17 @@ import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.NaverMap
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
+import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
-import com.teamsolply.solply.maps.editcourse.DraggableCourse
+import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
 import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
 import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -54,6 +62,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 fun MapsRoute(
     mapsType: MapsType,
     navigatePlaceDetail: () -> Unit,
+    navigateToPlace: () -> Unit,
+    navigateToCourse: () -> Unit,
+    navigateToMypage: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: MapsViewModel = hiltViewModel()
 ) {
@@ -65,6 +76,12 @@ fun MapsRoute(
             when (sideEffect) {
                 MapsSideEffect.DisabledRemoveCourse -> {
                     Toast.makeText(context, "Cannot delete course", Toast.LENGTH_SHORT).show()
+                }
+
+                MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
+                    MapsType.PLACE_DETAIL -> navigateToPlace()
+                    MapsType.ADD_COURSE -> navigateToCourse()
+                    MapsType.EDIT_COURSE -> navigateToMypage()
                 }
             }
         }
@@ -84,7 +101,9 @@ fun MapsRoute(
         removeCourse = { remove ->
             viewModel.sendIntent(MapsIntent.RemoveCourseItem(itemToRemove = remove))
         },
-        navigatePlaceDetail = navigatePlaceDetail
+        onReturnToHomeClick = {
+            viewModel.sendIntent(MapsIntent.ReturnToHomeClick)
+        },
     )
 }
 
@@ -98,7 +117,7 @@ fun MapsScreen(
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
-    navigatePlaceDetail: () -> Unit,
+    onReturnToHomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -149,11 +168,13 @@ fun MapsScreen(
                 MapsType.ADD_COURSE -> "코스 상세보기"
                 MapsType.EDIT_COURSE -> "수집함"
                 else -> "장소 상세이름"
+                // TODO("장소 상세 이름으로")
             }
             MapsTopBar(
+                mapsType = mapsType,
                 title = topBarTitle,
                 onBackClick = { },
-                onHomeClick = { navigatePlaceDetail() }
+                onReturnToHomeClick = { onReturnToHomeClick() }
             )
             NaverMap(
                 modifier = Modifier.fillMaxSize()
@@ -163,24 +184,71 @@ fun MapsScreen(
         SolplyBasicBottomSheet(
             modifier = Modifier.align(Alignment.BottomCenter),
             menuContent = {
-                Row {
+                if (mapsType == MapsType.PLACE_DETAIL) {
+                    Box(
+                        modifier = Modifier
+                            .size(47.dp)
+                            .background(color = SolplyTheme.colors.white, shape = CircleShape)
+                            .customClickable(rippleEnabled = false) {
+                                navigateToNaverMapDirections(
+                                    context = context,
+                                    destName = "강남역",
+                                    destId = "123456d78",
+                                    destX = 14136045.0,
+                                    destY = 4511639.0,
+                                )
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_place_navigation),
+                            contentDescription = "place_navigation",
+                            tint = Color.Unspecified
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    AddPlaceButton(
+                        onClick = {},
+                        isAddPlace = false,
+                        selected = true,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+
+                    AddPlaceButton(
+                        onClick = {},
+                        isAddPlace = true,
+                        selected = true
+                    )
+                } else {
                     AddCourseButton(
                         onClick = {},
                         selected = true
                     )
-                    // TODO("저장된 코스")
                 }
+                // TODO("맵 타입에 따라 바텀 시트 위 버튼")
             },
             content = {
-                DraggableCourse(
-                    course = course,
-                    removeIconBounds = removeIconBounds,
-                    isInRemoveIconArea = isInRemoveIconArea,
-                    rootCoordinatesState = rootCoordinatesState,
-                    touchPositionState = touchPositionState,
-                    lazyListState = lazyListState,
-                    dragDropState = dragDropState
-                )
+                when (mapsType) {
+                    MapsType.PLACE_DETAIL -> {
+                        PlaceDetailBottomSheet()
+                    }
+
+                    MapsType.ADD_COURSE -> {
+                        AddCourseBottomSheet()
+                    }
+
+                    MapsType.EDIT_COURSE -> {
+                        EditCourseBottomSheet(
+                            course = course,
+                            removeIconBounds = removeIconBounds,
+                            isInRemoveIconArea = isInRemoveIconArea,
+                            rootCoordinatesState = rootCoordinatesState,
+                            touchPositionState = touchPositionState,
+                            lazyListState = lazyListState,
+                            dragDropState = dragDropState
+                        )
+                    }
+                }
             }
         )
 

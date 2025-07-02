@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.place.util.LocationPermissionRequest
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
@@ -18,6 +19,7 @@ fun PlaceRoute(
     navigateToMaps: (String) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
+    LocationPermissionRequest()
     PlaceScreen(
         navigateToMaps = navigateToMaps
     )
