@@ -21,8 +21,8 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun MapsTopBar(
     mapsType: MapsType,
     title: String,
-    onBackClick: () -> Unit,
-    onReturnToHomeClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onReturnToHomeButtonClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -37,7 +37,7 @@ fun MapsTopBar(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .padding(start = 28.dp)
-                .customClickable(rippleEnabled = false) { onBackClick() }
+                .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
         Text(
             text = title,
@@ -58,7 +58,7 @@ fun MapsTopBar(
                 .align(Alignment.CenterEnd)
                 .padding(end = 28.dp)
                 .size(18.dp)
-                .customClickable(rippleEnabled = false) { onReturnToHomeClick() }
+                .customClickable(rippleEnabled = false) { onReturnToHomeButtonClick() }
         )
     }
 }

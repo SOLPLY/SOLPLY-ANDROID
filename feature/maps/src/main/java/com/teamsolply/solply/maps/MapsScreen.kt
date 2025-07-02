@@ -65,6 +65,7 @@ fun MapsRoute(
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
+    navigateToBack: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: MapsViewModel = hiltViewModel()
 ) {
@@ -83,6 +84,8 @@ fun MapsRoute(
                     MapsType.ADD_COURSE -> navigateToCourse()
                     MapsType.EDIT_COURSE -> navigateToMypage()
                 }
+
+                MapsSideEffect.NavigateToBack -> navigateToBack()
             }
         }
     }
@@ -104,6 +107,9 @@ fun MapsRoute(
         onReturnToHomeClick = {
             viewModel.sendIntent(MapsIntent.ReturnToHomeClick)
         },
+        onBackButtonClick = {
+            viewModel.sendIntent(MapsIntent.BackButtonClick)
+        }
     )
 }
 
@@ -118,6 +124,7 @@ fun MapsScreen(
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
     onReturnToHomeClick: () -> Unit,
+    onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -173,8 +180,8 @@ fun MapsScreen(
             MapsTopBar(
                 mapsType = mapsType,
                 title = topBarTitle,
-                onBackClick = { },
-                onReturnToHomeClick = { onReturnToHomeClick() }
+                onBackButtonClick = { onBackButtonClick() },
+                onReturnToHomeButtonClick = { onReturnToHomeClick() }
             )
             NaverMap(
                 modifier = Modifier.fillMaxSize()

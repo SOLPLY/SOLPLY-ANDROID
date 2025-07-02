@@ -53,9 +53,11 @@ sealed interface MapsIntent : UiIntent {
 
     // Navigate
     data object ReturnToHomeClick : MapsIntent
+    data object BackButtonClick : MapsIntent
 }
 
 sealed interface MapsSideEffect : SideEffect {
     data object DisabledRemoveCourse : MapsSideEffect
     data object NavigateToReturnHome : MapsSideEffect
+    data object NavigateToBack : MapsSideEffect
 }

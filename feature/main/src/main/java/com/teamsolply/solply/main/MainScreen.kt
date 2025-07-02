@@ -142,7 +142,8 @@ internal fun MainScreen(
                             }
                         }
                         navigator.navigateToMypage(navOptions = navOptions)
-                    }
+                    },
+                    navigateToBack = navigator::navigateToBack
                 )
             }
         },

@@ -92,6 +92,10 @@ internal class MainNavigator(
         )
     }
 
+    fun navigateToBack() {
+        navController.popBackStack()
+    }
+
     @Composable
     fun setBottomBarVisibility(): Boolean {
         return MainNavTab.entries

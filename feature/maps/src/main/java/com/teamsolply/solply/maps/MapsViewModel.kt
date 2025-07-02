@@ -25,6 +25,10 @@ class MapsViewModel @Inject constructor() :
             is MapsIntent.ReturnToHomeClick -> {
                 postSideEffect(MapsSideEffect.NavigateToReturnHome)
             }
+
+            is MapsIntent.BackButtonClick -> {
+                postSideEffect(MapsSideEffect.NavigateToBack)
+            }
         }
     }
 
