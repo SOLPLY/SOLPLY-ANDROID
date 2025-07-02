@@ -214,7 +214,6 @@ fun AddPlaceButton(
     BaseButton(
         onClick = onClick,
         modifier = modifier
-            .width(140.dp)
             .height(49.dp),
         backgroundColor = backgroundColor,
         shape = RoundedCornerShape(26.dp)
@@ -223,7 +222,6 @@ fun AddPlaceButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(horizontal = 12.dp)
         ) {
             Text(
