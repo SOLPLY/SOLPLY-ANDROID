@@ -37,6 +37,7 @@ data class MapsState(
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
+    //Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
     ) : MapsIntent
@@ -49,8 +50,12 @@ sealed interface MapsIntent : UiIntent {
     data class RemoveCourseItem(
         val itemToRemove: Int
     ) : MapsIntent
+
+    // Navigate
+    data object ReturnToHomeClick : MapsIntent
 }
 
 sealed interface MapsSideEffect : SideEffect {
     data object DisabledRemoveCourse : MapsSideEffect
+    data object NavigateToReturnHome : MapsSideEffect
 }

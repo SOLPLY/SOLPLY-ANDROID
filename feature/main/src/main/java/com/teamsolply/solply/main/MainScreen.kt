@@ -12,15 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.teamsolply.solply.course.navigation.Course
 import com.teamsolply.solply.course.navigation.courseNavGraph
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
 import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
+import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.placeNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
@@ -101,8 +104,7 @@ internal fun MainScreen(
                 mypageNavGraph(
                     paddingValues = innerPadding,
                     navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {
-                        }
+                        val navOptions = navOptions {}
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                     }
                 )
@@ -114,6 +116,32 @@ internal fun MainScreen(
                             mapsType = MapsType.PLACE_DETAIL.name,
                             navOptions = navOptions
                         )
+                    },
+                    navigateToPlace = {
+                        val navOptions = navOptions {
+                            popUpTo(Place) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                        navigator.navigateToPlace(navOptions = navOptions)
+                    },
+                    navigateToCourse = {
+                        val navOptions = navOptions {
+                            popUpTo(Course) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                        navigator.navigateToCourse(navOptions = navOptions)
+                    },
+                    navigateToMypage = {
+                        val navOptions = navOptions {
+                            popUpTo(Mypage) {
+                                inclusive = true
+                            }
+                        }
+                        navigator.navigateToMypage(navOptions = navOptions)
                     }
                 )
             }

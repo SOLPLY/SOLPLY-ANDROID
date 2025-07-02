@@ -21,6 +21,10 @@ class MapsViewModel @Inject constructor() :
                     itemToRemove = intent.itemToRemove
                 )
             }
+
+            is MapsIntent.ReturnToHomeClick -> {
+                postSideEffect(MapsSideEffect.NavigateToReturnHome)
+            }
         }
     }
 
