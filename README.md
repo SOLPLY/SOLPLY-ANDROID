@@ -32,3 +32,14 @@
 - 장소를 탐색하고 수집하면서 피로를 느끼고 실행에 옮기지 못함
 
 #### 👉 믿고 따를 수 있는 혼놀 스팟 및 코스 큐레이션에 높은 니즈
+<br>
+
+## 🏝️ Branch Strategy
+[Branch Strategy](https://www.notion.so/sopt-official/2251e48dd96080ac81c6f335d0b9f2a1)
+<br>
+
+## 🐈 Git Convention
+[Git Convention](https://www.notion.so/sopt-official/2251e48dd960807fa05fdf002e730663)
+<br>
+
+
