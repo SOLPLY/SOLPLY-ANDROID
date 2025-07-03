@@ -38,8 +38,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.Marker
+import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
+import com.naver.maps.map.compose.PathOverlay
+import com.naver.maps.map.compose.rememberCameraPositionState
+import com.naver.maps.map.overlay.OverlayImage
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
@@ -93,7 +100,7 @@ fun MapsRoute(
     MapsScreen(
         mapsType = mapsType,
         context = context,
-        course = uiState.course,
+        courses = uiState.courses,
         removeIconVisible = uiState.iconVisibility,
         startCourseMove = { iconVisibility ->
             viewModel.sendIntent(MapsIntent.StartCourseMove(iconVisibility = iconVisibility))
@@ -118,7 +125,7 @@ fun MapsRoute(
 fun MapsScreen(
     mapsType: MapsType,
     context: Context,
-    course: List<CourseInfo>,
+    courses: List<CourseInfo>,
     removeIconVisible: Boolean,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
@@ -133,7 +140,7 @@ fun MapsScreen(
 
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val draggableItemSize by remember { derivedStateOf { course.size } }
+    val draggableItemSize by remember { derivedStateOf { courses.size } }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
 
@@ -148,6 +155,16 @@ fun MapsScreen(
         onRemove = removeCourse,
         isInRemoveAreaProvider = { isInRemoveIconArea.value }
     )
+
+    val firstCourse = courses.first()
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition(
+            LatLng(firstCourse.latitude - 0.004, firstCourse.longitude),
+            14.0,
+            0.0,
+            0.0
+        )
+    }
 
     LaunchedEffect(scrollToIndex) {
         scrollToIndex?.let { index ->
@@ -184,8 +201,36 @@ fun MapsScreen(
                 onReturnToHomeButtonClick = { onReturnToHomeClick() }
             )
             NaverMap(
-                modifier = Modifier.fillMaxSize()
-            )
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                courses.forEachIndexed { index, course ->
+                    val markerIconRes = when (index) {
+                        0 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
+                        1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
+                        2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
+                        3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
+                        else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
+                    }
+                    val currentLatLng = LatLng(course.latitude, course.longitude)
+                    Marker(
+                        state = MarkerState(position = LatLng(course.latitude, course.longitude)),
+                        icon = OverlayImage.fromResource(markerIconRes),
+                        anchor = Offset(0.5f, 0.5f)
+                    )
+                    if (index < courses.lastIndex) {
+                        val nextCourse = courses[index + 1]
+                        val nextLatLng = LatLng(nextCourse.latitude, nextCourse.longitude)
+
+                        PathOverlay(
+                            coords = listOf(currentLatLng, nextLatLng),
+                            color = SolplyTheme.colors.purple900,
+                            width = 0.5.dp
+                        )
+                    }
+                }
+
+            }
         }
 
         SolplyBasicBottomSheet(
@@ -200,9 +245,9 @@ fun MapsScreen(
                                 navigateToNaverMapDirections(
                                     context = context,
                                     destName = "강남역",
-                                    destId = "123456d78",
-                                    destX = 14136045.0,
-                                    destY = 4511639.0,
+                                    destId = "1910",
+                                    destX = 127.02760,
+                                    destY = 37.49794,
                                 )
                             },
                         contentAlignment = Alignment.Center
@@ -246,7 +291,7 @@ fun MapsScreen(
 
                     MapsType.EDIT_COURSE -> {
                         EditCourseBottomSheet(
-                            course = course,
+                            course = courses,
                             removeIconBounds = removeIconBounds,
                             isInRemoveIconArea = isInRemoveIconArea,
                             rootCoordinatesState = rootCoordinatesState,

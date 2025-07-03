@@ -34,24 +34,24 @@ class MapsViewModel @Inject constructor() :
 
     private fun moveCourseItem(fromIndex: Int, toIndex: Int) {
         reduce {
-            val newCourseList = course.toMutableList()
+            val newCourseList = courses.toMutableList()
             val item = newCourseList.removeAt(fromIndex)
             newCourseList.add(toIndex, item)
-            copy(course = newCourseList)
+            copy(courses = newCourseList)
         }
     }
 
     private fun removeCourseItem(itemToRemove: Int) {
-        val currentList = uiState.value.course
+        val currentList = uiState.value.courses
         if (currentList.size <= 2) {
             postSideEffect(MapsSideEffect.DisabledRemoveCourse)
             return
         }
         reduce {
-            val newList = course.toMutableList()
+            val newList = courses.toMutableList()
             newList.removeAt(itemToRemove)
             copy(
-                course = newList
+                courses = newList
             )
         }
     }

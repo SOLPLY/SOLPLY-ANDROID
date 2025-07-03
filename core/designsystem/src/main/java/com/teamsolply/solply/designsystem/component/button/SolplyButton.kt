@@ -232,7 +232,7 @@ fun AddPlaceButton(
             )
             if (isAddPlace) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_marker),
+                    painter = painterResource(R.drawable.ic_marker_default),
                     contentDescription = "add_place",
                     modifier = Modifier.padding(start = 8.dp),
                     tint = iconColor
@@ -274,7 +274,7 @@ fun AddCourseButton(
                 color = textColor
             )
             Icon(
-                painter = painterResource(R.drawable.ic_marker),
+                painter = painterResource(R.drawable.ic_marker_default),
                 modifier = Modifier.padding(end = 12.dp),
                 contentDescription = "add_course",
                 tint = iconColor

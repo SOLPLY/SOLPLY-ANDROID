@@ -46,12 +46,15 @@ fun navigateToNaverMapDirections(
                 val startX = lng * 20037508.34 / 180
                 val startY = ln(tan((90 + lat) * PI / 360)) * 20037508.34 / PI
 
+                val destXmerc = destX * 20037508.34 / 180
+                val destYmerc = ln(tan((90 + destY) * PI / 360)) * 20037508.34 / PI
+
                 val encodedStartName = URLEncoder.encode("현재 위치", "UTF-8")
                 val encodedDestName = URLEncoder.encode(destName, "UTF-8")
 
                 val url = "https://map.naver.com/p/directions/" +
                         "$startX,$startY,$encodedStartName,0,USER_LOCATION/" +
-                        "$destX,$destY,$encodedDestName,$destId,$destType/-/transit?c=11.00,0,0,0,dh"
+                        "$destXmerc,$destYmerc,$encodedDestName,$destId,$destType/-/transit?c=11.00,0,0,0,dh"
 
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
