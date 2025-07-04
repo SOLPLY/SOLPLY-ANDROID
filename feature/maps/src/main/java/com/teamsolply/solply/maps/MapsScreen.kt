@@ -251,9 +251,10 @@ fun MapsScreen(
                                 navigateToNaverMapDirections(
                                     context = context,
                                     destName = "강남역",
-                                    destId = "1910",
-                                    destX = 127.02760,
-                                    destY = 37.49794
+                                    destId = "222",
+                                    destLongitude = 127.02760,
+                                    destLatitude = 37.49794,
+                                    destType = "SUBWAY_STATION"
                                 )
                             },
                         contentAlignment = Alignment.Center

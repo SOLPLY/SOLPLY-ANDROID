@@ -5,9 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.net.URLEncoder
@@ -19,10 +19,10 @@ import kotlin.math.tan
 fun navigateToNaverMapDirections(
     context: Context,
     destName: String,
-    destX: Double,
-    destY: Double,
+    destLongitude: Double,
+    destLatitude: Double,
     destId: String,
-    destType: String = "PLACE_POI"
+    destType: String,
 ) {
     val permissionGranted = ContextCompat.checkSelfPermission(
         context,
@@ -40,23 +40,22 @@ fun navigateToNaverMapDirections(
     fusedLocationClient.lastLocation
         .addOnSuccessListener { location ->
             if (location != null) {
-                val lat = location.latitude
-                val lng = location.longitude
-
-                val startX = lng * 20037508.34 / 180
-                val startY = ln(tan((90 + lat) * PI / 360)) * 20037508.34 / PI
-
-                val destXmerc = destX * 20037508.34 / 180
-                val destYmerc = ln(tan((90 + destY) * PI / 360)) * 20037508.34 / PI
-
+                val (startXmerc, startYmerc) = latLngToMercator(
+                    longitude = location.longitude,
+                    latitude = location.latitude
+                )
+                val (destXmerc, destYmerc) = latLngToMercator(
+                    longitude = destLongitude,
+                    latitude = destLatitude
+                )
                 val encodedStartName = URLEncoder.encode("현재 위치", "UTF-8")
                 val encodedDestName = URLEncoder.encode(destName, "UTF-8")
 
                 val url = "https://map.naver.com/p/directions/" +
-                    "$startX,$startY,$encodedStartName,0,USER_LOCATION/" +
-                    "$destXmerc,$destYmerc,$encodedDestName,$destId,$destType/-/transit?c=11.00,0,0,0,dh"
+                        "$startXmerc,$startYmerc,$encodedStartName,0,USER_LOCATION/" +
+                        "$destXmerc,$destYmerc,$encodedDestName,$destId,$destType/-/transit?c=11.00,0,0,0,dh"
 
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
                 context.startActivity(intent)
             } else {
                 val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
@@ -66,4 +65,11 @@ fun navigateToNaverMapDirections(
         .addOnFailureListener {
             Toast.makeText(context, "위치 요청 실패: ${it.message}", Toast.LENGTH_SHORT).show()
         }
+}
+
+
+fun latLngToMercator(longitude: Double, latitude: Double): Pair<Double, Double> {
+    val x = longitude * 20037508.34 / 180
+    val y = ln(tan((90 + latitude) * PI / 360)) * 20037508.34 / PI
+    return Pair(x, y)
 }
