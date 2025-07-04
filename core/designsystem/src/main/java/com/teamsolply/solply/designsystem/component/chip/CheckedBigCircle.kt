@@ -15,9 +15,11 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
 @Composable
-fun CheckedBigCircle() {
+fun CheckedBigCircle(
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(30.dp)
             .background(
                 color = SolplyTheme.colors.gray900,
