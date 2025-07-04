@@ -23,7 +23,7 @@ import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
 import com.teamsolply.solply.maps.model.CourseInfo
 
 @Composable
-fun DraggableCourse(
+fun EditCourseBottomSheet(
     course: List<CourseInfo>,
     removeIconBounds: Rect?,
     isInRemoveIconArea: MutableState<Boolean>,

@@ -74,6 +74,14 @@ internal class MainNavigator(
         navController.navigatePlace(navOptions)
     }
 
+    fun navigateToCourse(navOptions: NavOptions) {
+        navController.navigateCourse(navOptions)
+    }
+
+    fun navigateToMypage(navOptions: NavOptions) {
+        navController.navigateMypage(navOptions)
+    }
+
     fun navigateToMaps(
         mapsType: String,
         navOptions: NavOptions
@@ -82,6 +90,10 @@ internal class MainNavigator(
             mapsType = mapsType,
             navOptions = navOptions
         )
+    }
+
+    fun navigateToBack() {
+        navController.popBackStack()
     }
 
     @Composable

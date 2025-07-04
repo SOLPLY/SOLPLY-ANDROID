@@ -98,7 +98,7 @@ fun SolplyBasicBottomSheet(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 10.dp, end = 18.dp),
+                .padding(bottom = 10.dp, start = 16.dp, end = 18.dp),
             horizontalArrangement = Arrangement.End
         ) {
             menuContent()

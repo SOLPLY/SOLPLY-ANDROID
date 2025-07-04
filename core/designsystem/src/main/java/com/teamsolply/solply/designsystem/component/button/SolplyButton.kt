@@ -197,29 +197,23 @@ fun RecommendedPlaceButton(
 @Composable
 fun AddPlaceButton(
     onClick: () -> Unit,
-    isPlace: Boolean,
+    isAddPlace: Boolean,
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val text = if (isPlace) "내 코스에 추가" else "장소 저장"
-    val (backgroundColor, textColor, iconColor) = if (selected) {
-        Triple(
-            SolplyTheme.colors.purple400,
-            SolplyTheme.colors.purple800,
-            SolplyTheme.colors.purple700
-        )
+    val text = if (isAddPlace) "장소 저장" else "내 코스에 추가"
+    val backgroundColor = if (isAddPlace) {
+        SolplyTheme.colors.white
     } else {
-        Triple(
-            SolplyTheme.colors.white,
-            SolplyTheme.colors.gray400,
-            SolplyTheme.colors.gray400
-        )
+        if (selected) { SolplyTheme.colors.purple400 } else { SolplyTheme.colors.white }
     }
+
+    val textColor = if (selected) SolplyTheme.colors.purple800 else SolplyTheme.colors.gray400
+    val iconColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.gray400
 
     BaseButton(
         onClick = onClick,
         modifier = modifier
-            .width(140.dp)
             .height(49.dp),
         backgroundColor = backgroundColor,
         shape = RoundedCornerShape(26.dp)
@@ -228,7 +222,6 @@ fun AddPlaceButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(horizontal = 12.dp)
         ) {
             Text(
@@ -237,9 +230,9 @@ fun AddPlaceButton(
                 color = textColor,
                 maxLines = 1
             )
-            if (isPlace) {
+            if (isAddPlace) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_marker),
+                    painter = painterResource(R.drawable.ic_marker_default),
                     contentDescription = "add_place",
                     modifier = Modifier.padding(start = 8.dp),
                     tint = iconColor
@@ -281,7 +274,7 @@ fun AddCourseButton(
                 color = textColor
             )
             Icon(
-                painter = painterResource(R.drawable.ic_marker),
+                painter = painterResource(R.drawable.ic_marker_default),
                 modifier = Modifier.padding(end = 12.dp),
                 contentDescription = "add_course",
                 tint = iconColor

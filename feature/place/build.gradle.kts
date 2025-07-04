@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.domain.place)
+    implementation(libs.accompanist.permissions)
 }
