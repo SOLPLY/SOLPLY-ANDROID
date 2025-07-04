@@ -172,6 +172,11 @@ internal fun MainScreen(
                 )
                 mapsNavGraph(
                     paddingValues = innerPadding,
+                    showDisabledRemoveCourseSnackBar = { message ->
+                        coroutineScope.launch {
+                            showNotificationSnackBar(message)
+                        }
+                    },
                     navigateToPlaceDetail = {
                         val navOptions = navOptions {}
                         navigator.navigateToMaps(
@@ -227,7 +232,7 @@ internal fun MainScreen(
                 snackbar = {
                     SnackbarHost(
                         hostState = snackbarHostState,
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(horizontal = 10.dp),
                         snackbar = { snackbarData ->
                             when (currentSnackbarState.value.type) {
                                 SnackBarType.TEXT -> {
