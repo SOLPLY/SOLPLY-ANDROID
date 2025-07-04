@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -68,6 +67,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun MapsRoute(
     mapsType: MapsType,
+    showDisabledRemoveCourseSnackBar: (String) -> Unit,
     navigatePlaceDetail: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -83,7 +83,7 @@ fun MapsRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 MapsSideEffect.DisabledRemoveCourse -> {
-                    Toast.makeText(context, "Cannot delete course", Toast.LENGTH_SHORT).show()
+                    showDisabledRemoveCourseSnackBar("코스 안에 2개 이상의 장소가 남아있어야 해요.")
                 }
 
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
@@ -217,6 +217,8 @@ fun MapsScreen(
                         1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
                         2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
                         3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
+                        4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
+                        5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
                         else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
                     }
                     val currentLatLng = LatLng(course.latitude, course.longitude)
