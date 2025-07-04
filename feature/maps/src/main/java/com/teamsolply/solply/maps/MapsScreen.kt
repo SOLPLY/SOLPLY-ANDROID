@@ -156,10 +156,17 @@ fun MapsScreen(
         isInRemoveAreaProvider = { isInRemoveIconArea.value }
     )
 
-    val firstCourse = courses.first()
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition(
-            LatLng(firstCourse.latitude - 0.004, firstCourse.longitude),
+        position = if (courses.isNotEmpty()) {
+            val firstCourse = courses.first()
+            CameraPosition(
+                LatLng(firstCourse.latitude - 0.004, firstCourse.longitude),
+                14.0,
+                0.0,
+                0.0
+            )
+        } else CameraPosition(
+            LatLng(37.5665, 126.9780),
             14.0,
             0.0,
             0.0
