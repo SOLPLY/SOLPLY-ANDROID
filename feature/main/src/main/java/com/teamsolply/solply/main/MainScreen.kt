@@ -7,13 +7,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.navigation.Course
 import com.teamsolply.solply.course.navigation.courseNavGraph
+import com.teamsolply.solply.designsystem.component.snackbar.SolplyNavigateSnackBar
+import com.teamsolply.solply.designsystem.component.snackbar.SolplyNotificationSnackBar
+import com.teamsolply.solply.designsystem.component.snackbar.SolplyTextSnackBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
 import com.teamsolply.solply.main.splash.splashNavGraph
@@ -26,12 +34,26 @@ import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
 import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.placeNavGraph
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun MainScreen(
     modifier: Modifier = Modifier,
     navigator: MainNavigator = rememberMainNavigator()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val textSnackBarHostState = remember { SnackbarHostState() }
+    val notificationSnackBarHostState = remember { SnackbarHostState() }
+    val navigateSnackBarHostState = remember { SnackbarHostState() }
+
+    data class SnackbarWithAction(
+        val message: String,
+        val action: () -> Unit
+    )
+
+    val snackbarWithActionState = remember { mutableStateOf<SnackbarWithAction?>(null) }
+
     Scaffold(
         modifier = modifier,
         content = { innerPadding ->
@@ -87,11 +109,17 @@ internal fun MainScreen(
                 )
                 placeNavGraph(
                     paddingValues = innerPadding,
+                    showSnackBar = { message, action ->
+                        coroutineScope.launch {
+                            snackbarWithActionState.value = SnackbarWithAction(message, action)
+                            navigateSnackBarHostState.showSnackbar(message = message)
+                        }
+                    },
                     navigateToMaps = { mapsType ->
                         val navOptions = navOptions {
                         }
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                    }
+                    },
                 )
                 courseNavGraph(
                     paddingValues = innerPadding,
@@ -156,6 +184,34 @@ internal fun MainScreen(
                 tabs = MainNavTab.entries.toPersistentList(),
                 currentTab = navigator.currentTab,
                 onTabSelected = { navigator.navigate(it) }
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = textSnackBarHostState,
+                modifier = Modifier.padding(horizontal = 16.dp),
+                snackbar = { snackbarData ->
+                    SolplyTextSnackBar(text = snackbarData.visuals.message)
+                }
+            )
+            SnackbarHost(
+                hostState = notificationSnackBarHostState,
+                modifier = Modifier.padding(horizontal = 16.dp),
+                snackbar = { snackbarData ->
+                    SolplyNotificationSnackBar(text = snackbarData.visuals.message)
+                }
+            )
+            SnackbarHost(
+                hostState = navigateSnackBarHostState,
+                modifier = Modifier.padding(horizontal = 16.dp),
+                snackbar = {
+                    snackbarWithActionState.value?.let { data ->
+                        SolplyNavigateSnackBar(
+                            text = data.message,
+                            navigateToRoute = data.action
+                        )
+                    }
+                }
             )
         }
     )
