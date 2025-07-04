@@ -153,6 +153,9 @@ val Purple800 = Color(0xFF595880)
 val Purple900 = Color(0xFF33324D)
 
 @Stable
+val Kakao = Color(0xFFFFD942)
+
+@Stable
 class SolplyColors(
     white: Color = White,
     gray100: Color = Gray100,
@@ -204,7 +207,9 @@ class SolplyColors(
     purple600: Color = Purple600,
     purple700: Color = Purple700,
     purple800: Color = Purple800,
-    purple900: Color = Purple900
+    purple900: Color = Purple900,
+
+    kakao: Color = Kakao
 ) {
     var white by mutableStateOf(white)
         private set
@@ -305,6 +310,9 @@ class SolplyColors(
     var purple900 by mutableStateOf(purple900)
         private set
 
+    var kakao by mutableStateOf(kakao)
+        private set
+
     fun copy(): SolplyColors = SolplyColors(
         white = white,
         gray100 = gray100,
@@ -356,7 +364,8 @@ class SolplyColors(
         purple600 = purple600,
         purple700 = purple700,
         purple800 = purple800,
-        purple900 = purple900
+        purple900 = purple900,
+        kakao = kakao,
     )
 
     fun update(other: SolplyColors) {
@@ -411,6 +420,8 @@ class SolplyColors(
         purple700 = other.purple700
         purple800 = other.purple800
         purple900 = other.purple900
+
+        kakao = other.kakao
     }
 }
 
@@ -465,7 +476,9 @@ fun solplyColor(
     purple600: Color = Purple600,
     purple700: Color = Purple700,
     purple800: Color = Purple800,
-    purple900: Color = Purple900
+    purple900: Color = Purple900,
+
+    kakao: Color = Kakao
 ): SolplyColors = SolplyColors(
     white = white,
     gray100 = gray100,
@@ -517,5 +530,7 @@ fun solplyColor(
     purple600 = purple600,
     purple700 = purple700,
     purple800 = purple800,
-    purple900 = purple900
+    purple900 = purple900,
+
+    kakao = kakao
 )

@@ -4,21 +4,33 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.teamsolply.solply.designsystem.R
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.oauth.R.string.kakao_login
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -74,12 +86,38 @@ fun OauthScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Oauth",
-            modifier = Modifier.customClickable(
-                onClick = kakaoLoginClick
-            )
+        Icon(
+            painter = painterResource(R.drawable.ic_solply_logo),
+            contentDescription = "app_logo",
+            modifier = Modifier.padding(bottom = 42.dp)
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 28.dp)
+                .background(
+                    color = SolplyTheme.colors.kakao,
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .customClickable(
+                    rippleEnabled = false,
+                ) {
+                    kakaoLoginClick()
+                },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_kakao_logo),
+                contentDescription = "kakao_logo",
+                modifier = Modifier.padding(start = 16.dp, end = 12.dp, top = 11.dp, bottom = 11.dp)
+            )
+            Text(
+                text = stringResource(kakao_login),
+                style = SolplyTheme.typography.body14M,
+                color = SolplyTheme.colors.gray900,
+            )
+        }
     }
 }
 
