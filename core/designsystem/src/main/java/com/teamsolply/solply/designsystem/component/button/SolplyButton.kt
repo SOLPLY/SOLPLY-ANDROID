@@ -203,10 +203,10 @@ fun AddPlaceButton(
 ) {
     val text = if (isAddPlace) "장소 저장" else "내 코스에 추가"
     val backgroundColor = if (isAddPlace) {
-        SolplyTheme.colors.white}
-        else {
-            if (selected) {SolplyTheme.colors.purple400} else {SolplyTheme.colors.white}
-        }
+        SolplyTheme.colors.white
+    } else {
+        if (selected) { SolplyTheme.colors.purple400 } else { SolplyTheme.colors.white }
+    }
 
     val textColor = if (selected) SolplyTheme.colors.purple800 else SolplyTheme.colors.gray400
     val iconColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.gray400

@@ -17,14 +17,14 @@ fun NavController.navigatePlace(
 
 fun NavGraphBuilder.placeNavGraph(
     paddingValues: PaddingValues,
-    showSnackBar : (String, ()-> Unit) -> Unit,
-    navigateToMaps: (String) -> Unit,
+    showSnackBar: (String, () -> Unit) -> Unit,
+    navigateToMaps: (String) -> Unit
 ) {
     composable<Place> {
         PlaceRoute(
             paddingValues = paddingValues,
             showSnackBar = showSnackBar,
-            navigateToMaps = navigateToMaps,
+            navigateToMaps = navigateToMaps
         )
     }
 }

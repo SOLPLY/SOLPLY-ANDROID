@@ -119,7 +119,7 @@ internal fun MainScreen(
                         val navOptions = navOptions {
                         }
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                    },
+                    }
                 )
                 courseNavGraph(
                     paddingValues = innerPadding,

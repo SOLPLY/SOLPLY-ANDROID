@@ -229,7 +229,6 @@ fun MapsScreen(
                         )
                     }
                 }
-
             }
         }
 
@@ -247,7 +246,7 @@ fun MapsScreen(
                                     destName = "강남역",
                                     destId = "1910",
                                     destX = 127.02760,
-                                    destY = 37.49794,
+                                    destY = 37.49794
                                 )
                             },
                         contentAlignment = Alignment.Center

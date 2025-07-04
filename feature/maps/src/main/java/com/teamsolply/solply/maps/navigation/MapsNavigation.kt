@@ -24,7 +24,7 @@ fun NavGraphBuilder.mapsNavGraph(
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
-    navigateToBack: () -> Unit,
+    navigateToBack: () -> Unit
 ) {
     composable<Maps> { backStackEntry ->
         val mapsType = MapsType.valueOf(backStackEntry.toRoute<Maps>().mapsType)

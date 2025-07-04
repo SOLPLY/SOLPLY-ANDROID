@@ -56,7 +56,7 @@ data class MapsState(
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
-    //Item Drag and Remove
+    // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
     ) : MapsIntent

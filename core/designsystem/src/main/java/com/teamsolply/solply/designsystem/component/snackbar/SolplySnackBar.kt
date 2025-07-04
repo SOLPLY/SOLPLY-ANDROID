@@ -53,7 +53,7 @@ fun SolplyNotificationSnackBar(text: String) {
 
 @Composable
 fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
-    //TODO. 디자인 바꾸기
+    // TODO. 디자인 바꾸기
     SolplySnackBar {
         Row(
             modifier = Modifier

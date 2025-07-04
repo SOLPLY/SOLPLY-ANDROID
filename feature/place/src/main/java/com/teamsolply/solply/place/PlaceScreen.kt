@@ -17,7 +17,7 @@ import com.teamsolply.solply.ui.extension.customClickable
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
-    showSnackBar : (String, ()-> Unit) -> Unit,
+    showSnackBar: (String, () -> Unit) -> Unit,
     navigateToMaps: (String) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {

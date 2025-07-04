@@ -5,5 +5,5 @@ data class CourseInfo(
     val courseName: String,
     val priority: Int,
     val latitude: Double,
-    val longitude: Double,
+    val longitude: Double
 )
