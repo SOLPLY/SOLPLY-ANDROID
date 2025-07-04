@@ -17,12 +17,15 @@ import com.teamsolply.solply.ui.extension.customClickable
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
-    showSnackBar: (String, () -> Unit) -> Unit,
+    showNavigateSnackBar: (String, () -> Unit) -> Unit,
+    showTextSnackBar: (String) -> Unit,
     navigateToMaps: (String) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        showSnackBar("테스트입니다.") { navigateToMaps(MapsType.PLACE_DETAIL.name) }
+        showNavigateSnackBar(" 네비게이트 테스트입니다.") { navigateToMaps(MapsType.PLACE_DETAIL.name) }
+        showTextSnackBar("텍스트")
+        showTextSnackBar("2번 텍스트")
     }
     LocationPermissionRequest()
     PlaceScreen(
