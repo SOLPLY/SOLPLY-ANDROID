@@ -55,6 +55,7 @@ fun EditCourseBottomSheet(
         Column {
             LazyColumn(
                 modifier = Modifier
+                    // TODO. 편집 전이면 dragContainer() 막기
                     .dragContainer(dragDropState)
                     .fillMaxSize(),
                 state = lazyListState,
