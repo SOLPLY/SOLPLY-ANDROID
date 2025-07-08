@@ -44,6 +44,7 @@ fun SolplyCourseCard(
 ) {
     Box(
         modifier = modifier
+            .size(165.dp)
             .alpha(if (touchable) 1f else 0.3f)
             .then(
                 if (touchable) {
@@ -57,12 +58,23 @@ fun SolplyCourseCard(
         Image(
             painter = painterResource(id = imgRes),
             contentDescription = "course_image",
-            modifier = Modifier.size(158.dp)
         )
         Box(
-            modifier
-                .padding(top = 66.dp)
-                .size(width = 165.dp, height = 99.dp)
+            modifier = Modifier
+                .padding(top = 73.dp)
+                .matchParentSize()
+                .background(
+                    color = SolplyTheme.colors.black.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(
+                        bottomStart = 20.dp,
+                        bottomEnd = 20.dp
+                    )
+                )
+
+        )
+        Box(
+            modifier = Modifier
+                .padding(top = 77.dp)
                 .background(
                     color = backgroundColor,
                     shape = RoundedCornerShape(
