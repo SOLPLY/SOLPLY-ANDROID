@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
+import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
@@ -30,7 +33,8 @@ fun CourseItem(
     placeAddress: String,
     placeImageRes: Int,
     modifier: Modifier = Modifier,
-    selected: Boolean = false
+    selected: Boolean = false,
+    isEditing: Boolean = false,
 ) {
     Row(
         modifier = modifier
@@ -77,5 +81,23 @@ fun CourseItem(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
+        if (isEditing) {
+            Icon(
+                painter = painterResource(R.drawable.ic_course_item_edit),
+                contentDescription = "item_edting"
+            )
+        } else {
+            val iconColor = SolplyTheme.colors.gray900
+            val iconBackGroundColor = SolplyTheme.colors.gray400
+            SolplySavedMarker(
+                iconColor = iconColor,
+                iconBackGroundColor = iconBackGroundColor,
+                onClick = {
+                    //TODO. 코스 개별 저장
+                },
+                isButton = true
+            )
+        }
+        Spacer(modifier = Modifier.padding(end = 22.dp))
     }
 }

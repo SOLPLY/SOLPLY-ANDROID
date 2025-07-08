@@ -59,7 +59,8 @@ fun PlaceScreen(
             placeType = listOf(PlaceType.FOOD, PlaceType.CAFE),
             backgroundColor = SolplyTheme.colors.red300,
             iconColor = SolplyTheme.colors.gray700,
-            iconBackGroundColor = SolplyTheme.colors.green500
+            iconBackGroundColor = SolplyTheme.colors.green500,
+            saved = true
         )
         Image(
             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
