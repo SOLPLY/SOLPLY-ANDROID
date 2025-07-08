@@ -19,11 +19,12 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun SolplySavedMarker(
     iconColor: Color,
     iconBackGroundColor: Color,
+    modifier: Modifier = Modifier,
     isButton: Boolean = false,
     onClick: () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = iconBackGroundColor,
                 shape = CircleShape
