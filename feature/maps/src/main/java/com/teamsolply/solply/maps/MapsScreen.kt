@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,7 +54,7 @@ import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
 import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
-import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.maps.model.PlaceInfo
 import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
@@ -68,6 +67,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun MapsRoute(
     mapsType: MapsType,
+    showDisabledRemoveCourseSnackBar: (String) -> Unit,
     navigatePlaceDetail: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -83,7 +83,7 @@ fun MapsRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 MapsSideEffect.DisabledRemoveCourse -> {
-                    Toast.makeText(context, "Cannot delete course", Toast.LENGTH_SHORT).show()
+                    showDisabledRemoveCourseSnackBar("코스 안에 2개 이상의 장소가 남아있어야 해요.")
                 }
 
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
@@ -125,7 +125,7 @@ fun MapsRoute(
 fun MapsScreen(
     mapsType: MapsType,
     context: Context,
-    courses: List<CourseInfo>,
+    courses: List<PlaceInfo>,
     removeIconVisible: Boolean,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
@@ -165,12 +165,14 @@ fun MapsScreen(
                 0.0,
                 0.0
             )
-        } else CameraPosition(
-            LatLng(37.5665, 126.9780),
-            14.0,
-            0.0,
-            0.0
-        )
+        } else {
+            CameraPosition(
+                LatLng(37.5665, 126.9780),
+                14.0,
+                0.0,
+                0.0
+            )
+        }
     }
 
     LaunchedEffect(scrollToIndex) {
@@ -217,6 +219,8 @@ fun MapsScreen(
                         1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
                         2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
                         3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
+                        4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
+                        5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
                         else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
                     }
                     val currentLatLng = LatLng(course.latitude, course.longitude)
@@ -251,9 +255,10 @@ fun MapsScreen(
                                 navigateToNaverMapDirections(
                                     context = context,
                                     destName = "강남역",
-                                    destId = "1910",
-                                    destX = 127.02760,
-                                    destY = 37.49794
+                                    destId = "222",
+                                    destLongitude = 127.02760,
+                                    destLatitude = 37.49794,
+                                    destType = "SUBWAY_STATION"
                                 )
                             },
                         contentAlignment = Alignment.Center
@@ -311,10 +316,15 @@ fun MapsScreen(
         )
 
         Icon(
-            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating),
+            painter = painterResource(
+                if (isInRemoveIconArea.value) {
+                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating_on
+                } else {
+                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating
+                }
+            ),
             contentDescription = "remove",
             modifier = Modifier
-                .size(if (isInRemoveIconArea.value) 200.dp else 100.dp)
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 50.dp)
                 .alpha(if (removeIconVisible) 1f else 0f)

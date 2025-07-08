@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.main.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -19,6 +20,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            delay(1000)
             mainRepository.getAutoSignIn().onSuccess { autoSignIn ->
                 _sideEffect.emit(
                     if (autoSignIn) {

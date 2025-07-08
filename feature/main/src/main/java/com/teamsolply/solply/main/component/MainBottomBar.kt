@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,7 +39,7 @@ internal fun MainBottomBar(
             Row(
                 modifier = Modifier
                     .background(
-                        color = SolplyTheme.colors.gray300,
+                        color = SolplyTheme.colors.gray900,
                         shape = CircleShape
                     )
                     .wrapContentWidth()
@@ -80,7 +79,7 @@ private fun TabItem(
         modifier = Modifier
             .padding(paddingValues)
             .background(
-                color = if (isSelected) SolplyTheme.colors.gray500 else SolplyTheme.colors.gray300,
+                color = if (isSelected) SolplyTheme.colors.green100 else SolplyTheme.colors.gray900,
                 shape = CircleShape
             )
             .wrapContentWidth()
@@ -110,7 +109,7 @@ private fun MypageButton(
             .padding(end = 15.dp)
             .size(50.dp)
             .background(
-                color = SolplyTheme.colors.gray300,
+                color = SolplyTheme.colors.gray900,
                 shape = CircleShape
             )
             .customClickable(
@@ -122,7 +121,7 @@ private fun MypageButton(
         Icon(
             painter = painterResource(R.drawable.ic_mypage),
             contentDescription = "mypage",
-            tint = Color.Unspecified
+            tint = SolplyTheme.colors.green100
         )
     }
 }

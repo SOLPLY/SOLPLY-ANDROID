@@ -2,13 +2,18 @@ package com.teamsolply.solply.designsystem.component.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,19 +26,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import kotlinx.coroutines.delay
 
 @Composable
 private fun BaseTextField(
     value: String,
+    isCorrect: Boolean,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     backgroundColor: Color = SolplyTheme.colors.white,
-    shape: Shape = RoundedCornerShape(12.dp),
+    shape: Shape = RoundedCornerShape(20.dp),
     borderColor: Color? = null,
     borderWidth: Float = 0f,
     textColor: Color = SolplyTheme.colors.gray900,
@@ -44,25 +52,17 @@ private fun BaseTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     singleLine: Boolean = true,
-    maxLines: Int = 1,
-    trailingContent: @Composable (() -> Unit)? = null
+    maxLength: Int = 8,
+    maxLines: Int = 1
 ) {
-    val finalModifier = modifier
-        .background(color = backgroundColor, shape = shape)
-        .let { baseModifier ->
-            if (borderColor != null) {
-                baseModifier.border(
-                    width = borderWidth.dp,
-                    color = borderColor,
-                    shape = shape
-                )
-            } else {
-                baseModifier
-            }
-        }
-
     Box(
-        modifier = finalModifier,
+        modifier = modifier
+            .background(color = backgroundColor, shape = shape)
+            .border(
+                width = borderWidth.dp,
+                color = borderColor ?: Color.Transparent,
+                shape = shape
+            ),
         contentAlignment = Alignment.CenterStart
     ) {
         Row(
@@ -95,7 +95,18 @@ private fun BaseTextField(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            trailingContent?.invoke()
+            if (value.isNotEmpty() && value.length < maxLength) {
+                val iconRes =
+                    if (isCorrect) R.drawable.ic_textfield_correct else R.drawable.ic_textfield_wrong
+                val contentDescription = if (isCorrect) "textfield_correct" else "textfield_wrong"
+                Icon(
+                    painter = painterResource(iconRes),
+                    contentDescription = contentDescription,
+                    tint = Color.Unspecified
+                )
+            } else {
+                Box(modifier = Modifier.size(24.dp))
+            }
         }
     }
 }
@@ -107,76 +118,142 @@ fun SolplyNicknameTextField(
     modifier: Modifier = Modifier,
     placeholder: String = "여기에 입력하세요.",
     maxLength: Int = 8,
-    onDuplicateCheck: (String) -> Boolean
+    onDuplicateCheck: (String) -> Boolean,
+    checkNicknameValidate: (String) -> Boolean
 ) {
-    var isDuplicate by remember { mutableStateOf(false) }
+    var validationState by remember { mutableStateOf<NickNameValidateState>(NickNameValidateState.Empty) }
+    var isTyping by remember { mutableStateOf(false) }
+
+    val isCorrect = validationState in listOf(
+        NickNameValidateState.Valid,
+        NickNameValidateState.MaxLength,
+        NickNameValidateState.Typing
+    ) ||
+        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value) {
         if (value.isNotEmpty()) {
+            isTyping = true
             delay(300)
-            isDuplicate = onDuplicateCheck(value)
+
+            if (value.length == maxLength) {
+                validationState = NickNameValidateState.MaxLength
+                isTyping = false
+                return@LaunchedEffect
+            }
+
+            val hasInvalidChars = !checkNicknameValidate(value)
+            if (hasInvalidChars) {
+                validationState = NickNameValidateState.Invalid
+                isTyping = false
+            } else {
+                val duplicate = onDuplicateCheck(value)
+                validationState =
+                    if (duplicate) NickNameValidateState.Duplicate else NickNameValidateState.Valid
+                isTyping = false
+            }
         } else {
-            isDuplicate = false
+            validationState = NickNameValidateState.Empty
+            isTyping = false
         }
     }
 
-    val (backgroundColor, borderColor, countColor) =
-        when {
-            value.isEmpty() -> Triple(
-                SolplyTheme.colors.white,
-                SolplyTheme.colors.gray300,
-                SolplyTheme.colors.gray500
-            )
+    val (backgroundColor, borderColor) = when {
+        value.isEmpty() -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray300)
+        value.length == maxLength -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray900)
+        validationState in listOf(NickNameValidateState.Duplicate, NickNameValidateState.Invalid) ->
+            Pair(SolplyTheme.colors.white, SolplyTheme.colors.red600)
 
-            value.length == maxLength -> Triple(
-                SolplyTheme.colors.white,
-                SolplyTheme.colors.gray900,
-                SolplyTheme.colors.gray700
-            )
+        validationState == NickNameValidateState.Typing ->
+            Pair(SolplyTheme.colors.green200, SolplyTheme.colors.green500)
 
-            isDuplicate -> Triple(
-                SolplyTheme.colors.white,
-                SolplyTheme.colors.red600,
-                SolplyTheme.colors.red600
-            )
+        else -> Pair(SolplyTheme.colors.green200, SolplyTheme.colors.green500)
+    }
 
-            else -> Triple(
-                SolplyTheme.colors.green200,
-                SolplyTheme.colors.green500,
-                SolplyTheme.colors.gray500
-            )
-        }
-
-    Box(modifier = modifier) {
+    Column(modifier = modifier) {
         BaseTextField(
             value = value,
+            isCorrect = isCorrect,
             onValueChange = { newValue ->
                 if (newValue.length <= maxLength) {
                     onValueChange(newValue)
                 }
             },
-            modifier = Modifier,
+            modifier = Modifier.padding(bottom = 8.dp),
             backgroundColor = backgroundColor,
             borderColor = borderColor,
             borderWidth = 1f,
-            placeholder = placeholder,
-            trailingContent = {
-                Text(
-                    text = "${value.length}/$maxLength",
-                    style = SolplyTheme.typography.caption12R,
-                    color = countColor
-                )
-            }
+            placeholder = placeholder
         )
-        if (isDuplicate) {
-            Text(
+
+        ValidationMessageRow(
+            validationState = if (isTyping) NickNameValidateState.Typing else validationState,
+            valueLength = value.length,
+            maxLength = maxLength,
+            borderColor = borderColor
+        )
+    }
+}
+
+@Composable
+private fun ValidationMessageRow(
+    validationState: NickNameValidateState,
+    valueLength: Int,
+    maxLength: Int,
+    borderColor: Color
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        val messageData = when (validationState) {
+            NickNameValidateState.Duplicate -> ValidationMessage(
                 text = "중복된 이름이에요.",
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 40.dp),
-                style = SolplyTheme.typography.caption12R,
                 color = SolplyTheme.colors.red600
             )
+
+            NickNameValidateState.Invalid -> ValidationMessage(
+                text = "사용할 수 없는 문자가 있어요.",
+                color = SolplyTheme.colors.red600
+            )
+
+            NickNameValidateState.Valid -> ValidationMessage(
+                text = "사용 가능한 이름이에요.",
+                color = SolplyTheme.colors.green500
+            )
+
+            else -> null
         }
+
+        messageData?.let { message ->
+            Text(
+                text = message.text,
+                modifier = Modifier.padding(end = 40.dp),
+                style = SolplyTheme.typography.caption12R,
+                color = message.color
+            )
+        } ?: Spacer(modifier = Modifier)
+
+        Text(
+            text = "$valueLength/$maxLength",
+            style = SolplyTheme.typography.caption12R,
+            color = borderColor
+        )
     }
+}
+
+private data class ValidationMessage(
+    val text: String,
+    val color: Color
+)
+
+sealed class NickNameValidateState {
+    data object Empty : NickNameValidateState()
+    data object MaxLength : NickNameValidateState()
+    data object Invalid : NickNameValidateState()
+    data object Duplicate : NickNameValidateState()
+    data object Valid : NickNameValidateState()
+    data object Typing : NickNameValidateState()
 }

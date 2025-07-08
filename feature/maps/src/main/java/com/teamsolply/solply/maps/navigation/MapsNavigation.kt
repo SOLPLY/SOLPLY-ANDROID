@@ -20,6 +20,7 @@ fun NavController.navigateMaps(
 
 fun NavGraphBuilder.mapsNavGraph(
     paddingValues: PaddingValues,
+    showDisabledRemoveCourseSnackBar: (String) -> Unit,
     navigateToPlaceDetail: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -30,6 +31,7 @@ fun NavGraphBuilder.mapsNavGraph(
         val mapsType = MapsType.valueOf(backStackEntry.toRoute<Maps>().mapsType)
         MapsRoute(
             mapsType = mapsType,
+            showDisabledRemoveCourseSnackBar = showDisabledRemoveCourseSnackBar,
             navigatePlaceDetail = navigateToPlaceDetail,
             navigateToPlace = navigateToPlace,
             navigateToCourse = navigateToCourse,

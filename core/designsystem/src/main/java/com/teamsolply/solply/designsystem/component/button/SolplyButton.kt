@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
@@ -142,55 +140,6 @@ fun OnBoardingSkipButton(
             style = SolplyTheme.typography.body14M,
             color = SolplyTheme.colors.gray700
         )
-    }
-}
-
-@Composable
-fun RecommendedPlaceButton(
-    placeType: PlaceType,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    selected: Boolean = false
-) {
-    val iconImage = when (placeType) {
-        PlaceType.CAFE -> painterResource(R.drawable.ic_caffe)
-        PlaceType.FOOD -> painterResource(R.drawable.ic_food)
-        PlaceType.BOOK -> painterResource(R.drawable.ic_book)
-        PlaceType.WALK -> painterResource(R.drawable.ic_walk)
-        PlaceType.SHOPPING -> painterResource(R.drawable.ic_shopping)
-        PlaceType.UNIQUE -> painterResource(R.drawable.ic_unique)
-    }
-
-    val textColor = if (selected) SolplyTheme.colors.yellow300 else SolplyTheme.colors.black
-    val iconColor = if (selected) SolplyTheme.colors.yellow300 else SolplyTheme.colors.black
-    val borderColor = if (selected) SolplyTheme.colors.yellow300 else SolplyTheme.colors.black
-    val backgroundColor = if (selected) SolplyTheme.colors.yellow100 else SolplyTheme.colors.white
-
-    BaseButton(
-        onClick = onClick,
-        modifier = modifier.size(96.dp),
-        backgroundColor = backgroundColor,
-        shape = RoundedCornerShape(16.dp),
-        borderColor = borderColor,
-        borderWidth = 1f
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (selected) {
-                Icon(
-                    painter = iconImage,
-                    contentDescription = "recommended_place",
-                    tint = iconColor
-                )
-            }
-            Text(
-                text = placeType.displayName,
-                style = SolplyTheme.typography.body16R,
-                color = textColor
-            )
-        }
     }
 }
 
