@@ -95,12 +95,12 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
             )
             Row(
                 modifier = Modifier.customClickable { navigateToRoute() },
-                verticalAlignment = Alignment.CenterVertically,
-                ) {
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = "자세히 보기",
                     style = SolplyTheme.typography.body14R,
-                    color = SolplyTheme.colors.purple400,
+                    color = SolplyTheme.colors.purple400
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_next_arrow),

@@ -14,7 +14,7 @@ fun ClickableAnnotatedText(
     originalTextStyle: TextStyle,
     targetText: String,
     spanStyle: SpanStyle,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     val annotatedText = buildAnnotatedString {
         append(originalText)
@@ -39,7 +39,7 @@ fun ClickableAnnotatedText(
             modifier = modifier.clickable {
                 onClick()
             },
-            style = originalTextStyle,
+            style = originalTextStyle
         )
     }
 }

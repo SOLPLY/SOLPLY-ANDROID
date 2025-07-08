@@ -22,7 +22,7 @@ data class MapsState(
         imageUrls = listOf(
             com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
             com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
-            com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
+            com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy
         ),
         contactNumber = "",
         openingHours = "",
@@ -146,7 +146,7 @@ data class MapsState(
             mainTag = listOf(PlaceType.FOOD, PlaceType.SHOPPING),
             isBookmarked = true,
             isActive = true
-        ),
+        )
     ),
     val startAddMyCourse: Boolean = false,
     val addMyCourseSelectedCount: List<Int> = emptyList(),
@@ -272,7 +272,7 @@ data class MapsState(
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
-    //Add Place
+    // Add Place
     data class AddPlaceClick(
         val addPlace: Boolean
     ) : MapsIntent
@@ -283,7 +283,7 @@ sealed interface MapsIntent : UiIntent {
 
     data object SaveMyCourse : MapsIntent
 
-    //Edit Course
+    // Edit Course
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
@@ -305,14 +305,14 @@ sealed interface MapsIntent : UiIntent {
 }
 
 sealed interface MapsSideEffect : SideEffect {
-    //Add Place
+    // Add Place
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
 
-    //Edit Course
+    // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect
 
-    //Shared
+    // Shared
     data object NavigateToReturnHome : MapsSideEffect
     data object NavigateToBack : MapsSideEffect
 }

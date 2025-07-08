@@ -53,7 +53,7 @@ fun PlaceDetailBottomSheet(
     addMyCourseSelectedCount: List<Int>,
     addMyCourseBackClick: () -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
-    showMaxSizeCourseSnackBar: () -> Unit,
+    showMaxSizeCourseSnackBar: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
@@ -67,7 +67,7 @@ fun PlaceDetailBottomSheet(
         if (addPlace) {
             Row(
                 modifier = Modifier.padding(bottom = 21.dp, start = 20.dp, end = 20.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_long_arrow),
@@ -114,7 +114,7 @@ fun PlaceDetailBottomSheet(
         } else {
             Row(
                 modifier = Modifier.padding(bottom = 6.dp, start = 20.dp, end = 20.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 PlaceTag(
                     type = placeType,
@@ -131,7 +131,7 @@ fun PlaceDetailBottomSheet(
                 modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
                 color = SolplyTheme.colors.gray900,
                 maxLines = 2,
-                style = SolplyTheme.typography.caption14R,
+                style = SolplyTheme.typography.caption14R
             )
             HorizontalPager(
                 state = pagerState,
@@ -139,7 +139,7 @@ fun PlaceDetailBottomSheet(
                     .padding(bottom = 16.dp)
                     .align(Alignment.CenterHorizontally),
                 contentPadding = PaddingValues(horizontal = 20.dp),
-                pageSpacing = 10.dp,
+                pageSpacing = 10.dp
             ) { page ->
                 Image(
                     painter = painterResource(placeImageUrls[page]),
@@ -178,7 +178,6 @@ fun PlaceDetailBottomSheet(
                             spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
                             onClick = {
                                 clipboardManager.setText(AnnotatedString(placeAddress))
-
                             }
                         )
                     }
@@ -213,7 +212,7 @@ fun PlaceDetailBottomSheet(
                         Text(
                             text = placeOpeningHours,
                             color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp),
+                            style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
                         )
                     }
                     Row(modifier = Modifier.padding(bottom = 8.dp)) {
@@ -228,7 +227,7 @@ fun PlaceDetailBottomSheet(
                         Text(
                             text = placeSnsLick,
                             color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp),
+                            style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
                         )
                     }
                 }

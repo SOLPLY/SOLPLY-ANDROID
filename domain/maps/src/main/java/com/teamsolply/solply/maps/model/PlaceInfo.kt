@@ -15,5 +15,5 @@ data class PlaceInfo(
     val contactNumber: String,
     val openingHours: String,
     val snsLink: String,
-    val isBookmarked: Boolean,
+    val isBookmarked: Boolean
 )

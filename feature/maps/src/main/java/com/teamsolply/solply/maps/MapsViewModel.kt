@@ -16,7 +16,7 @@ class MapsViewModel @Inject constructor() :
 
     override fun handleIntent(intent: MapsIntent) {
         when (intent) {
-            //Add Place
+            // Add Place
             is MapsIntent.AddPlaceClick -> reduce { copy(startAddMyCourse = intent.addPlace) }
 
             is MapsIntent.SelectedCourseForPlace -> {
@@ -32,10 +32,9 @@ class MapsViewModel @Inject constructor() :
                 }
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
 
-
-                //TODO 코스 저장 api
+                // TODO 코스 저장 api
             }
-            //Edit Course
+            // Edit Course
             is MapsIntent.StartCourseMove -> reduce { copy(iconVisibility = intent.iconVisibility) }
 
             is MapsIntent.MoveCourseItem -> moveCourseItem(
@@ -76,7 +75,7 @@ class MapsViewModel @Inject constructor() :
                     imageUrls = listOf(
                         com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
                         com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
+                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy
                     ),
                     contactNumber = "0507 - 1324 - 9018",
                     openingHours = "월 - 금 10:00 - 19:00",

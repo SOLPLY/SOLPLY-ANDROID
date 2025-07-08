@@ -108,7 +108,6 @@ fun MapsRoute(
                     }
                 }
 
-
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
                     MapsType.PLACE_DETAIL -> navigateToPlace()
                     MapsType.ADD_COURSE -> navigateToCourse()
@@ -125,7 +124,7 @@ fun MapsRoute(
     MapsScreen(
         mapsType = mapsType,
         context = context,
-        //Add Place
+        // Add Place
         placeInfo = uiState.placeInfo,
         startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
@@ -168,7 +167,7 @@ fun MapsRoute(
 fun MapsScreen(
     mapsType: MapsType,
     context: Context,
-    //Add Place
+    // Add Place
     placeInfo: PlaceInfo,
     startAddMyCourse: Boolean,
     courses: List<CourseInfo>,
@@ -333,8 +332,9 @@ fun MapsScreen(
                             .size(47.dp)
                             .background(color = SolplyTheme.colors.white, shape = CircleShape)
                             .then(
-                                if (startAddMyCourse) Modifier
-                                else {
+                                if (startAddMyCourse) {
+                                    Modifier
+                                } else {
                                     Modifier.customClickable(rippleEnabled = false) {
                                         navigateToNaverMapDirections(
                                             context = context,
@@ -373,10 +373,11 @@ fun MapsScreen(
                                 shape = RoundedCornerShape(26.dp)
                             )
                             .then(
-                                if (startAddMyCourse) Modifier
-                                else {
+                                if (startAddMyCourse) {
+                                    Modifier
+                                } else {
                                     Modifier.customClickable(rippleEnabled = false) {
-                                        //TODO 장소 개별 저장
+                                        // TODO 장소 개별 저장
                                     }
                                 }
                             )
