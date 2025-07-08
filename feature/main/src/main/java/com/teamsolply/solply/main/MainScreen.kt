@@ -228,32 +228,27 @@ internal fun MainScreen(
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                snackbar = {
-                    SnackbarHost(
-                        hostState = snackbarHostState,
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        snackbar = { snackbarData ->
-                            when (currentSnackbarState.value.type) {
-                                SnackBarType.TEXT -> {
-                                    SolplyTextSnackBar(text = snackbarData.visuals.message)
-                                }
-
-                                SnackBarType.NOTIFICATION -> {
-                                    SolplyNotificationSnackBar(text = snackbarData.visuals.message)
-                                }
-
-                                SnackBarType.NAVIGATE -> {
-                                    SolplyNavigateSnackBar(
-                                        text = snackbarData.visuals.message,
-                                        navigateToRoute = {
-                                            currentSnackbarState.value.action?.invoke()
-                                        }
-                                    )
-                                }
-                            }
+                modifier = Modifier
+                    .padding(horizontal = 20.dp),
+                snackbar = { snackbarData ->
+                    when (currentSnackbarState.value.type) {
+                        SnackBarType.TEXT -> {
+                            SolplyTextSnackBar(text = snackbarData.visuals.message)
                         }
-                    )
+
+                        SnackBarType.NOTIFICATION -> {
+                            SolplyNotificationSnackBar(text = snackbarData.visuals.message)
+                        }
+
+                        SnackBarType.NAVIGATE -> {
+                            SolplyNavigateSnackBar(
+                                text = snackbarData.visuals.message,
+                                navigateToRoute = {
+                                    currentSnackbarState.value.action?.invoke()
+                                }
+                            )
+                        }
+                    }
                 }
             )
         }
