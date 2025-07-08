@@ -329,6 +329,7 @@ fun MapsScreen(
                 if (mapsType == MapsType.PLACE_DETAIL) {
                     Box(
                         modifier = Modifier
+                            .padding(start = 16.dp)
                             .size(47.dp)
                             .background(color = SolplyTheme.colors.white, shape = CircleShape)
                             .then(
