@@ -36,21 +36,15 @@ fun SolplyCourseCard(
     iconBackGroundColor: Color,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    saved: Boolean = false,
+    savedCourse: Boolean = false,
     selected: Boolean = false,
-    touchable: Boolean = true
+    savedPlace: Boolean = false
 ) {
     Box(
         modifier = modifier
             .size(165.dp)
-            .alpha(if (touchable) 1f else 0.3f)
-            .then(
-                if (touchable) {
-                    Modifier.customClickable(rippleEnabled = false) { onClick() }
-                } else {
-                    Modifier
-                }
-            ),
+            .alpha(if (savedPlace) 1f else 0.3f)
+            .customClickable(rippleEnabled = false) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Image(
@@ -99,7 +93,7 @@ fun SolplyCourseCard(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    if (saved) {
+                    if (savedCourse) {
                         SolplySavedMarker(
                             iconColor = iconColor,
                             iconBackGroundColor = iconBackGroundColor,

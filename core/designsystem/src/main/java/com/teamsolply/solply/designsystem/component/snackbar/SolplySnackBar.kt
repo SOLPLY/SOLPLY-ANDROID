@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
+import formatTextToNoticeSnackBar
 
 @Composable
 fun SolplySnackBar(
@@ -78,26 +79,35 @@ fun SolplyNotificationSnackBar(text: String) {
 
 @Composable
 fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
-    // TODO. 디자인 바꾸기
+    val newText = text.formatTextToNoticeSnackBar()
     SolplySnackBar {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = text,
+                text = "${newText}에 추가되었어요.",
                 style = SolplyTheme.typography.body14R,
                 color = SolplyTheme.colors.white
             )
-            Text(
-                text = "click",
-                style = SolplyTheme.typography.body14R,
-                color = SolplyTheme.colors.white,
-                modifier = Modifier.customClickable { navigateToRoute() }
-            )
+            Row(
+                modifier = Modifier.customClickable { navigateToRoute() },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "자세히 보기",
+                    style = SolplyTheme.typography.body14R,
+                    color = SolplyTheme.colors.purple400
+                )
+                Icon(
+                    painter = painterResource(R.drawable.ic_next_arrow),
+                    contentDescription = "next_arrow",
+                    tint = SolplyTheme.colors.purple200
+                )
+            }
         }
     }
 }

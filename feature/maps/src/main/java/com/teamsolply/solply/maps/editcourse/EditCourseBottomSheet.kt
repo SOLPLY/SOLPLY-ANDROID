@@ -68,9 +68,9 @@ fun EditCourseBottomSheet(
                 ) { modifier, item ->
                     CourseItem(
                         placeName = item.placeName,
-                        placeTag = item.placeTag,
-                        placeAddress = item.placeAddress,
-                        placeImageRes = item.placeImageRes,
+                        placeTag = item.primaryTag,
+                        placeAddress = item.address,
+                        placeImageRes = item.imageUrls.first(),
                         modifier = modifier
                     )
                 }
