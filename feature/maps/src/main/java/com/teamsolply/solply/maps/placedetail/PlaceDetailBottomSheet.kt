@@ -48,7 +48,7 @@ fun PlaceDetailBottomSheet(
     placeAddress: String,
     placeContactNumber: String,
     placeOpeningHours: String,
-    placeSnsLick: String,
+    placeSnsLink: String,
     courses: List<CourseInfo>,
     addMyCourseSelectedCount: List<Int>,
     addMyCourseBackClick: () -> Unit,
@@ -56,7 +56,7 @@ fun PlaceDetailBottomSheet(
     showMaxSizeCourseSnackBar: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { placeImageUrls.size })
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
 
@@ -196,7 +196,7 @@ fun PlaceDetailBottomSheet(
                             targetText = copyText,
                             spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
                             onClick = {
-                                clipboardManager.setText(AnnotatedString(placeAddress))
+                                clipboardManager.setText(AnnotatedString(placeContactNumber))
                             }
                         )
                     }
@@ -225,7 +225,7 @@ fun PlaceDetailBottomSheet(
                             style = SolplyTheme.typography.caption14M
                         )
                         Text(
-                            text = placeSnsLick,
+                            text = placeSnsLink,
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
                         )

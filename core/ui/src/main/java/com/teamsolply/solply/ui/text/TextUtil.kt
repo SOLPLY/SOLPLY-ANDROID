@@ -25,8 +25,8 @@ fun ClickableAnnotatedText(
 
             addStyle(style = spanStyle, start = startIndex, end = endIndex)
             addStringAnnotation(
-                tag = "COPY_TAG",
-                annotation = "copy",
+                tag = "COPY",
+                annotation = targetText,
                 start = startIndex,
                 end = endIndex
             )
@@ -44,7 +44,7 @@ fun ClickableAnnotatedText(
     }
 }
 
-fun String.formatTextWithQuotes(): String {
+fun String.formatTextToNoticeSnackBar(): String {
     val processedText = if (this.length >= 9) {
         this.substring(0, 7) + ".."
     } else {

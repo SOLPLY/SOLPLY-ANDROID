@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
-import formatTextWithQuotes
+import formatTextToNoticeSnackBar
 
 @Composable
 fun SolplySnackBar(
@@ -79,7 +79,7 @@ fun SolplyNotificationSnackBar(text: String) {
 
 @Composable
 fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
-    val newText = text.formatTextWithQuotes()
+    val newText = text.formatTextToNoticeSnackBar()
     SolplySnackBar {
         Row(
             modifier = Modifier

@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -119,8 +118,6 @@ fun MapsRoute(
         }
     }
 
-    Log.d("asdasdasd", uiState.addMyCourseSelectedCount.toString())
-    Log.d("asdasdasdcourse", uiState.courses.toString())
     MapsScreen(
         mapsType = mapsType,
         context = context,
@@ -417,7 +414,7 @@ fun MapsScreen(
                             placeAddress = placeInfo.address,
                             placeContactNumber = placeInfo.contactNumber,
                             placeOpeningHours = placeInfo.openingHours,
-                            placeSnsLick = placeInfo.snsLink,
+                            placeSnsLink = placeInfo.snsLink,
                             courses = courses,
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
