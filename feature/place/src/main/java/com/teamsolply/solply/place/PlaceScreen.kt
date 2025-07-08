@@ -60,7 +60,8 @@ fun PlaceScreen(
             backgroundColor = SolplyTheme.colors.red300,
             iconColor = SolplyTheme.colors.gray700,
             iconBackGroundColor = SolplyTheme.colors.green500,
-            saved = true
+            saved = true,
+            selected = true
         )
         Image(
             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),

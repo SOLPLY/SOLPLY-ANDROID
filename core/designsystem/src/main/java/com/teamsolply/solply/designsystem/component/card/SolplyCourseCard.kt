@@ -125,8 +125,8 @@ fun SolplyCourseCard(
         if (selected) {
             CheckedBigCircle(
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(start = 18.dp, top = 16.dp)
+                    .align(Alignment.TopEnd)
+                    .padding(end = 12.dp, top = 16.dp)
             )
         }
     }

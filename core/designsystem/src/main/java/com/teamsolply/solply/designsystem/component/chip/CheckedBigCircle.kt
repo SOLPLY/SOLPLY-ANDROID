@@ -20,9 +20,9 @@ fun CheckedBigCircle(
 ) {
     Box(
         modifier = modifier
-            .size(30.dp)
+            .size(36.dp)
             .background(
-                color = SolplyTheme.colors.gray900,
+                color = SolplyTheme.colors.gray100,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
@@ -30,7 +30,7 @@ fun CheckedBigCircle(
         Icon(
             painter = painterResource(R.drawable.ic_big_check),
             contentDescription = "check_big_circle",
-            tint = Color.Unspecified
+            tint = SolplyTheme.colors.red600
         )
     }
 }
