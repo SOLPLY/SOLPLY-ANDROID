@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,7 +23,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
 @Composable
 fun ProgressBar(
-    completionRatio: Int
+    pageState: PagerState, totalpageCount : Int
 ) {
     var progress by remember { mutableFloatStateOf(0f) }
 
@@ -37,8 +37,8 @@ fun ProgressBar(
         label = "animation",
     )
 
-    LaunchedEffect(key1 = completionRatio) {
-        progress = completionRatio / 100f
+    LaunchedEffect(key1 = pageState.currentPage) {
+        progress = ((pageState.currentPage + 1).toFloat() / totalpageCount) * 0.95f
     }
 
     Box(
@@ -61,7 +61,4 @@ fun ProgressBar(
 @Preview(showBackground = true)
 @Composable
 fun ProgressBarPreview() {
-    ProgressBar (
-        completionRatio=50
-    )
 }
