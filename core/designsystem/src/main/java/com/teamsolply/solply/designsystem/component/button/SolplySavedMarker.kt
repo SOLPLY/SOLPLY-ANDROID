@@ -20,7 +20,7 @@ fun SolplySavedMarker(
     iconColor: Color,
     iconBackGroundColor: Color,
     isButton: Boolean = false,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier

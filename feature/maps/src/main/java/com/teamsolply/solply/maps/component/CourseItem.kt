@@ -34,7 +34,7 @@ fun CourseItem(
     placeImageRes: Int,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
-    isEditing: Boolean = false,
+    isEditing: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -93,7 +93,7 @@ fun CourseItem(
                 iconColor = iconColor,
                 iconBackGroundColor = iconBackGroundColor,
                 onClick = {
-                    //TODO. 코스 개별 저장
+                    // TODO. 코스 개별 저장
                 },
                 isButton = true
             )
