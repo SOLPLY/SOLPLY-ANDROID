@@ -98,6 +98,5 @@ fun PreviewableProgressBar(progress: Float) {
 @Composable
 fun ProgressBarPreview() {
     SolplyTheme {
-        PreviewableProgressBar(progress = (2f / 3f) * 0.95f) // 약 63%
     }
 }
