@@ -45,7 +45,6 @@ fun ProgressBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(8.dp)
-            .width(328.dp)
             .padding(horizontal = 16.dp)
             .background(SolplyTheme.colors.gray300)
     ) {
