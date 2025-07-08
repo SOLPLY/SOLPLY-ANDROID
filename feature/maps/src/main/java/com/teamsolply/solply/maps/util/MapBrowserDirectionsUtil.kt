@@ -22,7 +22,7 @@ fun navigateToNaverMapDirections(
     destLongitude: Double,
     destLatitude: Double,
     destId: String,
-    destType: String,
+    destType: String
 ) {
     val permissionGranted = ContextCompat.checkSelfPermission(
         context,
@@ -52,8 +52,8 @@ fun navigateToNaverMapDirections(
                 val encodedDestName = URLEncoder.encode(destName, "UTF-8")
 
                 val url = "https://map.naver.com/p/directions/" +
-                        "$startXmerc,$startYmerc,$encodedStartName,0,USER_LOCATION/" +
-                        "$destXmerc,$destYmerc,$encodedDestName,$destId,$destType/-/transit?c=11.00,0,0,0,dh"
+                    "$startXmerc,$startYmerc,$encodedStartName,0,USER_LOCATION/" +
+                    "$destXmerc,$destYmerc,$encodedDestName,$destId,$destType/-/transit?c=11.00,0,0,0,dh"
 
                 val intent = Intent(Intent.ACTION_VIEW, url.toUri())
                 context.startActivity(intent)
@@ -66,7 +66,6 @@ fun navigateToNaverMapDirections(
             Toast.makeText(context, "위치 요청 실패: ${it.message}", Toast.LENGTH_SHORT).show()
         }
 }
-
 
 fun latLngToMercator(longitude: Double, latitude: Double): Pair<Double, Double> {
     val x = longitude * 20037508.34 / 180

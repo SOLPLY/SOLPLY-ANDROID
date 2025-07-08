@@ -30,7 +30,7 @@ fun CourseItem(
     placeAddress: String,
     placeImageRes: Int,
     modifier: Modifier = Modifier,
-    selected: Boolean = false,
+    selected: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -77,6 +77,5 @@ fun CourseItem(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-
     }
 }

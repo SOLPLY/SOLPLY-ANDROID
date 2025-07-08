@@ -40,18 +40,20 @@ fun SolplyCourseCard(
     onClick: () -> Unit = {},
     saved: Boolean = false,
     selected: Boolean = false,
-    touchable: Boolean = true,
+    touchable: Boolean = true
 ) {
     Box(
         modifier = modifier
             .alpha(if (touchable) 1f else 0.3f)
             .then(
-                if (touchable) Modifier.customClickable(rippleEnabled = false) { onClick() }
-                else Modifier
+                if (touchable) {
+                    Modifier.customClickable(rippleEnabled = false) { onClick() }
+                } else {
+                    Modifier
+                }
             ),
         contentAlignment = Alignment.Center
     ) {
-
         Image(
             painter = painterResource(id = imgRes),
             contentDescription = "course_image",
@@ -94,7 +96,7 @@ fun SolplyCourseCard(
                                     color = iconBackGroundColor,
                                     shape = CircleShape
                                 ),
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_marker_default),
@@ -130,5 +132,4 @@ fun SolplyCourseCard(
             )
         }
     }
-
 }

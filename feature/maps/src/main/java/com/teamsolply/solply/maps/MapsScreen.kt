@@ -165,12 +165,14 @@ fun MapsScreen(
                 0.0,
                 0.0
             )
-        } else CameraPosition(
-            LatLng(37.5665, 126.9780),
-            14.0,
-            0.0,
-            0.0
-        )
+        } else {
+            CameraPosition(
+                LatLng(37.5665, 126.9780),
+                14.0,
+                0.0,
+                0.0
+            )
+        }
     }
 
     LaunchedEffect(scrollToIndex) {
@@ -315,8 +317,11 @@ fun MapsScreen(
 
         Icon(
             painter = painterResource(
-                if (isInRemoveIconArea.value) com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating_on else
+                if (isInRemoveIconArea.value) {
+                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating_on
+                } else {
                     com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating
+                }
             ),
             contentDescription = "remove",
             modifier = Modifier

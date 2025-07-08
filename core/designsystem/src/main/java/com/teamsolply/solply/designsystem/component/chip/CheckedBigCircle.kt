@@ -16,7 +16,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
 @Composable
 fun CheckedBigCircle(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

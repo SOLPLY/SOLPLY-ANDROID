@@ -53,7 +53,7 @@ private fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     singleLine: Boolean = true,
     maxLength: Int = 8,
-    maxLines: Int = 1,
+    maxLines: Int = 1
 ) {
     Box(
         modifier = modifier
@@ -129,7 +129,7 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value) {
         if (value.isNotEmpty()) {
@@ -183,7 +183,7 @@ fun SolplyNicknameTextField(
             backgroundColor = backgroundColor,
             borderColor = borderColor,
             borderWidth = 1f,
-            placeholder = placeholder,
+            placeholder = placeholder
         )
 
         ValidationMessageRow(

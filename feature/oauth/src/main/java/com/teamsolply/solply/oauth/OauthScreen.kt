@@ -100,7 +100,7 @@ fun OauthScreen(
                     shape = RoundedCornerShape(12.dp)
                 )
                 .customClickable(
-                    rippleEnabled = false,
+                    rippleEnabled = false
                 ) {
                     kakaoLoginClick()
                 },
@@ -115,7 +115,7 @@ fun OauthScreen(
             Text(
                 text = stringResource(kakao_login),
                 style = SolplyTheme.typography.body14M,
-                color = SolplyTheme.colors.gray900,
+                color = SolplyTheme.colors.gray900
             )
         }
     }

@@ -365,7 +365,7 @@ class SolplyColors(
         purple700 = purple700,
         purple800 = purple800,
         purple900 = purple900,
-        kakao = kakao,
+        kakao = kakao
     )
 
     fun update(other: SolplyColors) {

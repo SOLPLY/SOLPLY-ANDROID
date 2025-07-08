@@ -55,7 +55,7 @@ internal fun MainScreen(
             currentSnackbarState.value = SolplySnackBarData(type = SnackBarType.TEXT, action = null)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short,
+                duration = androidx.compose.material3.SnackbarDuration.Short
             )
         }
     }
@@ -79,7 +79,7 @@ internal fun MainScreen(
                 SolplySnackBarData(type = SnackBarType.NAVIGATE, action = onAction)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short,
+                duration = androidx.compose.material3.SnackbarDuration.Short
             )
         }
     }
@@ -256,5 +256,6 @@ internal fun MainScreen(
                     )
                 }
             )
-        })
+        }
+    )
 }

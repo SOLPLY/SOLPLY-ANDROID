@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
@@ -18,7 +17,7 @@ fun PlaceTag(
     type: PlaceType,
     modifier: Modifier = Modifier
 ) {
-    val textColor = when(type) {
+    val textColor = when (type) {
         PlaceType.CAFE -> SolplyTheme.colors.red500
         PlaceType.FOOD -> SolplyTheme.colors.yellow500
         PlaceType.BOOK -> SolplyTheme.colors.purple600
@@ -26,7 +25,7 @@ fun PlaceTag(
         PlaceType.SHOPPING -> SolplyTheme.colors.purple600
         PlaceType.UNIQUE -> SolplyTheme.colors.green500
     }
-    val backGroundColor = when(type) {
+    val backGroundColor = when (type) {
         PlaceType.CAFE -> SolplyTheme.colors.red100
         PlaceType.FOOD -> SolplyTheme.colors.yellow100
         PlaceType.BOOK -> SolplyTheme.colors.purple100

@@ -71,7 +71,7 @@ fun EditCourseBottomSheet(
                         placeTag = item.placeTag,
                         placeAddress = item.placeAddress,
                         placeImageRes = item.placeImageRes,
-                        modifier = modifier,
+                        modifier = modifier
                     )
                 }
             }
