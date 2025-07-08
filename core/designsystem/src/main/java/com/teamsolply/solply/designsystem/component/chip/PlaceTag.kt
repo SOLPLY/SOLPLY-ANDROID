@@ -19,20 +19,20 @@ fun PlaceTag(
     modifier: Modifier = Modifier
 ) {
     val textColor = when(type) {
-        PlaceType.CAFE -> SolplyTheme.colors.yellow400
-        PlaceType.FOOD -> SolplyTheme.colors.red600
-        PlaceType.BOOK -> SolplyTheme.colors.purple700
-        PlaceType.WALK -> TODO()
-        PlaceType.SHOPPING -> SolplyTheme.colors.purple700
-        PlaceType.UNIQUE -> SolplyTheme.colors.purple500
+        PlaceType.CAFE -> SolplyTheme.colors.red500
+        PlaceType.FOOD -> SolplyTheme.colors.yellow500
+        PlaceType.BOOK -> SolplyTheme.colors.purple600
+        PlaceType.WALK -> SolplyTheme.colors.gray500
+        PlaceType.SHOPPING -> SolplyTheme.colors.purple600
+        PlaceType.UNIQUE -> SolplyTheme.colors.green500
     }
     val backGroundColor = when(type) {
-        PlaceType.CAFE -> SolplyTheme.colors.yellow100
-        PlaceType.FOOD -> SolplyTheme.colors.red200
-        PlaceType.BOOK -> SolplyTheme.colors.purple200
-        PlaceType.WALK -> TODO()
-        PlaceType.SHOPPING -> SolplyTheme.colors.purple200
-        PlaceType.UNIQUE -> SolplyTheme.colors.green200
+        PlaceType.CAFE -> SolplyTheme.colors.red100
+        PlaceType.FOOD -> SolplyTheme.colors.yellow100
+        PlaceType.BOOK -> SolplyTheme.colors.purple100
+        PlaceType.WALK -> SolplyTheme.colors.green100
+        PlaceType.SHOPPING -> SolplyTheme.colors.purple100
+        PlaceType.UNIQUE -> SolplyTheme.colors.green100
     }
 
     Box(
@@ -46,7 +46,7 @@ fun PlaceTag(
         Text(
             text = type.displayName,
             modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp),
-            style = SolplyTheme.typography.button12M,
+            style = SolplyTheme.typography.caption12M,
             color = textColor
         )
     }

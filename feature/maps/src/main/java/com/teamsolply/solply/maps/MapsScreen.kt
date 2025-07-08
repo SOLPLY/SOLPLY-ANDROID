@@ -54,7 +54,7 @@ import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
 import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
-import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.maps.model.PlaceInfo
 import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
@@ -125,7 +125,7 @@ fun MapsRoute(
 fun MapsScreen(
     mapsType: MapsType,
     context: Context,
-    courses: List<CourseInfo>,
+    courses: List<PlaceInfo>,
     removeIconVisible: Boolean,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
@@ -314,10 +314,12 @@ fun MapsScreen(
         )
 
         Icon(
-            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating),
+            painter = painterResource(
+                if (isInRemoveIconArea.value) com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating_on else
+                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating
+            ),
             contentDescription = "remove",
             modifier = Modifier
-                .size(if (isInRemoveIconArea.value) 200.dp else 100.dp)
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 50.dp)
                 .alpha(if (removeIconVisible) 1f else 0f)

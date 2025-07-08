@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps
 
-import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.maps.model.PlaceInfo
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
@@ -8,45 +9,63 @@ import okhttp3.internal.immutableListOf
 
 data class MapsState(
     // Edit Course
-    val courses: List<CourseInfo> = immutableListOf(
-        CourseInfo(
-            courseId = 0,
-            courseName = "0번",
+    val courses: List<PlaceInfo> = immutableListOf(
+        PlaceInfo(
+            placeId = 0,
+            placeName = "0번",
+            placeTag = PlaceType.CAFE,
+            placeAddress = "주소",
+            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             priority = 0,
             latitude = 37.4979,
             longitude = 127.0276
         ),
-        CourseInfo(
-            courseId = 1,
-            courseName = "1번",
+        PlaceInfo(
+            placeId = 1,
+            placeName = "1번",
+            placeTag = PlaceType.BOOK,
+            placeAddress = "주소",
+            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             priority = 1,
             latitude = 37.4999,
             longitude = 127.0286
         ),
-        CourseInfo(
-            courseId = 2,
-            courseName = "2번",
+        PlaceInfo(
+            placeId = 2,
+            placeName = "2번",
+            placeTag = PlaceType.UNIQUE,
+            placeAddress = "주소",
+            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             priority = 2,
             latitude = 37.4999,
             longitude = 127.0376
         ),
-        CourseInfo(
-            courseId = 3,
-            courseName = "3번",
+        PlaceInfo(
+            placeId = 3,
+            placeName = "3번",
+            placeTag = PlaceType.FOOD,
+            placeAddress = "주소",
+            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             priority = 3,
             latitude = 37.4991,
             longitude = 127.0255
         ),
-        CourseInfo(
-            courseId = 4,
-            courseName = "4번",
+        PlaceInfo(
+            placeId = 4,
+            placeName = "4번",
+            placeTag = PlaceType.SHOPPING,
+            placeAddress = "주소",
+            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             priority = 4,
             latitude = 37.4980,
             longitude = 127.0226
         ),
-        CourseInfo(
-            courseId = 5,
-            courseName = "5번",
+        PlaceInfo(
+            placeId = 5,
+            placeName = "5번",
+            placeTag = PlaceType.BOOK,
+            placeAddress = "주소",
+            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             priority = 5,
             latitude = 37.4999,
             longitude = 127.0226
