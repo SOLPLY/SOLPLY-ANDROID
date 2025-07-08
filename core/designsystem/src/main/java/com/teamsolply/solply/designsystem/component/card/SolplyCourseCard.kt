@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.R
+import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -44,6 +42,7 @@ fun SolplyCourseCard(
 ) {
     Box(
         modifier = modifier
+            .size(165.dp)
             .alpha(if (touchable) 1f else 0.3f)
             .then(
                 if (touchable) {
@@ -56,13 +55,24 @@ fun SolplyCourseCard(
     ) {
         Image(
             painter = painterResource(id = imgRes),
-            contentDescription = "course_image",
-            modifier = Modifier.size(158.dp)
+            contentDescription = "course_image"
         )
         Box(
-            modifier
-                .padding(top = 66.dp)
-                .size(width = 165.dp, height = 99.dp)
+            modifier = Modifier
+                .padding(top = 73.dp)
+                .matchParentSize()
+                .background(
+                    color = SolplyTheme.colors.black.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(
+                        bottomStart = 20.dp,
+                        bottomEnd = 20.dp
+                    )
+                )
+
+        )
+        Box(
+            modifier = Modifier
+                .padding(top = 77.dp)
                 .background(
                     color = backgroundColor,
                     shape = RoundedCornerShape(
@@ -90,23 +100,11 @@ fun SolplyCourseCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     if (saved) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = iconBackGroundColor,
-                                    shape = CircleShape
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_marker_default),
-                                contentDescription = "course",
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(15.dp),
-                                tint = iconColor
-                            )
-                        }
+                        SolplySavedMarker(
+                            iconColor = iconColor,
+                            iconBackGroundColor = iconBackGroundColor,
+                            isButton = false
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -127,8 +125,8 @@ fun SolplyCourseCard(
         if (selected) {
             CheckedBigCircle(
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(start = 18.dp, top = 16.dp)
+                    .align(Alignment.TopEnd)
+                    .padding(end = 12.dp, top = 16.dp)
             )
         }
     }
