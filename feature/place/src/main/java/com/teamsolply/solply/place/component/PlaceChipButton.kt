@@ -5,7 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,12 +25,11 @@ fun PlaceChipButton(
     val backgroundColor = SolplyTheme.colors.white
     val borderColor = SolplyTheme.colors.gray300
     val contentColor = SolplyTheme.colors.black
-    val shape = RoundedCornerShape(20.dp)
 
     Row(
         modifier
-            .border(1.dp, borderColor, shape)
-            .background(backgroundColor, shape)
+            .border(1.dp, borderColor, CircleShape)
+            .background(backgroundColor, CircleShape)
             .clickable(onClick = onClick)
             .padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -39,8 +38,7 @@ fun PlaceChipButton(
         Icon(
             painter = painterResource(R.drawable.ic_under_arrow),
             contentDescription = null,
-            tint = contentColor,
-            modifier = Modifier
+            tint = contentColor
         )
     }
 }
