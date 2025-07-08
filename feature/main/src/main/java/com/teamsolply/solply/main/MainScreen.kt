@@ -177,6 +177,16 @@ internal fun MainScreen(
                             showNotificationSnackBar(message)
                         }
                     },
+                    showMaxSizeCourseSnackBar = { message ->
+                        coroutineScope.launch {
+                            showNotificationSnackBar(message)
+                        }
+                    },
+                    showSuccessSaveCourseSnackBar = { message, action ->
+                        coroutineScope.launch {
+                            showNavigateSnackBar(message, action)
+                        }
+                    },
                     navigateToPlaceDetail = {
                         val navOptions = navOptions {}
                         navigator.navigateToMaps(

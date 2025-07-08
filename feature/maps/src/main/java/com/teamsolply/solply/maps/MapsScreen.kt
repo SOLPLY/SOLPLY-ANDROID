@@ -1,18 +1,23 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -49,11 +54,13 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
+import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
 import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
+import com.teamsolply.solply.maps.model.CourseInfo
 import com.teamsolply.solply.maps.model.PlaceInfo
 import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
@@ -67,7 +74,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun MapsRoute(
     mapsType: MapsType,
+    targetId: Int = 1,
     showDisabledRemoveCourseSnackBar: (String) -> Unit,
+    showMaxSizeCourseSnackBar: (String) -> Unit,
+    showSuccessSaveCourseSnackBar: (String, () -> Unit) -> Unit,
     navigatePlaceDetail: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -86,6 +96,19 @@ fun MapsRoute(
                     showDisabledRemoveCourseSnackBar("코스 안에 2개 이상의 장소가 남아있어야 해요.")
                 }
 
+                MapsSideEffect.ShowMaxSizeCourseSnackBar -> showMaxSizeCourseSnackBar(
+                    "코스에 이미 6개의 장소가 꽉 차 있어요"
+                )
+
+                is MapsSideEffect.ShowSuccessSaveCourseSnackBar -> {
+                    showSuccessSaveCourseSnackBar(
+                        sideEffect.selectedCourseName
+                    ) {
+                        navigateToMypage()
+                    }
+                }
+
+
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
                     MapsType.PLACE_DETAIL -> navigateToPlace()
                     MapsType.ADD_COURSE -> navigateToCourse()
@@ -97,10 +120,30 @@ fun MapsRoute(
         }
     }
 
+    Log.d("asdasdasd", uiState.addMyCourseSelectedCount.toString())
+    Log.d("asdasdasdcourse", uiState.courses.toString())
     MapsScreen(
         mapsType = mapsType,
         context = context,
+        //Add Place
+        placeInfo = uiState.placeInfo,
+        startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
+        addMyCourseSelectedCount = uiState.addMyCourseSelectedCount,
+        changeAddPlaceState = { addPlace ->
+            viewModel.sendIntent(MapsIntent.AddPlaceClick(addPlace = addPlace))
+        },
+        selectedCourseForPlace = { courseId ->
+            viewModel.sendIntent(MapsIntent.SelectedCourseForPlace(courseId = courseId))
+        },
+        showMaxSizeCourseSnackBar = {
+            viewModel.sendIntent(MapsIntent.ShowMaxSizeCourseSnackBar)
+        },
+        saveMyCourse = {
+            viewModel.sendIntent(MapsIntent.SaveMyCourse)
+        },
+        // Edit Course
+        course = uiState.course,
         removeIconVisible = uiState.iconVisibility,
         startCourseMove = { iconVisibility ->
             viewModel.sendIntent(MapsIntent.StartCourseMove(iconVisibility = iconVisibility))
@@ -125,7 +168,17 @@ fun MapsRoute(
 fun MapsScreen(
     mapsType: MapsType,
     context: Context,
-    courses: List<PlaceInfo>,
+    //Add Place
+    placeInfo: PlaceInfo,
+    startAddMyCourse: Boolean,
+    courses: List<CourseInfo>,
+    addMyCourseSelectedCount: List<Int>,
+    changeAddPlaceState: (Boolean) -> Unit,
+    selectedCourseForPlace: (Int) -> Unit,
+    showMaxSizeCourseSnackBar: () -> Unit,
+    saveMyCourse: () -> Unit,
+    // Edit Course
+    course: List<PlaceInfo>,
     removeIconVisible: Boolean,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
@@ -140,7 +193,7 @@ fun MapsScreen(
 
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val draggableItemSize by remember { derivedStateOf { courses.size } }
+    val draggableItemSize by remember { derivedStateOf { course.size } }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
 
@@ -157,21 +210,30 @@ fun MapsScreen(
     )
 
     val cameraPositionState = rememberCameraPositionState {
-        position = if (courses.isNotEmpty()) {
-            val firstCourse = courses.first()
+        position = if (mapsType == MapsType.PLACE_DETAIL) {
             CameraPosition(
-                LatLng(firstCourse.latitude - 0.004, firstCourse.longitude),
+                LatLng(placeInfo.latitude - 0.008, placeInfo.longitude),
                 14.0,
                 0.0,
                 0.0
             )
         } else {
-            CameraPosition(
-                LatLng(37.5665, 126.9780),
-                14.0,
-                0.0,
-                0.0
-            )
+            if (course.isNotEmpty()) {
+                val firstCourse = course.first()
+                CameraPosition(
+                    LatLng(firstCourse.latitude - 0.008, firstCourse.longitude),
+                    14.0,
+                    0.0,
+                    0.0
+                )
+            } else {
+                CameraPosition(
+                    LatLng(37.5665, 126.9780),
+                    14.0,
+                    0.0,
+                    0.0
+                )
+            }
         }
     }
 
@@ -213,75 +275,126 @@ fun MapsScreen(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState
             ) {
-                courses.forEachIndexed { index, course ->
-                    val markerIconRes = when (index) {
-                        0 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
-                        1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
-                        2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
-                        3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
-                        4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
-                        5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
-                        else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
-                    }
-                    val currentLatLng = LatLng(course.latitude, course.longitude)
+                if (mapsType == MapsType.PLACE_DETAIL) {
                     Marker(
-                        state = MarkerState(position = LatLng(course.latitude, course.longitude)),
-                        icon = OverlayImage.fromResource(markerIconRes),
+                        state = MarkerState(
+                            position = LatLng(
+                                placeInfo.latitude,
+                                placeInfo.longitude
+                            )
+                        ),
+                        icon = OverlayImage.fromResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
                         anchor = Offset(0.5f, 0.5f)
                     )
-                    if (index < courses.lastIndex) {
-                        val nextCourse = courses[index + 1]
-                        val nextLatLng = LatLng(nextCourse.latitude, nextCourse.longitude)
-
-                        PathOverlay(
-                            coords = listOf(currentLatLng, nextLatLng),
-                            color = SolplyTheme.colors.purple900,
-                            width = 0.5.dp
+                } else {
+                    course.forEachIndexed { index, courseItem ->
+                        val markerIconRes = when (index) {
+                            0 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
+                            1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
+                            2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
+                            3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
+                            4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
+                            5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
+                            else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
+                        }
+                        val currentLatLng = LatLng(courseItem.latitude, courseItem.longitude)
+                        Marker(
+                            state = MarkerState(
+                                position = LatLng(
+                                    courseItem.latitude,
+                                    courseItem.longitude
+                                )
+                            ),
+                            icon = OverlayImage.fromResource(markerIconRes),
+                            anchor = Offset(0.5f, 0.5f)
                         )
+                        if (index < course.lastIndex) {
+                            val nextCourse = course[index + 1]
+                            val nextLatLng = LatLng(nextCourse.latitude, nextCourse.longitude)
+
+                            PathOverlay(
+                                coords = listOf(currentLatLng, nextLatLng),
+                                color = SolplyTheme.colors.purple900,
+                                width = 0.5.dp
+                            )
+                        }
                     }
                 }
             }
         }
 
         SolplyBasicBottomSheet(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier
+                .align(Alignment.BottomCenter),
             menuContent = {
                 if (mapsType == MapsType.PLACE_DETAIL) {
                     Box(
                         modifier = Modifier
                             .size(47.dp)
                             .background(color = SolplyTheme.colors.white, shape = CircleShape)
-                            .customClickable(rippleEnabled = false) {
-                                navigateToNaverMapDirections(
-                                    context = context,
-                                    destName = "강남역",
-                                    destId = "222",
-                                    destLongitude = 127.02760,
-                                    destLatitude = 37.49794,
-                                    destType = "SUBWAY_STATION"
-                                )
-                            },
+                            .then(
+                                if (startAddMyCourse) Modifier
+                                else {
+                                    Modifier.customClickable(rippleEnabled = false) {
+                                        navigateToNaverMapDirections(
+                                            context = context,
+                                            destName = "강남역",
+                                            destId = "222",
+                                            destLongitude = 127.02760,
+                                            destLatitude = 37.49794,
+                                            destType = "SUBWAY_STATION"
+                                        )
+                                    }
+                                }
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_place_navigation),
                             contentDescription = "place_navigation",
-                            tint = Color.Unspecified
+                            tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else Color.Unspecified
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     AddPlaceButton(
-                        onClick = {},
-                        isAddPlace = false,
-                        selected = true,
+                        onClick = { changeAddPlaceState(!startAddMyCourse) },
+                        selected = startAddMyCourse,
                         modifier = Modifier.padding(end = 8.dp)
                     )
 
-                    AddPlaceButton(
-                        onClick = {},
-                        isAddPlace = true,
-                        selected = true
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .height(49.dp)
+                            .padding(end = 16.dp)
+                            .background(
+                                color = SolplyTheme.colors.white,
+                                shape = RoundedCornerShape(26.dp)
+                            )
+                            .then(
+                                if (startAddMyCourse) Modifier
+                                else {
+                                    Modifier.customClickable(rippleEnabled = false) {
+                                        //TODO 장소 개별 저장
+                                    }
+                                }
+                            )
+                    ) {
+                        Text(
+                            text = "장소 저장",
+                            modifier = Modifier.padding(start = 16.dp),
+                            style = SolplyTheme.typography.body14M,
+                            color = if (startAddMyCourse) SolplyTheme.colors.gray400 else SolplyTheme.colors.purple600,
+                            maxLines = 1
+                        )
+                        Icon(
+                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
+                            contentDescription = "add_place",
+                            modifier = Modifier.padding(start = 8.dp, end = 15.dp),
+                            tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else SolplyTheme.colors.purple600
+                        )
+                    }
                 } else {
                     AddCourseButton(
                         onClick = {},
@@ -293,7 +406,22 @@ fun MapsScreen(
             content = {
                 when (mapsType) {
                     MapsType.PLACE_DETAIL -> {
-                        PlaceDetailBottomSheet()
+                        PlaceDetailBottomSheet(
+                            addPlace = startAddMyCourse,
+                            placeType = placeInfo.primaryTag,
+                            title = placeInfo.placeName,
+                            description = placeInfo.description,
+                            placeImageUrls = placeInfo.imageUrls,
+                            placeAddress = placeInfo.address,
+                            placeContactNumber = placeInfo.contactNumber,
+                            placeOpeningHours = placeInfo.openingHours,
+                            placeSnsLick = placeInfo.snsLink,
+                            courses = courses,
+                            addMyCourseSelectedCount = addMyCourseSelectedCount,
+                            addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
+                            selectedCourseForPlace = selectedCourseForPlace,
+                            showMaxSizeCourseSnackBar = showMaxSizeCourseSnackBar
+                        )
                     }
 
                     MapsType.ADD_COURSE -> {
@@ -302,7 +430,7 @@ fun MapsScreen(
 
                     MapsType.EDIT_COURSE -> {
                         EditCourseBottomSheet(
-                            course = courses,
+                            course = course,
                             removeIconBounds = removeIconBounds,
                             isInRemoveIconArea = isInRemoveIconArea,
                             rootCoordinatesState = rootCoordinatesState,
@@ -338,5 +466,20 @@ fun MapsScreen(
                 },
             tint = Color.Unspecified
         )
+
+        if (mapsType == MapsType.PLACE_DETAIL && addMyCourseSelectedCount.isNotEmpty()) {
+            SolplyBasicButton(
+                text = "이 코스에 추가할래요",
+                onClick = {
+                    saveMyCourse()
+                    changeAddPlaceState(false)
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
+                textPadding = PaddingValues(vertical = 21.dp),
+                enabledBackgroundColor = SolplyTheme.colors.gray900
+            )
+        }
     }
 }

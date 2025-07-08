@@ -21,6 +21,8 @@ fun NavController.navigateMaps(
 fun NavGraphBuilder.mapsNavGraph(
     paddingValues: PaddingValues,
     showDisabledRemoveCourseSnackBar: (String) -> Unit,
+    showMaxSizeCourseSnackBar: (String) -> Unit,
+    showSuccessSaveCourseSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlaceDetail: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -32,6 +34,8 @@ fun NavGraphBuilder.mapsNavGraph(
         MapsRoute(
             mapsType = mapsType,
             showDisabledRemoveCourseSnackBar = showDisabledRemoveCourseSnackBar,
+            showMaxSizeCourseSnackBar = showMaxSizeCourseSnackBar,
+            showSuccessSaveCourseSnackBar = showSuccessSaveCourseSnackBar,
             navigatePlaceDetail = navigateToPlaceDetail,
             navigateToPlace = navigateToPlace,
             navigateToCourse = navigateToCourse,
