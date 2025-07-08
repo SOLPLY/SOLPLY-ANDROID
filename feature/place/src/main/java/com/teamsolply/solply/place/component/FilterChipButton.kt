@@ -24,14 +24,21 @@ fun FilterChipButton(
 
     Box(
         modifier = Modifier
-            .then(if (!isSelected) Modifier.border(1.dp, SolplyTheme.colors.gray300, CircleShape) else Modifier)
-            .background(backgroundColor, CircleShape)
+            .then(if (!isSelected) Modifier.border(
+                width = 1.dp,
+                color = SolplyTheme.colors.gray300,
+                shape = CircleShape
+            ) else Modifier)
+            .background(
+                color = backgroundColor,
+                shape = CircleShape
+            )
             .customClickable(rippleEnabled = false) { onClick() }
             .padding(horizontal = 16.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text,
+            text = text,
             style = SolplyTheme.typography.body16M,
             color = contentColor
         )
