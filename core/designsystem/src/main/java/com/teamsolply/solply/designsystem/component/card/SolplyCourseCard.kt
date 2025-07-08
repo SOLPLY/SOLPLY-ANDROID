@@ -57,7 +57,7 @@ fun SolplyCourseCard(
         Image(
             painter = painterResource(id = imgRes),
             contentDescription = "course_image",
-            modifier.size(158.dp)
+            modifier = Modifier.size(158.dp)
         )
         Box(
             modifier

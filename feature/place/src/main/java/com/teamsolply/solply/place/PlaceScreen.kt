@@ -17,7 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.util.LocationPermissionRequest
 import com.teamsolply.solply.ui.extension.customClickable
 
@@ -50,6 +53,14 @@ fun PlaceScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        SolplyCourseCard(
+            title = "asd",
+            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+            placeType = listOf(PlaceType.FOOD, PlaceType.CAFE),
+            backgroundColor = SolplyTheme.colors.red300,
+            iconColor = SolplyTheme.colors.gray700,
+            iconBackGroundColor = SolplyTheme.colors.green500
+        )
         Image(
             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
             contentDescription = "place_image",
