@@ -62,38 +62,6 @@ fun ProgressBar(
     }
 }
 
-@Composable
-fun PreviewableProgressBar(progress: Float) {
-    val size by animateFloatAsState(
-        targetValue = progress,
-        animationSpec = tween(
-            durationMillis = 1000,
-            delayMillis = 200,
-            easing = LinearOutSlowInEasing,
-        ),
-        label = "animation",
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp)
-            .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(SolplyTheme.colors.gray300)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(size)
-                .height(8.dp)
-                .background(SolplyTheme.colors.gray900, shape = RoundedCornerShape(20.dp))
-                .clip(RoundedCornerShape(20.dp))
-                .animateContentSize()
-        )
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun ProgressBarPreview() {
