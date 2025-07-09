@@ -34,7 +34,9 @@ import androidx.compose.ui.unit.sp
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.maps.R
 import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 
@@ -48,7 +50,7 @@ fun PlaceDetailBottomSheet(
     placeAddress: String,
     placeContactNumber: String,
     placeOpeningHours: String,
-    placeSnsLink: String,
+    placeSnsLink: List<SnsLink>,
     courses: List<CourseInfo>,
     addMyCourseSelectedCount: List<Int>,
     addMyCourseBackClick: () -> Unit,
@@ -56,7 +58,10 @@ fun PlaceDetailBottomSheet(
     showMaxSizeCourseSnackBar: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { placeImageUrls.size })
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = {
+        //placeImageUrls.size
+        3
+    })
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
 
@@ -93,12 +98,14 @@ fun PlaceDetailBottomSheet(
             ) {
                 items(courses) { courseInfo ->
                     SolplyCourseCard(
-                        imgRes = courseInfo.thumbnailImage,
+                        //TODO. 서버 코스 이미지로 변경
+                        //imgRes = courseInfo.thumbnailImage,
+                        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
                         placeType = courseInfo.mainTag,
                         backgroundColor = SolplyTheme.colors.green300,
                         iconColor = SolplyTheme.colors.green400,
                         iconBackGroundColor = SolplyTheme.colors.green200,
-                        title = courseInfo.title,
+                        title = courseInfo.courseName,
                         savedPlace = courseInfo.placeCount < 6,
                         selected = addMyCourseSelectedCount.contains(courseInfo.courseId),
                         onClick = {
@@ -142,7 +149,9 @@ fun PlaceDetailBottomSheet(
                 pageSpacing = 10.dp
             ) { page ->
                 Image(
-                    painter = painterResource(placeImageUrls[page]),
+                    //TODO. 서버 코스 이미지로 변경
+                    //painter = painterResource(placeImageUrls[page]),
+                    painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy),
                     contentDescription = "place-image-url",
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
@@ -224,11 +233,15 @@ fun PlaceDetailBottomSheet(
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.caption14M
                         )
-                        Text(
-                            text = placeSnsLink,
-                            color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
-                        )
+                        Column {
+                            placeSnsLink.forEach {
+                                Text(
+                                    text = it.platform,
+                                    color = SolplyTheme.colors.black,
+                                    style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
+                                )
+                            }
+                        }
                     }
                 }
             }

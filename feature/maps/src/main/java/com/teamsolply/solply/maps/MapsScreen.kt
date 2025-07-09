@@ -89,6 +89,19 @@ fun MapsRoute(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    //TODO. 초기 로드 데이터
+    LaunchedEffect(Unit) {
+        when (mapsType) {
+            MapsType.PLACE_DETAIL -> {
+                viewModel.getPlaceDetailInfo(targetId)
+                viewModel.getAllCourseInfo()
+            }
+
+            MapsType.ADD_COURSE -> {}
+            MapsType.EDIT_COURSE -> {}
+        }
+    }
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
@@ -440,7 +453,7 @@ fun MapsScreen(
                             placeType = placeInfo.primaryTag,
                             title = placeInfo.placeName,
                             description = placeInfo.description,
-                            placeImageUrls = placeInfo.imageUrls,
+                            placeImageUrls = placeInfo.imageInfos,
                             placeAddress = placeInfo.address,
                             placeContactNumber = placeInfo.contactNumber,
                             placeOpeningHours = placeInfo.openingHours,

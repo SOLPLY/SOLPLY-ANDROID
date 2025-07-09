@@ -4,7 +4,7 @@ import com.teamsolply.solply.model.PlaceType
 
 data class CourseInfo(
     val courseId: Int,
-    val title: String,
+    val courseName: String,
     val placeCount: Int,
     val thumbnailImage: Int,
     val mainTag: List<PlaceType>,

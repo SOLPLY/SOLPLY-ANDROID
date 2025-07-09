@@ -56,7 +56,6 @@ fun SolplyCourseCard(
                 RoundedCornerShape(20.dp)
             ),
             contentScale = ContentScale.Crop
-
         )
         Box(
             modifier = Modifier

@@ -70,7 +70,7 @@ fun EditCourseBottomSheet(
                         placeName = item.placeName,
                         placeTag = item.primaryTag,
                         placeAddress = item.address,
-                        placeImageRes = item.imageUrls.first(),
+                        placeImageRes = item.imageInfos.first(),
                         modifier = modifier
                     )
                 }

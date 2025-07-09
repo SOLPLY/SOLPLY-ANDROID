@@ -1,21 +1,17 @@
 package com.teamsolply.solply.maps
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.maps.model.PlaceInfo
-import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MapsViewModel @Inject constructor() :
+class MapsViewModel @Inject constructor(
+    private val mapsRepository: MapsRepository
+) :
     BaseViewModel<MapsState, MapsIntent, MapsSideEffect>(MapsState()) {
-
-    init {
-        getPlaceDetailInfo()
-    }
 
     override fun handleIntent(intent: MapsIntent) {
         when (intent) {
@@ -29,7 +25,7 @@ class MapsViewModel @Inject constructor() :
             is MapsIntent.SaveMyCourse -> {
                 val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
                 val selectedCourseName =
-                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
+                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.courseName
                         ?: ""
 
                 reduce {
@@ -76,32 +72,28 @@ class MapsViewModel @Inject constructor() :
         }
     }
 
-    fun getPlaceDetailInfo() {
-        reduce {
-            viewModelScope.launch {
-                delay(3000)
+    //TODO. 장소 상세 정보 조회 API
+    fun getPlaceDetailInfo(placeId: Int) {
+        viewModelScope.launch {
+            mapsRepository.getPlaceInfo(placeId).onSuccess {
+                reduce {
+                    copy(
+                        placeInfo = it
+                    )
+                }
             }
-            copy(
-                placeInfo = PlaceInfo(
-                    placeId = 1,
-                    placeName = "유어마인드",
-                    primaryTag = PlaceType.CAFE,
-                    address = "서울 서대문구 연희로 189 - 16 단독주택 어쩌구",
-                    priority = 0,
-                    latitude = 37.4979,
-                    longitude = 127.0276,
-                    description = "귀여운 당고 디저트와 커피, 에이드가 있는 펫 프렌들리",
-                    imageUrls = listOf(
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy
-                    ),
-                    contactNumber = "0507 - 1324 - 9018",
-                    openingHours = "월 - 금 10:00 - 19:00",
-                    snsLink = "내용",
-                    isBookmarked = true
-                )
-            )
+        }
+    }
+
+    fun getAllCourseInfo() {
+        viewModelScope.launch {
+            mapsRepository.getAllCourseInfo().onSuccess {
+                reduce {
+                    copy(
+                        courses = it
+                    )
+                }
+            }
         }
     }
 
