@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
@@ -67,7 +66,7 @@ private fun PlaceCollectionScreenPreview() {
                     placeId = 0,
                     placeName = "0번",
                     placeType = PlaceType.CAFE,
-                    imageUrls = listOf(R.drawable.img_course_dummy)
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
                 ),
                 PlaceCard(
                     placeId = 1,

@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage
 
-import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
@@ -33,7 +32,7 @@ data class MypageState(
             placeId = 3,
             placeName = "3번",
             placeType = PlaceType.FOOD,
-            imageUrls = listOf(R.drawable.img_course_dummy)
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
             placeId = 3,
