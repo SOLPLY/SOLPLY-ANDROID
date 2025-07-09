@@ -17,8 +17,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.header.CourseHeader
 import com.teamsolply.solply.model.PlaceType
 
@@ -28,7 +29,7 @@ fun CourseRoute(
     navigateToMaps: (String) -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
-    val state = viewModel.uiState.collectAsState().value
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     CourseScreen(
         state = state,
@@ -77,7 +78,7 @@ fun CourseScreen(
                         modifier = Modifier
                             .weight(1f)
                             .customClickable {
-                                navigateToMaps("ADD_COURSE")
+                                navigateToMaps("")
                             }
                     )
                 }
