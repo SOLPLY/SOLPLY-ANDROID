@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.domain.mypage)
+    implementation(projects.core.designsystem)
 }
