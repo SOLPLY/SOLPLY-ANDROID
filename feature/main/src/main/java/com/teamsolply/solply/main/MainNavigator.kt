@@ -34,12 +34,26 @@ internal class MainNavigator(
     fun navigate(tab: MainNavTab) {
         when (tab) {
             MainNavTab.PLACE -> {
-                val navOptions = createTabNavOptions()
+                val navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = true
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
                 navController.navigatePlace(navOptions)
             }
 
             MainNavTab.COURSE -> {
-                val navOptions = createTabNavOptions()
+                val navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = true
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
                 navController.navigateCourse(navOptions)
             }
 

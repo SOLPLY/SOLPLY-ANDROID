@@ -31,10 +31,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.R
 import com.teamsolply.solply.maps.model.CourseInfo
 import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.model.PlaceType
@@ -55,7 +55,8 @@ fun PlaceDetailBottomSheet(
     addMyCourseSelectedCount: List<Int>,
     addMyCourseBackClick: () -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
-    showMaxSizeCourseSnackBar: () -> Unit
+    showMaxSizeCourseSnackBar: () -> Unit,
+    emptyCourseClick: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
@@ -89,33 +90,56 @@ fun PlaceDetailBottomSheet(
                     style = SolplyTheme.typography.head16M
                 )
             }
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(11.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = PaddingValues(bottom = 200.dp)
-            ) {
-                items(courses) { courseInfo ->
-                    SolplyCourseCard(
-                        //TODO. 서버 코스 이미지로 변경
-                        //imgRes = courseInfo.thumbnailImage,
-                        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                        placeType = courseInfo.mainTag,
-                        backgroundColor = SolplyTheme.colors.green300,
-                        iconColor = SolplyTheme.colors.green400,
-                        iconBackGroundColor = SolplyTheme.colors.green200,
-                        title = courseInfo.courseName,
-                        savedPlace = courseInfo.placeCount < 6,
-                        selected = addMyCourseSelectedCount.contains(courseInfo.courseId),
-                        onClick = {
-                            if (courseInfo.placeCount < 6) {
-                                selectedCourseForPlace(courseInfo.courseId)
-                            } else {
-                                showMaxSizeCourseSnackBar()
-                            }
-                        }
+            if (placeImageUrls.isEmpty()) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "저장한 코스가 없어요.",
+                        modifier = Modifier.padding(bottom = 28.dp, top = 100.dp),
+                        color = SolplyTheme.colors.gray800,
+                        style = SolplyTheme.typography.body16M
                     )
+                    SolplyBasicButton(
+                        text = "나만의 코스 수집하러 가기",
+                        onClick = {
+                            emptyCourseClick()
+                        },
+                        modifier = Modifier.padding(horizontal = 64.dp),
+                        textColor = SolplyTheme.colors.gray800,
+                        textStyle = SolplyTheme.typography.button16M,
+                        enabledBackgroundColor = SolplyTheme.colors.green300
+                    )
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(11.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(bottom = 200.dp)
+                ) {
+                    items(courses) { courseInfo ->
+                        SolplyCourseCard(
+                            //TODO. 서버 코스 이미지로 변경
+                            //imgRes = courseInfo.thumbnailImage,
+                            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            placeType = courseInfo.mainTag,
+                            backgroundColor = SolplyTheme.colors.green300,
+                            iconColor = SolplyTheme.colors.green400,
+                            iconBackGroundColor = SolplyTheme.colors.green200,
+                            title = courseInfo.courseName,
+                            savedPlace = courseInfo.placeCount < 6,
+                            selected = addMyCourseSelectedCount.contains(courseInfo.courseId),
+                            onClick = {
+                                if (courseInfo.placeCount < 6) {
+                                    selectedCourseForPlace(courseInfo.courseId)
+                                } else {
+                                    showMaxSizeCourseSnackBar()
+                                }
+                            }
+                        )
+                    }
                 }
             }
         } else {

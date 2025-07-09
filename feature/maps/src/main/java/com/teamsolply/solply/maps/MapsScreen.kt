@@ -125,6 +125,10 @@ fun MapsRoute(
                     showTextSnackBar("장소가 수집함에 저장되었어요.")
                 }
 
+                MapsSideEffect.NavigateToCourse -> {
+                    navigateToCourse()
+                }
+
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
                     MapsType.PLACE_DETAIL -> navigateToPlace()
                     MapsType.ADD_COURSE -> navigateToCourse()
@@ -172,6 +176,9 @@ fun MapsRoute(
         removeCourse = { remove ->
             viewModel.sendIntent(MapsIntent.RemoveCourseItem(itemToRemove = remove))
         },
+        emptyCourseClick = {
+            viewModel.sendIntent(MapsIntent.EmptyCourseClick)
+        },
         onReturnToHomeClick = {
             viewModel.sendIntent(MapsIntent.ReturnToHomeClick)
         },
@@ -203,6 +210,7 @@ fun MapsScreen(
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
+    emptyCourseClick: () -> Unit,
     onReturnToHomeClick: () -> Unit,
     onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -462,7 +470,8 @@ fun MapsScreen(
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
                             selectedCourseForPlace = selectedCourseForPlace,
-                            showMaxSizeCourseSnackBar = showMaxSizeCourseSnackBar
+                            showMaxSizeCourseSnackBar = showMaxSizeCourseSnackBar,
+                            emptyCourseClick = emptyCourseClick
                         )
                     }
 

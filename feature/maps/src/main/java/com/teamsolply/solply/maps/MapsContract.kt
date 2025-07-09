@@ -196,6 +196,7 @@ sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     // Navigate
+    data object EmptyCourseClick : MapsIntent
     data object ShowMaxSizeCourseSnackBar : MapsIntent
     data object ReturnToHomeClick : MapsIntent
     data object BackButtonClick : MapsIntent
@@ -211,6 +212,7 @@ sealed interface MapsSideEffect : SideEffect {
     data object DisabledRemoveCourse : MapsSideEffect
 
     // Shared
+    data object NavigateToCourse : MapsSideEffect
     data object NavigateToReturnHome : MapsSideEffect
     data object NavigateToBack : MapsSideEffect
 }

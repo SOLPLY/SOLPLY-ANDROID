@@ -149,10 +149,8 @@ fun AddPlaceButton(
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (selected) { SolplyTheme.colors.purple400 } else { SolplyTheme.colors.white }
-
-    val textColor = if (selected) SolplyTheme.colors.purple800 else SolplyTheme.colors.gray400
-    val iconColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.gray400
+    val backgroundColor = if (selected) { SolplyTheme.colors.purple200 } else { SolplyTheme.colors.white }
+    val textColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.purple600
 
     BaseButton(
         onClick = onClick,

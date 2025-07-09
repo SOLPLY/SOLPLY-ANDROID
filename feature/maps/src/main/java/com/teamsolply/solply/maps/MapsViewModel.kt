@@ -61,6 +61,7 @@ class MapsViewModel @Inject constructor(
             }
 
             // Shared
+            is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
             is MapsIntent.ReturnToHomeClick -> {
                 postSideEffect(MapsSideEffect.NavigateToReturnHome)

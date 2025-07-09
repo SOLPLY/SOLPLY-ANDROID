@@ -149,8 +149,7 @@ internal fun MainScreen(
                         }
                     },
                     navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {
-                        }
+                        val navOptions = navOptions {}
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                     }
                 )
@@ -211,7 +210,7 @@ internal fun MainScreen(
                     },
                     navigateToCourse = {
                         val navOptions = navOptions {
-                            popUpTo(Course) {
+                            popUpTo(0) {
                                 inclusive = true
                             }
                             launchSingleTop = true
