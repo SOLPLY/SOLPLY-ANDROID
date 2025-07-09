@@ -27,7 +27,9 @@ import com.teamsolply.solply.mypage.component.MypageTopBar
 import com.teamsolply.solply.mypage.component.PlaceCollectionScreen
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import com.teamsolply.solply.ui.preview.DefaultPreview
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,9 +40,18 @@ fun MypageRoute(
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            when (sideEffect) {
+                MypageSideEffect.NavigateToBack -> navigateToBack()
+            }
+        }
+    }
+
     MypageScreen(
         navigateToMaps = navigateToMaps,
-        navigateToBack = navigateToBack,
+        navigateToBack = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
         place = uiState.places
     )
 }

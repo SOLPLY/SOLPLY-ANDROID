@@ -63,13 +63,15 @@ data class MypageState(
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
-    )
+    ),
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
 
+    // Navigate
+    data object BackButtonClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {
-
+    data object NavigateToBack : MypageSideEffect
 }

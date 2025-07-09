@@ -8,6 +8,10 @@ import javax.inject.Inject
 class MypageViewModel @Inject constructor() :
     BaseViewModel<MypageState, MypageIntent, MypageSideEffect>(MypageState()) {
     override fun handleIntent(intent: MypageIntent) {
-        TODO("Not yet implemented")
+        when (intent) {
+            is MypageIntent.BackButtonClick -> {
+                postSideEffect(MypageSideEffect.NavigateToBack)
+            }
+        }
     }
 }
