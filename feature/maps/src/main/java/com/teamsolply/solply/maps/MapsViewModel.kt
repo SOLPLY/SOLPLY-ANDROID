@@ -47,11 +47,16 @@ class MapsViewModel @Inject constructor(
                 }
             }
             // Add Course
-            MapsIntent.SaveCourse -> reduce {
+            MapsIntent.SaveCourse -> {
                 val bookmark = !uiState.value.courseDetailInfo.isBookmarked
-                copy(courseDetailInfo = courseDetailInfo.copy(isBookmarked = bookmark))
-
                 // TODO 코스 개별 저장 post
+                reduce {
+                    copy(courseDetailInfo = courseDetailInfo.copy(isBookmarked = bookmark))
+                }
+
+                if (bookmark) {
+                    postSideEffect(MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar)
+                }
             }
             // Edit Course
             is MapsIntent.StartCourseMove -> reduce { copy(iconVisibility = intent.iconVisibility) }

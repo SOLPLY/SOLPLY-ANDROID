@@ -9,12 +9,14 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.teamsolply.solply.course.navigation.Course
 import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.main.splash.Splash
 import com.teamsolply.solply.maps.navigation.navigateMaps
 import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
+import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(
@@ -35,7 +37,7 @@ internal class MainNavigator(
         when (tab) {
             MainNavTab.PLACE -> {
                 val navOptions = navOptions {
-                    popUpTo(0) {
+                    popUpTo(Place) {
                         inclusive = true
                         saveState = true
                     }
@@ -47,7 +49,7 @@ internal class MainNavigator(
 
             MainNavTab.COURSE -> {
                 val navOptions = navOptions {
-                    popUpTo(0) {
+                    popUpTo(Course) {
                         inclusive = true
                         saveState = true
                     }
@@ -58,11 +60,11 @@ internal class MainNavigator(
             }
 
             MainNavTab.MYPAGE -> {
-                navController.navigateMypage(
-                    navOptions {
-                        launchSingleTop = true
-                    }
-                )
+                val navOptions = navOptions {
+                    launchSingleTop = true
+                    restoreState = true
+                }
+                navController.navigateMypage(navOptions)
             }
         }
     }

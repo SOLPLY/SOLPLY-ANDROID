@@ -67,6 +67,7 @@ sealed interface MapsSideEffect : SideEffect {
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect
+    data object ShowSuccessSaveSingleCourseSnackBar : MapsSideEffect
 
     // Shared
     data object NavigateToCourse : MapsSideEffect

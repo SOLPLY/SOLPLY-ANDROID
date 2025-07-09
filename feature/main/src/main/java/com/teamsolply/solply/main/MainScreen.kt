@@ -29,6 +29,7 @@ import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
+import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
@@ -164,7 +165,11 @@ internal fun MainScreen(
                 mypageNavGraph(
                     paddingValues = innerPadding,
                     navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {}
+                        val navOptions = navOptions {
+                            popUpTo(Mypage) {
+                                inclusive = false
+                            }
+                        }
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                     }
                 )
@@ -222,6 +227,7 @@ internal fun MainScreen(
                             popUpTo(Place) {
                                 inclusive = false
                             }
+                            launchSingleTop = true
                         }
                         navigator.navigateToMypage(navOptions = navOptions)
                     },

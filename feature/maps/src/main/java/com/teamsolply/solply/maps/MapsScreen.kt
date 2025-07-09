@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -128,6 +127,12 @@ fun MapsRoute(
 
                 is MapsSideEffect.ShowSuccessSavePlaceSnackBar -> {
                     showTextSnackBar("장소가 수집함에 저장되었어요.")
+                }
+
+                is MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar -> {
+                    showNavigateSnackBar("코스가 수집함에 저장되었어요.") {
+                        navigateToMypage()
+                    }
                 }
 
                 MapsSideEffect.NavigateToCourse -> {
