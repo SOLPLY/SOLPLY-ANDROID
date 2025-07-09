@@ -163,7 +163,7 @@ fun MapsRoute(
             viewModel.sendIntent(MapsIntent.ShowMaxSizeCourseSnackBar)
         },
         saveMyCourse = {
-            viewModel.sendIntent(MapsIntent.SaveMyCourse)
+            viewModel.sendIntent(MapsIntent.SavePlaceInMyCourse)
         },
         placeBookMarkClick = {
             viewModel.sendIntent(MapsIntent.PlaceBookMarkClick)

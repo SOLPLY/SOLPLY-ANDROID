@@ -31,11 +31,12 @@ sealed interface MapsIntent : UiIntent {
         val courseId: Int
     ) : MapsIntent
 
-    data object SaveMyCourse : MapsIntent
+    data object SavePlaceInMyCourse : MapsIntent
 
     data object PlaceBookMarkClick : MapsIntent
 
     // Edit Course
+    data object Save
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean

@@ -22,7 +22,7 @@ class MapsViewModel @Inject constructor(
                 filterSelectedCourseCount(intent.courseId)
             }
 
-            is MapsIntent.SaveMyCourse -> {
+            is MapsIntent.SavePlaceInMyCourse -> {
                 val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
                 val selectedCourseName =
                     currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
