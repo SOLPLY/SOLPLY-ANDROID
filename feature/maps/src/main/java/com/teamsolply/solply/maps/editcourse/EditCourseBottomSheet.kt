@@ -30,7 +30,8 @@ fun EditCourseBottomSheet(
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
     lazyListState: LazyListState,
-    dragDropState: DragDropState
+    dragDropState: DragDropState,
+    singleCoursePlaceBookMarkClick: (Int) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -71,7 +72,8 @@ fun EditCourseBottomSheet(
                         placeTag = item.primaryTag,
                         placeAddress = item.address,
                         placeImageRes = item.imageInfos.first(),
-                        modifier = modifier
+                        modifier = modifier,
+                        iconClick = { singleCoursePlaceBookMarkClick(item.placeId) }
                     )
                 }
             }

@@ -32,6 +32,7 @@ fun CourseItem(
     placeTag: PlaceType,
     placeAddress: String,
     placeImageRes: Int,
+    iconClick: () -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
     isEditing: Boolean = false
@@ -87,14 +88,13 @@ fun CourseItem(
                 contentDescription = "item_edting"
             )
         } else {
-            val iconColor = SolplyTheme.colors.gray400
-            val iconBackGroundColor = SolplyTheme.colors.gray200
+            val iconColor = if (selected) SolplyTheme.colors.red500 else SolplyTheme.colors.gray400
+            val iconBackGroundColor =
+                if (selected) SolplyTheme.colors.red300 else SolplyTheme.colors.gray200
             SolplySavedMarker(
                 iconColor = iconColor,
                 iconBackGroundColor = iconBackGroundColor,
-                onClick = {
-                    // TODO. 코스 개별 저장
-                },
+                onClick = { iconClick() },
                 isButton = true
             )
         }

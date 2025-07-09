@@ -177,6 +177,9 @@ fun MapsRoute(
         // ADD Course
         courseDetailInfo = uiState.courseDetailInfo,
         saveCourse = { viewModel.sendIntent(MapsIntent.SaveCourse) },
+        singleCoursePlaceBookMarkClick = { placeId ->
+            viewModel.sendIntent(MapsIntent.SingleCoursePlaceBookMarkClick(placeId))
+        },
         // Edit Course
         course = uiState.course,
         removeIconVisible = uiState.iconVisibility,
@@ -220,6 +223,7 @@ fun MapsScreen(
     // Add Course
     courseDetailInfo: CourseDetailEntity,
     saveCourse: () -> Unit,
+    singleCoursePlaceBookMarkClick: (Int) -> Unit,
     // Edit Course
     course: List<PlaceDetailEntity>,
     removeIconVisible: Boolean,
@@ -497,6 +501,7 @@ fun MapsScreen(
                             places = courseDetailInfo.places,
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
+                            singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
                         )
                     }
 
@@ -508,7 +513,8 @@ fun MapsScreen(
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
                             lazyListState = lazyListState,
-                            dragDropState = dragDropState
+                            dragDropState = dragDropState,
+                            singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick
                         )
                     }
                 }

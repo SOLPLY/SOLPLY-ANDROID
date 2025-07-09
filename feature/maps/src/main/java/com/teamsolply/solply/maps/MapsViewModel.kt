@@ -60,6 +60,21 @@ class MapsViewModel @Inject constructor(
                     postSideEffect(MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar)
                 }
             }
+
+            is MapsIntent.SingleCoursePlaceBookMarkClick -> {
+                val updatedPlaces = uiState.value.courseDetailInfo.places.map { place ->
+                    if (place.placeId == intent.placeId) {
+                        place.copy(isBookmarked = !place.isBookmarked)
+                    } else {
+                        place
+                    }
+                }
+
+                reduce {
+                    copy(courseDetailInfo = courseDetailInfo.copy(places = updatedPlaces))
+                }
+                //TODO. 장소 개별 저장 API
+            }
             // Edit Course
             is MapsIntent.StartCourseMove -> reduce { copy(iconVisibility = intent.iconVisibility) }
 

@@ -25,6 +25,7 @@ fun AddCourseBottomSheet(
     places: List<Place>,
     courseName: String,
     introduction: String,
+    singleCoursePlaceBookMarkClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -74,7 +75,9 @@ fun AddCourseBottomSheet(
                         placeAddress = place.address,
                         //TODO. 코스의 장소 이미지로
                         //placeImageRes = item.thumbnailUrl
-                        placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy
+                        placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                        selected = place.isBookmarked,
+                        iconClick = { singleCoursePlaceBookMarkClick(place.placeId) }
                     )
                 }
             }
