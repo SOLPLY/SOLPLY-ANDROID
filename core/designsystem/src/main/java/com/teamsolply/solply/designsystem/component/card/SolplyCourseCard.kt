@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -36,26 +38,25 @@ fun SolplyCourseCard(
     iconBackGroundColor: Color,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    saved: Boolean = false,
+    savedCourse: Boolean = false,
     selected: Boolean = false,
-    touchable: Boolean = true
+    savedPlace: Boolean = false
 ) {
     Box(
         modifier = modifier
             .size(165.dp)
-            .alpha(if (touchable) 1f else 0.3f)
-            .then(
-                if (touchable) {
-                    Modifier.customClickable(rippleEnabled = false) { onClick() }
-                } else {
-                    Modifier
-                }
-            ),
+            .alpha(if (savedPlace) 1f else 0.3f)
+            .customClickable(rippleEnabled = false) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Image(
             painter = painterResource(id = imgRes),
-            contentDescription = "course_image"
+            contentDescription = "course_image",
+            modifier = Modifier.clip(
+                RoundedCornerShape(20.dp)
+            ),
+            contentScale = ContentScale.Crop
+
         )
         Box(
             modifier = Modifier
@@ -99,7 +100,7 @@ fun SolplyCourseCard(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    if (saved) {
+                    if (savedCourse) {
                         SolplySavedMarker(
                             iconColor = iconColor,
                             iconBackGroundColor = iconBackGroundColor,

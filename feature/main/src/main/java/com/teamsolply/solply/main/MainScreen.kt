@@ -29,7 +29,6 @@ import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
-import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
@@ -172,15 +171,32 @@ internal fun MainScreen(
                 )
                 mapsNavGraph(
                     paddingValues = innerPadding,
-                    showDisabledRemoveCourseSnackBar = { message ->
+                    showTextSnackBar = { message ->
+                        coroutineScope.launch {
+                            showTextSnackBar(message)
+                        }
+                    },
+                    showNotificationSnackBar = { message ->
                         coroutineScope.launch {
                             showNotificationSnackBar(message)
+                        }
+                    },
+                    showNavigateSnackBar = { message, action ->
+                        coroutineScope.launch {
+                            showNavigateSnackBar(message, action)
                         }
                     },
                     navigateToPlaceDetail = {
                         val navOptions = navOptions {}
                         navigator.navigateToMaps(
                             mapsType = MapsType.PLACE_DETAIL.name,
+                            navOptions = navOptions
+                        )
+                    },
+                    navigateToEditCourse = {
+                        val navOptions = navOptions {}
+                        navigator.navigateToMaps(
+                            mapsType = MapsType.EDIT_COURSE.name,
                             navOptions = navOptions
                         )
                     },
@@ -204,8 +220,8 @@ internal fun MainScreen(
                     },
                     navigateToMypage = {
                         val navOptions = navOptions {
-                            popUpTo(Mypage) {
-                                inclusive = true
+                            popUpTo(Place) {
+                                inclusive = false
                             }
                         }
                         navigator.navigateToMypage(navOptions = navOptions)

@@ -24,6 +24,7 @@ fun PlaceTag(
         PlaceType.WALK -> SolplyTheme.colors.gray500
         PlaceType.SHOPPING -> SolplyTheme.colors.purple600
         PlaceType.UNIQUE -> SolplyTheme.colors.green500
+        PlaceType.EMPTY -> SolplyTheme.colors.white
     }
     val backGroundColor = when (type) {
         PlaceType.CAFE -> SolplyTheme.colors.red100
@@ -32,6 +33,7 @@ fun PlaceTag(
         PlaceType.WALK -> SolplyTheme.colors.green100
         PlaceType.SHOPPING -> SolplyTheme.colors.purple100
         PlaceType.UNIQUE -> SolplyTheme.colors.green100
+        PlaceType.EMPTY -> SolplyTheme.colors.white
     }
 
     Box(

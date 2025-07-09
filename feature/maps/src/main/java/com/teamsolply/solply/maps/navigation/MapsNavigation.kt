@@ -20,8 +20,11 @@ fun NavController.navigateMaps(
 
 fun NavGraphBuilder.mapsNavGraph(
     paddingValues: PaddingValues,
-    showDisabledRemoveCourseSnackBar: (String) -> Unit,
+    showTextSnackBar: (String) -> Unit,
+    showNotificationSnackBar: (String) -> Unit,
+    showNavigateSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlaceDetail: () -> Unit,
+    navigateToEditCourse: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
@@ -31,8 +34,11 @@ fun NavGraphBuilder.mapsNavGraph(
         val mapsType = MapsType.valueOf(backStackEntry.toRoute<Maps>().mapsType)
         MapsRoute(
             mapsType = mapsType,
-            showDisabledRemoveCourseSnackBar = showDisabledRemoveCourseSnackBar,
+            showTextSnackBar = showTextSnackBar,
+            showNotificationSnackBar = showNotificationSnackBar,
+            showNavigateSnackBar = showNavigateSnackBar,
             navigatePlaceDetail = navigateToPlaceDetail,
+            navigateToEditCourse = navigateToEditCourse,
             navigateToPlace = navigateToPlace,
             navigateToCourse = navigateToCourse,
             navigateToMypage = navigateToMypage,

@@ -25,7 +25,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
 @Composable
 fun ProgressBar(
-    pageState: PagerState, totalpageCount : Int
+    pageState: PagerState,
+    totalpageCount: Int
 ) {
     var progress by remember { mutableFloatStateOf(0f) }
 
@@ -34,9 +35,9 @@ fun ProgressBar(
         animationSpec = tween(
             durationMillis = 1000,
             delayMillis = 200,
-            easing = LinearOutSlowInEasing,
+            easing = LinearOutSlowInEasing
         ),
-        label = "animation",
+        label = "animation"
     )
 
     LaunchedEffect(key1 = pageState.currentPage) {

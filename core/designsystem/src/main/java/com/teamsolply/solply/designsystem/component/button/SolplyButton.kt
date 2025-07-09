@@ -146,16 +146,10 @@ fun OnBoardingSkipButton(
 @Composable
 fun AddPlaceButton(
     onClick: () -> Unit,
-    isAddPlace: Boolean,
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val text = if (isAddPlace) "장소 저장" else "내 코스에 추가"
-    val backgroundColor = if (isAddPlace) {
-        SolplyTheme.colors.white
-    } else {
-        if (selected) { SolplyTheme.colors.purple400 } else { SolplyTheme.colors.white }
-    }
+    val backgroundColor = if (selected) { SolplyTheme.colors.purple400 } else { SolplyTheme.colors.white }
 
     val textColor = if (selected) SolplyTheme.colors.purple800 else SolplyTheme.colors.gray400
     val iconColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.gray400
@@ -174,19 +168,11 @@ fun AddPlaceButton(
                 .padding(horizontal = 12.dp)
         ) {
             Text(
-                text = text,
+                text = "내 코스에 추가",
                 style = SolplyTheme.typography.body14M,
                 color = textColor,
                 maxLines = 1
             )
-            if (isAddPlace) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_marker_default),
-                    contentDescription = "add_place",
-                    modifier = Modifier.padding(start = 8.dp),
-                    tint = iconColor
-                )
-            }
         }
     }
 }

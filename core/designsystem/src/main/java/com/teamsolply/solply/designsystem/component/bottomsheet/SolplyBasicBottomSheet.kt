@@ -49,7 +49,7 @@ fun SolplyBasicBottomSheet(
     val collapsedHeight = with(density) { 0.dp.toPx() }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val halfExpandedHeight = with(density) { (screenHeight * 0.35f).toPx() }
+    val halfExpandedHeight = with(density) { (screenHeight * 0.20f).toPx() }
     val expandedHeight = with(density) { (screenHeight * 0.76f).toPx() }
     val currentHeight = when (currentState) {
         BottomSheetState.COLLAPSED -> collapsedHeight
@@ -97,8 +97,8 @@ fun SolplyBasicBottomSheet(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp, start = 16.dp, end = 18.dp),
+                .padding(bottom = 10.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             menuContent()
@@ -109,7 +109,7 @@ fun SolplyBasicBottomSheet(
                 .height(with(density) { expandedHeight.toDp() })
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                 .background(Color.White)
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(top = 12.dp),
             verticalArrangement = Arrangement.Top
         ) {
             Box(
