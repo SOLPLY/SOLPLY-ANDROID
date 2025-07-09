@@ -172,17 +172,17 @@ internal fun MainScreen(
                 )
                 mapsNavGraph(
                     paddingValues = innerPadding,
-                    showDisabledRemoveCourseSnackBar = { message ->
+                    showTextSnackBar = { message ->
+                        coroutineScope.launch {
+                            showTextSnackBar(message)
+                        }
+                    },
+                    showNotificationSnackBar = { message ->
                         coroutineScope.launch {
                             showNotificationSnackBar(message)
                         }
                     },
-                    showMaxSizeCourseSnackBar = { message ->
-                        coroutineScope.launch {
-                            showNotificationSnackBar(message)
-                        }
-                    },
-                    showSuccessSaveCourseSnackBar = { message, action ->
+                    showNavigateSnackBar = { message, action ->
                         coroutineScope.launch {
                             showNavigateSnackBar(message, action)
                         }
@@ -191,6 +191,13 @@ internal fun MainScreen(
                         val navOptions = navOptions {}
                         navigator.navigateToMaps(
                             mapsType = MapsType.PLACE_DETAIL.name,
+                            navOptions = navOptions
+                        )
+                    },
+                    navigateToEditCourse = {
+                        val navOptions = navOptions {}
+                        navigator.navigateToMaps(
+                            mapsType = MapsType.EDIT_COURSE.name,
                             navOptions = navOptions
                         )
                     },

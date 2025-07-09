@@ -283,6 +283,8 @@ sealed interface MapsIntent : UiIntent {
 
     data object SaveMyCourse : MapsIntent
 
+    data object PlaceBookMarkClick : MapsIntent
+
     // Edit Course
     // Item Drag and Remove
     data class StartCourseMove(
@@ -308,6 +310,7 @@ sealed interface MapsSideEffect : SideEffect {
     // Add Place
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
+    data object ShowSuccessSavePlaceSnackBar : MapsSideEffect
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect

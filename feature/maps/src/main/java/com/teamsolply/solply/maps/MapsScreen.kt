@@ -74,10 +74,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 fun MapsRoute(
     mapsType: MapsType,
     targetId: Int = 1,
-    showDisabledRemoveCourseSnackBar: (String) -> Unit,
-    showMaxSizeCourseSnackBar: (String) -> Unit,
-    showSuccessSaveCourseSnackBar: (String, () -> Unit) -> Unit,
+    showTextSnackBar: (String) -> Unit,
+    showNotificationSnackBar: (String) -> Unit,
+    showNavigateSnackBar: (String, () -> Unit) -> Unit,
     navigatePlaceDetail: () -> Unit,
+    navigateToEditCourse: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
@@ -92,19 +93,23 @@ fun MapsRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 MapsSideEffect.DisabledRemoveCourse -> {
-                    showDisabledRemoveCourseSnackBar("코스 안에 2개 이상의 장소가 남아있어야 해요.")
+                    showNotificationSnackBar("코스 안에 2개 이상의 장소가 남아있어야 해요.")
                 }
 
-                MapsSideEffect.ShowMaxSizeCourseSnackBar -> showMaxSizeCourseSnackBar(
+                MapsSideEffect.ShowMaxSizeCourseSnackBar -> showNotificationSnackBar(
                     "코스에 이미 6개의 장소가 꽉 차 있어요"
                 )
 
                 is MapsSideEffect.ShowSuccessSaveCourseSnackBar -> {
-                    showSuccessSaveCourseSnackBar(
+                    showNavigateSnackBar(
                         sideEffect.selectedCourseName
                     ) {
-                        navigateToMypage()
+                        navigateToEditCourse()
                     }
+                }
+
+                is MapsSideEffect.ShowSuccessSavePlaceSnackBar -> {
+                    showTextSnackBar("장소가 수집함에 저장되었어요.")
                 }
 
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
@@ -126,6 +131,7 @@ fun MapsRoute(
         startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
         addMyCourseSelectedCount = uiState.addMyCourseSelectedCount,
+        isBookmarked = uiState.placeInfo.isBookmarked,
         changeAddPlaceState = { addPlace ->
             viewModel.sendIntent(MapsIntent.AddPlaceClick(addPlace = addPlace))
         },
@@ -137,6 +143,9 @@ fun MapsRoute(
         },
         saveMyCourse = {
             viewModel.sendIntent(MapsIntent.SaveMyCourse)
+        },
+        placeBookMarkClick = {
+            viewModel.sendIntent(MapsIntent.PlaceBookMarkClick)
         },
         // Edit Course
         course = uiState.course,
@@ -169,10 +178,12 @@ fun MapsScreen(
     startAddMyCourse: Boolean,
     courses: List<CourseInfo>,
     addMyCourseSelectedCount: List<Int>,
+    isBookmarked: Boolean,
     changeAddPlaceState: (Boolean) -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
     saveMyCourse: () -> Unit,
+    placeBookMarkClick: () -> Unit,
     // Edit Course
     course: List<PlaceInfo>,
     removeIconVisible: Boolean,
@@ -367,7 +378,10 @@ fun MapsScreen(
                             .height(49.dp)
                             .padding(end = 16.dp)
                             .background(
-                                color = SolplyTheme.colors.white,
+                                color = if (startAddMyCourse) SolplyTheme.colors.white else {
+                                    if (isBookmarked) SolplyTheme.colors.red100 else
+                                        SolplyTheme.colors.white
+                                },
                                 shape = RoundedCornerShape(26.dp)
                             )
                             .then(
@@ -375,7 +389,7 @@ fun MapsScreen(
                                     Modifier
                                 } else {
                                     Modifier.customClickable(rippleEnabled = false) {
-                                        // TODO 장소 개별 저장
+                                        placeBookMarkClick()
                                     }
                                 }
                             )
@@ -384,14 +398,19 @@ fun MapsScreen(
                             text = "장소 저장",
                             modifier = Modifier.padding(start = 16.dp),
                             style = SolplyTheme.typography.body14M,
-                            color = if (startAddMyCourse) SolplyTheme.colors.gray400 else SolplyTheme.colors.purple600,
+                            color = if (startAddMyCourse) SolplyTheme.colors.gray400 else {
+                                if (isBookmarked) SolplyTheme.colors.red500 else
+                                    SolplyTheme.colors.purple600
+                            },
                             maxLines = 1
                         )
                         Icon(
                             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
                             contentDescription = "add_place",
                             modifier = Modifier.padding(start = 8.dp, end = 15.dp),
-                            tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else SolplyTheme.colors.purple600
+                            tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else {
+                                if (isBookmarked) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
+                            }
                         )
                     }
                 } else {
