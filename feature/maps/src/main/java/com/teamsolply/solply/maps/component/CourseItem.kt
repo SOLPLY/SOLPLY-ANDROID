@@ -87,8 +87,8 @@ fun CourseItem(
                 contentDescription = "item_edting"
             )
         } else {
-            val iconColor = SolplyTheme.colors.gray900
-            val iconBackGroundColor = SolplyTheme.colors.gray400
+            val iconColor = SolplyTheme.colors.gray400
+            val iconBackGroundColor = SolplyTheme.colors.gray200
             SolplySavedMarker(
                 iconColor = iconColor,
                 iconBackGroundColor = iconBackGroundColor,

@@ -35,7 +35,7 @@ import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.model.CourseInfo
+import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
@@ -51,7 +51,7 @@ fun PlaceDetailBottomSheet(
     placeContactNumber: String,
     placeOpeningHours: String,
     placeSnsLink: List<SnsLink>,
-    courses: List<CourseInfo>,
+    courses: List<CourseInfoEntity>,
     addMyCourseSelectedCount: List<Int>,
     addMyCourseBackClick: () -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
@@ -128,7 +128,7 @@ fun PlaceDetailBottomSheet(
                             backgroundColor = SolplyTheme.colors.green300,
                             iconColor = SolplyTheme.colors.green400,
                             iconBackGroundColor = SolplyTheme.colors.green200,
-                            title = courseInfo.courseName,
+                            title = courseInfo.title,
                             savedPlace = courseInfo.placeCount < 6,
                             selected = addMyCourseSelectedCount.contains(courseInfo.courseId),
                             onClick = {

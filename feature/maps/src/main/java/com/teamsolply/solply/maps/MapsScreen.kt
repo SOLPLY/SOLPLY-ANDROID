@@ -59,8 +59,9 @@ import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
 import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
-import com.teamsolply.solply.maps.model.CourseInfo
-import com.teamsolply.solply.maps.model.PlaceInfo
+import com.teamsolply.solply.maps.model.CourseDetailEntity
+import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
@@ -97,7 +98,10 @@ fun MapsRoute(
                 viewModel.getAllCourseInfo()
             }
 
-            MapsType.ADD_COURSE -> {}
+            MapsType.ADD_COURSE -> {
+                viewModel.getCourseDetailInfo()
+            }
+
             MapsType.EDIT_COURSE -> {}
         }
     }
@@ -144,11 +148,11 @@ fun MapsRoute(
         mapsType = mapsType,
         context = context,
         // Add Place
-        placeInfo = uiState.placeInfo,
+        placeDetailEntity = uiState.placeDetailEntity,
         startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
         addMyCourseSelectedCount = uiState.addMyCourseSelectedCount,
-        isBookmarked = uiState.placeInfo.isBookmarked,
+        isBookmarked = uiState.placeDetailEntity.isBookmarked,
         changeAddPlaceState = { addPlace ->
             viewModel.sendIntent(MapsIntent.AddPlaceClick(addPlace = addPlace))
         },
@@ -164,6 +168,8 @@ fun MapsRoute(
         placeBookMarkClick = {
             viewModel.sendIntent(MapsIntent.PlaceBookMarkClick)
         },
+        // ADD Course
+        courseDetailInfo = uiState.courseDetailInfo,
         // Edit Course
         course = uiState.course,
         removeIconVisible = uiState.iconVisibility,
@@ -194,9 +200,9 @@ fun MapsScreen(
     mapsType: MapsType,
     context: Context,
     // Add Place
-    placeInfo: PlaceInfo,
+    placeDetailEntity: PlaceDetailEntity,
     startAddMyCourse: Boolean,
-    courses: List<CourseInfo>,
+    courses: List<CourseInfoEntity>,
     addMyCourseSelectedCount: List<Int>,
     isBookmarked: Boolean,
     changeAddPlaceState: (Boolean) -> Unit,
@@ -204,8 +210,10 @@ fun MapsScreen(
     showMaxSizeCourseSnackBar: () -> Unit,
     saveMyCourse: () -> Unit,
     placeBookMarkClick: () -> Unit,
+    // Add Course
+    courseDetailInfo: CourseDetailEntity,
     // Edit Course
-    course: List<PlaceInfo>,
+    course: List<PlaceDetailEntity>,
     removeIconVisible: Boolean,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
@@ -240,7 +248,7 @@ fun MapsScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = if (mapsType == MapsType.PLACE_DETAIL) {
             CameraPosition(
-                LatLng(placeInfo.latitude - 0.008, placeInfo.longitude),
+                LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
                 14.0,
                 0.0,
                 0.0
@@ -290,7 +298,7 @@ fun MapsScreen(
             val topBarTitle = when (mapsType) {
                 MapsType.ADD_COURSE -> "코스 상세보기"
                 MapsType.EDIT_COURSE -> "수집함"
-                else -> placeInfo.placeName
+                else -> placeDetailEntity.placeName
             }
             MapsTopBar(
                 mapsType = mapsType,
@@ -306,8 +314,8 @@ fun MapsScreen(
                     Marker(
                         state = MarkerState(
                             position = LatLng(
-                                placeInfo.latitude,
-                                placeInfo.longitude
+                                placeDetailEntity.latitude,
+                                placeDetailEntity.longitude
                             )
                         ),
                         icon = OverlayImage.fromResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
@@ -448,8 +456,9 @@ fun MapsScreen(
                 } else {
                     AddCourseButton(
                         onClick = {},
-                        selected = true
-                    )
+                        selected = true,
+                        modifier = Modifier.padding(end = 15.dp),
+                        )
                 }
                 // TODO("맵 타입에 따라 바텀 시트 위 버튼")
             },
@@ -458,14 +467,14 @@ fun MapsScreen(
                     MapsType.PLACE_DETAIL -> {
                         PlaceDetailBottomSheet(
                             addPlace = startAddMyCourse,
-                            placeType = placeInfo.primaryTag,
-                            title = placeInfo.placeName,
-                            description = placeInfo.description,
-                            placeImageUrls = placeInfo.imageInfos,
-                            placeAddress = placeInfo.address,
-                            placeContactNumber = placeInfo.contactNumber,
-                            placeOpeningHours = placeInfo.openingHours,
-                            placeSnsLink = placeInfo.snsLink,
+                            placeType = placeDetailEntity.primaryTag,
+                            title = placeDetailEntity.placeName,
+                            description = placeDetailEntity.description,
+                            placeImageUrls = placeDetailEntity.imageInfos,
+                            placeAddress = placeDetailEntity.address,
+                            placeContactNumber = placeDetailEntity.contactNumber,
+                            placeOpeningHours = placeDetailEntity.openingHours,
+                            placeSnsLink = placeDetailEntity.snsLink,
                             courses = courses,
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
@@ -476,7 +485,11 @@ fun MapsScreen(
                     }
 
                     MapsType.ADD_COURSE -> {
-                        AddCourseBottomSheet()
+                        AddCourseBottomSheet(
+                            places = courseDetailInfo.places,
+                            courseName = courseDetailInfo.courseName,
+                            introduction = courseDetailInfo.introduction
+                        )
                     }
 
                     MapsType.EDIT_COURSE -> {

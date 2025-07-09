@@ -20,11 +20,11 @@ import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.editcourse.extension.dragContainer
 import com.teamsolply.solply.maps.editcourse.extension.draggableItems
 import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
-import com.teamsolply.solply.maps.model.PlaceInfo
+import com.teamsolply.solply.maps.model.PlaceDetailEntity
 
 @Composable
 fun EditCourseBottomSheet(
-    course: List<PlaceInfo>,
+    course: List<PlaceDetailEntity>,
     removeIconBounds: Rect?,
     isInRemoveIconArea: MutableState<Boolean>,
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
