@@ -71,7 +71,8 @@ fun MypageScreen(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[selectedIndex]),
                     color = SolplyTheme.colors.black
                 )
-            }
+            },
+            containerColor = SolplyTheme.colors.white
         ) {
             list.forEachIndexed { index, page ->
                 val selected = pagerState.currentPage == index
