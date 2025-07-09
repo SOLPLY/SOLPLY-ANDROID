@@ -35,11 +35,13 @@ import kotlinx.coroutines.launch
 fun MypageRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
+    navigateToBack: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MypageScreen(
         navigateToMaps = navigateToMaps,
+        navigateToBack = navigateToBack,
         place = uiState.places
     )
 }
@@ -47,6 +49,7 @@ fun MypageRoute(
 @Composable
 fun MypageScreen(
     navigateToMaps: (String) -> Unit,
+    navigateToBack: () -> Unit,
     modifier: Modifier = Modifier,
     place: List<PlaceCard>
 ) {
@@ -62,7 +65,7 @@ fun MypageScreen(
     ) {
         MypageTopBar(
             title = "수집함",
-            onBackButtonClick = { }
+            onBackButtonClick = { navigateToBack() }
         )
         TabRow(
             selectedTabIndex = 0,
@@ -77,32 +80,27 @@ fun MypageScreen(
         ) {
             list.forEachIndexed { index, page ->
                 val selected = pagerState.currentPage == index
-                Tab(
-                    selected = selected,
-                    onClick = { },
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 14.dp)
-                            .customClickable(
-                                rippleEnabled = false,
-                                onClick = {
-                                    coroutineScope.launch {
-                                        pagerState.animateScrollToPage(
-                                            index
-                                        )
-                                    }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 14.dp)
+                        .customClickable(
+                            rippleEnabled = false,
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(
+                                        index
+                                    )
                                 }
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = page,
-                            style = if (selected) SolplyTheme.typography.head15Sb else SolplyTheme.typography.head15M,
-                            color = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray800
-                        )
-                    }
+                            }
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = page,
+                        style = if (selected) SolplyTheme.typography.head15Sb else SolplyTheme.typography.head15M,
+                        color = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray800
+                    )
                 }
 
             }
@@ -125,13 +123,15 @@ fun MypageScreen(
     }
 }
 
+
 @DefaultPreview
 @Composable
-private fun PlaceCollectionScreenPreview() {
+private fun MypageScreenPreview() {
     SolplyTheme {
-        PlaceCollectionScreen(
-            onClickEmptyButton = {},
-            place = emptyList()
+        MypageScreen(
+            navigateToMaps = {},
+            place = emptyList(),
+            navigateToBack = {}
         )
     }
 }

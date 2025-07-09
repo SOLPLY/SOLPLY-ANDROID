@@ -41,13 +41,12 @@ fun PlaceCollectionScreen(
         }
     }
 }
-
 @DefaultPreview
 @Composable
-private fun MypageScreenPreview() {
+private fun PlaceCollectionScreenPreview() {
     SolplyTheme {
-        MypageScreen(
-            navigateToMaps = {},
+        PlaceCollectionScreen(
+            onClickEmptyButton = {},
             place = emptyList()
         )
     }
