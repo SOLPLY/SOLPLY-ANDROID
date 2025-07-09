@@ -1,19 +1,14 @@
 package com.teamsolply.solply.mypage
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -27,11 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
-import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.component.MypageTopBar
+import com.teamsolply.solply.mypage.component.PlaceCollectionScreen
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.preview.DefaultPreview
@@ -50,7 +44,6 @@ fun MypageRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MypageScreen(
     navigateToMaps: (String) -> Unit,
@@ -69,7 +62,7 @@ fun MypageScreen(
     ) {
         MypageTopBar(
             title = "수집함",
-            onBackButtonClick = {}
+            onBackButtonClick = { }
         )
         TabRow(
             selectedTabIndex = 0,
@@ -86,14 +79,30 @@ fun MypageScreen(
                 val selected = pagerState.currentPage == index
                 Tab(
                     selected = selected,
-                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                    modifier = Modifier.padding(vertical = 14.dp)
+                    onClick = { },
                 ) {
-                    Text(
-                        text = page,
-                        style = SolplyTheme.typography.head15Sb,
-                        color = SolplyTheme.colors.black
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(vertical = 14.dp)
+                            .customClickable(
+                                rippleEnabled = false,
+                                onClick = {
+                                    coroutineScope.launch {
+                                        pagerState.animateScrollToPage(
+                                            index
+                                        )
+                                    }
+                                }
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = page,
+                            style = if (selected) SolplyTheme.typography.head15Sb else SolplyTheme.typography.head15M,
+                            color = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray800
+                        )
+                    }
                 }
 
             }
@@ -112,77 +121,6 @@ fun MypageScreen(
         Text(
             text = "Mypage",
             modifier = Modifier.customClickable { navigateToMaps(MapsType.EDIT_COURSE.name) }
-        )
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun MypageScreenPreview() {
-    SolplyTheme {
-        MypageScreen(
-            navigateToMaps = {},
-            place = emptyList()
-        )
-    }
-}
-
-@Composable
-private fun PlaceCollectionScreen(
-    onClickEmptyButton: () -> Unit,
-    place: List<PlaceCard>,
-    modifier: Modifier = Modifier,
-    isEmpty: Boolean = true
-) {
-    if (isEmpty) {
-        EmptyCollectionScreen(
-            onClick = onClickEmptyButton
-        )
-    } else {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.Top,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-//            items(place) {
-//                SolplyPlaceCard(
-//                    name = it.placeName,
-//                    placeType = it.placeType,
-//                    imgRes = it.imageUrls[0],
-//                    iconColor = SolplyTheme.colors.black,
-//                    iconBackGroundColor = SolplyTheme.colors.white
-//                )
-//            }
-        }
-    }
-}
-
-@Composable
-private fun EmptyCollectionScreen(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "저장한 장소가 없어요.",
-            style = SolplyTheme.typography.body16M,
-            color = SolplyTheme.colors.gray800
-        )
-        Spacer(
-            modifier = Modifier
-                .height(28.dp)
-        )
-        SolplyBasicButton(
-            text = "나만의 장소 수집하러 가기",
-            onClick = onClick,
-            textColor = SolplyTheme.colors.purple700,
-            enabledBackgroundColor = SolplyTheme.colors.purple300,
-            modifier = Modifier.padding(horizontal = 64.dp)
         )
     }
 }
