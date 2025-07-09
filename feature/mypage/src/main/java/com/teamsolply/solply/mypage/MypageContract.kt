@@ -1,6 +1,7 @@
 package com.teamsolply.solply.mypage
 
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
@@ -64,9 +65,11 @@ data class MypageState(
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
     ),
+    val selectedTab: MypageTab = MypageTab.PLACE,
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
+    // TODO 탭 이중관리
 
     // Navigate
     data object BackButtonClick : MypageIntent
