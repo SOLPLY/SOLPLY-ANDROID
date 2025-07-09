@@ -4,6 +4,7 @@ data class CourseDetailEntity(
     val courseId: Int,
     val courseName: String,
     val introduction: String,
+    val isBookmarked: Boolean,
     val places: List<Place>
 )
 

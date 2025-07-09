@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -152,7 +153,7 @@ fun MapsRoute(
         startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
         addMyCourseSelectedCount = uiState.addMyCourseSelectedCount,
-        isBookmarked = uiState.placeDetailEntity.isBookmarked,
+        placeBookmarked = uiState.placeDetailEntity.isBookmarked,
         changeAddPlaceState = { addPlace ->
             viewModel.sendIntent(MapsIntent.AddPlaceClick(addPlace = addPlace))
         },
@@ -170,6 +171,7 @@ fun MapsRoute(
         },
         // ADD Course
         courseDetailInfo = uiState.courseDetailInfo,
+        saveCourse = { viewModel.sendIntent(MapsIntent.SaveCourse) },
         // Edit Course
         course = uiState.course,
         removeIconVisible = uiState.iconVisibility,
@@ -204,7 +206,7 @@ fun MapsScreen(
     startAddMyCourse: Boolean,
     courses: List<CourseInfoEntity>,
     addMyCourseSelectedCount: List<Int>,
-    isBookmarked: Boolean,
+    placeBookmarked: Boolean,
     changeAddPlaceState: (Boolean) -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
@@ -212,6 +214,7 @@ fun MapsScreen(
     placeBookMarkClick: () -> Unit,
     // Add Course
     courseDetailInfo: CourseDetailEntity,
+    saveCourse: () -> Unit,
     // Edit Course
     course: List<PlaceDetailEntity>,
     removeIconVisible: Boolean,
@@ -409,7 +412,7 @@ fun MapsScreen(
                                 color = if (startAddMyCourse) {
                                     SolplyTheme.colors.white
                                 } else {
-                                    if (isBookmarked) {
+                                    if (placeBookmarked) {
                                         SolplyTheme.colors.red100
                                     } else {
                                         SolplyTheme.colors.white
@@ -434,7 +437,7 @@ fun MapsScreen(
                             color = if (startAddMyCourse) {
                                 SolplyTheme.colors.gray400
                             } else {
-                                if (isBookmarked) {
+                                if (placeBookmarked) {
                                     SolplyTheme.colors.red500
                                 } else {
                                     SolplyTheme.colors.purple600
@@ -449,16 +452,16 @@ fun MapsScreen(
                             tint = if (startAddMyCourse) {
                                 SolplyTheme.colors.gray400
                             } else {
-                                if (isBookmarked) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
+                                if (placeBookmarked) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
                             }
                         )
                     }
                 } else {
                     AddCourseButton(
-                        onClick = {},
-                        selected = true,
+                        onClick = saveCourse,
+                        selected = courseDetailInfo.isBookmarked,
                         modifier = Modifier.padding(end = 15.dp),
-                        )
+                    )
                 }
                 // TODO("맵 타입에 따라 바텀 시트 위 버튼")
             },
@@ -488,7 +491,7 @@ fun MapsScreen(
                         AddCourseBottomSheet(
                             places = courseDetailInfo.places,
                             courseName = courseDetailInfo.courseName,
-                            introduction = courseDetailInfo.introduction
+                            introduction = courseDetailInfo.introduction,
                         )
                     }
 

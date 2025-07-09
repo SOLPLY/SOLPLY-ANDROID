@@ -169,6 +169,7 @@ class MapsRepositoryImpl @Inject constructor(
             courseId = 1,
             courseName = "오감으로 수집하는 하루",
             introduction = "귀여운 당고 디저트와 ...",
+            isBookmarked = true,
             places = listOf(
                 Place(
                     placeId = 1,

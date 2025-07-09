@@ -35,8 +35,9 @@ sealed interface MapsIntent : UiIntent {
 
     data object PlaceBookMarkClick : MapsIntent
 
+    // Add course
+    data object SaveCourse: MapsIntent
     // Edit Course
-    data object Save
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
@@ -94,5 +95,6 @@ val courseDetailEntity = CourseDetailEntity(
     courseId = 0,
     courseName = "",
     introduction = "",
+    isBookmarked = false,
     places = emptyList()
 )
