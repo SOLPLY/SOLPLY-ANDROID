@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -34,14 +33,26 @@ fun SolplyPlaceCard(
     name: String,
     imgRes: Int,
     placeType: PlaceType,
-    iconColor: Color,
-    iconBackGroundColor: Color,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     saved: Boolean = false,
     selected: Boolean = false,
     touchable: Boolean = true
 ) {
+    val iconColor = when (placeType) {
+        PlaceType.CAFE -> SolplyTheme.colors.red500
+        PlaceType.FOOD -> SolplyTheme.colors.yellow300
+        PlaceType.WALK, PlaceType.UNIQUE -> SolplyTheme.colors.green400
+        PlaceType.SHOPPING, PlaceType.BOOK -> SolplyTheme.colors.purple400
+        else -> SolplyTheme.colors.gray400
+    }
+    val iconBackGroundColor = when (placeType) {
+        PlaceType.CAFE -> SolplyTheme.colors.red200
+        PlaceType.FOOD -> SolplyTheme.colors.yellow100
+        PlaceType.WALK, PlaceType.UNIQUE -> SolplyTheme.colors.green200
+        PlaceType.SHOPPING, PlaceType.BOOK -> SolplyTheme.colors.purple100
+        else -> SolplyTheme.colors.gray200
+    }
     Column(
         modifier = modifier
             .then(
@@ -105,14 +116,30 @@ fun SolplyPlaceCard(
 @Composable
 private fun SolplyPlaceCardPreview() {
     SolplyTheme {
-        SolplyPlaceCard(
-            name = "을지면옥",
-            imgRes = R.drawable.img_course_dummy,
-            placeType = PlaceType.SHOPPING,
-            iconColor = SolplyTheme.colors.purple400,
-            iconBackGroundColor = SolplyTheme.colors.purple100,
-            saved = true,
-            selected = true
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            SolplyPlaceCard(
+                name = "을지면옥",
+                imgRes = R.drawable.img_course_dummy,
+                placeType = PlaceType.SHOPPING,
+                saved = true,
+                selected = true
+            )
+            SolplyPlaceCard(
+                name = "을지면옥",
+                imgRes = R.drawable.img_course_dummy,
+                placeType = PlaceType.CAFE,
+                saved = true,
+                selected = false
+            )
+            SolplyPlaceCard(
+                name = "을지면옥",
+                imgRes = R.drawable.img_course_dummy,
+                placeType = PlaceType.WALK,
+                saved = false,
+                selected = false
+            )
+        }
     }
 }
