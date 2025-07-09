@@ -7,17 +7,20 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 data class MapsState(
     // Add Place
     val placeDetailEntity: PlaceDetailEntity = defaultPlaceDetailEntity,
-    val courses: List<CourseInfoEntity> = emptyList(),
+    val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
     val startAddMyCourse: Boolean = false,
-    val addMyCourseSelectedCount: List<Int> = emptyList(),
+    val addMyCourseSelectedCount: PersistentList<Int> = persistentListOf(),
     // Add Course
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
+    val placeSelectedCount: PersistentList<Int> = persistentListOf(),
     // Edit Course
-    val course: List<PlaceDetailEntity> = emptyList(),
+    val course: PersistentList<PlaceDetailEntity> = persistentListOf(),
     val iconVisibility: Boolean = false
 ) : UiState
 
@@ -36,7 +39,8 @@ sealed interface MapsIntent : UiIntent {
     data object PlaceBookMarkClick : MapsIntent
 
     // Add course
-    data object SaveCourse: MapsIntent
+    data object SaveCourse : MapsIntent
+
     // Edit Course
     // Item Drag and Remove
     data class StartCourseMove(

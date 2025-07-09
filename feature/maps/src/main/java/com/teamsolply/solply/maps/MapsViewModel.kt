@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +31,7 @@ class MapsViewModel @Inject constructor(
                         ?: ""
 
                 reduce {
-                    copy(addMyCourseSelectedCount = emptyList())
+                    copy(addMyCourseSelectedCount = persistentListOf())
                 }
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
                 // TODO 코스에 저장 api
@@ -104,7 +106,7 @@ class MapsViewModel @Inject constructor(
             mapsRepository.getAllCourses().onSuccess {
                 reduce {
                     copy(
-                        courses = it
+                        courses = it.toPersistentList()
                     )
                 }
             }
@@ -132,7 +134,7 @@ class MapsViewModel @Inject constructor(
                 addMyCourseSelectedCount + courseId
             }
 
-            copy(addMyCourseSelectedCount = updatedList)
+            copy(addMyCourseSelectedCount = updatedList.toPersistentList())
         }
     }
 
@@ -141,7 +143,7 @@ class MapsViewModel @Inject constructor(
             val newCourseList = course.toMutableList()
             val item = newCourseList.removeAt(fromIndex)
             newCourseList.add(toIndex, item)
-            copy(course = newCourseList)
+            copy(course = newCourseList.toPersistentList())
         }
     }
 
@@ -155,7 +157,7 @@ class MapsViewModel @Inject constructor(
             val newList = course.toMutableList()
             newList.removeAt(itemToRemove)
             copy(
-                course = newList
+                course = newList.toPersistentList()
             )
         }
     }
