@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
@@ -28,7 +29,8 @@ fun PlaceCollectionScreen(
 ) {
     if (place.isEmpty()) {
         EmptyCollectionScreen(
-            onClick = onClickEmptyButton
+            onClick = onClickEmptyButton,
+            mypageTab = MypageTab.PLACE
         )
     } else {
         LazyVerticalGrid(

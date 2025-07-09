@@ -13,13 +13,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.mypage.model.MypageTab
+import com.teamsolply.solply.ui.preview.DefaultPreview
 
 
 @Composable
 fun EmptyCollectionScreen(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    mypageTab: MypageTab,
+    modifier: Modifier = Modifier,
 ) {
+    val textColor = when (mypageTab) {
+        MypageTab.PLACE -> SolplyTheme.colors.purple700
+        MypageTab.COURSE -> SolplyTheme.colors.green800
+    }
+    val backgroundColor = when (mypageTab) {
+        MypageTab.PLACE -> SolplyTheme.colors.purple300
+        MypageTab.COURSE -> SolplyTheme.colors.green300
+    }
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -27,7 +38,7 @@ fun EmptyCollectionScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "저장한 장소가 없어요.",
+            text = "저장한 ${mypageTab.label}가 없어요.",
             style = SolplyTheme.typography.body16M,
             color = SolplyTheme.colors.gray800
         )
@@ -36,11 +47,22 @@ fun EmptyCollectionScreen(
                 .height(28.dp)
         )
         SolplyBasicButton(
-            text = "나만의 장소 수집하러 가기",
+            text = "나만의 ${mypageTab.label} 수집하러 가기",
             onClick = onClick,
-            textColor = SolplyTheme.colors.purple700,
-            enabledBackgroundColor = SolplyTheme.colors.purple300,
+            textColor = textColor,
+            enabledBackgroundColor = backgroundColor,
             modifier = Modifier.padding(horizontal = 64.dp)
+        )
+    }
+}
+
+@DefaultPreview
+@Composable
+private fun EmptyCollectionScreenPreview() {
+    SolplyTheme{
+        EmptyCollectionScreen(
+            onClick = {},
+            mypageTab = MypageTab.COURSE
         )
     }
 }
