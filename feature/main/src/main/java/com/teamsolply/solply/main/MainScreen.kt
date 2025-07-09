@@ -157,19 +157,14 @@ internal fun MainScreen(
                 courseNavGraph(
                     paddingValues = innerPadding,
                     navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {
-                        }
+                        val navOptions = navOptions {}
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                     }
                 )
                 mypageNavGraph(
                     paddingValues = innerPadding,
                     navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {
-                            popUpTo(Mypage) {
-                                inclusive = false
-                            }
-                        }
+                        val navOptions = navOptions {}
                         navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                     }
                 )
@@ -224,9 +219,6 @@ internal fun MainScreen(
                     },
                     navigateToMypage = {
                         val navOptions = navOptions {
-                            popUpTo(Place) {
-                                inclusive = false
-                            }
                             launchSingleTop = true
                         }
                         navigator.navigateToMypage(navOptions = navOptions)

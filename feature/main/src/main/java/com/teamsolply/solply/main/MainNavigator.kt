@@ -37,8 +37,8 @@ internal class MainNavigator(
         when (tab) {
             MainNavTab.PLACE -> {
                 val navOptions = navOptions {
-                    popUpTo(Place) {
-                        inclusive = true
+                    popUpTo(0) {
+                        inclusive = false
                         saveState = true
                     }
                     launchSingleTop = true
@@ -49,8 +49,8 @@ internal class MainNavigator(
 
             MainNavTab.COURSE -> {
                 val navOptions = navOptions {
-                    popUpTo(Course) {
-                        inclusive = true
+                    popUpTo(0) {
+                        inclusive = false
                         saveState = true
                     }
                     launchSingleTop = true
