@@ -13,25 +13,55 @@ data class MypageState(
             placeId = 0,
             placeName = "0번",
             placeType = PlaceType.CAFE,
-            imageUrls = emptyList()
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
             placeId = 1,
             placeName = "1번",
             placeType = PlaceType.BOOK,
-            imageUrls = emptyList()
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
             placeId = 2,
             placeName = "2번",
             placeType = PlaceType.SHOPPING,
-            imageUrls = emptyList()
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
             placeId = 3,
             placeName = "3번",
             placeType = PlaceType.FOOD,
-            imageUrls = emptyList()
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+        ),
+        PlaceCard(
+            placeId = 3,
+            placeName = "3번",
+            placeType = PlaceType.FOOD,
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+        ),
+        PlaceCard(
+            placeId = 3,
+            placeName = "3번",
+            placeType = PlaceType.FOOD,
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+        ),
+        PlaceCard(
+            placeId = 3,
+            placeName = "3번",
+            placeType = PlaceType.FOOD,
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+        ),
+        PlaceCard(
+            placeId = 3,
+            placeName = "3번",
+            placeType = PlaceType.FOOD,
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+        ),
+        PlaceCard(
+            placeId = 3,
+            placeName = "3번",
+            placeType = PlaceType.FOOD,
+            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
     )
 ) : UiState
