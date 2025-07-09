@@ -269,8 +269,7 @@ fun MapsScreen(
             val topBarTitle = when (mapsType) {
                 MapsType.ADD_COURSE -> "코스 상세보기"
                 MapsType.EDIT_COURSE -> "수집함"
-                else -> "장소 상세이름"
-                // TODO("장소 상세 이름으로")
+                else -> placeInfo.placeName
             }
             MapsTopBar(
                 mapsType = mapsType,

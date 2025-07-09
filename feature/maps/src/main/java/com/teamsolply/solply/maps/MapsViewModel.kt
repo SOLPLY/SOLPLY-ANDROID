@@ -36,7 +36,7 @@ class MapsViewModel @Inject constructor() :
                     copy(addMyCourseSelectedCount = emptyList())
                 }
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
-                // TODO 코스 저장 api
+                // TODO 코스에 저장 api
             }
 
             is MapsIntent.PlaceBookMarkClick -> {

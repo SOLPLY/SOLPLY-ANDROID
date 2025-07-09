@@ -1,6 +1,8 @@
 package com.teamsolply.solply.maps.component
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,25 +26,29 @@ fun MapsTopBar(
     onBackButtonClick: () -> Unit,
     onReturnToHomeButtonClick: () -> Unit
 ) {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
-        contentAlignment = Alignment.Center
+            .height(56.dp)
+            .padding(horizontal = 24.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_arrow),
+            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_long_arrow),
             contentDescription = "back",
             tint = Color.Unspecified,
             modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 28.dp)
+                .padding(end = 12.dp)
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
         Text(
             text = title,
-            style = SolplyTheme.typography.title18Sb,
+            style = SolplyTheme.typography.head16M,
             color = SolplyTheme.colors.black
+        )
+        Spacer(
+            modifier = Modifier.weight(1f)
         )
         Icon(
             painter = painterResource(
@@ -55,8 +61,6 @@ fun MapsTopBar(
             contentDescription = "home",
             tint = Color.Unspecified,
             modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 28.dp)
                 .size(24.dp)
                 .customClickable(rippleEnabled = false) { onReturnToHomeButtonClick() }
         )
