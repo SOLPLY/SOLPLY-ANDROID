@@ -35,7 +35,6 @@ fun CourseHeader(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-
                 Icon(
                     painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_home_location),
                     contentDescription = "town-icon",
@@ -62,7 +61,6 @@ fun CourseHeader(
                         .padding(vertical = 7.dp)
                         .size(24.dp)
                 )
-
             }
 
             Icon(
@@ -73,7 +71,6 @@ fun CourseHeader(
                     .padding(1.dp)
                     .size(24.dp)
             )
-
         }
 
         Text(
@@ -83,6 +80,5 @@ fun CourseHeader(
             modifier = Modifier
                 .padding(start = 4.dp, top = 16.dp, bottom = 9.dp)
         )
-
     }
 }
