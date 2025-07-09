@@ -6,5 +6,5 @@ data class PlaceCard(
     val placeId: Int,
     val placeName: String,
     val placeType: PlaceType,
-    val imageUrls: List<Int>,
+    val imageUrls: List<Int>
 )

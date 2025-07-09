@@ -23,7 +23,7 @@ import com.teamsolply.solply.ui.preview.DefaultPreview
 @Composable
 fun MypageTopBar(
     title: String,
-    onBackButtonClick: () -> Unit,
+    onBackButtonClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -40,8 +40,10 @@ fun MypageTopBar(
                 .padding(start = 16.dp)
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
-        Spacer(modifier = Modifier
-            .width(Dp(12f)))
+        Spacer(
+            modifier = Modifier
+                .width(Dp(12f))
+        )
         Text(
             text = title,
             style = SolplyTheme.typography.title18Sb,

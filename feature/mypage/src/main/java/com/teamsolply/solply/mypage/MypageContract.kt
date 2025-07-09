@@ -63,9 +63,9 @@ data class MypageState(
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
+        )
     ),
-    val selectedTab: MypageTab = MypageTab.PLACE,
+    val selectedTab: MypageTab = MypageTab.PLACE
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {

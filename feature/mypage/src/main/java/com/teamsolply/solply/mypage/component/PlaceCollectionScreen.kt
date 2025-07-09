@@ -20,12 +20,11 @@ import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
 
-
 @Composable
 fun PlaceCollectionScreen(
     onClickEmptyButton: () -> Unit,
     place: List<PlaceCard>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     if (place.isEmpty()) {
         EmptyCollectionScreen(
@@ -48,7 +47,7 @@ fun PlaceCollectionScreen(
                     SolplyPlaceCard(
                         name = it.placeName,
                         placeType = it.placeType,
-                        imgRes = it.imageUrls[0],
+                        imgRes = it.imageUrls[0]
                     )
                 }
             }
@@ -86,7 +85,7 @@ private fun PlaceCollectionScreenPreview() {
                     placeName = "3번",
                     placeType = PlaceType.FOOD,
                     imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-                ),
+                )
             )
         )
     }

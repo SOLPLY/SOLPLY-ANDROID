@@ -16,12 +16,11 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
-
 @Composable
 fun EmptyCollectionScreen(
     onClick: () -> Unit,
     mypageTab: MypageTab,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val textColor = when (mypageTab) {
         MypageTab.PLACE -> SolplyTheme.colors.purple700
@@ -59,7 +58,7 @@ fun EmptyCollectionScreen(
 @DefaultPreview
 @Composable
 private fun EmptyCollectionScreenPreview() {
-    SolplyTheme{
+    SolplyTheme {
         EmptyCollectionScreen(
             onClick = {},
             mypageTab = MypageTab.COURSE

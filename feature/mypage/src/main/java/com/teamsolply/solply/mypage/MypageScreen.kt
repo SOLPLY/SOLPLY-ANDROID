@@ -121,7 +121,6 @@ fun MypageScreen(
                         color = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray800
                     )
                 }
-
             }
         }
         HorizontalPager(
@@ -142,7 +141,6 @@ fun MypageScreen(
     }
 }
 
-
 @DefaultPreview
 @Composable
 private fun MypageScreenPreview() {
@@ -150,7 +148,7 @@ private fun MypageScreenPreview() {
         MypageScreen(
             navigateToMaps = {},
             place = emptyList(),
-            navigateToBack = {},
+            navigateToBack = {}
         )
     }
 }
