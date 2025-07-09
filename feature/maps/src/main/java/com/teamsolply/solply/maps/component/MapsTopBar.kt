@@ -57,7 +57,7 @@ fun MapsTopBar(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 28.dp)
-                .size(18.dp)
+                .size(24.dp)
                 .customClickable(rippleEnabled = false) { onReturnToHomeButtonClick() }
         )
     }
