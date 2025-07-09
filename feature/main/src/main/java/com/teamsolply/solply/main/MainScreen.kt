@@ -221,8 +221,8 @@ internal fun MainScreen(
                     },
                     navigateToMypage = {
                         val navOptions = navOptions {
-                            popUpTo(Mypage) {
-                                inclusive = true
+                            popUpTo(Place) {
+                                inclusive = false
                             }
                         }
                         navigator.navigateToMypage(navOptions = navOptions)
