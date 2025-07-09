@@ -11,12 +11,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,46 +48,40 @@ fun CourseScreen(
 ) {
     val courseList = state.courseList
     val user = state.user
+    val gridState = rememberLazyGridState()
 
-    Column(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = gridState,
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        CourseHeader(
-            townName = user.favoriteTowns,
-            persona = user.persona,
-            nickname = user.nickname
-        )
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            CourseHeader(
+                townName = user.favoriteTowns,
+                persona = user.persona,
+                nickname = user.nickname
+            )
+        }
 
-        courseList.chunked(2).forEach { rowItems ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                rowItems.forEach { course ->
-                    SolplyCourseCard(
-                        title = course.title,
-                        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                        placeType = course.mainTags.map { PlaceType.valueOf(it) },
-                        backgroundColor = SolplyTheme.colors.red300,
-                        iconColor = SolplyTheme.colors.red500,
-                        iconBackGroundColor = SolplyTheme.colors.red200,
-                        savedCourse = course.isBookmarked,
-                        modifier = Modifier
-                            .weight(1f)
-                            .customClickable {
-                                navigateToMaps("")
-                            }
-                    )
-                }
-
-                if (rowItems.size == 1) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
+        items(courseList) { course ->
+            SolplyCourseCard(
+                title = course.title,
+                imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                placeType = course.mainTags.map { PlaceType.valueOf(it) },
+                backgroundColor = SolplyTheme.colors.red300,
+                iconColor = SolplyTheme.colors.red500,
+                iconBackGroundColor = SolplyTheme.colors.red200,
+                savedCourse = course.isBookmarked,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .customClickable {
+                        navigateToMaps("")
+                    }
+            )
         }
     }
 }
