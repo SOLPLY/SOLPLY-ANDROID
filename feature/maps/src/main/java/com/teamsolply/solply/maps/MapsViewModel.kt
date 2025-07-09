@@ -1,9 +1,12 @@
 package com.teamsolply.solply.maps
 
+import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.PlaceInfo
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,14 +28,27 @@ class MapsViewModel @Inject constructor() :
 
             is MapsIntent.SaveMyCourse -> {
                 val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
-                val selectedCourseName = currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title ?: ""
+                val selectedCourseName =
+                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
+                        ?: ""
 
                 reduce {
                     copy(addMyCourseSelectedCount = emptyList())
                 }
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
+                // TODO 코스에 저장 api
+            }
 
-                // TODO 코스 저장 api
+            is MapsIntent.PlaceBookMarkClick -> {
+                val bookmark = !uiState.value.placeInfo.isBookmarked
+                // TODO 장소 개별 저장 상태 post
+                reduce {
+                    copy(placeInfo = placeInfo.copy(isBookmarked = bookmark))
+                }
+
+                if (bookmark) {
+                    postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
+                }
             }
             // Edit Course
             is MapsIntent.StartCourseMove -> reduce { copy(iconVisibility = intent.iconVisibility) }
@@ -62,6 +78,9 @@ class MapsViewModel @Inject constructor() :
 
     fun getPlaceDetailInfo() {
         reduce {
+            viewModelScope.launch {
+                delay(3000)
+            }
             copy(
                 placeInfo = PlaceInfo(
                     placeId = 1,
@@ -95,14 +114,6 @@ class MapsViewModel @Inject constructor() :
             }
 
             copy(addMyCourseSelectedCount = updatedList)
-        }
-    }
-
-    private fun removeAddPlaceState() {
-        reduce {
-            copy(
-                addMyCourseSelectedCount = emptyList()
-            )
         }
     }
 
