@@ -377,9 +377,14 @@ fun MapsScreen(
                             .height(49.dp)
                             .padding(end = 16.dp)
                             .background(
-                                color = if (startAddMyCourse) SolplyTheme.colors.white else {
-                                    if (isBookmarked) SolplyTheme.colors.red100 else
+                                color = if (startAddMyCourse) {
+                                    SolplyTheme.colors.white
+                                } else {
+                                    if (isBookmarked) {
+                                        SolplyTheme.colors.red100
+                                    } else {
                                         SolplyTheme.colors.white
+                                    }
                                 },
                                 shape = RoundedCornerShape(26.dp)
                             )
@@ -397,9 +402,14 @@ fun MapsScreen(
                             text = "장소 저장",
                             modifier = Modifier.padding(start = 16.dp),
                             style = SolplyTheme.typography.body14M,
-                            color = if (startAddMyCourse) SolplyTheme.colors.gray400 else {
-                                if (isBookmarked) SolplyTheme.colors.red500 else
+                            color = if (startAddMyCourse) {
+                                SolplyTheme.colors.gray400
+                            } else {
+                                if (isBookmarked) {
+                                    SolplyTheme.colors.red500
+                                } else {
                                     SolplyTheme.colors.purple600
+                                }
                             },
                             maxLines = 1
                         )
@@ -407,7 +417,9 @@ fun MapsScreen(
                             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
                             contentDescription = "add_place",
                             modifier = Modifier.padding(start = 8.dp, end = 15.dp),
-                            tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else {
+                            tint = if (startAddMyCourse) {
+                                SolplyTheme.colors.gray400
+                            } else {
                                 if (isBookmarked) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
                             }
                         )
