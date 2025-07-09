@@ -25,7 +25,7 @@ class MapsViewModel @Inject constructor(
             is MapsIntent.SaveMyCourse -> {
                 val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
                 val selectedCourseName =
-                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.courseName
+                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
                         ?: ""
 
                 reduce {
@@ -36,10 +36,10 @@ class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.PlaceBookMarkClick -> {
-                val bookmark = !uiState.value.placeInfo.isBookmarked
+                val bookmark = !uiState.value.placeDetailEntity.isBookmarked
                 // TODO 장소 개별 저장 상태 post
                 reduce {
-                    copy(placeInfo = placeInfo.copy(isBookmarked = bookmark))
+                    copy(placeDetailEntity = placeDetailEntity.copy(isBookmarked = bookmark))
                 }
 
                 if (bookmark) {
@@ -79,19 +79,33 @@ class MapsViewModel @Inject constructor(
             mapsRepository.getPlaceInfo(placeId).onSuccess {
                 reduce {
                     copy(
-                        placeInfo = it
+                        placeDetailEntity = it
                     )
                 }
             }
         }
     }
 
+    //TODO. 장소를 저장 할 코스 리스트 정보 조회 API
     fun getAllCourseInfo() {
         viewModelScope.launch {
-            mapsRepository.getAllCourseInfo().onSuccess {
+            mapsRepository.getAllCourses().onSuccess {
                 reduce {
                     copy(
                         courses = it
+                    )
+                }
+            }
+        }
+    }
+
+    //TODO. 코스 상세 정보 조회 API
+    fun getCourseDetailInfo() {
+        viewModelScope.launch {
+            mapsRepository.getCourseInfo(courseId = 1).onSuccess {
+                reduce {
+                    copy(
+                        courseDetailInfo = it
                     )
                 }
             }

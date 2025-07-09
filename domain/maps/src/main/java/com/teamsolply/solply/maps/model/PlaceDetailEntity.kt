@@ -2,7 +2,7 @@ package com.teamsolply.solply.maps.model
 
 import com.teamsolply.solply.model.PlaceType
 
-data class PlaceInfo(
+data class PlaceDetailEntity(
     val placeId: Int,
     val placeName: String,
     val primaryTag: PlaceType,
