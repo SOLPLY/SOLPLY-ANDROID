@@ -106,7 +106,7 @@ fun MapsRoute(
             MapsType.EDIT_COURSE -> {}
         }
     }
-    
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
@@ -357,12 +357,13 @@ fun MapsScreen(
                     if (courseDetailInfo.places.isNotEmpty()) {
                         courseDetailInfo.places.forEachIndexed { index, place ->
                             val markerIconRes = when (index) {
-                                0 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
-                                1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
-                                2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
-                                3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
-                                4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
-                                5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
+                                //TODO 인덱스로 바꾸기
+                                0 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_first else com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
+                                1 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_second else com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
+                                2 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_third else com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
+                                3 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_fourth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
+                                4 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_fifth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
+                                5 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_sixth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
                                 else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
                             }
                             val currentLatLng =
