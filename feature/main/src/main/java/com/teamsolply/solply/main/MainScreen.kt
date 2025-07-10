@@ -92,7 +92,7 @@ internal fun MainScreen(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None },
                 modifier = modifier
-                    .background(color = SolplyTheme.colors.white)
+                    .background(color = SolplyTheme.colors.gray100)
                     .fillMaxSize()
             ) {
                 splashNavGraph(
