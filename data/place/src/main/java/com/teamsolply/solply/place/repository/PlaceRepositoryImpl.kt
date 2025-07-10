@@ -1,6 +1,7 @@
 package com.teamsolply.solply.place.repository
 
-import com.teamsolply.solply.place.model.PlaceEntity
+import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.place.model.PlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.source.PlaceLocalDataSource
 import com.teamsolply.solply.place.source.PlaceRemoteDataSource
@@ -10,16 +11,35 @@ class PlaceRepositoryImpl @Inject constructor(
     private val placeLocalDataSource: PlaceLocalDataSource,
     private val placeRemoteDataSource: PlaceRemoteDataSource
 ) : PlaceRepository {
+
     override suspend fun saveAutoSignIn(autoSignIn: SaveAutoSignInEntity): Result<Unit> =
         runCatching {
-            placeLocalDataSource.saveAutoSignIn(
-                autoSignIn = autoSignIn.autoSignIn
-            )
+            placeLocalDataSource.saveAutoSignIn(autoSignIn.autoSignIn)
         }
 
-    override suspend fun getRecommendedPlace(): Result<PlaceEntity> = runCatching {
-        placeRemoteDataSource.getRecommendedPlace()
-    }.mapCatching {
-        PlaceEntity(it)
+    override suspend fun getRecommendedPlace(): Result<List<PlaceInfo>> = runCatching {
+        listOf(
+            PlaceInfo(
+                placeId = 0,
+                placeName = "장소 이름",
+                thumbnailImageUrl = 0,
+                primaryTag = PlaceType.CAFE,
+                description = "장소 한 줄 소개 장소 한 줄 소개"
+            ),
+            PlaceInfo(
+                placeId = 1,
+                placeName = "장소 이름",
+                thumbnailImageUrl = 1,
+                primaryTag = PlaceType.FOOD,
+                description = "장소 한 줄 소개 장소 한 줄 소개"
+            ),
+            PlaceInfo(
+                placeId = 2,
+                placeName = "장소 이름",
+                thumbnailImageUrl = 2,
+                primaryTag = PlaceType.UNIQUE,
+                description = "장소 한 줄 소개 장소 한 줄 소개 두 줄이 되어도 괜찮음음음음음음"
+            )
+        )
     }
 }
