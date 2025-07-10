@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
-import com.teamsolply.solply.course.navigation.Course
 import com.teamsolply.solply.course.navigation.courseNavGraph
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNavigateSnackBar
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNotificationSnackBar
@@ -31,7 +30,6 @@ import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
-import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph

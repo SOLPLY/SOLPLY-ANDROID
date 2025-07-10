@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MapsRepositoryImpl @Inject constructor(
     private val mapsRemoteDataSource: MapsRemoteDataSource
 ) : MapsRepository {
-    //Add Place
+    // Add Place
     override suspend fun getPlaceInfo(placeId: Int): Result<PlaceDetailEntity> = runCatching {
         PlaceDetailEntity(
             placeId = 1,
@@ -23,9 +23,7 @@ class MapsRepositoryImpl @Inject constructor(
             latitude = 37.4979,
             longitude = 127.0276,
             description = "귀여운 당고 디저트와 커피, 에이드가 있는 펫 프렌들리",
-            imageInfos = listOf(
-
-            ),
+            imageInfos = listOf(),
             contactNumber = "0507 - 1324 - 9018",
             openingHours = "월 - 금 10:00 - 19:00",
             isBookmarked = true,
@@ -38,7 +36,6 @@ class MapsRepositoryImpl @Inject constructor(
             placeType = "SUBWAY_STATION",
             placeDefaultId = 222
         )
-
     }
 
     override suspend fun getAllCourses(): Result<List<CourseInfoEntity>> = runCatching {
@@ -163,7 +160,7 @@ class MapsRepositoryImpl @Inject constructor(
         )
     }
 
-    //Add Course
+    // Add Course
     override suspend fun getCourseInfo(courseId: Int): Result<CourseDetailEntity> = runCatching {
         CourseDetailEntity(
             courseId = 1,

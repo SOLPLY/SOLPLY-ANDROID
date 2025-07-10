@@ -6,11 +6,11 @@ import com.teamsolply.solply.maps.model.NewCourseEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 
 interface MapsRepository {
-    //Add Place
+    // Add Place
     suspend fun getPlaceInfo(placeId: Int): Result<PlaceDetailEntity>
     suspend fun getAllCourses(): Result<List<CourseInfoEntity>>
 
-    //Add Course
+    // Add Course
     suspend fun getCourseInfo(courseId: Int): Result<CourseDetailEntity>
     suspend fun saveCourse(courseInfo: NewCourseEntity): Result<Unit>
 }

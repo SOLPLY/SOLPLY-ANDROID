@@ -91,7 +91,7 @@ fun MapsRoute(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    //TODO. 초기 로드 데이터
+    // TODO. 초기 로드 데이터
     LaunchedEffect(Unit) {
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
@@ -357,7 +357,7 @@ fun MapsScreen(
                     if (courseDetailInfo.places.isNotEmpty()) {
                         courseDetailInfo.places.forEachIndexed { index, place ->
                             val markerIconRes = when (index) {
-                                //TODO 인덱스로 바꾸기
+                                // TODO 인덱스로 바꾸기
                                 0 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_first else com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
                                 1 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_second else com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
                                 2 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_third else com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
@@ -496,7 +496,7 @@ fun MapsScreen(
                     AddCourseButton(
                         onClick = saveCourse,
                         selected = courseDetailInfo.isBookmarked,
-                        modifier = Modifier.padding(end = 15.dp),
+                        modifier = Modifier.padding(end = 15.dp)
                     )
                 }
                 // TODO("맵 타입에 따라 바텀 시트 위 버튼")

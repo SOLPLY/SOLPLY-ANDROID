@@ -78,8 +78,8 @@ fun AddCourseBottomSheet(
                             it.displayName == item.primaryTag
                         } ?: PlaceType.EMPTY,
                         placeAddress = item.address,
-                        //TODO. 코스의 장소 이미지로
-                        //placeImageRes = item.thumbnailUrl
+                        // TODO. 코스의 장소 이미지로
+                        // placeImageRes = item.thumbnailUrl
                         placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
                         iconSelected = item.isBookmarked,
                         iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },

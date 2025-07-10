@@ -73,7 +73,7 @@ class MapsViewModel @Inject constructor(
                 reduce {
                     copy(courseDetailInfo = courseDetailInfo.copy(places = updatedPlaces))
                 }
-                //TODO. 장소 개별 저장 API
+                // TODO. 장소 개별 저장 API
             }
 
             is MapsIntent.PlaceInfoClick -> {
@@ -81,7 +81,9 @@ class MapsViewModel @Inject constructor(
                     copy(
                         selectedPlaceInfoId = if (selectedPlaceInfoId == intent.placeId) {
                             null
-                        } else intent.placeId
+                        } else {
+                            intent.placeId
+                        }
                     )
                 }
             }
@@ -112,7 +114,7 @@ class MapsViewModel @Inject constructor(
         }
     }
 
-    //TODO. 장소 상세 정보 조회 API
+    // TODO. 장소 상세 정보 조회 API
     fun getPlaceDetailInfo(placeId: Int) {
         viewModelScope.launch {
             mapsRepository.getPlaceInfo(placeId).onSuccess {
@@ -125,7 +127,7 @@ class MapsViewModel @Inject constructor(
         }
     }
 
-    //TODO. 장소를 저장 할 코스 리스트 정보 조회 API
+    // TODO. 장소를 저장 할 코스 리스트 정보 조회 API
     fun getAllCourseInfo() {
         viewModelScope.launch {
             mapsRepository.getAllCourses().onSuccess {
@@ -138,7 +140,7 @@ class MapsViewModel @Inject constructor(
         }
     }
 
-    //TODO. 코스 상세 정보 조회 API
+    // TODO. 코스 상세 정보 조회 API
     fun getCourseDetailInfo() {
         viewModelScope.launch {
             mapsRepository.getCourseInfo(courseId = 1).onSuccess {

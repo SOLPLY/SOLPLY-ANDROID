@@ -31,7 +31,7 @@ fun EditCourseBottomSheet(
     touchPositionState: MutableState<Offset>,
     lazyListState: LazyListState,
     dragDropState: DragDropState,
-    singleCoursePlaceBookMarkClick: (Int) -> Unit,
+    singleCoursePlaceBookMarkClick: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -76,7 +76,7 @@ fun EditCourseBottomSheet(
                         modifier = modifier,
                         iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                         selectedPlaceItem = false
-                        //TODO
+                        // TODO
                     )
                 }
             }

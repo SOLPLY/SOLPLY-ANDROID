@@ -60,7 +60,7 @@ fun PlaceDetailBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
-        //placeImageUrls.size
+        // placeImageUrls.size
         3
     })
     val copyText = "복사"
@@ -121,8 +121,8 @@ fun PlaceDetailBottomSheet(
                 ) {
                     items(courses) { courseInfo ->
                         SolplyCourseCard(
-                            //TODO. 서버 코스 이미지로 변경
-                            //imgRes = courseInfo.thumbnailImage,
+                            // TODO. 서버 코스 이미지로 변경
+                            // imgRes = courseInfo.thumbnailImage,
                             imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
                             placeType = courseInfo.mainTag,
                             backgroundColor = SolplyTheme.colors.green300,
@@ -173,8 +173,8 @@ fun PlaceDetailBottomSheet(
                 pageSpacing = 10.dp
             ) { page ->
                 Image(
-                    //TODO. 서버 코스 이미지로 변경
-                    //painter = painterResource(placeImageUrls[page]),
+                    // TODO. 서버 코스 이미지로 변경
+                    // painter = painterResource(placeImageUrls[page]),
                     painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy),
                     contentDescription = "place-image-url",
                     modifier = Modifier

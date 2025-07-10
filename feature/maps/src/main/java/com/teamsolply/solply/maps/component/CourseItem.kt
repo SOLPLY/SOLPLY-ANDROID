@@ -124,7 +124,7 @@ fun CourseItem(
                             )
                             .padding(horizontal = 15.dp, vertical = 8.dp)
                             .customClickable(rippleEnabled = false) {
-                                //TODO 장소 상세로 이동
+                                // TODO 장소 상세로 이동
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -148,7 +148,7 @@ fun CourseItem(
                             )
                             .padding(horizontal = 15.dp, vertical = 8.dp)
                             .customClickable(rippleEnabled = false) {
-                                //TODO 길찾기
+                                // TODO 길찾기
                             },
                         contentAlignment = Alignment.Center
                     ) {
