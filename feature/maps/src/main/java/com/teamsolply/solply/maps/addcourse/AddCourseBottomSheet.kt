@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,13 +21,16 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun AddCourseBottomSheet(
     places: List<Place>,
     courseName: String,
     introduction: String,
+    selectedPlaceItem: Int?,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
+    placeInfoClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -44,10 +49,10 @@ fun AddCourseBottomSheet(
             color = SolplyTheme.colors.gray900,
             style = SolplyTheme.typography.caption14R
         )
-        Column(
+        LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            places.forEachIndexed { index, place ->
+            itemsIndexed(places) { index, item ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -68,16 +73,20 @@ fun AddCourseBottomSheet(
                     }
                     Spacer(modifier = Modifier.width(14.dp))
                     CourseItem(
-                        placeName = place.placeName,
+                        placeName = item.placeName,
                         placeTag = PlaceType.entries.firstOrNull {
-                            it.displayName == place.primaryTag
+                            it.displayName == item.primaryTag
                         } ?: PlaceType.EMPTY,
-                        placeAddress = place.address,
+                        placeAddress = item.address,
                         //TODO. 코스의 장소 이미지로
                         //placeImageRes = item.thumbnailUrl
                         placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                        selected = place.isBookmarked,
-                        iconClick = { singleCoursePlaceBookMarkClick(place.placeId) }
+                        iconSelected = item.isBookmarked,
+                        iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
+                        modifier = Modifier.customClickable(rippleEnabled = false) {
+                            placeInfoClick(item.placeId)
+                        },
+                        selectedPlaceItem = selectedPlaceItem == item.placeId
                     )
                 }
             }

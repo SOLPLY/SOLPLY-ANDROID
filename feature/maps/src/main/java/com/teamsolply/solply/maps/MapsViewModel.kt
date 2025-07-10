@@ -75,6 +75,16 @@ class MapsViewModel @Inject constructor(
                 }
                 //TODO. 장소 개별 저장 API
             }
+
+            is MapsIntent.PlaceInfoClick -> {
+                reduce {
+                    copy(
+                        selectedPlaceInfoId = if (selectedPlaceInfoId == intent.placeId) {
+                            null
+                        } else intent.placeId
+                    )
+                }
+            }
             // Edit Course
             is MapsIntent.StartCourseMove -> reduce { copy(iconVisibility = intent.iconVisibility) }
 

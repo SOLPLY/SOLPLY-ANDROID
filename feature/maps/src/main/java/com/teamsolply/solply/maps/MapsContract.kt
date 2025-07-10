@@ -18,6 +18,7 @@ data class MapsState(
     val addMyCourseSelectedCount: PersistentList<Int> = persistentListOf(),
     // Add Course
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
+    val selectedPlaceInfoId: Int? = null,
     // Edit Course
     val course: PersistentList<PlaceDetailEntity> = persistentListOf(),
     val iconVisibility: Boolean = false
@@ -40,6 +41,10 @@ sealed interface MapsIntent : UiIntent {
     // Add course
     data object SaveCourse : MapsIntent
     data class SingleCoursePlaceBookMarkClick(
+        val placeId: Int
+    ) : MapsIntent
+
+    data class PlaceInfoClick(
         val placeId: Int
     ) : MapsIntent
 

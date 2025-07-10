@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
@@ -105,7 +106,7 @@ fun MapsRoute(
             MapsType.EDIT_COURSE -> {}
         }
     }
-
+    
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
@@ -177,8 +178,12 @@ fun MapsRoute(
         // ADD Course
         courseDetailInfo = uiState.courseDetailInfo,
         saveCourse = { viewModel.sendIntent(MapsIntent.SaveCourse) },
+        selectedPlaceInfoId = uiState.selectedPlaceInfoId,
         singleCoursePlaceBookMarkClick = { placeId ->
             viewModel.sendIntent(MapsIntent.SingleCoursePlaceBookMarkClick(placeId))
+        },
+        placeInfoClick = { placeId ->
+            viewModel.sendIntent(MapsIntent.PlaceInfoClick(placeId = placeId))
         },
         // Edit Course
         course = uiState.course,
@@ -223,7 +228,9 @@ fun MapsScreen(
     // Add Course
     courseDetailInfo: CourseDetailEntity,
     saveCourse: () -> Unit,
+    selectedPlaceInfoId: Int?,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
+    placeInfoClick: (Int) -> Unit,
     // Edit Course
     course: List<PlaceDetailEntity>,
     removeIconVisible: Boolean,
@@ -257,31 +264,44 @@ fun MapsScreen(
         isInRemoveAreaProvider = { isInRemoveIconArea.value }
     )
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = if (mapsType == MapsType.PLACE_DETAIL) {
-            CameraPosition(
-                LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
-                14.0,
-                0.0,
-                0.0
-            )
-        } else {
-            if (course.isNotEmpty()) {
-                val firstCourse = course.first()
-                CameraPosition(
-                    LatLng(firstCourse.latitude - 0.008, firstCourse.longitude),
-                    14.0,
-                    0.0,
-                    0.0
-                )
-            } else {
-                CameraPosition(
-                    LatLng(37.5665, 126.9780),
-                    14.0,
-                    0.0,
-                    0.0
-                )
+    val cameraPositionState = rememberCameraPositionState()
+
+    LaunchedEffect(courseDetailInfo.places) {
+        if (mapsType != MapsType.PLACE_DETAIL && courseDetailInfo.places.isNotEmpty()) {
+            val places = courseDetailInfo.places
+
+            val latitudes = places.map { it.latitude.toDouble() }
+            val longitudes = places.map { it.longitude.toDouble() }
+
+            val minLat = latitudes.minOrNull() ?: 0.0
+            val maxLat = latitudes.maxOrNull() ?: 0.0
+            val minLng = longitudes.minOrNull() ?: 0.0
+            val maxLng = longitudes.maxOrNull() ?: 0.0
+
+            val centerLat = (minLat + maxLat) / 2
+            val centerLng = (minLng + maxLng) / 2
+
+            val latDiff = maxLat - minLat
+            val lngDiff = maxLng - minLng
+            val maxDiff = maxOf(latDiff, lngDiff)
+            val zoomLevel = when {
+                maxDiff > 0.1 -> 10.0
+                maxDiff > 0.05 -> 12.0
+                maxDiff > 0.01 -> 14.0
+                else -> 16.0
             }
+
+            cameraPositionState.animate(
+                update = CameraUpdate.toCameraPosition(
+                    CameraPosition(
+                        LatLng(centerLat - 0.008, centerLng),
+                        zoomLevel,
+                        0.0,
+                        0.0
+                    )
+                ),
+                durationMs = 1000
+            )
         }
     }
 
@@ -334,36 +354,42 @@ fun MapsScreen(
                         anchor = Offset(0.5f, 0.5f)
                     )
                 } else {
-                    course.forEachIndexed { index, courseItem ->
-                        val markerIconRes = when (index) {
-                            0 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
-                            1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
-                            2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
-                            3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
-                            4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
-                            5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
-                            else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
-                        }
-                        val currentLatLng = LatLng(courseItem.latitude, courseItem.longitude)
-                        Marker(
-                            state = MarkerState(
-                                position = LatLng(
-                                    courseItem.latitude,
-                                    courseItem.longitude
-                                )
-                            ),
-                            icon = OverlayImage.fromResource(markerIconRes),
-                            anchor = Offset(0.5f, 0.5f)
-                        )
-                        if (index < course.lastIndex) {
-                            val nextCourse = course[index + 1]
-                            val nextLatLng = LatLng(nextCourse.latitude, nextCourse.longitude)
-
-                            PathOverlay(
-                                coords = listOf(currentLatLng, nextLatLng),
-                                color = SolplyTheme.colors.purple900,
-                                width = 0.5.dp
+                    if (courseDetailInfo.places.isNotEmpty()) {
+                        courseDetailInfo.places.forEachIndexed { index, place ->
+                            val markerIconRes = when (index) {
+                                0 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
+                                1 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
+                                2 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
+                                3 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
+                                4 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
+                                5 -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
+                                else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
+                            }
+                            val currentLatLng =
+                                LatLng(place.latitude.toDouble(), place.longitude.toDouble())
+                            Marker(
+                                state = MarkerState(
+                                    position = LatLng(
+                                        place.latitude.toDouble(),
+                                        place.longitude.toDouble()
+                                    )
+                                ),
+                                icon = OverlayImage.fromResource(markerIconRes),
+                                anchor = Offset(0.5f, 0.5f)
                             )
+                            if (index < courseDetailInfo.places.lastIndex) {
+                                val nextCourse = courseDetailInfo.places[index + 1]
+                                val nextLatLng = LatLng(
+                                    nextCourse.latitude.toDouble(),
+                                    nextCourse.longitude.toDouble()
+                                )
+
+                                PathOverlay(
+                                    coords = listOf(currentLatLng, nextLatLng),
+                                    color = SolplyTheme.colors.purple900,
+                                    width = 0.5.dp
+                                )
+                            }
                         }
                     }
                 }
@@ -501,7 +527,9 @@ fun MapsScreen(
                             places = courseDetailInfo.places,
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
+                            selectedPlaceItem = selectedPlaceInfoId,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
+                            placeInfoClick = placeInfoClick
                         )
                     }
 
