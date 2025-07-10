@@ -62,20 +62,10 @@ internal class MainNavigator(
             MainNavTab.MYPAGE -> {
                 val navOptions = navOptions {
                     launchSingleTop = true
-                    restoreState = true
                 }
                 navController.navigateMypage(navOptions)
             }
         }
-    }
-
-    private fun createTabNavOptions() = navOptions {
-        popUpTo(navController.graph.id) {
-            inclusive = false
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
     }
 
     fun navigateToOauth(navOptions: NavOptions) {

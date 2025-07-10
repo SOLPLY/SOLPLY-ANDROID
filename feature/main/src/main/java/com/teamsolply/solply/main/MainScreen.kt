@@ -3,6 +3,7 @@ package com.teamsolply.solply.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -87,156 +89,160 @@ internal fun MainScreen(
     Scaffold(
         modifier = modifier,
         content = { innerPadding ->
-            NavHost(
-                navController = navigator.navController,
-                startDestination = navigator.startDestination,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None },
-                modifier = modifier
-                    .background(color = SolplyTheme.colors.white)
-                    .fillMaxSize()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                splashNavGraph(
-                    navigateToOauth = {
-                        val navOptions = navOptions {
-                            popUpTo(0) {
-                                inclusive = true
+                NavHost(
+                    navController = navigator.navController,
+                    startDestination = navigator.startDestination,
+                    enterTransition = { EnterTransition.None },
+                    exitTransition = { ExitTransition.None },
+                    modifier = modifier
+                        .background(color = SolplyTheme.colors.white)
+                        .fillMaxSize()
+                ) {
+                    splashNavGraph(
+                        navigateToOauth = {
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
                             }
-                            launchSingleTop = true
-                        }
-                        navigator.navigateToOauth(navOptions = navOptions)
-                    },
-                    navigateToPlace = {
-                        val navOptions = navOptions {
-                            popUpTo(0) {
-                                inclusive = true
+                            navigator.navigateToOauth(navOptions = navOptions)
+                        },
+                        navigateToPlace = {
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
                             }
-                            launchSingleTop = true
+                            navigator.navigateToPlace(navOptions = navOptions)
                         }
-                        navigator.navigateToPlace(navOptions = navOptions)
-                    }
-                )
-                oauthNavGraph(
-                    paddingValues = innerPadding,
-                    navigateToOnBoarding = {
-                        val navOptions = navOptions {
-                            launchSingleTop = true
-                        }
-                        navigator.navigateToOnboarding(navOptions)
-                    }
-                )
-                onBoardingNavGraph(
-                    paddingValues = innerPadding,
-                    navigateToPlace = {
-                        val navOptions = navOptions {
-                            popUpTo(0) {
-                                inclusive = true
+                    )
+                    oauthNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToOnBoarding = {
+                            val navOptions = navOptions {
+                                launchSingleTop = true
                             }
-                            launchSingleTop = true
+                            navigator.navigateToOnboarding(navOptions)
                         }
-                        navigator.navigateToPlace(navOptions = navOptions)
-                    }
-                )
-                placeNavGraph(
-                    paddingValues = innerPadding,
-                    showNavigateSnackBar = { message, action ->
-                        coroutineScope.launch {
-                            showNavigateSnackBar(message, action)
-                        }
-                    },
-                    showTextSnackBar = { message ->
-                        coroutineScope.launch {
-                            showTextSnackBar(message = message)
-                        }
-                    },
-                    navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {}
-                        navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                    }
-                )
-                courseNavGraph(
-                    paddingValues = innerPadding,
-                    navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {}
-                        navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                    }
-                )
-                mypageNavGraph(
-                    paddingValues = innerPadding,
-                    navigateToMaps = { mapsType ->
-                        val navOptions = navOptions {}
-                        navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                    }
-                )
-                mapsNavGraph(
-                    paddingValues = innerPadding,
-                    showTextSnackBar = { message ->
-                        coroutineScope.launch {
-                            showTextSnackBar(message)
-                        }
-                    },
-                    showNotificationSnackBar = { message ->
-                        coroutineScope.launch {
-                            showNotificationSnackBar(message)
-                        }
-                    },
-                    showNavigateSnackBar = { message, action ->
-                        coroutineScope.launch {
-                            showNavigateSnackBar(message, action)
-                        }
-                    },
-                    navigateToPlaceDetail = {
-                        val navOptions = navOptions {}
-                        navigator.navigateToMaps(
-                            mapsType = MapsType.PLACE_DETAIL.name,
-                            navOptions = navOptions
-                        )
-                    },
-                    navigateToEditCourse = {
-                        val navOptions = navOptions {}
-                        navigator.navigateToMaps(
-                            mapsType = MapsType.EDIT_COURSE.name,
-                            navOptions = navOptions
-                        )
-                    },
-                    navigateToPlace = {
-                        val navOptions = navOptions {
-                            popUpTo(Place) {
-                                inclusive = true
+                    )
+                    onBoardingNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToPlace = {
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
                             }
-                            launchSingleTop = true
+                            navigator.navigateToPlace(navOptions = navOptions)
                         }
-                        navigator.navigateToPlace(navOptions = navOptions)
-                    },
-                    navigateToCourse = {
-                        val navOptions = navOptions {
-                            popUpTo(0) {
-                                inclusive = true
+                    )
+                    placeNavGraph(
+                        paddingValues = innerPadding,
+                        showNavigateSnackBar = { message, action ->
+                            coroutineScope.launch {
+                                showNavigateSnackBar(message, action)
                             }
-                            launchSingleTop = true
+                        },
+                        showTextSnackBar = { message ->
+                            coroutineScope.launch {
+                                showTextSnackBar(message = message)
+                            }
+                        },
+                        navigateToMaps = { mapsType ->
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         }
-                        navigator.navigateToCourse(navOptions = navOptions)
-                    },
-                    navigateToMypage = {
-                        val navOptions = navOptions {
-                            launchSingleTop = true
+                    )
+                    courseNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToMaps = { mapsType ->
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         }
-                        navigator.navigateToMypage(navOptions = navOptions)
-                    },
-                    navigateToBack = navigator::navigateToBack
+                    )
+                    mypageNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToMaps = { mapsType ->
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                        }
+                    )
+                    mapsNavGraph(
+                        paddingValues = innerPadding,
+                        showTextSnackBar = { message ->
+                            coroutineScope.launch {
+                                showTextSnackBar(message)
+                            }
+                        },
+                        showNotificationSnackBar = { message ->
+                            coroutineScope.launch {
+                                showNotificationSnackBar(message)
+                            }
+                        },
+                        showNavigateSnackBar = { message, action ->
+                            coroutineScope.launch {
+                                showNavigateSnackBar(message, action)
+                            }
+                        },
+                        navigateToPlaceDetail = {
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(
+                                mapsType = MapsType.PLACE_DETAIL.name,
+                                navOptions = navOptions
+                            )
+                        },
+                        navigateToEditCourse = {
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(
+                                mapsType = MapsType.EDIT_COURSE.name,
+                                navOptions = navOptions
+                            )
+                        },
+                        navigateToPlace = {
+                            val navOptions = navOptions {
+                                popUpTo(Place) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                            navigator.navigateToPlace(navOptions = navOptions)
+                        },
+                        navigateToCourse = {
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                            navigator.navigateToCourse(navOptions = navOptions)
+                        },
+                        navigateToMypage = {
+                            val navOptions = navOptions {
+                                launchSingleTop = true
+                            }
+                            navigator.navigateToMypage(navOptions = navOptions)
+                        },
+                        navigateToBack = navigator::navigateToBack
+                    )
+                }
+                MainBottomBar(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .padding(start = 8.dp, end = 8.dp, bottom = 10.dp),
+                    visible = navigator.setBottomBarVisibility(),
+                    tabs = MainNavTab.entries.toPersistentList(),
+                    currentTab = navigator.currentTab,
+                    onTabSelected = { navigator.navigate(it) }
                 )
             }
-        },
-        bottomBar = {
-            MainBottomBar(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp),
-                visible = navigator.setBottomBarVisibility(),
-                tabs = MainNavTab.entries.toPersistentList(),
-                currentTab = navigator.currentTab,
-                onTabSelected = { navigator.navigate(it) }
-            )
         },
         snackbarHost = {
             SnackbarHost(
