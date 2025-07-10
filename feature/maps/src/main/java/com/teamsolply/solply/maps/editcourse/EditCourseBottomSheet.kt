@@ -65,7 +65,8 @@ fun EditCourseBottomSheet(
             ) {
                 draggableItems(
                     items = course,
-                    dragDropState = dragDropState
+                    dragDropState = dragDropState,
+                    key = { _, item -> item.placeId }
                 ) { modifier, item ->
                     CourseItem(
                         placeName = item.placeName,
@@ -73,7 +74,9 @@ fun EditCourseBottomSheet(
                         placeAddress = item.address,
                         placeImageRes = item.imageInfos.first(),
                         modifier = modifier,
-                        iconClick = { singleCoursePlaceBookMarkClick(item.placeId) }
+                        iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
+                        selectedPlaceItem = false
+                        //TODO
                     )
                 }
             }

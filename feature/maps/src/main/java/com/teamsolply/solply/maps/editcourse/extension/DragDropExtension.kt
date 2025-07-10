@@ -17,10 +17,12 @@ import com.teamsolply.solply.maps.model.DraggableItem
 inline fun <T : Any> LazyListScope.draggableItems(
     items: List<T>,
     dragDropState: DragDropState,
+    noinline key: ((index: Int, item: T) -> Any)? = null,
     crossinline content: @Composable (Modifier, T) -> Unit
 ) {
     itemsIndexed(
         items = items,
+        key = if (key != null) { i, item -> key(i, item) } else null,
         contentType = { index, _ -> DraggableItem(index = index) }
     ) { index, item ->
         val modifier = if (dragDropState.draggingItemIndex == index) {
