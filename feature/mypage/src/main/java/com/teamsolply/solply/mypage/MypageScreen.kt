@@ -88,7 +88,7 @@ fun MypageScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MypageTopBar(
-            town = "",//TODO 선택한 동 이름
+            town = "", // TODO 선택한 동 이름
             onBackButtonClick = { navigateToBack() },
             isTownSelected = isTownSelected
         )

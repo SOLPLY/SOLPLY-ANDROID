@@ -55,11 +55,11 @@ fun PlaceCollectionScreen(
                         placeType = it.placeType,
                         imgRes = it.imageUrls[0],
                         modifier =
-                            if (index % 2 == 0) {
-                                Modifier.padding(end = 5.dp)
-                            } else {
-                                Modifier.padding(start = 5.dp)
-                            }
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        }
                     )
                 }
             }
