@@ -1,21 +1,19 @@
 package com.teamsolply.solply.maps
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.maps.model.PlaceInfo
-import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MapsViewModel @Inject constructor() :
+class MapsViewModel @Inject constructor(
+    private val mapsRepository: MapsRepository
+) :
     BaseViewModel<MapsState, MapsIntent, MapsSideEffect>(MapsState()) {
-
-    init {
-        getPlaceDetailInfo()
-    }
 
     override fun handleIntent(intent: MapsIntent) {
         when (intent) {
@@ -26,28 +24,67 @@ class MapsViewModel @Inject constructor() :
                 filterSelectedCourseCount(intent.courseId)
             }
 
-            is MapsIntent.SaveMyCourse -> {
+            is MapsIntent.SavePlaceInMyCourse -> {
                 val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
                 val selectedCourseName =
                     currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
                         ?: ""
 
                 reduce {
-                    copy(addMyCourseSelectedCount = emptyList())
+                    copy(addMyCourseSelectedCount = persistentListOf())
                 }
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
                 // TODO 코스에 저장 api
             }
 
             is MapsIntent.PlaceBookMarkClick -> {
-                val bookmark = !uiState.value.placeInfo.isBookmarked
+                val bookmark = !uiState.value.placeDetailEntity.isBookmarked
                 // TODO 장소 개별 저장 상태 post
                 reduce {
-                    copy(placeInfo = placeInfo.copy(isBookmarked = bookmark))
+                    copy(placeDetailEntity = placeDetailEntity.copy(isBookmarked = bookmark))
                 }
 
                 if (bookmark) {
                     postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
+                }
+            }
+            // Add Course
+            MapsIntent.SaveCourse -> {
+                val bookmark = !uiState.value.courseDetailInfo.isBookmarked
+                // TODO 코스 개별 저장 post
+                reduce {
+                    copy(courseDetailInfo = courseDetailInfo.copy(isBookmarked = bookmark))
+                }
+
+                if (bookmark) {
+                    postSideEffect(MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar)
+                }
+            }
+
+            is MapsIntent.SingleCoursePlaceBookMarkClick -> {
+                val updatedPlaces = uiState.value.courseDetailInfo.places.map { place ->
+                    if (place.placeId == intent.placeId) {
+                        place.copy(isBookmarked = !place.isBookmarked)
+                    } else {
+                        place
+                    }
+                }
+
+                reduce {
+                    copy(courseDetailInfo = courseDetailInfo.copy(places = updatedPlaces))
+                }
+                // TODO. 장소 개별 저장 API
+            }
+
+            is MapsIntent.PlaceInfoClick -> {
+                reduce {
+                    copy(
+                        selectedPlaceInfoId = if (selectedPlaceInfoId == intent.placeId) {
+                            null
+                        } else {
+                            intent.placeId
+                        }
+                    )
                 }
             }
             // Edit Course
@@ -65,6 +102,7 @@ class MapsViewModel @Inject constructor() :
             }
 
             // Shared
+            is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
             is MapsIntent.ReturnToHomeClick -> {
                 postSideEffect(MapsSideEffect.NavigateToReturnHome)
@@ -76,32 +114,42 @@ class MapsViewModel @Inject constructor() :
         }
     }
 
-    fun getPlaceDetailInfo() {
-        reduce {
-            viewModelScope.launch {
-                delay(3000)
+    // TODO. 장소 상세 정보 조회 API
+    fun getPlaceDetailInfo(placeId: Int) {
+        viewModelScope.launch {
+            mapsRepository.getPlaceInfo(placeId).onSuccess {
+                reduce {
+                    copy(
+                        placeDetailEntity = it
+                    )
+                }
             }
-            copy(
-                placeInfo = PlaceInfo(
-                    placeId = 1,
-                    placeName = "유어마인드",
-                    primaryTag = PlaceType.CAFE,
-                    address = "서울 서대문구 연희로 189 - 16 단독주택 어쩌구",
-                    priority = 0,
-                    latitude = 37.4979,
-                    longitude = 127.0276,
-                    description = "귀여운 당고 디저트와 커피, 에이드가 있는 펫 프렌들리",
-                    imageUrls = listOf(
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy,
-                        com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy
-                    ),
-                    contactNumber = "0507 - 1324 - 9018",
-                    openingHours = "월 - 금 10:00 - 19:00",
-                    snsLink = "내용",
-                    isBookmarked = true
-                )
-            )
+        }
+    }
+
+    // TODO. 장소를 저장 할 코스 리스트 정보 조회 API
+    fun getAllCourseInfo() {
+        viewModelScope.launch {
+            mapsRepository.getAllCourses().onSuccess {
+                reduce {
+                    copy(
+                        courses = it.toPersistentList()
+                    )
+                }
+            }
+        }
+    }
+
+    // TODO. 코스 상세 정보 조회 API
+    fun getCourseDetailInfo() {
+        viewModelScope.launch {
+            mapsRepository.getCourseInfo(courseId = 1).onSuccess {
+                reduce {
+                    copy(
+                        courseDetailInfo = it
+                    )
+                }
+            }
         }
     }
 
@@ -113,7 +161,7 @@ class MapsViewModel @Inject constructor() :
                 addMyCourseSelectedCount + courseId
             }
 
-            copy(addMyCourseSelectedCount = updatedList)
+            copy(addMyCourseSelectedCount = updatedList.toPersistentList())
         }
     }
 
@@ -122,7 +170,7 @@ class MapsViewModel @Inject constructor() :
             val newCourseList = course.toMutableList()
             val item = newCourseList.removeAt(fromIndex)
             newCourseList.add(toIndex, item)
-            copy(course = newCourseList)
+            copy(course = newCourseList.toPersistentList())
         }
     }
 
@@ -136,7 +184,7 @@ class MapsViewModel @Inject constructor() :
             val newList = course.toMutableList()
             newList.removeAt(itemToRemove)
             copy(
-                course = newList
+                course = newList.toPersistentList()
             )
         }
     }

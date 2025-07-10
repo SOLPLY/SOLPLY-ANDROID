@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +26,7 @@ import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun CourseItem(
@@ -32,13 +34,14 @@ fun CourseItem(
     placeTag: PlaceType,
     placeAddress: String,
     placeImageRes: Int,
+    iconClick: () -> Unit,
     modifier: Modifier = Modifier,
-    selected: Boolean = false,
+    iconSelected: Boolean = false,
+    selectedPlaceItem: Boolean,
     isEditing: Boolean = false
 ) {
     Row(
         modifier = modifier
-            .height(68.dp)
             .fillMaxWidth()
             .border(
                 width = 1.dp,
@@ -56,48 +59,107 @@ fun CourseItem(
             painter = painterResource(placeImageRes),
             contentDescription = "place_image",
             modifier = Modifier
-                .padding(start = 8.dp, end = 9.dp, top = 8.dp, bottom = 8.dp)
-                .size(52.dp)
+                .padding(8.dp)
+                .size(if (selectedPlaceItem) 88.dp else 52.dp)
                 .clip(RoundedCornerShape(12.dp))
         )
         Column {
-            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                PlaceTag(
-                    type = placeTag,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Text(
-                    text = placeName,
-                    modifier = Modifier,
-                    color = SolplyTheme.colors.black,
-                    style = SolplyTheme.typography.title15M
-                )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column {
+                    Row(modifier = Modifier.padding(bottom = 6.dp)) {
+                        PlaceTag(
+                            type = placeTag,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                        Text(
+                            text = placeName,
+                            modifier = Modifier,
+                            color = SolplyTheme.colors.black,
+                            style = SolplyTheme.typography.title15M
+                        )
+                    }
+                    Text(
+                        text = placeAddress,
+                        modifier = Modifier,
+                        color = SolplyTheme.colors.gray700,
+                        style = SolplyTheme.typography.caption12R
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                if (isEditing) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_course_item_edit),
+                        contentDescription = "item_edting"
+                    )
+                } else {
+                    val iconColor =
+                        if (iconSelected) SolplyTheme.colors.red500 else SolplyTheme.colors.gray400
+                    val iconBackGroundColor =
+                        if (iconSelected) SolplyTheme.colors.red300 else SolplyTheme.colors.gray200
+                    SolplySavedMarker(
+                        iconColor = iconColor,
+                        iconBackGroundColor = iconBackGroundColor,
+                        onClick = { iconClick() },
+                        isButton = true
+                    )
+                }
+                Spacer(modifier = Modifier.padding(end = 22.dp))
             }
-            Text(
-                text = placeAddress,
-                modifier = Modifier,
-                color = SolplyTheme.colors.gray700,
-                style = SolplyTheme.typography.caption12R
-            )
+            if (selectedPlaceItem) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Spacer(modifier = Modifier.padding(start = 8.dp))
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = SolplyTheme.colors.gray300,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .background(
+                                color = SolplyTheme.colors.gray200,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(horizontal = 15.dp, vertical = 8.dp)
+                            .customClickable(rippleEnabled = false) {
+                                // TODO 장소 상세로 이동
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "장소상세",
+                            color = SolplyTheme.colors.black,
+                            style = SolplyTheme.typography.button12M
+                        )
+                    }
+                    Spacer(modifier = Modifier.padding(start = 8.dp))
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = SolplyTheme.colors.gray300,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .background(
+                                color = SolplyTheme.colors.gray200,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(horizontal = 15.dp, vertical = 8.dp)
+                            .customClickable(rippleEnabled = false) {
+                                // TODO 길찾기
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "길찾기",
+                            color = SolplyTheme.colors.black,
+                            style = SolplyTheme.typography.button12M
+                        )
+                    }
+                }
+            }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        if (isEditing) {
-            Icon(
-                painter = painterResource(R.drawable.ic_course_item_edit),
-                contentDescription = "item_edting"
-            )
-        } else {
-            val iconColor = SolplyTheme.colors.gray900
-            val iconBackGroundColor = SolplyTheme.colors.gray400
-            SolplySavedMarker(
-                iconColor = iconColor,
-                iconBackGroundColor = iconBackGroundColor,
-                onClick = {
-                    // TODO. 코스 개별 저장
-                },
-                isButton = true
-            )
-        }
-        Spacer(modifier = Modifier.padding(end = 22.dp))
     }
 }

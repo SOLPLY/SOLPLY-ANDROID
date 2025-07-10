@@ -34,32 +34,36 @@ internal class MainNavigator(
     fun navigate(tab: MainNavTab) {
         when (tab) {
             MainNavTab.PLACE -> {
-                val navOptions = createTabNavOptions()
+                val navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = false
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
                 navController.navigatePlace(navOptions)
             }
 
             MainNavTab.COURSE -> {
-                val navOptions = createTabNavOptions()
+                val navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = false
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
                 navController.navigateCourse(navOptions)
             }
 
             MainNavTab.MYPAGE -> {
-                navController.navigateMypage(
-                    navOptions {
-                        launchSingleTop = true
-                    }
-                )
+                val navOptions = navOptions {
+                    launchSingleTop = true
+                }
+                navController.navigateMypage(navOptions)
             }
         }
-    }
-
-    private fun createTabNavOptions() = navOptions {
-        popUpTo(navController.graph.id) {
-            inclusive = false
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
     }
 
     fun navigateToOauth(navOptions: NavOptions) {

@@ -20,17 +20,18 @@ import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.editcourse.extension.dragContainer
 import com.teamsolply.solply.maps.editcourse.extension.draggableItems
 import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
-import com.teamsolply.solply.maps.model.PlaceInfo
+import com.teamsolply.solply.maps.model.PlaceDetailEntity
 
 @Composable
 fun EditCourseBottomSheet(
-    course: List<PlaceInfo>,
+    course: List<PlaceDetailEntity>,
     removeIconBounds: Rect?,
     isInRemoveIconArea: MutableState<Boolean>,
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
     lazyListState: LazyListState,
-    dragDropState: DragDropState
+    dragDropState: DragDropState,
+    singleCoursePlaceBookMarkClick: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -64,14 +65,18 @@ fun EditCourseBottomSheet(
             ) {
                 draggableItems(
                     items = course,
-                    dragDropState = dragDropState
+                    dragDropState = dragDropState,
+                    key = { _, item -> item.placeId }
                 ) { modifier, item ->
                     CourseItem(
                         placeName = item.placeName,
                         placeTag = item.primaryTag,
                         placeAddress = item.address,
-                        placeImageRes = item.imageUrls.first(),
-                        modifier = modifier
+                        placeImageRes = item.imageInfos.first(),
+                        modifier = modifier,
+                        iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
+                        selectedPlaceItem = false
+                        // TODO
                     )
                 }
             }
