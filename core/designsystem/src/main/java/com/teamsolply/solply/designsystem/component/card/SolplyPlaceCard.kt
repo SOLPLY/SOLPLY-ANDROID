@@ -76,7 +76,6 @@ fun SolplyPlaceCard(
                 painter = painterResource(id = imgRes),
                 contentDescription = "place_image",
                 modifier = Modifier
-                    .size(158.dp)
             )
             if (saved) {
                 SolplySavedMarker(
