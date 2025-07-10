@@ -52,6 +52,7 @@ fun MypageRoute(
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
+                MypageSideEffect.MoveToTown -> uiState.isTownSelected
                 MypageSideEffect.NavigateToBack -> navigateToBack()
             }
         }
@@ -60,6 +61,8 @@ fun MypageRoute(
     MypageScreen(
         navigateToMaps = navigateToMaps,
         navigateToBack = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
+        isTownSelected = uiState.isTownSelected,
+        selectTown = { /* TODO */ },
         pagerState = pagerState,
         place = uiState.places
     )
@@ -69,6 +72,8 @@ fun MypageRoute(
 fun MypageScreen(
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
+    isTownSelected: Boolean,
+    selectTown: () -> Unit,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
     place: List<PlaceCard>
@@ -83,8 +88,9 @@ fun MypageScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MypageTopBar(
-            title = "수집함",
-            onBackButtonClick = { navigateToBack() }
+            town = "",//TODO 선택한 동 이름
+            onBackButtonClick = { navigateToBack() },
+            isTownSelected = isTownSelected
         )
         TabRow(
             selectedTabIndex = 0,
@@ -148,6 +154,8 @@ private fun MypageScreenPreview() {
         MypageScreen(
             navigateToMaps = {},
             place = emptyList(),
+            isTownSelected = false,
+            selectTown = {},
             navigateToBack = {}
         )
     }

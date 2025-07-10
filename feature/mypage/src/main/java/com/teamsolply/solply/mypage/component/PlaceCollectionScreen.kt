@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,10 +37,11 @@ fun PlaceCollectionScreen(
             modifier = modifier
                 .fillMaxSize(),
             columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(Dp(10f)),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.Center,
             contentPadding = PaddingValues(top = 16.dp)
         ) {
-            items(place) {
+            itemsIndexed(place) { index, it ->
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
