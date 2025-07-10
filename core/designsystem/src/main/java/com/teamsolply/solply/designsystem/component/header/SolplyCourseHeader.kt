@@ -19,18 +19,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 @Composable
 fun CourseHeader(
     townName: String,
-    persona: String,
-    nickname: String,
     modifier: Modifier = Modifier
 ) {
-    val recommendText = when (persona){
-        "HEALING" -> "차분함을 좋아하는\n${nickname}님을 위한 오늘의 코스"
-        "EXPLORER" -> "골목 곳곳을 탐색하는\n${nickname}님을 위한 오늘의 코스"
-        "MOODING" -> "취향을 모으는\n${nickname}님을 위한 오늘의 코스"
-        "NATURAL" -> "힐링이 필요한\n${nickname}님을 위한 오늘의 코스"
-        else ->"솔플리가 추천하는\n${nickname}님을 위한 오늘의 코스"
-    }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -73,11 +63,5 @@ fun CourseHeader(
                     .size(24.dp)
             )
         }
-        Text(
-            text = recommendText,
-            style = SolplyTheme.typography.display20Sb,
-            modifier = Modifier
-                .padding(start = 4.dp, top = 16.dp, bottom = 9.dp)
-        )
     }
 }

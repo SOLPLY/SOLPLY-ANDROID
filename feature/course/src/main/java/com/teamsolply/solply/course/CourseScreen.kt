@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,40 +49,52 @@ fun CourseScreen(
 ) {
     val courseList = state.courseList
     val user = state.user
+    val recommendText = state.recommendText
     val gridState = rememberLazyGridState()
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        state = gridState,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            CourseHeader(
-                townName = user.favoriteTowns,
-                persona = user.persona,
-                nickname = user.nickname
-            )
-        }
+    Column {
 
-        items(courseList) { course ->
-            SolplyCourseCard(
-                title = course.title,
-                imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                placeType = course.mainTags.map { PlaceType.valueOf(it) },
-                backgroundColor = SolplyTheme.colors.red300,
-                iconColor = SolplyTheme.colors.red500,
-                iconBackGroundColor = SolplyTheme.colors.red200,
-                savedCourse = course.isBookmarked,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .customClickable {
-                        navigateToMaps("")
-                    }
-            )
+        CourseHeader(
+            townName = user.favoriteTowns,
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp)
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            state = gridState,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = recommendText,
+                    style = SolplyTheme.typography.display20Sb,
+                    color = SolplyTheme.colors.black,
+                    modifier = Modifier
+                        .padding(start = 4.dp, top = 16.dp, bottom = 9.dp)
+                )
+            }
+
+            items(courseList) { course ->
+                SolplyCourseCard(
+                    title = course.title,
+                    imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                    placeType = course.mainTags.map { PlaceType.valueOf(it) },
+                    backgroundColor = SolplyTheme.colors.red300,
+                    iconColor = SolplyTheme.colors.red500,
+                    iconBackGroundColor = SolplyTheme.colors.red200,
+                    savedCourse = course.isBookmarked,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .customClickable {
+                            navigateToMaps("")
+                        }
+                )
+            }
         }
     }
 }

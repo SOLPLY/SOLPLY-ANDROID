@@ -65,8 +65,17 @@ data class CourseState(
             isBookmarked = true
         )
     ),
-    val errorMessage: String? = null
-) : UiState
+val errorMessage: String? = null
+) : UiState{
+    val recommendText: String
+        get() = when (user.persona) {
+            "HEALING" -> "차분함을 좋아하는\n${user.nickname}님을 위한 오늘의 코스"
+            "EXPLORER" -> "골목 곳곳을 탐색하는\n${user.nickname}님을 위한 오늘의 코스"
+            "MOODING" -> "취향을 모으는\n${user.nickname}님을 위한 오늘의 코스"
+            "NATURAL" -> "힐링이 필요한\n${user.nickname}님을 위한 오늘의 코스"
+            else -> "솔플리가 추천하는\n${user.nickname}님을 위한 오늘의 코스"
+        }
+}
 
 sealed interface CourseIntent : UiIntent{
 
