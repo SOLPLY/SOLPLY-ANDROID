@@ -1,28 +1,36 @@
 package com.teamsolply.solply.place
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class PlaceViewModel @Inject constructor(
-    private val placeRepository: PlaceRepository
-) :
-    BaseViewModel<PlaceState, PlaceIntent, PlaceSideEffect>(
-        PlaceState()
-    ) {
+    private val repository: PlaceRepository
+) : BaseViewModel<PlaceState, PlaceIntent, PlaceSideEffect>(PlaceState()) {
 
     init {
-        viewModelScope.launch {
-            placeRepository.saveAutoSignIn(autoSignIn = SaveAutoSignInEntity(autoSignIn = true))
-        }
+        sendIntent(PlaceIntent.LoadPlaces)
     }
 
     override fun handleIntent(intent: PlaceIntent) {
-        TODO("Not yet implemented")
+        when (intent) {
+            PlaceIntent.LoadPlaces      -> fetchPlaces()
+            is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap)
+            PlaceIntent.Retry           -> fetchPlaces()
+        }
+    }
+
+    private fun fetchPlaces() {
+        viewModelScope.launch {
+            repository.getRecommendedPlace()
+                .onSuccess { placesList ->
+                    reduce { copy(places = placesList) }
+                }
+            // failures ignored; Retry intent can re-trigger
+        }
     }
 }

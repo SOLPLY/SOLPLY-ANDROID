@@ -1,79 +1,100 @@
 package com.teamsolply.solply.place
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.place.util.LocationPermissionRequest
-import com.teamsolply.solply.ui.extension.customClickable
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import com.teamsolply.solply.place.component.PlaceRecommendCard
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
-    showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    showTextSnackBar: (String) -> Unit,
     navigateToMaps: (String) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-//        showNavigateSnackBar(" 네비게이트 테스트입니다.") { navigateToMaps(MapsType.PLACE_DETAIL.name) }
-//        showTextSnackBar("텍스트")
-//        showTextSnackBar("2번 텍스트")
+    val state by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            if (sideEffect == PlaceSideEffect.NavigateToMap) navigateToMaps("")
+        }
     }
-    LocationPermissionRequest()
     PlaceScreen(
-        navigateToMaps = navigateToMaps
+        modifier = Modifier.padding(paddingValues),
+        state = state,
+        onPlaceClick = { viewModel.sendIntent(PlaceIntent.PlaceClicked(it)) },
+        snackbarHostState = snackbarHostState
     )
 }
 
 @Composable
 fun PlaceScreen(
-    navigateToMaps: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: PlaceState,
+    onPlaceClick: (Int) -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
-    Column(
-        modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val centerItemSize = 240.dp
+    val sideItemSize = 180.dp
+
+    val pagerState = rememberPagerState(
+        initialPage = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % state.places.size),
+        pageCount = { Int.MAX_VALUE }
+    )
+
+    val horizontalPadding = (screenWidth - centerItemSize) / 2 + (centerItemSize - sideItemSize) / 2
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
     ) {
-        SolplyCourseCard(
-            title = "asd",
-            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            placeType = listOf(PlaceType.FOOD, PlaceType.CAFE),
-            backgroundColor = SolplyTheme.colors.red300,
-            iconColor = SolplyTheme.colors.gray700,
-            iconBackGroundColor = SolplyTheme.colors.green500,
-            savedCourse = true,
-            selected = true
-        )
-        Image(
-            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
-            contentDescription = "place_image",
+        HorizontalPager(
+            state = pagerState,
+            pageSpacing = 46.dp,
             modifier = Modifier
-                .size(52.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .padding(start = 8.dp, end = 9.dp, top = 8.dp, bottom = 8.dp)
-        )
-        Text(
-            text = "Place",
-            modifier = Modifier.customClickable { navigateToMaps(MapsType.PLACE_DETAIL.name) }
-        )
+                .height(centerItemSize)
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = horizontalPadding)
+        ) { page ->
+            val place = state.places[page % state.places.size]
+            val isCenter = page == pagerState.currentPage
+
+            PlaceRecommendCard(
+                title = place.placeName,
+                subtitle = place.description,
+                type = place.primaryTag,
+                imgRes = place.thumbnailImageUrl,
+                modifier = Modifier
+                    .requiredWidth(if (isCenter) centerItemSize else sideItemSize)
+                    .requiredHeight(if (isCenter) centerItemSize else sideItemSize),
+                onClick = { onPlaceClick(place.placeId) }
+            )
+        }
+
+        SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
