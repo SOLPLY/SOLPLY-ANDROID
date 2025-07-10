@@ -11,7 +11,7 @@ data class CourseState(
         userId = 0,
         nickname = "숭이숭이숭이",
         favoriteTowns = "연희동",
-        persona = "HEALING",
+        persona = "HEALING"
     ),
 
     val courseList: List<CourseData> = listOf(
@@ -65,8 +65,8 @@ data class CourseState(
             isBookmarked = true
         )
     ),
-val errorMessage: String? = null
-) : UiState{
+    val errorMessage: String? = null
+) : UiState {
     val recommendText: String
         get() = when (user.persona) {
             "HEALING" -> "차분함을 좋아하는\n${user.nickname}님을 위한 오늘의 코스"
@@ -77,7 +77,7 @@ val errorMessage: String? = null
         }
 }
 
-sealed interface CourseIntent : UiIntent{
+sealed interface CourseIntent : UiIntent {
 
     data class LoadSuccess(
         val user: CourseUser,
@@ -87,7 +87,6 @@ sealed interface CourseIntent : UiIntent{
     data class LoadFailed(
         val message: String
     ) : CourseIntent
-
 }
 
 sealed interface CourseSideEffect : SideEffect

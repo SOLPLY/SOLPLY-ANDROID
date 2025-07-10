@@ -4,13 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.ui.extension.customClickable
-import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,11 +12,18 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.header.CourseHeader
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun CourseRoute(
@@ -40,7 +40,6 @@ fun CourseRoute(
     )
 }
 
-
 @Composable
 fun CourseScreen(
     state: CourseState,
@@ -53,7 +52,6 @@ fun CourseScreen(
     val gridState = rememberLazyGridState()
 
     Column {
-
         CourseHeader(
             townName = user.favoriteTowns,
             modifier = Modifier
