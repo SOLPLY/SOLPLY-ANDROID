@@ -171,7 +171,8 @@ internal fun MainScreen(
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
-                        }
+                        },
+                        navigateToBack = navigator::navigateToBack
                     )
                     mapsNavGraph(
                         paddingValues = innerPadding,

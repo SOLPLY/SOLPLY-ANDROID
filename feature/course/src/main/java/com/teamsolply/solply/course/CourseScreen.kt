@@ -22,8 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.header.CourseHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun CourseRoute(
@@ -87,10 +87,10 @@ fun CourseScreen(
                     iconBackGroundColor = SolplyTheme.colors.red200,
                     savedCourse = course.isBookmarked,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .customClickable {
-                            navigateToMaps("")
-                        }
+                        .fillMaxWidth(),
+                    onClick = {
+                        navigateToMaps(MapsType.ADD_COURSE.name)
+                    }
                 )
             }
         }
