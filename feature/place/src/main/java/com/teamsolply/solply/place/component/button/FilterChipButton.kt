@@ -1,4 +1,4 @@
-package com.teamsolply.solply.place.component
+package com.teamsolply.solply.place.component.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

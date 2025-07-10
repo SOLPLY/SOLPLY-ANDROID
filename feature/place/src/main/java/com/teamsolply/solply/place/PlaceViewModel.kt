@@ -28,7 +28,7 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace()
                 .onSuccess { placesList ->
-                    reduce { copy(places = placesList) }
+                    reduce { copy(recommendplaces = placesList) }
                 }
             // failures ignored; Retry intent can re-trigger
         }
