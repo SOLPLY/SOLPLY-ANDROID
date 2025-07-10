@@ -22,9 +22,12 @@ import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun MypageTopBar(
-    title: String,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    isTownSelected: Boolean,
+    town: String
 ) {
+    val title = if (isTownSelected) town else "수집함"
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,8 +60,9 @@ fun MypageTopBar(
 private fun MypageTopBarPreview() {
     SolplyTheme {
         MypageTopBar(
-            title = "수집함",
-            onBackButtonClick = {}
+            town = "망원동",
+            onBackButtonClick = {},
+            isTownSelected = false
         )
     }
 }

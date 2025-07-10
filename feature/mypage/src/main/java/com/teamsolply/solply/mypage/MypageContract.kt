@@ -65,16 +65,21 @@ data class MypageState(
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         )
     ),
-    val selectedTab: MypageTab = MypageTab.PLACE
+    val selectedTab: MypageTab = MypageTab.PLACE,
+    val isTownSelected: Boolean = false
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
     // TODO 탭 이중관리
+
+    //
+    data object SelectTown : MypageIntent
 
     // Navigate
     data object BackButtonClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {
+    data object MoveToTown : MypageSideEffect
     data object NavigateToBack : MypageSideEffect
 }

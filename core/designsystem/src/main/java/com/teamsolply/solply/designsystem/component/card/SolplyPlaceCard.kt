@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,6 +55,7 @@ fun SolplyPlaceCard(
     }
     Column(
         modifier = modifier
+            .wrapContentSize()
             .then(
                 if (touchable) {
                     Modifier.customClickable(rippleEnabled = false) { onClick() }
@@ -74,7 +75,6 @@ fun SolplyPlaceCard(
                 painter = painterResource(id = imgRes),
                 contentDescription = "place_image",
                 modifier = Modifier
-                    .size(158.dp)
             )
             if (saved) {
                 SolplySavedMarker(

@@ -9,6 +9,7 @@ class MypageViewModel @Inject constructor() :
     BaseViewModel<MypageState, MypageIntent, MypageSideEffect>(MypageState()) {
     override fun handleIntent(intent: MypageIntent) {
         when (intent) {
+            is MypageIntent.SelectTown -> reduce { copy(isTownSelected = true) }
             is MypageIntent.BackButtonClick -> {
                 postSideEffect(MypageSideEffect.NavigateToBack)
             }

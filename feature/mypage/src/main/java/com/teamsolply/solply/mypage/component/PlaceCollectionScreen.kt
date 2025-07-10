@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -36,18 +36,30 @@ fun PlaceCollectionScreen(
             modifier = modifier
                 .fillMaxSize(),
             columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(Dp(10f)),
-            contentPadding = PaddingValues(top = 16.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.Center,
+            contentPadding = PaddingValues(top = 16.dp, start = 17.dp, end = 17.dp)
         ) {
-            items(place) {
+            itemsIndexed(place) { index, it ->
                 Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = if (index % 2 == 0) {
+                        Alignment.CenterEnd
+                    } else {
+                        Alignment.CenterStart
+                    }
                 ) {
                     SolplyPlaceCard(
                         name = it.placeName,
                         placeType = it.placeType,
-                        imgRes = it.imageUrls[0]
+                        imgRes = it.imageUrls[0],
+                        modifier =
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        }
                     )
                 }
             }
