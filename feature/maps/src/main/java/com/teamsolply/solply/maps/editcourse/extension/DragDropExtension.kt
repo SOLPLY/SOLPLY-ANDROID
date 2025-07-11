@@ -18,7 +18,7 @@ inline fun <T : Any> LazyListScope.draggableItems(
     items: List<T>,
     dragDropState: DragDropState,
     noinline key: ((index: Int, item: T) -> Any)? = null,
-    crossinline content: @Composable (Modifier, T) -> Unit
+    crossinline content: @Composable (index: Int, Modifier, T) -> Unit
 ) {
     itemsIndexed(
         items = items,
@@ -42,7 +42,7 @@ inline fun <T : Any> LazyListScope.draggableItems(
                 )
             )
         }
-        content(modifier, item)
+        content(index, modifier, item)
     }
 }
 
