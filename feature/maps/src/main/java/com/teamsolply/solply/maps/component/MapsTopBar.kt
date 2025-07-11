@@ -21,7 +21,7 @@ import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun MapsTopBar(
+internal fun MapsTopBar(
     mapsType: MapsType,
     title: String,
     onBackButtonClick: () -> Unit,

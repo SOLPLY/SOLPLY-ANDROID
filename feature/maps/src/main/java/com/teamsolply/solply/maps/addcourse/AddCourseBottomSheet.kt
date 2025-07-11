@@ -25,7 +25,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun AddCourseBottomSheet(
+internal fun AddCourseBottomSheet(
     places: List<Place>,
     courseName: String,
     introduction: String,

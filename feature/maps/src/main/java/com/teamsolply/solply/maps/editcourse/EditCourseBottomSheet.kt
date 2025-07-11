@@ -39,7 +39,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun EditCourseBottomSheet(
+internal fun EditCourseBottomSheet(
     places: List<Place>,
     courseName: String,
     introduction: String,

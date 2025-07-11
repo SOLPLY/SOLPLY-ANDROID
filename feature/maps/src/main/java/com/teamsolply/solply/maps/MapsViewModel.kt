@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MapsViewModel @Inject constructor(
+internal class MapsViewModel @Inject constructor(
     private val mapsRepository: MapsRepository
 ) :
     BaseViewModel<MapsState, MapsIntent, MapsSideEffect>(MapsState()) {

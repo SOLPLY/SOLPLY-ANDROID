@@ -16,7 +16,7 @@ import com.teamsolply.solply.ui.extension.vibrate
 import kotlinx.coroutines.channels.Channel
 
 @Composable
-fun rememberDragDropState(
+internal fun rememberDragDropState(
     context: Context,
     lazyListState: LazyListState,
     onMove: (Int, Int) -> Unit,

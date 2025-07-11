@@ -10,7 +10,7 @@ import com.teamsolply.solply.ui.base.UiState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
-data class MapsState(
+internal data class MapsState(
     // Add Place
     val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
@@ -24,7 +24,7 @@ data class MapsState(
     val startEditCourse: Boolean = false
 ) : UiState
 
-sealed interface MapsIntent : UiIntent {
+internal sealed interface MapsIntent : UiIntent {
     // Add Place
     data class AddPlaceClick(
         val addPlace: Boolean
@@ -72,7 +72,7 @@ sealed interface MapsIntent : UiIntent {
     data object BackButtonClick : MapsIntent
 }
 
-sealed interface MapsSideEffect : SideEffect {
+internal sealed interface MapsSideEffect : SideEffect {
     // Add Place
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
@@ -88,7 +88,7 @@ sealed interface MapsSideEffect : SideEffect {
     data object NavigateToBack : MapsSideEffect
 }
 
-val defaultPlaceDetailEntity = PlaceDetailEntity(
+internal val defaultPlaceDetailEntity = PlaceDetailEntity(
     placeId = 0,
     placeName = "",
     primaryTag = PlaceType.EMPTY,
@@ -105,7 +105,7 @@ val defaultPlaceDetailEntity = PlaceDetailEntity(
     placeDefaultId = 0
 )
 
-val courseDetailEntity = CourseDetailEntity(
+internal val courseDetailEntity = CourseDetailEntity(
     courseId = 0,
     courseName = "",
     introduction = "",

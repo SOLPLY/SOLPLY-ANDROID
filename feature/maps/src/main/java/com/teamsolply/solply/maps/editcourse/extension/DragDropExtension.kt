@@ -13,7 +13,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
 import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
 
-inline fun <T : Any> LazyListScope.draggableItems(
+internal inline fun <T : Any> LazyListScope.draggableItems(
     items: List<T>,
     dragDropState: DragDropState,
     noinline key: ((index: Int, item: T) -> Any)? = null,
@@ -50,7 +50,7 @@ inline fun <T : Any> LazyListScope.draggableItems(
 }
 
 @SuppressLint("SuspiciousModifierThen")
-fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
+internal fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
     return this.then(
         pointerInput(dragDropState) {
             detectDragGesturesAfterLongPress(

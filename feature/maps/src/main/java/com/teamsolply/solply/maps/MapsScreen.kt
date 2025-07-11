@@ -74,7 +74,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
-fun MapsRoute(
+internal fun MapsRoute(
     mapsType: MapsType,
     targetId: Int = 1,
     showTextSnackBar: (String) -> Unit,
@@ -217,7 +217,7 @@ fun MapsRoute(
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun MapsScreen(
+private fun MapsScreen(
     mapsType: MapsType,
     context: Context,
     // Add Place
