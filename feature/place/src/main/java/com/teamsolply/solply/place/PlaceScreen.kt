@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -56,6 +57,8 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.teamsolply.solply.place.component.button.FilterSheetButton
 import com.teamsolply.solply.place.model.PlaceTypeFilterItem
 
 @Composable
@@ -110,104 +113,110 @@ fun PlaceScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val selectedType = remember { mutableStateOf("ALL") }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 32.dp, top = 0.dp)
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        item(span = { GridItemSpan(2) }) {
-            PlaceHeader(
-                townName = state.user.favoriteTowns,
-                persona = state.user.persona,
-                nickname = state.user.nickname,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        item(span = { GridItemSpan(2) }) {
-            Text(
-                text = when (state.user.persona) {
-                    "HEALING" -> "조용히 사색을 즐기는\n${state.user.nickname}님을 위한 오늘의 추천"
-                    "EXPLORER" -> "골목 곳곳을 탐색하는\n${state.user.nickname}님을 위한 오늘의 추천"
-                    "MOODING" -> "취향을 모으는\n${state.user.nickname}님을 위한 오늘의 추천"
-                    "NATURAL" -> "힐링이 필요한\n${state.user.nickname}님을 위한 오늘의 추천"
-                    else -> "솔플리가 추천하는\n${state.user.nickname}님을 위한 오늘의 추천"
-                },
-                style = SolplyTheme.typography.display20Sb,
-                modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 28.dp)
-            )
-        }
-        item(span = { GridItemSpan(2) }) {
-            CustomHorizontalPager(
-                pagerState = pagerState,
-                recommendPlaces = state.recommendplaces,
-                centerItemSize = centerItemSize,
-                horizontalPadding = horizontalPadding,
-                isCenter = isCenter,
-                page1ItemSize = page1ItemSize,
-                page2ItemSize = page2ItemSize,
-                page3ItemSize = page3ItemSize,
-                onPlaceClick = onPlaceClick
-            )
-        }
-        item(span = { GridItemSpan(2) }) {
-            Spacer(modifier = Modifier.height(21.dp))
-        }
-        item(span = { GridItemSpan(2) }) {
-            Spacer(modifier = Modifier.height(21.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(SolplyTheme.colors.white)
-            ) {
-                Column(
+        PlaceHeader(
+            townName = state.user.favoriteTowns,
+            persona = state.user.persona,
+            nickname = state.user.nickname,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 32.dp, top = 0.dp)
+        ) {
+            item(span = { GridItemSpan(2) }) {
+                Text(
+                    text = when (state.user.persona) {
+                        "HEALING" -> "조용히 사색을 즐기는\n${state.user.nickname}님을 위한 오늘의 추천"
+                        "EXPLORER" -> "골목 곳곳을 탐색하는\n${state.user.nickname}님을 위한 오늘의 추천"
+                        "MOODING" -> "취향을 모으는\n${state.user.nickname}님을 위한 오늘의 추천"
+                        "NATURAL" -> "힐링이 필요한\n${state.user.nickname}님을 위한 오늘의 추천"
+                        else -> "솔플리가 추천하는\n${state.user.nickname}님을 위한 오늘의 추천"
+                    },
+                    style = SolplyTheme.typography.display20Sb,
+                    modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 28.dp)
+                )
+            }
+            item(span = { GridItemSpan(2) }) {
+                CustomHorizontalPager(
+                    pagerState = pagerState,
+                    recommendPlaces = state.recommendplaces,
+                    centerItemSize = centerItemSize,
+                    horizontalPadding = horizontalPadding,
+                    isCenter = isCenter,
+                    page1ItemSize = page1ItemSize,
+                    page2ItemSize = page2ItemSize,
+                    page3ItemSize = page3ItemSize,
+                    onPlaceClick = onPlaceClick
+                )
+            }
+            item(span = { GridItemSpan(2) }) {
+                Spacer(modifier = Modifier.height(21.dp))
+            }
+            item(span = { GridItemSpan(2) }) {
+                Spacer(modifier = Modifier.height(21.dp))
+                Box(
                     modifier = Modifier
-                        .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 20.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(SolplyTheme.colors.white)
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 20.dp)
                     ) {
-                        // 💡 버튼 클릭 시 상태 변경만
-                        PlaceChipButton(
-                            text = "전체",
-                            modifier = Modifier,
-                            onClick = { showFilterSheet.value = true }
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(14.dp))
-                    val chunkedList = state.placeList.chunked(2)
-                    chunkedList.forEach { rowItems ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            for (place in rowItems) {
-                                Box(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    PlaceGridItem(
-                                        place = place,
-                                        onClick = { onPlaceClick(place.placeId) }
-                                    )
-                                }
-                            }
-                            repeat(2 - rowItems.size) {
-                                Spacer(modifier = Modifier.weight(1f))
-                            }
+                            // 💡 버튼 클릭 시 상태 변경만
+                            PlaceChipButton(
+                                text = "전체",
+                                modifier = Modifier,
+                                onClick = { showFilterSheet.value = true }
+                            )
                         }
                         Spacer(modifier = Modifier.height(14.dp))
+                        val chunkedList = state.placeList.chunked(2)
+                        chunkedList.forEach { rowItems ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(14.dp)
+                            ) {
+                                for (place in rowItems) {
+                                    Box(
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        PlaceGridItem(
+                                            place = place,
+                                            onClick = { onPlaceClick(place.placeId) }
+                                        )
+                                    }
+                                }
+                                repeat(2 - rowItems.size) {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(14.dp))
+                        }
                     }
                 }
             }
-        }
-        item(span = { GridItemSpan(2) }) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                SnackbarHost(
-                    hostState = snackbarHostState,
-                    modifier = Modifier.align(Alignment.BottomCenter)
-                )
+            item(span = { GridItemSpan(2) }) {
+                Spacer(modifier = Modifier.height(60.dp))
+            }
+            item(span = { GridItemSpan(2) }) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
+                }
             }
         }
     }
@@ -215,10 +224,11 @@ fun PlaceScreen(
     if (showFilterSheet.value) {
         ModalBottomSheet(
             onDismissRequest = { showFilterSheet.value = false },
-            sheetState = sheetState
+            sheetState = sheetState,
+            containerColor = SolplyTheme.colors.white
         ) {
             PlaceTypeFilterSheet(
-                filterItems = state.placeTypeFilterItems, // ★여기!
+                filterItems = state.placeTypeFilterItems,
                 selectedType = selectedType.value,
                 onSelectType = {
                     selectedType.value = it
@@ -310,7 +320,11 @@ fun PlaceTypeFilterSheet(
     onSelectType: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -322,16 +336,14 @@ fun PlaceTypeFilterSheet(
                 style = SolplyTheme.typography.display20Sb,
                 modifier = Modifier.weight(1f)
             )
-            Spacer(Modifier.width(16.dp))
             Icon(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_close),
                 contentDescription = "close",
                 modifier = Modifier.size(24.dp).customClickable { onDismiss() }
             )
         }
-        Divider()
         filterItems.forEachIndexed { idx, item ->
-            FilterSheetItem(
+            FilterSheetButton (
                 iconRes = item.iconRes,
                 label = item.label,
                 selected = selectedType == item.type,
@@ -339,51 +351,9 @@ fun PlaceTypeFilterSheet(
                 onClick = { onSelectType(item.type) }
             )
             if (idx < filterItems.size - 1) {
-                Divider(thickness = 1.dp, color = SolplyTheme.colors.gray100)
+                HorizontalDivider(thickness = 1.dp, color = SolplyTheme.colors.gray100)
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
-
-
-@Composable
-fun FilterSheetItem(
-    iconRes: Int,
-    label: String,
-    selected: Boolean,
-    showCheck: Boolean,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .customClickable { onClick() }
-            .background(SolplyTheme.colors.white),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(iconRes),
-            contentDescription = label,
-            modifier = Modifier.size(24.dp).padding(start = 24.dp),
-            tint = SolplyTheme.colors.gray900
-        )
-        Text(
-            text = label,
-            style = SolplyTheme.typography.body16M,
-            color = SolplyTheme.colors.gray900,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        if (showCheck) {
-            Icon(
-                painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_filter_selected),
-                contentDescription = "selected",
-                modifier = Modifier.size(24.dp).padding(end = 24.dp),
-                tint = Color.Unspecified,
-            )
-        }
-    }
-}
-
