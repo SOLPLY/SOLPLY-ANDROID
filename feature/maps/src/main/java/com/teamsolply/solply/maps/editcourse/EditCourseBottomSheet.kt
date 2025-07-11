@@ -37,10 +37,11 @@ import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 internal fun EditCourseBottomSheet(
-    places: List<Place>,
+    places: PersistentList<Place>,
     courseName: String,
     introduction: String,
     selectedPlaceItem: Int?,

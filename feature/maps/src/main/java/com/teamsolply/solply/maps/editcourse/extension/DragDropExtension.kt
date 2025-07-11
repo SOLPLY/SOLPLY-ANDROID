@@ -12,9 +12,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
 import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
+import kotlinx.collections.immutable.PersistentList
 
 internal inline fun <T : Any> LazyListScope.draggableItems(
-    items: List<T>,
+    items: PersistentList<T>,
     dragDropState: DragDropState,
     noinline key: ((index: Int, item: T) -> Any)? = null,
     crossinline content: @Composable (index: Int, Modifier, T) -> Unit

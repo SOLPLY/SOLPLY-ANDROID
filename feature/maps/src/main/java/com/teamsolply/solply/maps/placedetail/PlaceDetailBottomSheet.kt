@@ -39,6 +39,7 @@ import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun PlaceDetailBottomSheet(
@@ -46,13 +47,13 @@ fun PlaceDetailBottomSheet(
     placeType: PlaceType,
     title: String,
     description: String,
-    placeImageUrls: List<Int>,
+    placeImageUrls: PersistentList<Int>,
     placeAddress: String,
     placeContactNumber: String,
     placeOpeningHours: String,
-    placeSnsLink: List<SnsLink>,
-    courses: List<CourseInfoEntity>,
-    addMyCourseSelectedCount: List<Int>,
+    placeSnsLink: PersistentList<SnsLink>,
+    courses: PersistentList<CourseInfoEntity>,
+    addMyCourseSelectedCount: PersistentList<Int>,
     addMyCourseBackClick: () -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,

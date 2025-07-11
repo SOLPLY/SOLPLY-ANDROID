@@ -70,6 +70,9 @@ import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -223,8 +226,8 @@ private fun MapsScreen(
     // Add Place
     placeDetailEntity: PlaceDetailEntity,
     startAddMyCourse: Boolean,
-    courses: List<CourseInfoEntity>,
-    addMyCourseSelectedCount: List<Int>,
+    courses: PersistentList<CourseInfoEntity>,
+    addMyCourseSelectedCount: PersistentList<Int>,
     placeBookmarked: Boolean,
     changeAddPlaceState: (Boolean) -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
@@ -283,7 +286,9 @@ private fun MapsScreen(
                     update = CameraUpdate.toCameraPosition(
                         CameraPosition(
                             LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
-                            14.0, 0.0, 0.0
+                            14.0,
+                            0.0,
+                            0.0
                         )
                     ),
                     durationMs = 1000
@@ -406,7 +411,7 @@ private fun MapsScreen(
                                 )
 
                                 PathOverlay(
-                                    coords = listOf(currentLatLng, nextLatLng),
+                                    coords = persistentListOf(currentLatLng, nextLatLng),
                                     color = SolplyTheme.colors.purple900,
                                     width = 0.5.dp
                                 )
@@ -528,11 +533,11 @@ private fun MapsScreen(
                             placeType = placeDetailEntity.primaryTag,
                             title = placeDetailEntity.placeName,
                             description = placeDetailEntity.description,
-                            placeImageUrls = placeDetailEntity.imageInfos,
+                            placeImageUrls = placeDetailEntity.imageInfos.toPersistentList(),
                             placeAddress = placeDetailEntity.address,
                             placeContactNumber = placeDetailEntity.contactNumber,
                             placeOpeningHours = placeDetailEntity.openingHours,
-                            placeSnsLink = placeDetailEntity.snsLink,
+                            placeSnsLink = placeDetailEntity.snsLink.toPersistentList(),
                             courses = courses,
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
@@ -544,7 +549,7 @@ private fun MapsScreen(
 
                     MapsType.ADD_COURSE -> {
                         AddCourseBottomSheet(
-                            places = courseDetailInfo.places,
+                            places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,
@@ -555,7 +560,7 @@ private fun MapsScreen(
 
                     MapsType.EDIT_COURSE -> {
                         EditCourseBottomSheet(
-                            places = courseDetailInfo.places,
+                            places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,

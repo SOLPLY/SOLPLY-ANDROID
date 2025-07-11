@@ -23,10 +23,11 @@ import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 internal fun AddCourseBottomSheet(
-    places: List<Place>,
+    places: PersistentList<Place>,
     courseName: String,
     introduction: String,
     selectedPlaceItem: Int?,
