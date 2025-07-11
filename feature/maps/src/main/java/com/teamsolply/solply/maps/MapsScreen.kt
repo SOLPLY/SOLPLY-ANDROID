@@ -51,6 +51,7 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.PathOverlay
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.overlay.OverlayImage
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
@@ -254,7 +255,9 @@ fun MapsScreen(
 
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val draggableItemSize by remember { derivedStateOf { courseDetailEntity.places.size } }
+    val draggableItemSize by remember(courseDetailEntity.places.size) {
+        derivedStateOf { courseDetailEntity.places.size }
+    }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
 
@@ -373,22 +376,16 @@ fun MapsScreen(
                                 placeDetailEntity.longitude
                             )
                         ),
-                        icon = OverlayImage.fromResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
+                        icon = OverlayImage.fromResource(R.drawable.ic_marker_default),
                         anchor = Offset(0.5f, 0.5f)
                     )
                 } else {
                     if (courseDetailInfo.places.isNotEmpty()) {
                         courseDetailInfo.places.forEachIndexed { index, place ->
-                            val markerIconRes = when (index) {
-                                // TODO 인덱스로 바꾸기
-                                0 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_first else com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
-                                1 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_second else com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
-                                2 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_third else com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
-                                3 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_fourth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
-                                4 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_fifth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
-                                5 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_sixth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
-                                else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
-                            }
+                            val markerIconRes = getMarkerIcon(
+                                index = index,
+                                isSelected = selectedPlaceInfoId == place.placeId
+                            )
                             val currentLatLng =
                                 LatLng(place.latitude.toDouble(), place.longitude.toDouble())
                             Marker(
@@ -449,7 +446,7 @@ fun MapsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_place_navigation),
+                            painter = painterResource(R.drawable.ic_place_navigation),
                             contentDescription = "place_navigation",
                             tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else Color.Unspecified
                         )
@@ -505,7 +502,7 @@ fun MapsScreen(
                             maxLines = 1
                         )
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
+                            painter = painterResource(R.drawable.ic_marker_default),
                             contentDescription = "add_place",
                             modifier = Modifier.padding(start = 8.dp, end = 15.dp),
                             tint = if (startAddMyCourse) {
@@ -522,7 +519,6 @@ fun MapsScreen(
                         modifier = Modifier.padding(end = 15.dp)
                     )
                 }
-                // TODO("맵 타입에 따라 바텀 시트 위 버튼")
             },
             content = {
                 when (mapsType) {
@@ -582,9 +578,9 @@ fun MapsScreen(
         Icon(
             painter = painterResource(
                 if (isInRemoveIconArea.value) {
-                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating_on
+                    R.drawable.ic_remove_floating_on
                 } else {
-                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating
+                    R.drawable.ic_remove_floating
                 }
             ),
             contentDescription = "remove",
@@ -616,6 +612,21 @@ fun MapsScreen(
                 textPadding = PaddingValues(vertical = 21.dp),
                 enabledBackgroundColor = SolplyTheme.colors.gray900
             )
+        }
+    }
+}
+
+@Composable
+private fun getMarkerIcon(index: Int, isSelected: Boolean): Int {
+    return remember(index, isSelected) {
+        when (index) {
+            0 -> if (isSelected) R.drawable.ic_marker_selected_first else R.drawable.ic_marker_first
+            1 -> if (isSelected) R.drawable.ic_marker_selected_second else R.drawable.ic_marker_second
+            2 -> if (isSelected) R.drawable.ic_marker_selected_third else R.drawable.ic_marker_third
+            3 -> if (isSelected) R.drawable.ic_marker_selected_fourth else R.drawable.ic_marker_fourth
+            4 -> if (isSelected) R.drawable.ic_marker_selected_fifth else R.drawable.ic_marker_fifth
+            5 -> if (isSelected) R.drawable.ic_marker_selected_sixth else R.drawable.ic_marker_sixth
+            else -> R.drawable.ic_marker_default
         }
     }
 }

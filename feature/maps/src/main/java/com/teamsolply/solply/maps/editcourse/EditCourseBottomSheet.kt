@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.editcourse.extension.dragContainer
@@ -97,13 +98,13 @@ fun EditCourseBottomSheet(
                 ) {
                     if (startEditCourse) {
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_small_check),
+                            painter = painterResource(R.drawable.ic_small_check),
                             contentDescription = "start_course_edit",
                             tint = SolplyTheme.colors.black
                         )
                     } else {
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_course_edit),
+                            painter = painterResource(R.drawable.ic_course_edit),
                             contentDescription = "start_course_edit",
                             tint = Color.Unspecified
                         )
@@ -161,7 +162,7 @@ fun EditCourseBottomSheet(
                             placeAddress = item.address,
                             // TODO. 서버 이미지 url로 변경하기
                             // placeImageRes = item.thumbnailUrl,
-                            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            placeImageRes = R.drawable.img_course_dummy,
                             modifier = Modifier.then(
                                 if (startEditCourse) {
                                     Modifier
