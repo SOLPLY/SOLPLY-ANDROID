@@ -14,31 +14,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.mypage.model.MypageTab
+import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.ui.extension.customClickable
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun MypageTopBar(
     onBackButtonClick: () -> Unit,
-    isPlaceTownSelected: Boolean,
-    isCourseTownSelected: Boolean,
-    currentTab: MypageTab,
+    isTownSelected: Boolean,
     town: String
 ) {
-    val title = when (currentTab) {
-        MypageTab.PLACE -> {
-            if (isPlaceTownSelected) town else "수집함"
-        }
-
-        MypageTab.COURSE -> {
-            if (isCourseTownSelected) town else "수집함"
-        }
-    }
-
+    val title = if (isTownSelected) town else stringResource(R.string.mypage_collection)
     Row(
         modifier = Modifier
             .fillMaxWidth()
