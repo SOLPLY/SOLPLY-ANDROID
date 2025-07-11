@@ -77,11 +77,14 @@ data class MypageState(
         )
     ),
     val selectedTab: MypageTab = MypageTab.PLACE,
-    val isTownSelected: Boolean = false
+    val isPlaceTownSelected: Boolean = false,
+    val isCourseTownSelected: Boolean = false
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
     // TODO 탭 이중관리
+    data object SelectPlaceTab : MypageIntent
+    data object SelectCourseTab : MypageIntent
 
     //
     data class SelectTown(val selectedTown: String) : MypageIntent
@@ -91,6 +94,6 @@ sealed interface MypageIntent : UiIntent {
 }
 
 sealed interface MypageSideEffect : SideEffect {
-//    data class ShowPlaceOfTown(val selectedTown: String) : MypageSideEffect
+    //    data class ShowPlaceOfTown(val selectedTown: String) : MypageSideEffect
     data object NavigateToBack : MypageSideEffect
 }

@@ -3,7 +3,6 @@ package com.teamsolply.solply.mypage.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.mypage.model.TownCard

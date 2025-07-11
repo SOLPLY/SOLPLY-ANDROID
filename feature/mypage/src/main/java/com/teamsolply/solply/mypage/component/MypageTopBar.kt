@@ -17,21 +17,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun MypageTopBar(
     onBackButtonClick: () -> Unit,
-    isTownSelected: Boolean,
+    isPlaceTownSelected: Boolean,
+    isCourseTownSelected: Boolean,
+    currentTab: MypageTab,
     town: String
 ) {
-    val title = if (isTownSelected) town else "수집함"
+    val title = when (currentTab) {
+        MypageTab.PLACE -> {
+            if (isPlaceTownSelected) town else "수집함"
+        }
+
+        MypageTab.COURSE -> {
+            if (isCourseTownSelected) town else "수집함"
+        }
+    }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(50.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -51,18 +62,6 @@ fun MypageTopBar(
             text = title,
             style = SolplyTheme.typography.title18Sb,
             color = SolplyTheme.colors.black
-        )
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun MypageTopBarPreview() {
-    SolplyTheme {
-        MypageTopBar(
-            town = "망원동",
-            onBackButtonClick = {},
-            isTownSelected = false
         )
     }
 }
