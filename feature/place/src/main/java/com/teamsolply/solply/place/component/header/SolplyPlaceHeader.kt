@@ -75,11 +75,5 @@ fun PlaceHeader(
                     .size(24.dp)
             )
         }
-        Text(
-            text = recommendText,
-            style = SolplyTheme.typography.display20Sb,
-            modifier = Modifier
-                .padding(start = 20.dp, top = 16.dp, bottom = 9.dp)
-        )
     }
 }
