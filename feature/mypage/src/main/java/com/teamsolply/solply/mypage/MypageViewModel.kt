@@ -15,8 +15,15 @@ class MypageViewModel @Inject constructor() :
                 // MypageContract places에 반영하면 되나?
                 copy(isTownSelected = true)
             }
+
             is MypageIntent.BackButtonClick -> {
-                postSideEffect(MypageSideEffect.NavigateToBack)
+                if (currentState.isTownSelected) {
+                    reduce {
+                        copy(isTownSelected = false)
+                    }
+                } else {
+                    postSideEffect(MypageSideEffect.NavigateToBack)
+                }
             }
         }
     }
