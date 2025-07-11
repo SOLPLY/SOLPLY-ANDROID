@@ -132,7 +132,8 @@ fun EditCourseBottomSheet(
                     key = { _, item -> item.placeId }
                 ) { index, modifier, item ->
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = modifier
                     ) {
                         if (!startEditCourse) {
                             Box(
@@ -161,7 +162,7 @@ fun EditCourseBottomSheet(
                             //TODO. 서버 이미지 url로 변경하기
                             //placeImageRes = item.thumbnailUrl,
                             placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                            modifier = modifier.then(
+                            modifier = Modifier.then(
                                 if (startEditCourse) Modifier else Modifier.customClickable(
                                     rippleEnabled = false
                                 ) {

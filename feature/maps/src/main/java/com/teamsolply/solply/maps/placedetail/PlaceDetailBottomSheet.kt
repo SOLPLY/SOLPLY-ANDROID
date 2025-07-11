@@ -90,7 +90,7 @@ fun PlaceDetailBottomSheet(
                     style = SolplyTheme.typography.head16M
                 )
             }
-            if (placeImageUrls.isEmpty()) {
+            if (courses.isEmpty()) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

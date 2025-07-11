@@ -287,8 +287,7 @@ fun MapsScreen(
                 durationMs = 1000
             )
         }
-    }
-    else {
+    } else {
         LaunchedEffect(courseDetailInfo.places) {
             if (courseDetailInfo.places.isNotEmpty()) {
                 val places = courseDetailInfo.places

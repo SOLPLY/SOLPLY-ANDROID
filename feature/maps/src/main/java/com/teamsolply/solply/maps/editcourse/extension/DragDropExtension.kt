@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps.editcourse.extension
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
@@ -33,14 +35,15 @@ inline fun <T : Any> LazyListScope.draggableItems(
                     translationX = dragDropState.deltaX
                 }
         } else {
-            Modifier.animateItem(
-                fadeInSpec = null,
-                fadeOutSpec = null,
-                placementSpec = tween(
-                    durationMillis = 200,
-                    easing = FastOutSlowInEasing
+            Modifier
+                .animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = null,
+                    placementSpec = tween(
+                        durationMillis = 200,
+                        easing = FastOutSlowInEasing
+                    )
                 )
-            )
         }
         content(index, modifier, item)
     }
