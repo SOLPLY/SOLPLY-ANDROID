@@ -38,14 +38,12 @@ fun FilterSheetButton(
             painter = painterResource(iconRes),
             contentDescription = label,
             modifier = Modifier
-                .padding(horizontal = 16.dp),
-            tint = SolplyTheme.colors.gray900
         )
         Text(
             text = label,
-            style = SolplyTheme.typography.body16M,
-            color = SolplyTheme.colors.gray900,
-            modifier = Modifier.padding(start = 16.dp)
+            style = SolplyTheme.typography.body16R,
+            color = SolplyTheme.colors.black,
+            modifier = Modifier.padding(start = 4.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
         if (showCheck) {

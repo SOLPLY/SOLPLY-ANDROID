@@ -225,7 +225,8 @@ fun PlaceScreen(
         ModalBottomSheet(
             onDismissRequest = { showFilterSheet.value = false },
             sheetState = sheetState,
-            containerColor = SolplyTheme.colors.white
+            containerColor = SolplyTheme.colors.white,
+            dragHandle = null
         ) {
             PlaceTypeFilterSheet(
                 filterItems = state.placeTypeFilterItems,
@@ -328,7 +329,7 @@ fun PlaceTypeFilterSheet(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 24.dp),
+                .padding(top = 24.dp, bottom = 20.dp,),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -354,6 +355,6 @@ fun PlaceTypeFilterSheet(
                 HorizontalDivider(thickness = 1.dp, color = SolplyTheme.colors.gray100)
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(48.dp))
     }
 }
