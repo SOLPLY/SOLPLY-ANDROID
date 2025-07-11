@@ -266,36 +266,13 @@ fun MapsScreen(
 
     val cameraPositionState = rememberCameraPositionState()
 
-    LaunchedEffect(courseDetailInfo.places) {
-        if (mapsType != MapsType.PLACE_DETAIL && courseDetailInfo.places.isNotEmpty()) {
-            val places = courseDetailInfo.places
-
-            val latitudes = places.map { it.latitude.toDouble() }
-            val longitudes = places.map { it.longitude.toDouble() }
-
-            val minLat = latitudes.minOrNull() ?: 0.0
-            val maxLat = latitudes.maxOrNull() ?: 0.0
-            val minLng = longitudes.minOrNull() ?: 0.0
-            val maxLng = longitudes.maxOrNull() ?: 0.0
-
-            val centerLat = (minLat + maxLat) / 2
-            val centerLng = (minLng + maxLng) / 2
-
-            val latDiff = maxLat - minLat
-            val lngDiff = maxLng - minLng
-            val maxDiff = maxOf(latDiff, lngDiff)
-            val zoomLevel = when {
-                maxDiff > 0.1 -> 10.0
-                maxDiff > 0.05 -> 12.0
-                maxDiff > 0.01 -> 14.0
-                else -> 16.0
-            }
-
+    if (mapsType == MapsType.PLACE_DETAIL) {
+        LaunchedEffect(placeDetailEntity) {
             cameraPositionState.animate(
                 update = CameraUpdate.toCameraPosition(
                     CameraPosition(
-                        LatLng(centerLat - 0.008, centerLng),
-                        zoomLevel,
+                        LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
+                        14.0,
                         0.0,
                         0.0
                     )
@@ -304,6 +281,47 @@ fun MapsScreen(
             )
         }
     }
+    else {
+        LaunchedEffect(courseDetailInfo.places) {
+            if (courseDetailInfo.places.isNotEmpty()) {
+                val places = courseDetailInfo.places
+
+                val latitudes = places.map { it.latitude.toDouble() }
+                val longitudes = places.map { it.longitude.toDouble() }
+
+                val minLat = latitudes.minOrNull() ?: 0.0
+                val maxLat = latitudes.maxOrNull() ?: 0.0
+                val minLng = longitudes.minOrNull() ?: 0.0
+                val maxLng = longitudes.maxOrNull() ?: 0.0
+
+                val centerLat = (minLat + maxLat) / 2
+                val centerLng = (minLng + maxLng) / 2
+
+                val latDiff = maxLat - minLat
+                val lngDiff = maxLng - minLng
+                val maxDiff = maxOf(latDiff, lngDiff)
+                val zoomLevel = when {
+                    maxDiff > 0.1 -> 10.0
+                    maxDiff > 0.05 -> 12.0
+                    maxDiff > 0.01 -> 14.0
+                    else -> 16.0
+                }
+
+                cameraPositionState.animate(
+                    update = CameraUpdate.toCameraPosition(
+                        CameraPosition(
+                            LatLng(centerLat - 0.008, centerLng),
+                            zoomLevel,
+                            0.0,
+                            0.0
+                        )
+                    ),
+                    durationMs = 1000
+                )
+            }
+        }
+    }
+    // 마커로 카메라 전환
 
     LaunchedEffect(scrollToIndex) {
         scrollToIndex?.let { index ->
