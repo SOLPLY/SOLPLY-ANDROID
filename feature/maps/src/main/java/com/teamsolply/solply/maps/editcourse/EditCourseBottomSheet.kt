@@ -159,15 +159,20 @@ fun EditCourseBottomSheet(
                                 it.displayName == item.primaryTag
                             } ?: PlaceType.EMPTY,
                             placeAddress = item.address,
-                            //TODO. 서버 이미지 url로 변경하기
-                            //placeImageRes = item.thumbnailUrl,
+                            // TODO. 서버 이미지 url로 변경하기
+                            // placeImageRes = item.thumbnailUrl,
                             placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
                             modifier = Modifier.then(
-                                if (startEditCourse) Modifier else Modifier.customClickable(
-                                    rippleEnabled = false
-                                ) {
-                                    placeInfoClick(item.placeId)
-                                }),
+                                if (startEditCourse) {
+                                    Modifier
+                                } else {
+                                    Modifier.customClickable(
+                                        rippleEnabled = false
+                                    ) {
+                                        placeInfoClick(item.placeId)
+                                    }
+                                }
+                            ),
                             iconSelected = item.isBookmarked,
                             iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                             selectedPlaceItem = selectedPlaceItem == item.placeId,

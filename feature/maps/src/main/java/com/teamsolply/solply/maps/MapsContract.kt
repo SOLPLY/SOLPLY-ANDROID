@@ -21,7 +21,7 @@ data class MapsState(
     val selectedPlaceInfoId: Int? = null,
     // Edit Course
     val removeIconVisibility: Boolean = false,
-    val startEditCourse: Boolean = false,
+    val startEditCourse: Boolean = false
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
@@ -49,7 +49,8 @@ sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     // Edit Course
-    data object StartEditCourseIconClick: MapsIntent
+    data object StartEditCourseIconClick : MapsIntent
+
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean

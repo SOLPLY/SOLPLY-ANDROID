@@ -98,7 +98,7 @@ class DragDropState(
 
         val targetItem = stateList.layoutInfo.visibleItemsInfo.find { item ->
             middleOffset.toInt() in item.offset..item.offset + item.size &&
-                    currentDraggingItem.index != item.index
+                currentDraggingItem.index != item.index
         }
 
         if (targetItem != null) {
