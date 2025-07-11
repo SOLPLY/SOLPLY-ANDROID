@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
-import com.teamsolply.solply.maps.model.DraggableItem
 import com.teamsolply.solply.ui.extension.vibrate
 import kotlinx.coroutines.channels.Channel
 
@@ -66,12 +65,11 @@ class DragDropState(
         stateList.layoutInfo.visibleItemsInfo
             .firstOrNull { item -> offset.y.toInt() in item.offset..(item.offset + item.size) }
             ?.also {
-                (it.contentType as? DraggableItem)?.let { draggableItem ->
-                    draggingItem = it
-                    draggingItemIndex = draggableItem.index
-                    removeIconVisible(true)
-                    context.vibrate(50)
-                }
+                val index = it.index
+                draggingItem = it
+                draggingItemIndex = index
+                removeIconVisible(true)
+                context.vibrate(50)
             }
     }
 
@@ -100,12 +98,11 @@ class DragDropState(
 
         val targetItem = stateList.layoutInfo.visibleItemsInfo.find { item ->
             middleOffset.toInt() in item.offset..item.offset + item.size &&
-                currentDraggingItem.index != item.index &&
-                item.contentType is DraggableItem
+                    currentDraggingItem.index != item.index
         }
 
         if (targetItem != null) {
-            val targetIndex = (targetItem.contentType as DraggableItem).index
+            val targetIndex = targetItem.index
             onMove(currentDraggingItemIndex, targetIndex)
             draggingItemIndex = targetIndex
             deltaY += currentDraggingItem.offset - targetItem.offset

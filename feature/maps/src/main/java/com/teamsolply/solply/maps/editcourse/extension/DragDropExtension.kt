@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps.editcourse.extension
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -9,12 +8,10 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
 import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
-import com.teamsolply.solply.maps.model.DraggableItem
 
 inline fun <T : Any> LazyListScope.draggableItems(
     items: List<T>,
@@ -25,14 +22,17 @@ inline fun <T : Any> LazyListScope.draggableItems(
     itemsIndexed(
         items = items,
         key = if (key != null) { i, item -> key(i, item) } else null,
-        contentType = { index, _ -> DraggableItem(index = index) }
+        contentType = { index, item -> item }
     ) { index, item ->
         val modifier = if (dragDropState.draggingItemIndex == index) {
             Modifier
                 .zIndex(1f)
                 .graphicsLayer {
+                    alpha = 0.15f
                     translationY = dragDropState.deltaY
                     translationX = dragDropState.deltaX
+                    shadowElevation = 8f
+                    clip = true
                 }
         } else {
             Modifier
