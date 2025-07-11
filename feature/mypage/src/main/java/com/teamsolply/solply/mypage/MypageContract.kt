@@ -3,12 +3,23 @@ package com.teamsolply.solply.mypage
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
+import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 import okhttp3.internal.immutableListOf
 
 data class MypageState(
+    val towns: List<TownCard> = immutableListOf(
+        TownCard(
+            townName = "연희동",
+            imageUrl = ""
+        ),
+        TownCard(
+            townName = "망원동",
+            imageUrl = ""
+        )
+    ),
     val places: List<PlaceCard> = immutableListOf(
         PlaceCard(
             placeId = 0,
@@ -73,13 +84,13 @@ sealed interface MypageIntent : UiIntent {
     // TODO 탭 이중관리
 
     //
-    data object SelectTown : MypageIntent
+    data class SelectTown(val selectedTown: String) : MypageIntent
 
     // Navigate
     data object BackButtonClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {
-    data object MoveToTown : MypageSideEffect
+//    data class ShowPlaceOfTown(val selectedTown: String) : MypageSideEffect
     data object NavigateToBack : MypageSideEffect
 }

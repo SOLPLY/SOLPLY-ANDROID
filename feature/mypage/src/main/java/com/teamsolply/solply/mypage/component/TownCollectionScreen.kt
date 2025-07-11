@@ -12,13 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
-import com.teamsolply.solply.mypage.model.PlaceCard
+import com.teamsolply.solply.mypage.model.TownCard
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun PlaceCollectionScreen(
-    place: List<PlaceCard>,
-    modifier: Modifier = Modifier,
+fun TownCollectionScreen(
+    town: List<TownCard>,
+    onClickTown: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         modifier = modifier
@@ -28,20 +29,23 @@ fun PlaceCollectionScreen(
         horizontalArrangement = Arrangement.Center,
         contentPadding = PaddingValues(top = 16.dp, start = 17.dp, end = 17.dp)
     ) {
-        itemsIndexed(place) { index, it ->
+        itemsIndexed(town) { index, it ->
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .customClickable(
+                        rippleEnabled = false
+                    ) {
+                        onClickTown(it.townName)
+                    },
                 contentAlignment = if (index % 2 == 0) {
                     Alignment.CenterEnd
                 } else {
                     Alignment.CenterStart
                 }
             ) {
-                SolplyPlaceCard(
-                    name = it.placeName,
-                    placeType = it.placeType,
-                    imgRes = it.imageUrls[0],
+                SolplyTownCard(
+                    town = it.townName,
                     modifier =
                         if (index % 2 == 0) {
                             Modifier.padding(end = 5.dp)
@@ -52,4 +56,5 @@ fun PlaceCollectionScreen(
             }
         }
     }
+
 }

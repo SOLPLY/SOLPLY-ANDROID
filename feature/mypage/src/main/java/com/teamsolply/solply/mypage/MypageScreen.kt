@@ -27,8 +27,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.component.MypageTopBar
-import com.teamsolply.solply.mypage.component.PlaceCollectionScreen
+import com.teamsolply.solply.mypage.component.PlaceTabScreen
 import com.teamsolply.solply.mypage.model.PlaceCard
+import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import com.teamsolply.solply.ui.preview.DefaultPreview
@@ -49,10 +50,14 @@ fun MypageRoute(
         // TODO pagerState 이중관리
     }
 
+    LaunchedEffect(uiState.isTownSelected) {
+        Log.d("trtr", uiState.isTownSelected.toString())
+    }
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                MypageSideEffect.MoveToTown -> uiState.isTownSelected
+//                MypageSideEffect.ShowPlaceOfTown ->
                 MypageSideEffect.NavigateToBack -> navigateToBack()
             }
         }
@@ -62,9 +67,10 @@ fun MypageRoute(
         navigateToMaps = navigateToMaps,
         navigateToBack = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
         isTownSelected = uiState.isTownSelected,
-        selectTown = { /* TODO */ },
+        selectTown = { viewModel.sendIntent(MypageIntent.SelectTown(it)) },
         pagerState = pagerState,
-        place = uiState.places
+        place = uiState.places,
+        town = uiState.towns
     )
 }
 
@@ -73,9 +79,10 @@ fun MypageScreen(
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
     isTownSelected: Boolean,
-    selectTown: () -> Unit,
+    selectTown: (String) -> Unit,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
+    town: List<TownCard>,
     place: List<PlaceCard>
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -134,8 +141,11 @@ fun MypageScreen(
             state = pagerState
         ) { page ->
             when (page) {
-                0 -> PlaceCollectionScreen(
+                0 -> PlaceTabScreen(
                     onClickEmptyButton = {},
+                    town = town,
+                    onClickTown = selectTown,
+                    isTownSelected = isTownSelected,
                     place = place
                 )
             }
@@ -156,7 +166,8 @@ private fun MypageScreenPreview() {
             place = emptyList(),
             isTownSelected = false,
             selectTown = {},
-            navigateToBack = {}
+            navigateToBack = {},
+            town = emptyList()
         )
     }
 }
