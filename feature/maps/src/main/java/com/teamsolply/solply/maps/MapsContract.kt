@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class MapsState(
     // Add Place
-    val placeDetailEntity: PlaceDetailEntity = defaultPlaceDetailEntity,
+    val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
     val startAddMyCourse: Boolean = false,
     val addMyCourseSelectedCount: PersistentList<Int> = persistentListOf(),
@@ -20,8 +20,8 @@ data class MapsState(
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
     val selectedPlaceInfoId: Int? = null,
     // Edit Course
-    val course: PersistentList<PlaceDetailEntity> = persistentListOf(),
-    val iconVisibility: Boolean = false
+    val removeIconVisibility: Boolean = false,
+    val startEditCourse: Boolean = false
 ) : UiState
 
 sealed interface MapsIntent : UiIntent {
@@ -49,6 +49,8 @@ sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     // Edit Course
+    data object StartEditCourseIconClick : MapsIntent
+
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
@@ -94,10 +96,10 @@ val defaultPlaceDetailEntity = PlaceDetailEntity(
     latitude = 37.4979,
     longitude = 127.0276,
     description = "",
-    imageInfos = emptyList(),
+    imageInfos = persistentListOf(),
     contactNumber = "",
     openingHours = "",
-    snsLink = emptyList(),
+    snsLink = persistentListOf(),
     isBookmarked = false,
     placeType = "",
     placeDefaultId = 0
@@ -108,5 +110,5 @@ val courseDetailEntity = CourseDetailEntity(
     courseName = "",
     introduction = "",
     isBookmarked = false,
-    places = emptyList()
+    places = persistentListOf()
 )

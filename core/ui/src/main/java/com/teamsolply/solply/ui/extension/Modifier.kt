@@ -11,7 +11,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -48,10 +48,12 @@ fun Modifier.customClickable(
                 }
             },
             onLongClick = onLongClick,
-            indication = rememberRipple(
-                color = rippleColor ?: Color.Unspecified
-            ).takeIf {
-                rippleEnabled
+            indication = if (rippleEnabled) {
+                ripple(
+                    color = rippleColor ?: Color.Unspecified
+                )
+            } else {
+                null
             },
             interactionSource = remember { MutableInteractionSource() }
         )
