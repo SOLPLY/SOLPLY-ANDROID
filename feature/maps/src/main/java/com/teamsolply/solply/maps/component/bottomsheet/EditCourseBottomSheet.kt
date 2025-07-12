@@ -39,10 +39,10 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.courseDetailEntity
+import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.util.dragContainer
 import com.teamsolply.solply.maps.util.draggableItems
 import com.teamsolply.solply.maps.util.rememberDragDropState
-import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.PersistentList
@@ -64,7 +64,7 @@ internal fun EditCourseBottomSheet(
     placeInfoClick: (Int) -> Unit,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
-    removeCourse: (itemToRemove: Int) -> Unit,
+    removeCourse: (itemToRemove: Int) -> Unit
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }

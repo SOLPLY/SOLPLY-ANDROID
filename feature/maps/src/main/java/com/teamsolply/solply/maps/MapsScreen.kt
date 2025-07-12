@@ -219,7 +219,7 @@ internal fun MapsRoute(
         },
         onStartEditCourseClick = {
             viewModel.sendIntent(MapsIntent.StartEditCourseIconClick)
-        },
+        }
     )
 
     if (uiState.courseSaveDialogVisibility) {

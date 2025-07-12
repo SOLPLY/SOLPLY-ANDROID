@@ -16,7 +16,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 fun CourseSaveDialog(
     saveToCourseClick: () -> Unit,
     saveToNewCourseClick: () -> Unit,
-    onDismissRequest: () -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismissRequest

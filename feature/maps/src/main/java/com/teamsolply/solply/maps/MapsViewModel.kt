@@ -113,7 +113,7 @@ internal class MapsViewModel @Inject constructor(
                     reduce {
                         copy(
                             startEditCourse = true,
-                            selectedPlaceInfoId = null,
+                            selectedPlaceInfoId = null
                         )
                     }
                 }
@@ -125,14 +125,14 @@ internal class MapsViewModel @Inject constructor(
 
             is MapsIntent.CourseSaveDialogClick -> {
                 if (intent.courseSaveType == CourseSaveType.SaveToExistingCourse) {
-                    //TODO. 지금 코스에 저장 API
+                    // TODO. 지금 코스에 저장 API
                 } else {
                     postSideEffect(MapsSideEffect.ShowSuccessSaveNewCourseSnackBar)
-                    //TODO. 새 코스에 저장 API - 명세서 바뀌는거 보고
+                    // TODO. 새 코스에 저장 API - 명세서 바뀌는거 보고
                 }
                 reduce {
                     copy(
-                        startEditCourse = false,
+                        startEditCourse = false
                     )
                 }
                 sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility)
