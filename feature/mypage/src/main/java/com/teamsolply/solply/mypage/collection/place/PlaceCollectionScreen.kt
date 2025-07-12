@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
+import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.R
-import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.mypage.component.MypageTopBar
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.extension.customClickable
@@ -59,7 +59,6 @@ fun PlaceCollectionRoute(
                     Log.d("selected Places", uiState.selectedPlaces.joinToString(","))
                     // TODO 장소 리스트 조회 api
                 }
-
             }
         }
     }
@@ -94,7 +93,7 @@ fun PlaceCollectionScreen(
     onDialogDismissClick: () -> Unit,
     isSelectMode: Boolean,
     dialogState: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val selectText =
         if (isSelectMode) stringResource(R.string.mypage_delete) else stringResource(R.string.mypage_select)
@@ -117,7 +116,7 @@ fun PlaceCollectionScreen(
         MypageTopBar(
             town = town, // TODO 선택한 동 이름
             onBackButtonClick = { onBackButtonClick() },
-            isTownSelected = true,
+            isTownSelected = true
         )
         Row(
             modifier = Modifier
@@ -153,7 +152,7 @@ fun PlaceCollectionScreen(
                     .then(
                         Modifier.customClickable(rippleEnabled = false) {
                             if (isSelectMode) {
-                                //TODO 삭제 기능
+                                // TODO 삭제 기능
                                 onDeleteButtonClick()
                             } else {
                                 onSelectButtonClick()
@@ -192,18 +191,17 @@ fun PlaceCollectionScreen(
                         selected = it.isSelected,
                         touchable = false,
                         modifier =
-                            if (index % 2 == 0) {
-                                Modifier.padding(end = 5.dp)
-                            } else {
-                                Modifier.padding(start = 5.dp)
-                            }
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        }
                     )
                 }
             }
         }
     }
 }
-
 
 @DefaultPreview
 @Composable

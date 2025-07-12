@@ -28,16 +28,16 @@ fun SolplyTownCard(
                 .clip(
                     shape = RoundedCornerShape(20.dp)
                 ),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
-                contentDescription = "동네 수집함",
+                contentDescription = "동네 수집함"
             )
             Image(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_group_cover),
                 contentDescription = "솔플리 커버",
-                modifier=Modifier.matchParentSize()
+                modifier = Modifier.matchParentSize()
             )
         }
         Spacer(modifier = Modifier.height(8.dp))

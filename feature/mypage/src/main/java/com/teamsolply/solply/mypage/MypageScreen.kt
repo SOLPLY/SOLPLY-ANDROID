@@ -116,7 +116,7 @@ fun MypageScreen(
         MypageTopBar(
             town = "", // TODO 선택한 동 이름
             onBackButtonClick = { onBackButtonClick() },
-            isTownSelected = false,
+            isTownSelected = false
         )
         TabRow(
             selectedTabIndex = 0,

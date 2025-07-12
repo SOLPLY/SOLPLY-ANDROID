@@ -39,13 +39,13 @@ fun SolplyConfirmDialog(
         properties = DialogProperties(
             dismissOnClickOutside = true,
             dismissOnBackPress = true
-        ),
+        )
     ) {
         Surface(
             modifier = modifier
                 .height(146.dp)
                 .width(260.dp)
-                .clip(shape = RoundedCornerShape(12.dp)),
+                .clip(shape = RoundedCornerShape(12.dp))
         ) {
             Column(
                 modifier = Modifier

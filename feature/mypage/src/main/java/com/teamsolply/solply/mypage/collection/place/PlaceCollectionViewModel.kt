@@ -30,7 +30,7 @@ class PlaceCollectionViewModel @Inject constructor() :
                     }
                     copy(
                         places = updatedPlaces,
-                        selectMode = false,
+                        selectMode = false
                     )
                 }
             }

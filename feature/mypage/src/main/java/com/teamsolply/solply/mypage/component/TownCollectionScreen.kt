@@ -47,14 +47,13 @@ fun TownCollectionScreen(
                 SolplyTownCard(
                     town = it.townName,
                     modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        }
+                    if (index % 2 == 0) {
+                        Modifier.padding(end = 5.dp)
+                    } else {
+                        Modifier.padding(start = 5.dp)
+                    }
                 )
             }
         }
     }
-
 }

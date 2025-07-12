@@ -31,7 +31,6 @@ fun PlaceTabScreen(
     }
 }
 
-
 @DefaultPreview
 @Composable
 private fun PlaceTabScreenPreview() {
