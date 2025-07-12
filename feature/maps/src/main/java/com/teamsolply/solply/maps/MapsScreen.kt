@@ -66,6 +66,7 @@ import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.util.calculateCameraPosition
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
@@ -76,6 +77,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlin.math.abs
 
 @Composable
 internal fun MapsRoute(
@@ -278,8 +280,8 @@ private fun MapsScreen(
     )
 
     val cameraPositionState = rememberCameraPositionState()
+    var lastCameraPosition by remember { mutableStateOf<CameraPosition?>(null) }
 
-    // 마커로 카메라 전환
     LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places) {
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
@@ -296,42 +298,25 @@ private fun MapsScreen(
                 )
             }
 
-            else -> {
+            MapsType.ADD_COURSE, MapsType.EDIT_COURSE -> {
                 if (courseDetailInfo.places.isNotEmpty()) {
-                    val places = courseDetailInfo.places
+                    val newCameraPosition = calculateCameraPosition(courseDetailInfo.places)
 
-                    val latitudes = places.map { it.latitude.toDouble() }
-                    val longitudes = places.map { it.longitude.toDouble() }
+                    val shouldAnimate = lastCameraPosition?.let { lastPos ->
+                        val latDiff =
+                            abs(newCameraPosition.target.latitude - lastPos.target.latitude)
+                        val lngDiff =
+                            abs(newCameraPosition.target.longitude - lastPos.target.longitude)
+                        latDiff > 0.01 || lngDiff > 0.01
+                    } ?: true
 
-                    val minLat = latitudes.minOrNull() ?: 0.0
-                    val maxLat = latitudes.maxOrNull() ?: 0.0
-                    val minLng = longitudes.minOrNull() ?: 0.0
-                    val maxLng = longitudes.maxOrNull() ?: 0.0
-
-                    val centerLat = (minLat + maxLat) / 2
-                    val centerLng = (minLng + maxLng) / 2
-
-                    val latDiff = maxLat - minLat
-                    val lngDiff = maxLng - minLng
-                    val maxDiff = maxOf(latDiff, lngDiff)
-                    val zoomLevel = when {
-                        maxDiff > 0.1 -> 10.0
-                        maxDiff > 0.05 -> 12.0
-                        maxDiff > 0.01 -> 14.0
-                        else -> 16.0
+                    if (shouldAnimate) {
+                        cameraPositionState.animate(
+                            update = CameraUpdate.toCameraPosition(newCameraPosition),
+                            durationMs = 1000
+                        )
+                        lastCameraPosition = newCameraPosition
                     }
-
-                    cameraPositionState.animate(
-                        update = CameraUpdate.toCameraPosition(
-                            CameraPosition(
-                                LatLng(centerLat - 0.008, centerLng),
-                                zoomLevel,
-                                0.0,
-                                0.0
-                            )
-                        ),
-                        durationMs = 1000
-                    )
                 }
             }
         }
