@@ -30,6 +30,7 @@ import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
+import com.teamsolply.solply.mypage.collection.place.placeCollectionNavGraph
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
@@ -172,7 +173,14 @@ internal fun MainScreen(
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         },
-                        navigateToBack = navigator::navigateToBack
+                        navigateToBack = navigator::navigateToBack,
+                        navigateToPlaceCollection = { town ->
+                            val navOptions = navOptions { }
+                            navigator.navigateToPlaceCollection(
+                                town = town,
+                                navOptions = navOptions
+                            )
+                        }
                     )
                     mapsNavGraph(
                         paddingValues = innerPadding,
@@ -228,6 +236,14 @@ internal fun MainScreen(
                                 launchSingleTop = true
                             }
                             navigator.navigateToMypage(navOptions = navOptions)
+                        },
+                        navigateToBack = navigator::navigateToBack
+                    )
+                    placeCollectionNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToMaps = { mapsType ->
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         },
                         navigateToBack = navigator::navigateToBack
                     )
