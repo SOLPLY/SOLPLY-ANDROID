@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.editcourse.interaction
+package com.teamsolply.solply.maps.util
 
 import android.content.Context
 import androidx.compose.foundation.gestures.scrollBy

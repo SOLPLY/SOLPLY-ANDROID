@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.placedetail
+package com.teamsolply.solply.maps.component.bottomsheet
 
 import ClickableAnnotatedText
 import androidx.compose.foundation.Image

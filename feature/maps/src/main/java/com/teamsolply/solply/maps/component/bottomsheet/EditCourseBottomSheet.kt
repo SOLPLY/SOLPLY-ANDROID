@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.editcourse
+package com.teamsolply.solply.maps.component.bottomsheet
 
 import android.content.Context
 import androidx.compose.foundation.background
@@ -39,9 +39,9 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.courseDetailEntity
-import com.teamsolply.solply.maps.editcourse.extension.dragContainer
-import com.teamsolply.solply.maps.editcourse.extension.draggableItems
-import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
+import com.teamsolply.solply.maps.util.dragContainer
+import com.teamsolply.solply.maps.util.draggableItems
+import com.teamsolply.solply.maps.util.rememberDragDropState
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable

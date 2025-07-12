@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.addcourse
+package com.teamsolply.solply.maps.component.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

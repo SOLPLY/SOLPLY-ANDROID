@@ -54,14 +54,15 @@ import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBotto
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
+import com.teamsolply.solply.designsystem.component.dialog.SolplyBasicDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
-import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
-import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
 import com.teamsolply.solply.maps.util.calculateCameraPosition
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
@@ -155,6 +156,10 @@ internal fun MapsRoute(
             }
         }
     }
+
+    SolplyBasicDialog(
+        onDismissRequest = {}
+    ) { }
 
     MapsScreen(
         mapsType = mapsType,
