@@ -114,7 +114,7 @@ fun PlaceCollectionScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MypageTopBar(
-            town = town, // TODO 선택한 동 이름
+            barText = town, // TODO 선택한 동 이름
             onBackButtonClick = { onBackButtonClick() },
             isTownSelected = true
         )

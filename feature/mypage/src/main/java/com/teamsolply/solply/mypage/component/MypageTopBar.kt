@@ -23,11 +23,10 @@ import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun MypageTopBar(
+    barText: String,
     onBackButtonClick: () -> Unit,
     isTownSelected: Boolean,
-    town: String
 ) {
-    val title = if (isTownSelected) town else stringResource(R.string.mypage_collection)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +47,7 @@ fun MypageTopBar(
                 .width(Dp(12f))
         )
         Text(
-            text = title,
+            text = barText,
             style = SolplyTheme.typography.title18Sb,
             color = SolplyTheme.colors.black
         )

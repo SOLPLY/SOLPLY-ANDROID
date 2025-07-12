@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -114,7 +115,7 @@ fun MypageScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MypageTopBar(
-            town = "", // TODO 선택한 동 이름
+            barText = stringResource(R.string.mypage_collection),
             onBackButtonClick = { onBackButtonClick() },
             isTownSelected = false
         )
