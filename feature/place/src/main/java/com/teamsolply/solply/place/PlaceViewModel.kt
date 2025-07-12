@@ -33,4 +33,15 @@ class PlaceViewModel @Inject constructor(
             // failures ignored; Retry intent can re-trigger
         }
     }
+
+    fun onMainTypeSelected(type: String) {
+        val tags = when(type) {
+            "WALK", "BOOK" -> emptyList()
+            else -> listOf(
+                OptionTag(9, "OPTION1", "커피/디저트", 1),
+                OptionTag(10, "OPTION2", "시그니쳐메뉴", 1)
+            )
+        }
+        reduce { copy(optionTags = tags) }
+    }
 }

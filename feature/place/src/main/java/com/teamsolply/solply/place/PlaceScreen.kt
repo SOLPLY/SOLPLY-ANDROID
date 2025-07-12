@@ -58,6 +58,9 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.teamsolply.solply.place.component.bottomsheet.PlaceOptionFilterSheet
+import com.teamsolply.solply.place.component.bottomsheet.PlaceTypeFilterSheet
+import com.teamsolply.solply.place.component.button.FilterChipButton
 import com.teamsolply.solply.place.component.button.FilterSheetButton
 import com.teamsolply.solply.place.model.PlaceTypeFilterItem
 
@@ -110,8 +113,12 @@ fun PlaceScreen(
     )
 
     val showFilterSheet = remember { mutableStateOf(false) }
+    val showOptionSheet = remember { mutableStateOf(false) }
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val selectedType = remember { mutableStateOf("ALL") }
+
+    val selectedOptionIds = remember { mutableStateListOf<Int>() }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -174,12 +181,20 @@ fun PlaceScreen(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // 💡 버튼 클릭 시 상태 변경만
                             PlaceChipButton(
-                                text = "전체",
+                                text = state.placeTypeFilterItems.firstOrNull { it.type == selectedType.value }?.label ?: "전체",
                                 modifier = Modifier,
                                 onClick = { showFilterSheet.value = true }
                             )
+
+                            if (!state.optionTags.isNullOrEmpty() && selectedType.value != "ALL") {
+                                Spacer(modifier = Modifier.width(8.dp))
+                                PlaceChipButton(
+                                    text = "추가옵션",
+                                    modifier = Modifier,
+                                    onClick = { showOptionSheet.value = true }
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.height(14.dp))
                         val chunkedList = state.placeList.chunked(2)
@@ -237,6 +252,25 @@ fun PlaceScreen(
                     // TODO: 실제 필터링 동작 연결
                 },
                 onDismiss = { showFilterSheet.value = false }
+            )
+        }
+    }
+
+    if (showOptionSheet.value) {
+        ModalBottomSheet(
+            onDismissRequest = { showOptionSheet.value = false },
+            sheetState = sheetState,
+            containerColor = SolplyTheme.colors.white,
+            dragHandle = null
+        ) {
+            PlaceOptionFilterSheet(
+                optionTags = state.optionTags ?: emptyList(),
+                selectedOptionIds = selectedOptionIds,
+                onOptionSelected = { tagId ->
+                },
+                onDismiss = { showOptionSheet.value = false },
+                onReset = { },
+                onDone = { showOptionSheet.value = false }
             )
         }
     }
@@ -311,50 +345,5 @@ fun CustomHorizontalPager(
                 onClick = { onPlaceClick(place.placeId) }
             )
         }
-    }
-}
-
-@Composable
-fun PlaceTypeFilterSheet(
-    filterItems: List<PlaceTypeFilterItem>,
-    selectedType: String,
-    onSelectType: (String) -> Unit,
-    onDismiss: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp, bottom = 20.dp,),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "장소 유형",
-                style = SolplyTheme.typography.display20Sb,
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_close),
-                contentDescription = "close",
-                modifier = Modifier.size(24.dp).customClickable { onDismiss() }
-            )
-        }
-        filterItems.forEachIndexed { idx, item ->
-            FilterSheetButton (
-                iconRes = item.iconRes,
-                label = item.label,
-                selected = selectedType == item.type,
-                showCheck = selectedType == item.type,
-                onClick = { onSelectType(item.type) }
-            )
-            if (idx < filterItems.size - 1) {
-                HorizontalDivider(thickness = 1.dp, color = SolplyTheme.colors.gray100)
-            }
-        }
-        Spacer(modifier = Modifier.height(48.dp))
     }
 }
