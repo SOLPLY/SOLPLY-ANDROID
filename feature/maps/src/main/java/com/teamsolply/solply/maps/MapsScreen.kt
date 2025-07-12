@@ -12,18 +12,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -61,7 +58,6 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
-import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
@@ -255,29 +251,10 @@ private fun MapsScreen(
     onStartEditCourseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val scope = rememberCoroutineScope()
-    var scrollToIndex by remember { mutableStateOf<Int?>(null) }
-    val lazyListState = rememberLazyListState()
-
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val draggableItemSize by remember(courseDetailEntity.places.size) {
-        derivedStateOf { courseDetailEntity.places.size }
-    }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
-
-    val dragDropState = rememberDragDropState(
-        context = context,
-        lazyListState = lazyListState,
-        draggableItemsNum = draggableItemSize,
-        onMove = { fromIndex, toIndex ->
-            moveCourse(fromIndex, toIndex)
-        },
-        removeIconVisible = startCourseMove,
-        onRemove = removeCourse,
-        isInRemoveAreaProvider = { isInRemoveIconArea.value }
-    )
 
     val cameraPositionState = rememberCameraPositionState()
     var lastCameraPosition by remember { mutableStateOf<CameraPosition?>(null) }
@@ -319,13 +296,6 @@ private fun MapsScreen(
                     }
                 }
             }
-        }
-    }
-
-    LaunchedEffect(scrollToIndex) {
-        scrollToIndex?.let { index ->
-            lazyListState.animateScrollToItem(index)
-            scrollToIndex = null
         }
     }
 
@@ -430,11 +400,11 @@ private fun MapsScreen(
                                     Modifier.customClickable(rippleEnabled = false) {
                                         navigateToNaverMapDirections(
                                             context = context,
-                                            destName = "강남역",
-                                            destId = "222",
-                                            destLongitude = 127.02760,
-                                            destLatitude = 37.49794,
-                                            destType = "SUBWAY_STATION"
+                                            destName = placeDetailEntity.placeName,
+                                            destId = placeDetailEntity.placeDefaultId.toString(),
+                                            destLongitude = placeDetailEntity.longitude,
+                                            destLatitude = placeDetailEntity.latitude,
+                                            destType = placeDetailEntity.placeType
                                         )
                                     }
                                 }
@@ -568,6 +538,7 @@ private fun MapsScreen(
 
                     MapsType.EDIT_COURSE -> {
                         EditCourseBottomSheet(
+                            context = context,
                             places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
@@ -576,12 +547,13 @@ private fun MapsScreen(
                             isInRemoveIconArea = isInRemoveIconArea,
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
-                            lazyListState = lazyListState,
-                            dragDropState = dragDropState,
                             startEditCourse = startEditCourse,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
                             onStartEditCourseClick = onStartEditCourseClick,
-                            placeInfoClick = placeInfoClick
+                            placeInfoClick = placeInfoClick,
+                            startCourseMove = startCourseMove,
+                            moveCourse = moveCourse,
+                            removeCourse = removeCourse
                         )
                     }
                 }

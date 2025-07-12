@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps.editcourse
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,12 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,9 +38,10 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
+import com.teamsolply.solply.maps.courseDetailEntity
 import com.teamsolply.solply.maps.editcourse.extension.dragContainer
 import com.teamsolply.solply.maps.editcourse.extension.draggableItems
-import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
+import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
@@ -41,6 +49,7 @@ import kotlinx.collections.immutable.PersistentList
 
 @Composable
 internal fun EditCourseBottomSheet(
+    context: Context,
     places: PersistentList<Place>,
     courseName: String,
     introduction: String,
@@ -49,13 +58,39 @@ internal fun EditCourseBottomSheet(
     isInRemoveIconArea: MutableState<Boolean>,
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
-    lazyListState: LazyListState,
-    dragDropState: DragDropState,
     startEditCourse: Boolean,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
     onStartEditCourseClick: () -> Unit,
-    placeInfoClick: (Int) -> Unit
+    placeInfoClick: (Int) -> Unit,
+    startCourseMove: (Boolean) -> Unit,
+    moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
+    removeCourse: (itemToRemove: Int) -> Unit,
 ) {
+    val draggableItemSize by remember(courseDetailEntity.places.size) {
+        derivedStateOf { courseDetailEntity.places.size }
+    }
+    var scrollToIndex by remember { mutableStateOf<Int?>(null) }
+
+    val lazyListState = rememberLazyListState()
+    val dragDropState = rememberDragDropState(
+        context = context,
+        lazyListState = lazyListState,
+        draggableItemsNum = draggableItemSize,
+        onMove = { fromIndex, toIndex ->
+            moveCourse(fromIndex, toIndex)
+        },
+        removeIconVisible = startCourseMove,
+        onRemove = removeCourse,
+        isInRemoveAreaProvider = { isInRemoveIconArea.value }
+    )
+
+    LaunchedEffect(scrollToIndex) {
+        scrollToIndex?.let { index ->
+            lazyListState.animateScrollToItem(index)
+            scrollToIndex = null
+        }
+    }
+
     Box(
         modifier = Modifier
             .onGloballyPositioned { coordinates ->
