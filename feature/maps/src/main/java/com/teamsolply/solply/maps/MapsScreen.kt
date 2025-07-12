@@ -54,15 +54,16 @@ import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBotto
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
-import com.teamsolply.solply.designsystem.component.dialog.SolplyBasicDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
+import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
-import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
 import com.teamsolply.solply.maps.util.calculateCameraPosition
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
@@ -142,6 +143,10 @@ internal fun MapsRoute(
                     }
                 }
 
+                is MapsSideEffect.ShowSuccessSaveNewCourseSnackBar -> {
+                    showTextSnackBar("새 코스로 저장되었어요.")
+                }
+
                 MapsSideEffect.NavigateToCourse -> {
                     navigateToCourse()
                 }
@@ -156,10 +161,6 @@ internal fun MapsRoute(
             }
         }
     }
-
-    SolplyBasicDialog(
-        onDismissRequest = {}
-    ) { }
 
     MapsScreen(
         mapsType = mapsType,
@@ -218,8 +219,28 @@ internal fun MapsRoute(
         },
         onStartEditCourseClick = {
             viewModel.sendIntent(MapsIntent.StartEditCourseIconClick)
-        }
+        },
     )
+
+    if (uiState.courseSaveDialogVisibility) {
+        CourseSaveDialog(
+            saveToCourseClick = {
+                viewModel.sendIntent(
+                    MapsIntent.CourseSaveDialogClick(
+                        CourseSaveType.SaveToExistingCourse
+                    )
+                )
+            },
+            saveToNewCourseClick = {
+                viewModel.sendIntent(
+                    MapsIntent.CourseSaveDialogClick(
+                        CourseSaveType.SaveAsNewCourse
+                    )
+                )
+            },
+            onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility) }
+        )
+    }
 }
 
 @OptIn(ExperimentalNaverMapApi::class)

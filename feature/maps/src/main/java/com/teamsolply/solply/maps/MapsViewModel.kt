@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps
 
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -102,12 +103,39 @@ internal class MapsViewModel @Inject constructor(
             }
 
             MapsIntent.StartEditCourseIconClick -> {
+                if (uiState.value.startEditCourse) {
+                    reduce {
+                        copy(
+                            courseSaveDialogVisibility = true
+                        )
+                    }
+                } else {
+                    reduce {
+                        copy(
+                            startEditCourse = true,
+                            selectedPlaceInfoId = null,
+                        )
+                    }
+                }
+            }
+
+            MapsIntent.ChangeCourseSaveDialogInVisibility -> reduce {
+                copy(courseSaveDialogVisibility = false)
+            }
+
+            is MapsIntent.CourseSaveDialogClick -> {
+                if (intent.courseSaveType == CourseSaveType.SaveToExistingCourse) {
+                    //TODO. 지금 코스에 저장 API
+                } else {
+                    postSideEffect(MapsSideEffect.ShowSuccessSaveNewCourseSnackBar)
+                    //TODO. 새 코스에 저장 API - 명세서 바뀌는거 보고
+                }
                 reduce {
                     copy(
-                        startEditCourse = !startEditCourse,
-                        selectedPlaceInfoId = null
+                        startEditCourse = false,
                     )
                 }
+                sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility)
             }
 
             // Shared
