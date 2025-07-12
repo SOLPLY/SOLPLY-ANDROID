@@ -12,37 +12,40 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
 import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
-import com.teamsolply.solply.maps.model.DraggableItem
 
 inline fun <T : Any> LazyListScope.draggableItems(
     items: List<T>,
     dragDropState: DragDropState,
     noinline key: ((index: Int, item: T) -> Any)? = null,
-    crossinline content: @Composable (Modifier, T) -> Unit
+    crossinline content: @Composable (index: Int, Modifier, T) -> Unit
 ) {
     itemsIndexed(
         items = items,
         key = if (key != null) { i, item -> key(i, item) } else null,
-        contentType = { index, _ -> DraggableItem(index = index) }
+        contentType = { index, item -> item }
     ) { index, item ->
         val modifier = if (dragDropState.draggingItemIndex == index) {
             Modifier
                 .zIndex(1f)
                 .graphicsLayer {
+                    alpha = 0.15f
                     translationY = dragDropState.deltaY
                     translationX = dragDropState.deltaX
+                    shadowElevation = 8f
+                    clip = true
                 }
         } else {
-            Modifier.animateItem(
-                fadeInSpec = null,
-                fadeOutSpec = null,
-                placementSpec = tween(
-                    durationMillis = 200,
-                    easing = FastOutSlowInEasing
+            Modifier
+                .animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = null,
+                    placementSpec = tween(
+                        durationMillis = 200,
+                        easing = FastOutSlowInEasing
+                    )
                 )
-            )
         }
-        content(modifier, item)
+        content(index, modifier, item)
     }
 }
 

@@ -38,10 +38,10 @@ class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.PlaceBookMarkClick -> {
-                val bookmark = !uiState.value.placeDetailEntity.isBookmarked
+                val bookmark = !uiState.value.placeDetailInfo.isBookmarked
                 // TODO 장소 개별 저장 상태 post
                 reduce {
-                    copy(placeDetailEntity = placeDetailEntity.copy(isBookmarked = bookmark))
+                    copy(placeDetailInfo = placeDetailInfo.copy(isBookmarked = bookmark))
                 }
 
                 if (bookmark) {
@@ -88,7 +88,7 @@ class MapsViewModel @Inject constructor(
                 }
             }
             // Edit Course
-            is MapsIntent.StartCourseMove -> reduce { copy(iconVisibility = intent.iconVisibility) }
+            is MapsIntent.StartCourseMove -> reduce { copy(removeIconVisibility = intent.iconVisibility) }
 
             is MapsIntent.MoveCourseItem -> moveCourseItem(
                 fromIndex = intent.fromIndex,
@@ -99,6 +99,15 @@ class MapsViewModel @Inject constructor(
                 removeCourseItem(
                     itemToRemove = intent.itemToRemove
                 )
+            }
+
+            MapsIntent.StartEditCourseIconClick -> {
+                reduce {
+                    copy(
+                        startEditCourse = !startEditCourse,
+                        selectedPlaceInfoId = null
+                    )
+                }
             }
 
             // Shared
@@ -120,7 +129,7 @@ class MapsViewModel @Inject constructor(
             mapsRepository.getPlaceInfo(placeId).onSuccess {
                 reduce {
                     copy(
-                        placeDetailEntity = it
+                        placeDetailInfo = it
                     )
                 }
             }
@@ -167,24 +176,24 @@ class MapsViewModel @Inject constructor(
 
     private fun moveCourseItem(fromIndex: Int, toIndex: Int) {
         reduce {
-            val newCourseList = course.toMutableList()
+            val newCourseList = courseDetailInfo.places.toMutableList()
             val item = newCourseList.removeAt(fromIndex)
             newCourseList.add(toIndex, item)
-            copy(course = newCourseList.toPersistentList())
+            copy(courseDetailInfo = courseDetailInfo.copy(places = newCourseList.toPersistentList()))
         }
     }
 
     private fun removeCourseItem(itemToRemove: Int) {
-        val currentList = uiState.value.course
+        val currentList = uiState.value.courseDetailInfo.places
         if (currentList.size <= 2) {
             postSideEffect(MapsSideEffect.DisabledRemoveCourse)
             return
         }
         reduce {
-            val newList = course.toMutableList()
+            val newList = courseDetailInfo.places.toMutableList()
             newList.removeAt(itemToRemove)
             copy(
-                course = newList.toPersistentList()
+                courseDetailInfo = courseDetailInfo.copy(places = newList.toPersistentList())
             )
         }
     }

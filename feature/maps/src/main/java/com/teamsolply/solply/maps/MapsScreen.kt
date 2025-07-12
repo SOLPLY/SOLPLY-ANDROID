@@ -103,7 +103,9 @@ fun MapsRoute(
                 viewModel.getCourseDetailInfo()
             }
 
-            MapsType.EDIT_COURSE -> {}
+            MapsType.EDIT_COURSE -> {
+                viewModel.getCourseDetailInfo()
+            }
         }
     }
 
@@ -155,11 +157,11 @@ fun MapsRoute(
         mapsType = mapsType,
         context = context,
         // Add Place
-        placeDetailEntity = uiState.placeDetailEntity,
+        placeDetailEntity = uiState.placeDetailInfo,
         startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
         addMyCourseSelectedCount = uiState.addMyCourseSelectedCount,
-        placeBookmarked = uiState.placeDetailEntity.isBookmarked,
+        placeBookmarked = uiState.placeDetailInfo.isBookmarked,
         changeAddPlaceState = { addPlace ->
             viewModel.sendIntent(MapsIntent.AddPlaceClick(addPlace = addPlace))
         },
@@ -186,8 +188,8 @@ fun MapsRoute(
             viewModel.sendIntent(MapsIntent.PlaceInfoClick(placeId = placeId))
         },
         // Edit Course
-        course = uiState.course,
-        removeIconVisible = uiState.iconVisibility,
+        removeIconVisible = uiState.removeIconVisibility,
+        startEditCourse = uiState.startEditCourse,
         startCourseMove = { iconVisibility ->
             viewModel.sendIntent(MapsIntent.StartCourseMove(iconVisibility = iconVisibility))
         },
@@ -205,6 +207,9 @@ fun MapsRoute(
         },
         onBackButtonClick = {
             viewModel.sendIntent(MapsIntent.BackButtonClick)
+        },
+        onStartEditCourseClick = {
+            viewModel.sendIntent(MapsIntent.StartEditCourseIconClick)
         }
     )
 }
@@ -232,14 +237,15 @@ fun MapsScreen(
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
     placeInfoClick: (Int) -> Unit,
     // Edit Course
-    course: List<PlaceDetailEntity>,
     removeIconVisible: Boolean,
+    startEditCourse: Boolean,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
     emptyCourseClick: () -> Unit,
     onReturnToHomeClick: () -> Unit,
     onBackButtonClick: () -> Unit,
+    onStartEditCourseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -248,7 +254,7 @@ fun MapsScreen(
 
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val draggableItemSize by remember { derivedStateOf { course.size } }
+    val draggableItemSize by remember { derivedStateOf { courseDetailEntity.places.size } }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
 
@@ -266,42 +272,59 @@ fun MapsScreen(
 
     val cameraPositionState = rememberCameraPositionState()
 
-    LaunchedEffect(courseDetailInfo.places) {
-        if (mapsType != MapsType.PLACE_DETAIL && courseDetailInfo.places.isNotEmpty()) {
-            val places = courseDetailInfo.places
-
-            val latitudes = places.map { it.latitude.toDouble() }
-            val longitudes = places.map { it.longitude.toDouble() }
-
-            val minLat = latitudes.minOrNull() ?: 0.0
-            val maxLat = latitudes.maxOrNull() ?: 0.0
-            val minLng = longitudes.minOrNull() ?: 0.0
-            val maxLng = longitudes.maxOrNull() ?: 0.0
-
-            val centerLat = (minLat + maxLat) / 2
-            val centerLng = (minLng + maxLng) / 2
-
-            val latDiff = maxLat - minLat
-            val lngDiff = maxLng - minLng
-            val maxDiff = maxOf(latDiff, lngDiff)
-            val zoomLevel = when {
-                maxDiff > 0.1 -> 10.0
-                maxDiff > 0.05 -> 12.0
-                maxDiff > 0.01 -> 14.0
-                else -> 16.0
-            }
-
+    // 마커로 카메라 전환
+    if (mapsType == MapsType.PLACE_DETAIL) {
+        LaunchedEffect(placeDetailEntity) {
             cameraPositionState.animate(
                 update = CameraUpdate.toCameraPosition(
                     CameraPosition(
-                        LatLng(centerLat - 0.008, centerLng),
-                        zoomLevel,
+                        LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
+                        14.0,
                         0.0,
                         0.0
                     )
                 ),
                 durationMs = 1000
             )
+        }
+    } else {
+        LaunchedEffect(courseDetailInfo.places) {
+            if (courseDetailInfo.places.isNotEmpty()) {
+                val places = courseDetailInfo.places
+
+                val latitudes = places.map { it.latitude.toDouble() }
+                val longitudes = places.map { it.longitude.toDouble() }
+
+                val minLat = latitudes.minOrNull() ?: 0.0
+                val maxLat = latitudes.maxOrNull() ?: 0.0
+                val minLng = longitudes.minOrNull() ?: 0.0
+                val maxLng = longitudes.maxOrNull() ?: 0.0
+
+                val centerLat = (minLat + maxLat) / 2
+                val centerLng = (minLng + maxLng) / 2
+
+                val latDiff = maxLat - minLat
+                val lngDiff = maxLng - minLng
+                val maxDiff = maxOf(latDiff, lngDiff)
+                val zoomLevel = when {
+                    maxDiff > 0.1 -> 10.0
+                    maxDiff > 0.05 -> 12.0
+                    maxDiff > 0.01 -> 14.0
+                    else -> 16.0
+                }
+
+                cameraPositionState.animate(
+                    update = CameraUpdate.toCameraPosition(
+                        CameraPosition(
+                            LatLng(centerLat - 0.008, centerLng),
+                            zoomLevel,
+                            0.0,
+                            0.0
+                        )
+                    ),
+                    durationMs = 1000
+                )
+            }
         }
     }
 
@@ -536,14 +559,20 @@ fun MapsScreen(
 
                     MapsType.EDIT_COURSE -> {
                         EditCourseBottomSheet(
-                            course = course,
+                            places = courseDetailInfo.places,
+                            courseName = courseDetailInfo.courseName,
+                            introduction = courseDetailInfo.introduction,
+                            selectedPlaceItem = selectedPlaceInfoId,
                             removeIconBounds = removeIconBounds,
                             isInRemoveIconArea = isInRemoveIconArea,
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
                             lazyListState = lazyListState,
                             dragDropState = dragDropState,
-                            singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick
+                            startEditCourse = startEditCourse,
+                            singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
+                            onStartEditCourseClick = onStartEditCourseClick,
+                            placeInfoClick = placeInfoClick
                         )
                     }
                 }
