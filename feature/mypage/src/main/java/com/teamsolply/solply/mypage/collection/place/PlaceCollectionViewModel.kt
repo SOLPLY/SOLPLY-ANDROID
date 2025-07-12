@@ -18,8 +18,10 @@ class PlaceCollectionViewModel @Inject constructor() :
             }
 
             is PlaceCollectionIntent.DeleteButtonClick -> {
-                reduce {
-                    copy(dialogState = true)
+                if (uiState.value.selectedPlaces.isNotEmpty()) {
+                    reduce {
+                        copy(dialogState = true)
+                    }
                 }
             }
 
