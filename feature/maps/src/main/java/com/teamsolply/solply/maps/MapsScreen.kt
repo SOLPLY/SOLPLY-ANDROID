@@ -29,6 +29,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -431,6 +432,11 @@ private fun MapsScreen(
                         modifier = Modifier
                             .padding(start = 16.dp)
                             .size(47.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                             .background(color = SolplyTheme.colors.white, shape = CircleShape)
                             .then(
                                 if (startAddMyCourse) {
@@ -460,7 +466,13 @@ private fun MapsScreen(
                     AddPlaceButton(
                         onClick = { changeAddPlaceState(!startAddMyCourse) },
                         selected = startAddMyCourse,
-                        modifier = Modifier.padding(end = 8.dp)
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                     )
 
                     Row(
@@ -469,6 +481,11 @@ private fun MapsScreen(
                         modifier = Modifier
                             .height(49.dp)
                             .padding(end = 16.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                             .background(
                                 color = if (startAddMyCourse) {
                                     SolplyTheme.colors.white
@@ -521,7 +538,13 @@ private fun MapsScreen(
                     AddCourseButton(
                         onClick = saveCourse,
                         selected = courseDetailInfo.isBookmarked,
-                        modifier = Modifier.padding(end = 15.dp)
+                        modifier = Modifier
+                            .padding(end = 15.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                     )
                 }
             },
