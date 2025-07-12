@@ -1,5 +1,6 @@
 package com.teamsolply.solply.designsystem.component.dialog
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,13 +40,14 @@ fun SolplyConfirmDialog(
         properties = DialogProperties(
             dismissOnClickOutside = true,
             dismissOnBackPress = true
-        )
+        ),
     ) {
-        Surface(
+        Box (
             modifier = modifier
                 .height(146.dp)
                 .width(260.dp)
                 .clip(shape = RoundedCornerShape(12.dp))
+                .background(color = SolplyTheme.colors.white)
         ) {
             Column(
                 modifier = Modifier
