@@ -25,13 +25,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.R
+import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.mypage.component.MypageTopBar
 import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import kotlinx.coroutines.flow.collectLatest
+import okhttp3.internal.immutableListOf
 
 @Composable
 fun PlaceCollectionRoute(
@@ -50,7 +54,12 @@ fun PlaceCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is PlaceCollectionSideEffect.NavigateToBack -> navigateToBack()
-//                is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps()
+                is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.PLACE_DETAIL.name)
+                is PlaceCollectionSideEffect.DeletePlaces -> {
+                    Log.d("selected Places", uiState.selectedPlaces.joinToString(","))
+                    // TODO 장소 리스트 조회 api
+                }
+
             }
         }
     }
@@ -59,10 +68,16 @@ fun PlaceCollectionRoute(
         town = uiState.town,
         place = uiState.places,
         onBackButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.BackButtonClick) },
-        navigateToMaps = navigateToMaps,
-        onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectClick) },
-        onCancelButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.CancelClick) },
-        isSelectMode = uiState.selectMode
+        onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectButtonClick) },
+        onDeleteButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.DeleteButtonClick) },
+        onCancelButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.CancelButtonClick) },
+        onPlaceClick = { id, index ->
+            viewModel.sendIntent(PlaceCollectionIntent.PlaceCardClick(id, index))
+        },
+        onDialogConfirmClick = { viewModel.sendIntent(PlaceCollectionIntent.DialogConfirmClick) },
+        onDialogDismissClick = { viewModel.sendIntent(PlaceCollectionIntent.DialogDismissClick) },
+        isSelectMode = uiState.selectMode,
+        dialogState = uiState.dialogState
     )
 }
 
@@ -71,15 +86,29 @@ fun PlaceCollectionScreen(
     town: String,
     place: List<PlaceCard>,
     onBackButtonClick: () -> Unit,
-    navigateToMaps: (String) -> Unit,
     onSelectButtonClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
+    onPlaceClick: (Int, Int) -> Unit,
+    onDialogConfirmClick: () -> Unit,
+    onDialogDismissClick: () -> Unit,
     isSelectMode: Boolean,
+    dialogState: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val selectText =
         if (isSelectMode) stringResource(R.string.mypage_delete) else stringResource(R.string.mypage_select)
     val cancelText = if (isSelectMode) stringResource(R.string.mypage_cancel) else ""
+
+    if (dialogState) {
+        SolplyConfirmDialog(
+            text = "선택한 장소를 삭제할까요?",
+            confirmButtonText = stringResource(R.string.mypage_delete),
+            dismissButtonText = stringResource(R.string.mypage_cancel),
+            onClickConfirm = onDialogConfirmClick,
+            onClickDismiss = onDialogDismissClick
+        )
+    }
     Column(
         modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
@@ -122,20 +151,16 @@ fun PlaceCollectionScreen(
                 modifier = Modifier
                     .padding(end = 28.dp)
                     .then(
-                        if (isSelectMode) {
-                            Modifier.customClickable(rippleEnabled = false) {
+                        Modifier.customClickable(rippleEnabled = false) {
+                            if (isSelectMode) {
                                 //TODO 삭제 기능
-                            }
-                        } else {
-                            Modifier.customClickable(
-                                rippleEnabled = false
-                            ) {
+                                onDeleteButtonClick()
+                            } else {
                                 onSelectButtonClick()
                             }
                         }
                     )
             )
-
         }
         LazyVerticalGrid(
             modifier = modifier
@@ -148,7 +173,12 @@ fun PlaceCollectionScreen(
             itemsIndexed(place) { index, it ->
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .customClickable(
+                            rippleEnabled = false
+                        ) {
+                            onPlaceClick(it.placeId, index)
+                        },
                     contentAlignment = if (index % 2 == 0) {
                         Alignment.CenterEnd
                     } else {
@@ -159,6 +189,8 @@ fun PlaceCollectionScreen(
                         name = it.placeName,
                         placeType = it.placeType,
                         imgRes = it.imageUrls[0],
+                        selected = it.isSelected,
+                        touchable = false,
                         modifier =
                             if (index % 2 == 0) {
                                 Modifier.padding(end = 5.dp)
@@ -179,12 +211,53 @@ fun PlaceCollectionScreenPreview() {
     SolplyTheme {
         PlaceCollectionScreen(
             town = "연희동",
-            place = emptyList(),
+            place = immutableListOf(
+                PlaceCard(
+                    placeId = 0,
+                    placeName = "0번",
+                    placeType = PlaceType.CAFE,
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+                ),
+                PlaceCard(
+                    placeId = 1,
+                    placeName = "1번",
+                    placeType = PlaceType.BOOK,
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+                ),
+                PlaceCard(
+                    placeId = 2,
+                    placeName = "2번",
+                    placeType = PlaceType.SHOPPING,
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+                ),
+                PlaceCard(
+                    placeId = 3,
+                    placeName = "3번",
+                    placeType = PlaceType.FOOD,
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+                ),
+                PlaceCard(
+                    placeId = 4,
+                    placeName = "3번",
+                    placeType = PlaceType.FOOD,
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+                ),
+                PlaceCard(
+                    placeId = 5,
+                    placeName = "3번",
+                    placeType = PlaceType.FOOD,
+                    imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
+                )
+            ),
             onBackButtonClick = {},
-            navigateToMaps = {},
             onSelectButtonClick = {},
+            onDeleteButtonClick = {},
             onCancelButtonClick = {},
-            isSelectMode = false
+            onPlaceClick = { id, index -> {} },
+            onDialogConfirmClick = {},
+            onDialogDismissClick = {},
+            isSelectMode = false,
+            dialogState = false
         )
     }
 }

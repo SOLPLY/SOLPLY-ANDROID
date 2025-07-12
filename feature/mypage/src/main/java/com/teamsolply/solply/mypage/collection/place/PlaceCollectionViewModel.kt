@@ -11,20 +11,79 @@ class PlaceCollectionViewModel @Inject constructor() :
     ) {
     override fun handleIntent(intent: PlaceCollectionIntent) {
         when (intent) {
-            is PlaceCollectionIntent.SelectClick -> {
+            is PlaceCollectionIntent.SelectButtonClick -> {
                 reduce {
                     copy(selectMode = true)
                 }
             }
 
-            is PlaceCollectionIntent.CancelClick -> {
+            is PlaceCollectionIntent.DeleteButtonClick -> {
                 reduce {
-                    copy(selectMode = false)
+                    copy(dialogState = true)
+                }
+            }
+
+            is PlaceCollectionIntent.CancelButtonClick -> {
+                reduce {
+                    val updatedPlaces = places.map {
+                        if (it.isSelected) it.copy(isSelected = false) else it
+                    }
+                    copy(
+                        places = updatedPlaces,
+                        selectMode = false,
+                    )
                 }
             }
 
             is PlaceCollectionIntent.BackButtonClick -> {
                 postSideEffect(PlaceCollectionSideEffect.NavigateToBack)
+            }
+
+            is PlaceCollectionIntent.PlaceCardClick -> {
+                if (uiState.value.selectMode) {
+                    if (uiState.value.selectedPlaces.contains(intent.placeId)) {
+                        reduce {
+                            val updatedPlaces = places.toMutableList()
+                            val oldPlace = updatedPlaces[intent.index]
+                            updatedPlaces[intent.index] = oldPlace.copy(isSelected = false)
+                            copy(
+                                selectedPlaces = selectedPlaces - intent.placeId,
+                                places = updatedPlaces
+                            )
+                        }
+                    } else {
+                        reduce {
+                            val updatedPlaces = places.toMutableList()
+                            val oldPlace = updatedPlaces[intent.index]
+                            updatedPlaces[intent.index] = oldPlace.copy(isSelected = true)
+                            copy(
+                                selectedPlaces = selectedPlaces + intent.placeId,
+                                places = updatedPlaces
+                            )
+                        }
+                    }
+                } else {
+                    postSideEffect(PlaceCollectionSideEffect.NavigateToMap)
+                }
+            }
+
+            is PlaceCollectionIntent.DialogConfirmClick -> {
+                reduce {
+                    copy(dialogState = false)
+                }
+                // TODO 삭제 api 요청
+
+                // TODO 삭제 api 응답 후
+                reduce {
+                    copy(selectMode = false)
+                }
+                postSideEffect(PlaceCollectionSideEffect.DeletePlaces)
+            }
+
+            is PlaceCollectionIntent.DialogDismissClick -> {
+                reduce {
+                    copy(dialogState = false)
+                }
             }
         }
     }

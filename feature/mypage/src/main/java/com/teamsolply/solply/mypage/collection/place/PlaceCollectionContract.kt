@@ -36,47 +36,59 @@ data class PlaceCollectionState(
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 4,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 5,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 6,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 7,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 8,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         )
     ),
+    val selectedPlaces: Set<Int> = emptySet(),
+    val dialogState: Boolean = false
 ) : UiState
 
 sealed interface PlaceCollectionIntent : UiIntent {
-    data object SelectClick : PlaceCollectionIntent
-    data object CancelClick : PlaceCollectionIntent
+
+    data object SelectButtonClick : PlaceCollectionIntent
+    data object DeleteButtonClick : PlaceCollectionIntent
+    data object CancelButtonClick : PlaceCollectionIntent
+
+    data object DialogConfirmClick : PlaceCollectionIntent
+    data object DialogDismissClick : PlaceCollectionIntent
+
+    data class PlaceCardClick(val placeId: Int, val index: Int) : PlaceCollectionIntent
 
     // Navigate
     data object BackButtonClick : PlaceCollectionIntent
 }
 
 sealed interface PlaceCollectionSideEffect : SideEffect {
+
+    data object DeletePlaces : PlaceCollectionSideEffect
+
     data object NavigateToBack : PlaceCollectionSideEffect
-//    data object NavigateToMap(val ) : PlaceCollectionSideEffect
+    data object NavigateToMap : PlaceCollectionSideEffect
 }
