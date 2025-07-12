@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.addcourse
+package com.teamsolply.solply.maps.component.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,15 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
-fun AddCourseBottomSheet(
-    places: List<Place>,
+internal fun AddCourseBottomSheet(
+    places: PersistentList<Place>,
     courseName: String,
     introduction: String,
     selectedPlaceItem: Int?,
@@ -80,7 +82,7 @@ fun AddCourseBottomSheet(
                         placeAddress = item.address,
                         // TODO. 코스의 장소 이미지로
                         // placeImageRes = item.thumbnailUrl
-                        placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                        placeImageRes = R.drawable.img_course_dummy,
                         iconSelected = item.isBookmarked,
                         iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                         modifier = Modifier.customClickable(rippleEnabled = false) {

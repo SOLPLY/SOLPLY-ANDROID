@@ -1,5 +1,6 @@
-package com.teamsolply.solply.maps.editcourse
+package com.teamsolply.solply.maps.component.bottomsheet
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,12 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -28,18 +35,22 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
-import com.teamsolply.solply.maps.editcourse.extension.dragContainer
-import com.teamsolply.solply.maps.editcourse.extension.draggableItems
-import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
+import com.teamsolply.solply.maps.courseDetailEntity
 import com.teamsolply.solply.maps.model.Place
+import com.teamsolply.solply.maps.util.dragContainer
+import com.teamsolply.solply.maps.util.draggableItems
+import com.teamsolply.solply.maps.util.rememberDragDropState
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
-fun EditCourseBottomSheet(
-    places: List<Place>,
+internal fun EditCourseBottomSheet(
+    context: Context,
+    places: PersistentList<Place>,
     courseName: String,
     introduction: String,
     selectedPlaceItem: Int?,
@@ -47,13 +58,39 @@ fun EditCourseBottomSheet(
     isInRemoveIconArea: MutableState<Boolean>,
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
-    lazyListState: LazyListState,
-    dragDropState: DragDropState,
     startEditCourse: Boolean,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
     onStartEditCourseClick: () -> Unit,
-    placeInfoClick: (Int) -> Unit
+    placeInfoClick: (Int) -> Unit,
+    startCourseMove: (Boolean) -> Unit,
+    moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
+    removeCourse: (itemToRemove: Int) -> Unit
 ) {
+    val draggableItemSize by remember(courseDetailEntity.places.size) {
+        derivedStateOf { courseDetailEntity.places.size }
+    }
+    var scrollToIndex by remember { mutableStateOf<Int?>(null) }
+
+    val lazyListState = rememberLazyListState()
+    val dragDropState = rememberDragDropState(
+        context = context,
+        lazyListState = lazyListState,
+        draggableItemsNum = draggableItemSize,
+        onMove = { fromIndex, toIndex ->
+            moveCourse(fromIndex, toIndex)
+        },
+        removeIconVisible = startCourseMove,
+        onRemove = removeCourse,
+        isInRemoveAreaProvider = { isInRemoveIconArea.value }
+    )
+
+    LaunchedEffect(scrollToIndex) {
+        scrollToIndex?.let { index ->
+            lazyListState.animateScrollToItem(index)
+            scrollToIndex = null
+        }
+    }
+
     Box(
         modifier = Modifier
             .onGloballyPositioned { coordinates ->
@@ -97,13 +134,13 @@ fun EditCourseBottomSheet(
                 ) {
                     if (startEditCourse) {
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_small_check),
+                            painter = painterResource(R.drawable.ic_small_check),
                             contentDescription = "start_course_edit",
                             tint = SolplyTheme.colors.black
                         )
                     } else {
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_course_edit),
+                            painter = painterResource(R.drawable.ic_course_edit),
                             contentDescription = "start_course_edit",
                             tint = Color.Unspecified
                         )
@@ -161,7 +198,7 @@ fun EditCourseBottomSheet(
                             placeAddress = item.address,
                             // TODO. 서버 이미지 url로 변경하기
                             // placeImageRes = item.thumbnailUrl,
-                            placeImageRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            placeImageRes = R.drawable.img_course_dummy,
                             modifier = Modifier.then(
                                 if (startEditCourse) {
                                     Modifier

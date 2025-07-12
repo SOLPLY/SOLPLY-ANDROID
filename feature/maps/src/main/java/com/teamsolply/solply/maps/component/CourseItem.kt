@@ -32,7 +32,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun CourseItem(
+internal fun CourseItem(
     placeName: String,
     placeTag: PlaceType,
     placeAddress: String,

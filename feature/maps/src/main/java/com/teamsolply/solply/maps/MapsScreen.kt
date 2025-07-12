@@ -12,23 +12,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -51,29 +49,36 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.PathOverlay
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.overlay.OverlayImage
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.addcourse.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.MapsTopBar
-import com.teamsolply.solply.maps.editcourse.EditCourseBottomSheet
-import com.teamsolply.solply.maps.editcourse.interaction.rememberDragDropState
+import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
-import com.teamsolply.solply.maps.placedetail.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.util.calculateCameraPosition
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlin.math.abs
 
 @Composable
-fun MapsRoute(
+internal fun MapsRoute(
     mapsType: MapsType,
     targetId: Int = 1,
     showTextSnackBar: (String) -> Unit,
@@ -136,6 +141,10 @@ fun MapsRoute(
                     showNavigateSnackBar("코스가 수집함에 저장되었어요.") {
                         navigateToMypage()
                     }
+                }
+
+                is MapsSideEffect.ShowSuccessSaveNewCourseSnackBar -> {
+                    showTextSnackBar("새 코스로 저장되었어요.")
                 }
 
                 MapsSideEffect.NavigateToCourse -> {
@@ -212,18 +221,38 @@ fun MapsRoute(
             viewModel.sendIntent(MapsIntent.StartEditCourseIconClick)
         }
     )
+
+    if (uiState.courseSaveDialogVisibility) {
+        CourseSaveDialog(
+            saveToCourseClick = {
+                viewModel.sendIntent(
+                    MapsIntent.CourseSaveDialogClick(
+                        CourseSaveType.SaveToExistingCourse
+                    )
+                )
+            },
+            saveToNewCourseClick = {
+                viewModel.sendIntent(
+                    MapsIntent.CourseSaveDialogClick(
+                        CourseSaveType.SaveAsNewCourse
+                    )
+                )
+            },
+            onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility) }
+        )
+    }
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun MapsScreen(
+private fun MapsScreen(
     mapsType: MapsType,
     context: Context,
     // Add Place
     placeDetailEntity: PlaceDetailEntity,
     startAddMyCourse: Boolean,
-    courses: List<CourseInfoEntity>,
-    addMyCourseSelectedCount: List<Int>,
+    courses: PersistentList<CourseInfoEntity>,
+    addMyCourseSelectedCount: PersistentList<Int>,
     placeBookmarked: Boolean,
     changeAddPlaceState: (Boolean) -> Unit,
     selectedCourseForPlace: (Int) -> Unit,
@@ -248,76 +277,22 @@ fun MapsScreen(
     onStartEditCourseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val scope = rememberCoroutineScope()
-    var scrollToIndex by remember { mutableStateOf<Int?>(null) }
-    val lazyListState = rememberLazyListState()
-
     val isInRemoveIconArea = remember { mutableStateOf(false) }
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val draggableItemSize by remember { derivedStateOf { courseDetailEntity.places.size } }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
 
-    val dragDropState = rememberDragDropState(
-        context = context,
-        lazyListState = lazyListState,
-        draggableItemsNum = draggableItemSize,
-        onMove = { fromIndex, toIndex ->
-            moveCourse(fromIndex, toIndex)
-        },
-        removeIconVisible = startCourseMove,
-        onRemove = removeCourse,
-        isInRemoveAreaProvider = { isInRemoveIconArea.value }
-    )
-
     val cameraPositionState = rememberCameraPositionState()
+    var lastCameraPosition by remember { mutableStateOf<CameraPosition?>(null) }
 
-    // 마커로 카메라 전환
-    if (mapsType == MapsType.PLACE_DETAIL) {
-        LaunchedEffect(placeDetailEntity) {
-            cameraPositionState.animate(
-                update = CameraUpdate.toCameraPosition(
-                    CameraPosition(
-                        LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
-                        14.0,
-                        0.0,
-                        0.0
-                    )
-                ),
-                durationMs = 1000
-            )
-        }
-    } else {
-        LaunchedEffect(courseDetailInfo.places) {
-            if (courseDetailInfo.places.isNotEmpty()) {
-                val places = courseDetailInfo.places
-
-                val latitudes = places.map { it.latitude.toDouble() }
-                val longitudes = places.map { it.longitude.toDouble() }
-
-                val minLat = latitudes.minOrNull() ?: 0.0
-                val maxLat = latitudes.maxOrNull() ?: 0.0
-                val minLng = longitudes.minOrNull() ?: 0.0
-                val maxLng = longitudes.maxOrNull() ?: 0.0
-
-                val centerLat = (minLat + maxLat) / 2
-                val centerLng = (minLng + maxLng) / 2
-
-                val latDiff = maxLat - minLat
-                val lngDiff = maxLng - minLng
-                val maxDiff = maxOf(latDiff, lngDiff)
-                val zoomLevel = when {
-                    maxDiff > 0.1 -> 10.0
-                    maxDiff > 0.05 -> 12.0
-                    maxDiff > 0.01 -> 14.0
-                    else -> 16.0
-                }
-
+    LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places) {
+        when (mapsType) {
+            MapsType.PLACE_DETAIL -> {
                 cameraPositionState.animate(
                     update = CameraUpdate.toCameraPosition(
                         CameraPosition(
-                            LatLng(centerLat - 0.008, centerLng),
-                            zoomLevel,
+                            LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
+                            14.0,
                             0.0,
                             0.0
                         )
@@ -325,13 +300,28 @@ fun MapsScreen(
                     durationMs = 1000
                 )
             }
-        }
-    }
 
-    LaunchedEffect(scrollToIndex) {
-        scrollToIndex?.let { index ->
-            lazyListState.animateScrollToItem(index)
-            scrollToIndex = null
+            MapsType.ADD_COURSE, MapsType.EDIT_COURSE -> {
+                if (courseDetailInfo.places.isNotEmpty()) {
+                    val newCameraPosition = calculateCameraPosition(courseDetailInfo.places)
+
+                    val shouldAnimate = lastCameraPosition?.let { lastPos ->
+                        val latDiff =
+                            abs(newCameraPosition.target.latitude - lastPos.target.latitude)
+                        val lngDiff =
+                            abs(newCameraPosition.target.longitude - lastPos.target.longitude)
+                        latDiff > 0.01 || lngDiff > 0.01
+                    } ?: true
+
+                    if (shouldAnimate) {
+                        cameraPositionState.animate(
+                            update = CameraUpdate.toCameraPosition(newCameraPosition),
+                            durationMs = 1000
+                        )
+                        lastCameraPosition = newCameraPosition
+                    }
+                }
+            }
         }
     }
 
@@ -373,22 +363,16 @@ fun MapsScreen(
                                 placeDetailEntity.longitude
                             )
                         ),
-                        icon = OverlayImage.fromResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
+                        icon = OverlayImage.fromResource(R.drawable.ic_marker_default),
                         anchor = Offset(0.5f, 0.5f)
                     )
                 } else {
                     if (courseDetailInfo.places.isNotEmpty()) {
                         courseDetailInfo.places.forEachIndexed { index, place ->
-                            val markerIconRes = when (index) {
-                                // TODO 인덱스로 바꾸기
-                                0 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_first else com.teamsolply.solply.designsystem.R.drawable.ic_marker_first
-                                1 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_second else com.teamsolply.solply.designsystem.R.drawable.ic_marker_second
-                                2 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_third else com.teamsolply.solply.designsystem.R.drawable.ic_marker_third
-                                3 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_fourth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_fourth
-                                4 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_fifth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_fifth
-                                5 -> if (selectedPlaceInfoId == place.placeId) com.teamsolply.solply.designsystem.R.drawable.ic_marker_selected_sixth else com.teamsolply.solply.designsystem.R.drawable.ic_marker_sixth
-                                else -> com.teamsolply.solply.designsystem.R.drawable.ic_marker_default
-                            }
+                            val markerIconRes = getMarkerIcon(
+                                index = index,
+                                isSelected = selectedPlaceInfoId == place.placeId
+                            )
                             val currentLatLng =
                                 LatLng(place.latitude.toDouble(), place.longitude.toDouble())
                             Marker(
@@ -409,7 +393,7 @@ fun MapsScreen(
                                 )
 
                                 PathOverlay(
-                                    coords = listOf(currentLatLng, nextLatLng),
+                                    coords = persistentListOf(currentLatLng, nextLatLng),
                                     color = SolplyTheme.colors.purple900,
                                     width = 0.5.dp
                                 )
@@ -429,6 +413,11 @@ fun MapsScreen(
                         modifier = Modifier
                             .padding(start = 16.dp)
                             .size(47.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                             .background(color = SolplyTheme.colors.white, shape = CircleShape)
                             .then(
                                 if (startAddMyCourse) {
@@ -437,11 +426,11 @@ fun MapsScreen(
                                     Modifier.customClickable(rippleEnabled = false) {
                                         navigateToNaverMapDirections(
                                             context = context,
-                                            destName = "강남역",
-                                            destId = "222",
-                                            destLongitude = 127.02760,
-                                            destLatitude = 37.49794,
-                                            destType = "SUBWAY_STATION"
+                                            destName = placeDetailEntity.placeName,
+                                            destId = placeDetailEntity.placeDefaultId.toString(),
+                                            destLongitude = placeDetailEntity.longitude,
+                                            destLatitude = placeDetailEntity.latitude,
+                                            destType = placeDetailEntity.placeType
                                         )
                                     }
                                 }
@@ -449,7 +438,7 @@ fun MapsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_place_navigation),
+                            painter = painterResource(R.drawable.ic_place_navigation),
                             contentDescription = "place_navigation",
                             tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else Color.Unspecified
                         )
@@ -458,7 +447,13 @@ fun MapsScreen(
                     AddPlaceButton(
                         onClick = { changeAddPlaceState(!startAddMyCourse) },
                         selected = startAddMyCourse,
-                        modifier = Modifier.padding(end = 8.dp)
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                     )
 
                     Row(
@@ -467,6 +462,11 @@ fun MapsScreen(
                         modifier = Modifier
                             .height(49.dp)
                             .padding(end = 16.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                             .background(
                                 color = if (startAddMyCourse) {
                                     SolplyTheme.colors.white
@@ -505,7 +505,7 @@ fun MapsScreen(
                             maxLines = 1
                         )
                         Icon(
-                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_marker_default),
+                            painter = painterResource(R.drawable.ic_marker_default),
                             contentDescription = "add_place",
                             modifier = Modifier.padding(start = 8.dp, end = 15.dp),
                             tint = if (startAddMyCourse) {
@@ -519,10 +519,15 @@ fun MapsScreen(
                     AddCourseButton(
                         onClick = saveCourse,
                         selected = courseDetailInfo.isBookmarked,
-                        modifier = Modifier.padding(end = 15.dp)
+                        modifier = Modifier
+                            .padding(end = 15.dp)
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
                     )
                 }
-                // TODO("맵 타입에 따라 바텀 시트 위 버튼")
             },
             content = {
                 when (mapsType) {
@@ -532,11 +537,11 @@ fun MapsScreen(
                             placeType = placeDetailEntity.primaryTag,
                             title = placeDetailEntity.placeName,
                             description = placeDetailEntity.description,
-                            placeImageUrls = placeDetailEntity.imageInfos,
+                            placeImageUrls = placeDetailEntity.imageInfos.toPersistentList(),
                             placeAddress = placeDetailEntity.address,
                             placeContactNumber = placeDetailEntity.contactNumber,
                             placeOpeningHours = placeDetailEntity.openingHours,
-                            placeSnsLink = placeDetailEntity.snsLink,
+                            placeSnsLink = placeDetailEntity.snsLink.toPersistentList(),
                             courses = courses,
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
@@ -548,7 +553,7 @@ fun MapsScreen(
 
                     MapsType.ADD_COURSE -> {
                         AddCourseBottomSheet(
-                            places = courseDetailInfo.places,
+                            places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,
@@ -559,7 +564,8 @@ fun MapsScreen(
 
                     MapsType.EDIT_COURSE -> {
                         EditCourseBottomSheet(
-                            places = courseDetailInfo.places,
+                            context = context,
+                            places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,
@@ -567,12 +573,13 @@ fun MapsScreen(
                             isInRemoveIconArea = isInRemoveIconArea,
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
-                            lazyListState = lazyListState,
-                            dragDropState = dragDropState,
                             startEditCourse = startEditCourse,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
                             onStartEditCourseClick = onStartEditCourseClick,
-                            placeInfoClick = placeInfoClick
+                            placeInfoClick = placeInfoClick,
+                            startCourseMove = startCourseMove,
+                            moveCourse = moveCourse,
+                            removeCourse = removeCourse
                         )
                     }
                 }
@@ -582,9 +589,9 @@ fun MapsScreen(
         Icon(
             painter = painterResource(
                 if (isInRemoveIconArea.value) {
-                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating_on
+                    R.drawable.ic_remove_floating_on
                 } else {
-                    com.teamsolply.solply.designsystem.R.drawable.ic_remove_floating
+                    R.drawable.ic_remove_floating
                 }
             ),
             contentDescription = "remove",
@@ -616,6 +623,21 @@ fun MapsScreen(
                 textPadding = PaddingValues(vertical = 21.dp),
                 enabledBackgroundColor = SolplyTheme.colors.gray900
             )
+        }
+    }
+}
+
+@Composable
+private fun getMarkerIcon(index: Int, isSelected: Boolean): Int {
+    return remember(index, isSelected) {
+        when (index) {
+            0 -> if (isSelected) R.drawable.ic_marker_selected_first else R.drawable.ic_marker_first
+            1 -> if (isSelected) R.drawable.ic_marker_selected_second else R.drawable.ic_marker_second
+            2 -> if (isSelected) R.drawable.ic_marker_selected_third else R.drawable.ic_marker_third
+            3 -> if (isSelected) R.drawable.ic_marker_selected_fourth else R.drawable.ic_marker_fourth
+            4 -> if (isSelected) R.drawable.ic_marker_selected_fifth else R.drawable.ic_marker_fifth
+            5 -> if (isSelected) R.drawable.ic_marker_selected_sixth else R.drawable.ic_marker_sixth
+            else -> R.drawable.ic_marker_default
         }
     }
 }

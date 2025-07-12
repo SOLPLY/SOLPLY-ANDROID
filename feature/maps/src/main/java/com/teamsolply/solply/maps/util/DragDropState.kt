@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.editcourse.interaction
+package com.teamsolply.solply.maps.util
 
 import android.content.Context
 import androidx.compose.foundation.gestures.scrollBy
@@ -16,7 +16,7 @@ import com.teamsolply.solply.ui.extension.vibrate
 import kotlinx.coroutines.channels.Channel
 
 @Composable
-fun rememberDragDropState(
+internal fun rememberDragDropState(
     context: Context,
     lazyListState: LazyListState,
     onMove: (Int, Int) -> Unit,
