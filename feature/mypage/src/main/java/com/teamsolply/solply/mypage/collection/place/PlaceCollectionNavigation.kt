@@ -1,4 +1,4 @@
-package com.teamsolply.solply.mypage.navigation
+package com.teamsolply.solply.mypage.collection.place
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -6,34 +6,29 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.teamsolply.solply.mypage.MypageRoute
 import com.teamsolply.solply.mypage.MypageViewModel
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateMypage(
+fun NavController.navigatePlaceCollection(
     navOptions: NavOptions
 ) {
-    navigate(Mypage, navOptions)
+    navigate(PlaceCollection, navOptions)
 }
 
-fun NavGraphBuilder.mypageNavGraph(
+fun NavGraphBuilder.placeCollectionNavGraph(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
-    navigateToBack: () -> Unit,
-    navigateToPlaceCollection: (String) -> Unit
+    navigateToBack: () -> Unit
 ) {
-    composable<Mypage> { backStackEntry ->
-        val viewModel: MypageViewModel = hiltViewModel(backStackEntry)
-        MypageRoute(
+    composable<PlaceCollection> {
+        PlaceCollectionRoute(
             paddingValues = paddingValues,
             navigateToMaps = navigateToMaps,
-            navigateToBack = navigateToBack,
-            navigateToPlaceCollection = navigateToPlaceCollection,
-            viewModel = viewModel
+            navigateToBack = navigateToBack
         )
     }
 }
 
 @Serializable
-data object Mypage : Route
+data object PlaceCollection : Route

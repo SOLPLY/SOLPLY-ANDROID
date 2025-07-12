@@ -33,7 +33,6 @@ import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -42,6 +41,7 @@ fun MypageRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
+    navigateToPlaceCollection: (String) -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -53,18 +53,23 @@ fun MypageRoute(
         } else {
             viewModel.sendIntent(MypageIntent.SelectCourseTab)
         }
-
-//        delay(1000L)
         Log.d(
             "asdasdasd",
             pagerState.currentPage.toString() + " " + uiState.selectedTab.name + " " + uiState.isPlaceTownSelected + " " + uiState.isCourseTownSelected
         )
     }
 
+    LaunchedEffect(uiState.isPlaceTownSelected) {
+        Log.d("TownSelectInMy", uiState.isPlaceTownSelected.toString())
+    }
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                MypageSideEffect.NavigateToBack -> navigateToBack()
+                is MypageSideEffect.NavigateToBack -> navigateToBack()
+                is MypageSideEffect.NavigateToPlaceCollection -> {
+                    navigateToPlaceCollection(sideEffect.town)
+                }
             }
         }
     }
@@ -111,9 +116,7 @@ fun MypageScreen(
         MypageTopBar(
             town = "", // TODO 선택한 동 이름
             onBackButtonClick = { onBackButtonClick() },
-            isPlaceTownSelected = isPlaceTownSelected,
-            isCourseTownSelected = isCourseTownSelected,
-            currentTab = currentTab
+            isTownSelected = false,
         )
         TabRow(
             selectedTabIndex = 0,

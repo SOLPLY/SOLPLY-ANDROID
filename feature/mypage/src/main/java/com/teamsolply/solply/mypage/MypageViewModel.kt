@@ -11,15 +11,18 @@ class MypageViewModel @Inject constructor() :
     override fun handleIntent(intent: MypageIntent) {
         when (intent) {
             is MypageIntent.SelectTown -> {
-                reduce {
-                    // TODO town에 저장된 place or course 리스트 조회 api
-                    // MypageContract places에 반영하면 되나?
-                    when (currentState.selectedTab) {
-                        MypageTab.PLACE -> {
+                // TODO town에 저장된 place or course 리스트 조회 api
+                // MypageContract places에 반영하면 되나?
+                when (currentState.selectedTab) {
+                    MypageTab.PLACE -> {
+                        reduce {
                             copy(isPlaceTownSelected = true)
                         }
+                        postSideEffect(MypageSideEffect.NavigateToPlaceCollection(town = intent.selectedTown))
+                    }
 
-                        MypageTab.COURSE -> {
+                    MypageTab.COURSE -> {
+                        reduce {
                             copy(isCourseTownSelected = true)
                         }
                     }

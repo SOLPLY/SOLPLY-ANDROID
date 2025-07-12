@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mypage_collection">수집함</string>
+    <string name="mypage_select">선택</string>
+    <string name="mypage_delete">삭제</string>
+    <string name="mypage_cancel">취소</string>
 </resources>

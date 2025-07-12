@@ -18,23 +18,16 @@ fun PlaceTabScreen(
     place: List<PlaceCard>,
     modifier: Modifier = Modifier
 ) {
-
     if (town.isEmpty()) {
         EmptyCollectionScreen(
             onClick = onClickEmptyButton,
             mypageTab = MypageTab.PLACE
         )
     } else {
-        if (isTownSelected) {
-            PlaceCollectionScreen(
-                place = place
-            )
-        } else {
-            TownCollectionScreen(
-                town = town,
-                onClickTown = onClickTown
-            )
-        }
+        TownCollectionScreen(
+            town = town,
+            onClickTown = onClickTown
+        )
     }
 }
 
