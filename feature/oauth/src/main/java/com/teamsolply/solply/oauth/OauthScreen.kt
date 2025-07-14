@@ -210,13 +210,3 @@ fun startKakaoLogin(
         }
     }
 }
-
-@Preview(showBackground = true, name = "OnBoardingPage1 Preview")
-@Composable
-fun OauthScreenPreview() {
-    SolplyTheme {
-        OauthScreen(
-            kakaoLoginClick = { /* TODO*/ }
-        )
-    }
-}
