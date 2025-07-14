@@ -62,7 +62,7 @@ private fun BaseButton(
 @Composable
 fun SolplyBasicButton(
     text: String,
-    onClick: () -> Unit,
+    onClick:() -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = true,
     textColor: Color = SolplyTheme.colors.white,
@@ -97,14 +97,21 @@ fun AddLocalAreaButton(
 ) {
     val backgroundColor = when {
         isShowMore -> SolplyTheme.colors.gray200
-        selected -> SolplyTheme.colors.gray400
-        else -> SolplyTheme.colors.gray200
+        selected -> SolplyTheme.colors.red100
+        else -> SolplyTheme.colors.gray100
+    }
+    val borderColor = when {
+        isShowMore -> Color.Transparent
+        selected -> SolplyTheme.colors.red300
+        else -> SolplyTheme.colors.gray300
     }
 
     BaseButton(
         onClick = onClick,
-        modifier = modifier.size(74.dp),
-        backgroundColor = backgroundColor
+        modifier = modifier.size(95.dp),
+        backgroundColor = backgroundColor,
+        borderColor = borderColor,
+        borderWidth = 1f
     ) {
         if (isShowMore) {
             Icon(
@@ -116,7 +123,7 @@ fun AddLocalAreaButton(
             Text(
                 text = text,
                 style = SolplyTheme.typography.body16R,
-                color = SolplyTheme.colors.black
+                color = SolplyTheme.colors.gray900
             )
         }
     }
@@ -130,15 +137,13 @@ fun OnBoardingSkipButton(
     BaseButton(
         onClick = onClick,
         modifier = modifier,
-        backgroundColor = SolplyTheme.colors.white,
-        borderColor = SolplyTheme.colors.gray500,
-        borderWidth = 1f
+        backgroundColor = Color.Transparent
     ) {
         Text(
             text = "건너뛰기",
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
-            style = SolplyTheme.typography.body14M,
-            color = SolplyTheme.colors.gray700
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 22.dp),
+            style = SolplyTheme.typography.button16M,
+            color = SolplyTheme.colors.gray900
         )
     }
 }
