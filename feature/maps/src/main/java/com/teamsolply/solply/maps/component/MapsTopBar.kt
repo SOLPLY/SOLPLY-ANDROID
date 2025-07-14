@@ -15,12 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun MapsTopBar(
+internal fun MapsTopBar(
     mapsType: MapsType,
     title: String,
     onBackButtonClick: () -> Unit,
@@ -35,7 +36,7 @@ fun MapsTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_long_arrow),
+            painter = painterResource(R.drawable.ic_back_long_arrow),
             contentDescription = "back",
             tint = Color.Unspecified,
             modifier = Modifier
@@ -53,9 +54,9 @@ fun MapsTopBar(
         Icon(
             painter = painterResource(
                 if (mapsType == MapsType.EDIT_COURSE) {
-                    com.teamsolply.solply.designsystem.R.drawable.ic_mypage
+                    R.drawable.ic_mypage
                 } else {
-                    com.teamsolply.solply.designsystem.R.drawable.ic_home
+                    R.drawable.ic_home
                 }
             ),
             contentDescription = "home",

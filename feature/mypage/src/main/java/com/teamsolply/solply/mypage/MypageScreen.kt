@@ -21,17 +21,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.component.MypageTopBar
-import com.teamsolply.solply.mypage.component.PlaceCollectionScreen
+import com.teamsolply.solply.mypage.component.PlaceTabScreen
+import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
+import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
-import com.teamsolply.solply.ui.preview.DefaultPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -40,42 +42,67 @@ fun MypageRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
+    navigateToPlaceCollection: (String) -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { 2 })
     LaunchedEffect(pagerState.currentPage) {
-        Log.d("asdasdasd", pagerState.currentPage.toString())
         // TODO pagerState 이중관리
+        if (pagerState.currentPage == 0) {
+            viewModel.sendIntent(MypageIntent.SelectPlaceTab)
+        } else {
+            viewModel.sendIntent(MypageIntent.SelectCourseTab)
+        }
+        Log.d(
+            "asdasdasd",
+            pagerState.currentPage.toString() + " " + uiState.selectedTab.name + " " + uiState.isPlaceTownSelected + " " + uiState.isCourseTownSelected
+        )
+    }
+
+    LaunchedEffect(uiState.isPlaceTownSelected) {
+        Log.d("TownSelectInMy", uiState.isPlaceTownSelected.toString())
     }
 
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                MypageSideEffect.MoveToTown -> uiState.isTownSelected
-                MypageSideEffect.NavigateToBack -> navigateToBack()
+                is MypageSideEffect.NavigateToBack -> navigateToBack()
+                is MypageSideEffect.NavigateToPlaceCollection -> {
+                    navigateToPlaceCollection(sideEffect.town)
+                }
             }
         }
     }
 
     MypageScreen(
         navigateToMaps = navigateToMaps,
-        navigateToBack = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
-        isTownSelected = uiState.isTownSelected,
-        selectTown = { /* TODO */ },
+        onBackButtonClick = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
+        onClickPlaceTab = { viewModel.sendIntent(MypageIntent.SelectPlaceTab) },
+        onClickCourseTab = { viewModel.sendIntent(MypageIntent.SelectCourseTab) },
+        isPlaceTownSelected = uiState.isPlaceTownSelected,
+        isCourseTownSelected = uiState.isCourseTownSelected,
+        selectTown = { viewModel.sendIntent(MypageIntent.SelectTown(it)) },
+        currentTab = uiState.selectedTab,
         pagerState = pagerState,
-        place = uiState.places
+        place = uiState.places,
+        town = uiState.towns
     )
 }
 
 @Composable
 fun MypageScreen(
     navigateToMaps: (String) -> Unit,
-    navigateToBack: () -> Unit,
-    isTownSelected: Boolean,
-    selectTown: () -> Unit,
+    onBackButtonClick: () -> Unit,
+    onClickPlaceTab: () -> Unit,
+    onClickCourseTab: () -> Unit,
+    isPlaceTownSelected: Boolean,
+    isCourseTownSelected: Boolean,
+    selectTown: (String) -> Unit,
+    currentTab: MypageTab,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
+    town: List<TownCard>,
     place: List<PlaceCard>
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -88,9 +115,9 @@ fun MypageScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MypageTopBar(
-            town = "", // TODO 선택한 동 이름
-            onBackButtonClick = { navigateToBack() },
-            isTownSelected = isTownSelected
+            barText = stringResource(R.string.mypage_collection),
+            onBackButtonClick = { onBackButtonClick() },
+            isTownSelected = false
         )
         TabRow(
             selectedTabIndex = 0,
@@ -103,7 +130,7 @@ fun MypageScreen(
             },
             containerColor = SolplyTheme.colors.white
         ) {
-            list.forEachIndexed { index, page ->
+            list.forEachIndexed { index, tab ->
                 val selected = pagerState.currentPage == index
                 Box(
                     modifier = Modifier
@@ -112,6 +139,11 @@ fun MypageScreen(
                         .customClickable(
                             rippleEnabled = false,
                             onClick = {
+                                if (index == 0) {
+                                    onClickPlaceTab()
+                                } else {
+                                    onClickCourseTab()
+                                }
                                 coroutineScope.launch {
                                     pagerState.animateScrollToPage(
                                         index
@@ -122,7 +154,7 @@ fun MypageScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = page,
+                        text = tab,
                         style = if (selected) SolplyTheme.typography.head15Sb else SolplyTheme.typography.head15M,
                         color = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray800
                     )
@@ -134,8 +166,11 @@ fun MypageScreen(
             state = pagerState
         ) { page ->
             when (page) {
-                0 -> PlaceCollectionScreen(
+                0 -> PlaceTabScreen(
                     onClickEmptyButton = {},
+                    town = town,
+                    onClickTown = selectTown,
+                    isTownSelected = isPlaceTownSelected,
                     place = place
                 )
             }
@@ -143,20 +178,6 @@ fun MypageScreen(
         Text(
             text = "Mypage",
             modifier = Modifier.customClickable { navigateToMaps(MapsType.EDIT_COURSE.name) }
-        )
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun MypageScreenPreview() {
-    SolplyTheme {
-        MypageScreen(
-            navigateToMaps = {},
-            place = emptyList(),
-            isTownSelected = false,
-            selectTown = {},
-            navigateToBack = {}
         )
     }
 }

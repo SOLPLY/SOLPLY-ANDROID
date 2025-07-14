@@ -1,5 +1,7 @@
 package com.teamsolply.solply.maps.component
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +32,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun CourseItem(
+internal fun CourseItem(
     placeName: String,
     placeTag: PlaceType,
     placeAddress: String,
@@ -40,6 +43,11 @@ fun CourseItem(
     selectedPlaceItem: Boolean,
     isEditing: Boolean = false
 ) {
+    val imageSize by animateDpAsState(
+        targetValue = if (selectedPlaceItem) 88.dp else 52.dp,
+        animationSpec = tween(durationMillis = 50)
+    )
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -60,7 +68,7 @@ fun CourseItem(
             contentDescription = "place_image",
             modifier = Modifier
                 .padding(8.dp)
-                .size(if (selectedPlaceItem) 88.dp else 52.dp)
+                .size(imageSize)
                 .clip(RoundedCornerShape(12.dp))
         )
         Column {
