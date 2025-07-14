@@ -51,7 +51,8 @@ fun TownCollectionScreen(
                         Modifier.padding(end = 5.dp)
                     } else {
                         Modifier.padding(start = 5.dp)
-                    }
+                    },
+                    content = {}
                 )
             }
         }

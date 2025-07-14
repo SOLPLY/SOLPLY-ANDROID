@@ -30,6 +30,7 @@ import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
+import com.teamsolply.solply.mypage.collection.course.courseCollectionNavGraph
 import com.teamsolply.solply.mypage.collection.place.placeCollectionNavGraph
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
@@ -170,6 +171,13 @@ internal fun MainScreen(
                                 town = town,
                                 navOptions = navOptions
                             )
+                        },
+                        navigateToCourseCollection = { town ->
+                            val navOptions = navOptions { }
+                            navigator.navigateToCourseCollection(
+                                town = town,
+                                navOptions = navOptions
+                            )
                         }
                     )
                     mapsNavGraph(
@@ -233,6 +241,14 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
+                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                        },
+                        navigateToBack = navigator::navigateToBack
+                    )
+                    courseCollectionNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToMaps = { mapsType ->
+                            val navOptions = navOptions { }
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         },
                         navigateToBack = navigator::navigateToBack

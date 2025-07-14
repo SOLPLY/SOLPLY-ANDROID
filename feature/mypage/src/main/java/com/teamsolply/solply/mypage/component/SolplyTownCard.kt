@@ -14,13 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun SolplyTownCard(
     town: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     Column {
         Box(
@@ -30,12 +33,9 @@ fun SolplyTownCard(
                 ),
             contentAlignment = Alignment.Center
         ) {
+            content.invoke()
             Image(
-                painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
-                contentDescription = "동네 수집함"
-            )
-            Image(
-                painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_group_cover),
+                painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_solply_cover),
                 contentDescription = "솔플리 커버",
                 modifier = Modifier.matchParentSize()
             )
@@ -54,8 +54,30 @@ fun SolplyTownCard(
 @Composable
 private fun TownCardPreview() {
     SolplyTheme {
-        SolplyTownCard(
-            town = "연희동"
-        )
+        Column {
+            SolplyTownCard(
+                town = "연희동",
+                content = {
+                    Image(
+                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
+                        contentDescription = "동네 수집함"
+                    )
+                }
+            )
+            SolplyTownCard(
+                town = "연희동",
+                content = {
+                    SolplyCourseCard(
+                        title = "오감으로 수집하는 하루",
+                        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                        placeType = listOf(PlaceType.BOOK, PlaceType.SHOPPING),
+                        backgroundColor = SolplyTheme.colors.purple200,
+                        iconColor = SolplyTheme.colors.purple400,
+                        iconBackGroundColor = SolplyTheme.colors.purple100,
+                        savedPlace = true
+                    )
+                }
+            )
+        }
     }
 }
