@@ -2,6 +2,7 @@ package com.teamsolply.solply.maps
 
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
@@ -10,7 +11,7 @@ import com.teamsolply.solply.ui.base.UiState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
-data class MapsState(
+internal data class MapsState(
     // Add Place
     val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
@@ -21,10 +22,11 @@ data class MapsState(
     val selectedPlaceInfoId: Int? = null,
     // Edit Course
     val removeIconVisibility: Boolean = false,
-    val startEditCourse: Boolean = false
+    val startEditCourse: Boolean = false,
+    val courseSaveDialogVisibility: Boolean = false
 ) : UiState
 
-sealed interface MapsIntent : UiIntent {
+internal sealed interface MapsIntent : UiIntent {
     // Add Place
     data class AddPlaceClick(
         val addPlace: Boolean
@@ -51,6 +53,12 @@ sealed interface MapsIntent : UiIntent {
     // Edit Course
     data object StartEditCourseIconClick : MapsIntent
 
+    data object ChangeCourseSaveDialogInVisibility : MapsIntent
+
+    data class CourseSaveDialogClick(
+        val courseSaveType: CourseSaveType
+    ) : MapsIntent
+
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
@@ -72,7 +80,7 @@ sealed interface MapsIntent : UiIntent {
     data object BackButtonClick : MapsIntent
 }
 
-sealed interface MapsSideEffect : SideEffect {
+internal sealed interface MapsSideEffect : SideEffect {
     // Add Place
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
@@ -81,6 +89,7 @@ sealed interface MapsSideEffect : SideEffect {
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect
     data object ShowSuccessSaveSingleCourseSnackBar : MapsSideEffect
+    data object ShowSuccessSaveNewCourseSnackBar : MapsSideEffect
 
     // Shared
     data object NavigateToCourse : MapsSideEffect
@@ -88,7 +97,7 @@ sealed interface MapsSideEffect : SideEffect {
     data object NavigateToBack : MapsSideEffect
 }
 
-val defaultPlaceDetailEntity = PlaceDetailEntity(
+internal val defaultPlaceDetailEntity = PlaceDetailEntity(
     placeId = 0,
     placeName = "",
     primaryTag = PlaceType.EMPTY,
@@ -105,7 +114,7 @@ val defaultPlaceDetailEntity = PlaceDetailEntity(
     placeDefaultId = 0
 )
 
-val courseDetailEntity = CourseDetailEntity(
+internal val courseDetailEntity = CourseDetailEntity(
     courseId = 0,
     courseName = "",
     introduction = "",

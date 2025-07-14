@@ -4,12 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,13 +18,13 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
-fun TownCard(
-    town: String
+fun SolplyTownCard(
+    town: String,
+    modifier: Modifier = Modifier
 ) {
     Column {
         Box(
-            modifier = Modifier
-                .size(165.dp)
+            modifier = modifier
                 .clip(
                     shape = RoundedCornerShape(20.dp)
                 ),
@@ -37,10 +34,10 @@ fun TownCard(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
                 contentDescription = "동네 수집함"
             )
-            Icon(
+            Image(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_group_cover),
                 contentDescription = "솔플리 커버",
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.matchParentSize()
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -57,7 +54,7 @@ fun TownCard(
 @Composable
 private fun TownCardPreview() {
     SolplyTheme {
-        TownCard(
+        SolplyTownCard(
             town = "연희동"
         )
     }

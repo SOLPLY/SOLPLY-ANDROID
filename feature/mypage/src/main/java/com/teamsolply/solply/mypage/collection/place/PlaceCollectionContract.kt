@@ -1,25 +1,14 @@
-package com.teamsolply.solply.mypage
+package com.teamsolply.solply.mypage.collection.place
 
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceCard
-import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 import okhttp3.internal.immutableListOf
 
-data class MypageState(
-    val towns: List<TownCard> = immutableListOf(
-        TownCard(
-            townName = "연희동",
-            imageUrl = ""
-        ),
-        TownCard(
-            townName = "망원동",
-            imageUrl = ""
-        )
-    ),
+data class PlaceCollectionState(
+    val selectMode: Boolean = false,
     val town: String = "연희동",
     val places: List<PlaceCard> = immutableListOf(
         PlaceCard(
@@ -47,54 +36,59 @@ data class MypageState(
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 4,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 5,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 6,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 7,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         ),
         PlaceCard(
-            placeId = 3,
+            placeId = 8,
             placeName = "3번",
             placeType = PlaceType.FOOD,
             imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
         )
     ),
-    val selectedTab: MypageTab = MypageTab.PLACE,
-    val isPlaceTownSelected: Boolean = false,
-    val isCourseTownSelected: Boolean = false
+    val selectedPlaces: Set<Int> = emptySet(),
+    val dialogState: Boolean = false
 ) : UiState
 
-sealed interface MypageIntent : UiIntent {
-    // TODO 탭 이중관리
-    data object SelectPlaceTab : MypageIntent
-    data object SelectCourseTab : MypageIntent
+sealed interface PlaceCollectionIntent : UiIntent {
 
-    //
-    data class SelectTown(val selectedTown: String) : MypageIntent
+    data object SelectButtonClick : PlaceCollectionIntent
+    data object DeleteButtonClick : PlaceCollectionIntent
+    data object CancelButtonClick : PlaceCollectionIntent
+
+    data object DialogConfirmClick : PlaceCollectionIntent
+    data object DialogDismissClick : PlaceCollectionIntent
+
+    data class PlaceCardClick(val placeId: Int, val index: Int) : PlaceCollectionIntent
 
     // Navigate
-    data object BackButtonClick : MypageIntent
+    data object BackButtonClick : PlaceCollectionIntent
 }
 
-sealed interface MypageSideEffect : SideEffect {
-    data object NavigateToBack : MypageSideEffect
-    data class NavigateToPlaceCollection(val town: String) : MypageSideEffect
+sealed interface PlaceCollectionSideEffect : SideEffect {
+
+    data object DeletePlaces : PlaceCollectionSideEffect
+
+    data object NavigateToBack : PlaceCollectionSideEffect
+    data object NavigateToMap : PlaceCollectionSideEffect
 }

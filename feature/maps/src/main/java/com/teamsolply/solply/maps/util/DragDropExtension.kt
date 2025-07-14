@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.editcourse.extension
+package com.teamsolply.solply.maps.util
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
-import com.teamsolply.solply.maps.editcourse.interaction.DragDropState
+import kotlinx.collections.immutable.PersistentList
 
-inline fun <T : Any> LazyListScope.draggableItems(
-    items: List<T>,
+internal inline fun <T : Any> LazyListScope.draggableItems(
+    items: PersistentList<T>,
     dragDropState: DragDropState,
     noinline key: ((index: Int, item: T) -> Any)? = null,
     crossinline content: @Composable (index: Int, Modifier, T) -> Unit
@@ -50,7 +50,7 @@ inline fun <T : Any> LazyListScope.draggableItems(
 }
 
 @SuppressLint("SuspiciousModifierThen")
-fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
+internal fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
     return this.then(
         pointerInput(dragDropState) {
             detectDragGesturesAfterLongPress(
