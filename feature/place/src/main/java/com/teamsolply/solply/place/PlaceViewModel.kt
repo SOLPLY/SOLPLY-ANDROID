@@ -1,11 +1,12 @@
 package com.teamsolply.solply.place
 
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class PlaceViewModel @Inject constructor(
@@ -18,9 +19,19 @@ class PlaceViewModel @Inject constructor(
 
     override fun handleIntent(intent: PlaceIntent) {
         when (intent) {
-            PlaceIntent.LoadPlaces      -> fetchPlaces()
-            is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap)
-            PlaceIntent.Retry           -> fetchPlaces()
+            PlaceIntent.LoadPlaces -> fetchPlaces()
+            is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
+            PlaceIntent.Retry -> fetchPlaces()
+            is PlaceIntent.SelectOptionFilter -> {
+                val currentOptionFilter = intent.optionTagId
+
+                //TODO. currentOptionFilter가 selectedOptionFilter에 없으면 추가 있으면 삭제
+                reduce {
+                    copy(
+                        selectedOptionFilter = selectedOptionFilter
+                    )
+                }
+            }
         }
     }
 
@@ -28,14 +39,13 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace()
                 .onSuccess { placesList ->
-                    reduce { copy(recommendplaces = placesList) }
+                    reduce { copy(recommendPlaces = placesList) }
                 }
-            // failures ignored; Retry intent can re-trigger
         }
     }
 
     fun onMainTypeSelected(type: String) {
-        val tags = when(type) {
+        val tags = when (type) {
             "WALK", "BOOK" -> emptyList()
             else -> listOf(
                 OptionTag(9, "OPTION1", "커피/디저트", 1),

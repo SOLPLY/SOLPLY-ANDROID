@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +22,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -47,22 +45,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.component.header.PlaceHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.place.component.bottomsheet.PlaceOptionFilterSheet
+import com.teamsolply.solply.place.component.bottomsheet.PlaceTypeFilterSheet
 import com.teamsolply.solply.place.component.button.PlaceChipButton
 import com.teamsolply.solply.place.component.card.PlaceRecommendCard
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
-import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.teamsolply.solply.place.component.bottomsheet.PlaceOptionFilterSheet
-import com.teamsolply.solply.place.component.bottomsheet.PlaceTypeFilterSheet
-import com.teamsolply.solply.place.component.button.FilterChipButton
-import com.teamsolply.solply.place.component.button.FilterSheetButton
-import com.teamsolply.solply.place.model.PlaceTypeFilterItem
 
 @Composable
 fun PlaceRoute(
@@ -74,7 +65,12 @@ fun PlaceRoute(
     val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
-            if (sideEffect == PlaceSideEffect.NavigateToMap) navigateToMaps("")
+            when (sideEffect) {
+                is PlaceSideEffect.NavigateToMap -> {
+                    //TODO. maps로 placeId 전달   sideEffect.placeId
+                    navigateToMaps(MapsType.PLACE_DETAIL.name)
+                }
+            }
         }
     }
     PlaceScreen(
@@ -97,7 +93,7 @@ fun PlaceScreen(
     val centerItemSize = 240.dp
     val sideItemSize = 180.dp
     val pagerState = rememberPagerState(
-        initialPage = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % state.recommendplaces.size),
+        initialPage = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % state.recommendPlaces.size),
         pageCount = { Int.MAX_VALUE }
     )
     val isCenter = remember { mutableStateListOf(false, false, false) }
@@ -119,6 +115,11 @@ fun PlaceScreen(
     val selectedType = remember { mutableStateOf("ALL") }
 
     val selectedOptionIds = remember { mutableStateListOf<Int>() }
+    val tempOptionIds = remember { mutableStateListOf<Int>() }
+
+    tempOptionIds.map {
+        Log.d("asdasdasd", it.toString())
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -127,7 +128,9 @@ fun PlaceScreen(
             townName = state.user.favoriteTowns,
             persona = state.user.persona,
             nickname = state.user.nickname,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
 
         LazyVerticalGrid(
@@ -151,7 +154,7 @@ fun PlaceScreen(
             item(span = { GridItemSpan(2) }) {
                 CustomHorizontalPager(
                     pagerState = pagerState,
-                    recommendPlaces = state.recommendplaces,
+                    recommendPlaces = state.recommendPlaces,
                     centerItemSize = centerItemSize,
                     horizontalPadding = horizontalPadding,
                     isCenter = isCenter,
@@ -165,7 +168,6 @@ fun PlaceScreen(
                 Spacer(modifier = Modifier.height(21.dp))
             }
             item(span = { GridItemSpan(2) }) {
-                Spacer(modifier = Modifier.height(21.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -182,7 +184,8 @@ fun PlaceScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             PlaceChipButton(
-                                text = state.placeTypeFilterItems.firstOrNull { it.type == selectedType.value }?.label ?: "전체",
+                                text = state.placeTypeFilterItems.firstOrNull { it.type == selectedType.value }?.label
+                                    ?: "전체",
                                 modifier = Modifier,
                                 onClick = { showFilterSheet.value = true }
                             )
@@ -249,7 +252,7 @@ fun PlaceScreen(
                 onSelectType = {
                     selectedType.value = it
                     showFilterSheet.value = false
-                    // TODO: 실제 필터링 동작 연결
+
                 },
                 onDismiss = { showFilterSheet.value = false }
             )
@@ -257,20 +260,38 @@ fun PlaceScreen(
     }
 
     if (showOptionSheet.value) {
+        if (tempOptionIds.isEmpty()) {
+            tempOptionIds.clear()
+            tempOptionIds.addAll(selectedOptionIds)
+        }
+
         ModalBottomSheet(
-            onDismissRequest = { showOptionSheet.value = false },
+            onDismissRequest = {
+                showOptionSheet.value = false
+                tempOptionIds.clear()
+            },
             sheetState = sheetState,
             containerColor = SolplyTheme.colors.white,
             dragHandle = null
         ) {
             PlaceOptionFilterSheet(
                 optionTags = state.optionTags ?: emptyList(),
-                selectedOptionIds = selectedOptionIds,
+                selectedOptionIds = tempOptionIds,
                 onOptionSelected = { tagId ->
+                    if (tempOptionIds.contains(tagId)) tempOptionIds.remove(tagId)
+                    else tempOptionIds.add(tagId)
                 },
-                onDismiss = { showOptionSheet.value = false },
-                onReset = { },
-                onDone = { showOptionSheet.value = false }
+                onDismiss = {
+                    showOptionSheet.value = false
+                    tempOptionIds.clear()
+                },
+                onReset = { tempOptionIds.clear() },
+                onDone = {
+                    selectedOptionIds.clear()
+                    selectedOptionIds.addAll(tempOptionIds)
+                    showOptionSheet.value = false
+                    tempOptionIds.clear()
+                }
             )
         }
     }
