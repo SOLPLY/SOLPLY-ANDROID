@@ -44,7 +44,7 @@ fun CourseHeader(
                     text = townName,
                     style = SolplyTheme.typography.body16M,
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
+                        .padding(start = 4.dp)
                         .height(21.dp)
                 )
                 Icon(

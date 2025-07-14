@@ -11,12 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.textfield.SolplyNicknameTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.onboarding.OnBoardingIntent
 import com.teamsolply.solply.onboarding.OnBoardingState
+import com.teamsolply.solply.ui.extension.addFocusCleaner
 
 @Composable
 fun NamingScreen(
@@ -27,12 +29,14 @@ fun NamingScreen(
     var nickname by remember { mutableStateOf("") }
 
     val isButtonEnabled = nickname.isNotBlank()
+    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
+            .addFocusCleaner(focusManager),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {

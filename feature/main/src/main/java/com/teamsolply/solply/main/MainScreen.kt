@@ -133,6 +133,7 @@ internal fun MainScreen(
                         }
                     )
                     onBoardingNavGraph(
+                        navController = navigator.navController,
                         paddingValues = innerPadding,
                         navigateToPlace = {
                             val navOptions = navOptions {
