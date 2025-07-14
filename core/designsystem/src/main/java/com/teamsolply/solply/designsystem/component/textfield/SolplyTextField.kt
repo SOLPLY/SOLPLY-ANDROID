@@ -118,6 +118,7 @@ fun SolplyNicknameTextField(
     modifier: Modifier = Modifier,
     placeholder: String = "여기에 입력하세요.",
     maxLength: Int = 8,
+    minLength: Int = 2,
     onDuplicateCheck: (String) -> Boolean,
     checkNicknameValidate: (String) -> Boolean
 ) {
@@ -129,13 +130,18 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value) {
         if (value.isNotEmpty()) {
             isTyping = true
             delay(300)
 
+            if(value.length<minLength){
+                validationState =NickNameValidateState.TooShort
+                isTyping=false
+                return@LaunchedEffect
+            }
             if (value.length == maxLength) {
                 validationState = NickNameValidateState.MaxLength
                 isTyping = false
@@ -161,7 +167,10 @@ fun SolplyNicknameTextField(
     val (backgroundColor, borderColor) = when {
         value.isEmpty() -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray300)
         value.length == maxLength -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray900)
-        validationState in listOf(NickNameValidateState.Duplicate, NickNameValidateState.Invalid) ->
+        validationState in listOf(
+            NickNameValidateState.Duplicate,
+            NickNameValidateState.Invalid,
+            NickNameValidateState.TooShort) ->
             Pair(SolplyTheme.colors.white, SolplyTheme.colors.red600)
 
         validationState == NickNameValidateState.Typing ->
@@ -256,4 +265,5 @@ sealed class NickNameValidateState {
     data object Duplicate : NickNameValidateState()
     data object Valid : NickNameValidateState()
     data object Typing : NickNameValidateState()
+    data object TooShort : NickNameValidateState()
 }
