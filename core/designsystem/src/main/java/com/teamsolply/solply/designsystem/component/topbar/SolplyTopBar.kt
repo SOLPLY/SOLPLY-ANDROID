@@ -1,10 +1,10 @@
-package com.teamsolply.solply.mypage.component
+package com.teamsolply.solply.designsystem.component.topbar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
@@ -17,19 +17,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun MypageTopBar(
+fun SolplyTopBar(
     barText: String,
-    onBackButtonClick: () -> Unit,
-    isTownSelected: Boolean
+    onBackButtonClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .background(SolplyTheme.colors.white),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -48,7 +46,8 @@ fun MypageTopBar(
         Text(
             text = barText,
             style = SolplyTheme.typography.title18Sb,
-            color = SolplyTheme.colors.black
+            color = SolplyTheme.colors.black,
+            modifier = Modifier.padding(vertical = 18.dp)
         )
     }
 }

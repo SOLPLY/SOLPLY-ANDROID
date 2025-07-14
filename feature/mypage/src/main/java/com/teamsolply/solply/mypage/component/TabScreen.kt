@@ -9,22 +9,37 @@ import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
 
 @Composable
-fun PlaceTabScreen(
+fun TabScreen(
     onClickEmptyButton: () -> Unit,
     onClickTown: (String) -> Unit,
     town: List<TownCard>,
+    mypageTab: MypageTab,
     modifier: Modifier = Modifier
 ) {
     if (town.isEmpty()) {
         EmptyCollectionScreen(
             onClick = onClickEmptyButton,
-            mypageTab = MypageTab.PLACE
+            mypageTab = mypageTab,
+            modifier = modifier
         )
     } else {
-        TownCollectionScreen(
-            town = town,
-            onClickTown = onClickTown
-        )
+        when (mypageTab) {
+            MypageTab.PLACE ->
+                TownCollectionScreen(
+                    town = town,
+                    onClickTown = onClickTown,
+                    mypageTab = mypageTab,
+                    modifier = modifier
+                )
+
+            MypageTab.COURSE ->
+                TownCollectionScreen(
+                    town = town,
+                    onClickTown = onClickTown,
+                    mypageTab = mypageTab,
+                    modifier = modifier
+                )
+        }
     }
 }
 
@@ -32,7 +47,7 @@ fun PlaceTabScreen(
 @Composable
 private fun PlaceTabScreenPreview() {
     SolplyTheme {
-        PlaceTabScreen(
+        TabScreen(
             onClickEmptyButton = {},
             town = immutableListOf(
                 TownCard(
@@ -44,7 +59,8 @@ private fun PlaceTabScreenPreview() {
                     imageUrl = ""
                 )
             ),
-            onClickTown = {}
+            onClickTown = {},
+            mypageTab = MypageTab.COURSE
         )
     }
 }
