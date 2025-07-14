@@ -11,7 +11,35 @@ class OnBoardingViewModel @Inject constructor() :
     ) {
     override fun handleIntent(intent: OnBoardingIntent) {
         when (intent) {
-            OnBoardingIntent.OnBoardingButtonClick -> postSideEffect(OnBoardingSideEffect.NavigateToPlace)
+            is OnBoardingIntent.OnPageChanged -> {
+                reduce { copy(currentPage = intent.newPage) }
+            }
+
+            is OnBoardingIntent.OnTownSelected -> {
+                reduce { copy(selectedTownId = intent.townId) }
+            }
+
+            is OnBoardingIntent.OnPersonaSelected -> {
+                reduce { copy(selectedPersona = intent.persona) }
+            }
+
+            is OnBoardingIntent.OnBoardingButtonClick -> {
+                postSideEffect(OnBoardingSideEffect.NavigateToPlace)
+            }
+
+            is OnBoardingIntent.OnTownChanged -> {
+            }
+
+            is OnBoardingIntent.OnPersonaChanged -> {
+            }
+
+            is OnBoardingIntent.ShowStartingScreen -> {
+                reduce { copy(showStartingScreen = true) }
+            }
+            is OnBoardingIntent.Nickname -> {
+                reduce { copy(userNickname = intent.nickname) }
+            }
         }
     }
 }
+
