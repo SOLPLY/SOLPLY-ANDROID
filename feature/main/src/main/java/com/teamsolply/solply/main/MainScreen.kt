@@ -99,7 +99,7 @@ internal fun MainScreen(
                     enterTransition = { EnterTransition.None },
                     exitTransition = { ExitTransition.None },
                     modifier = modifier
-                        .background(color = SolplyTheme.colors.white)
+                        .background(color = SolplyTheme.colors.gray100)
                         .fillMaxSize()
                 ) {
                     splashNavGraph(
@@ -145,16 +145,6 @@ internal fun MainScreen(
                     )
                     placeNavGraph(
                         paddingValues = innerPadding,
-                        showNavigateSnackBar = { message, action ->
-                            coroutineScope.launch {
-                                showNavigateSnackBar(message, action)
-                            }
-                        },
-                        showTextSnackBar = { message ->
-                            coroutineScope.launch {
-                                showTextSnackBar(message = message)
-                            }
-                        },
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)

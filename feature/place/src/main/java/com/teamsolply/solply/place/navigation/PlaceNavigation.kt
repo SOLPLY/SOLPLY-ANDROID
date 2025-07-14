@@ -5,31 +5,25 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.teamsolply.solply.navigation.MainTabRoute
+import com.teamsolply.solply.navigation.Route
 import com.teamsolply.solply.place.PlaceRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigatePlace(
-    navOptions: NavOptions
-) {
+fun NavController.navigatePlace(navOptions: NavOptions) {
     navigate(Place, navOptions)
 }
 
 fun NavGraphBuilder.placeNavGraph(
     paddingValues: PaddingValues,
-    showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    showTextSnackBar: (String) -> Unit,
     navigateToMaps: (String) -> Unit
 ) {
     composable<Place> {
         PlaceRoute(
             paddingValues = paddingValues,
-            showNavigateSnackBar = showNavigateSnackBar,
-            showTextSnackBar = showTextSnackBar,
             navigateToMaps = navigateToMaps
         )
     }
 }
 
 @Serializable
-data object Place : MainTabRoute
+data object Place : Route
