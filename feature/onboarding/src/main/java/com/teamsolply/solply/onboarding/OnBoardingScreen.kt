@@ -1,17 +1,31 @@
 package com.teamsolply.solply.onboarding
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamsolply.solply.ui.extension.customClickable
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.onboarding.component.ProgressBar
+import com.teamsolply.solply.onboarding.screen.NamingScreen
+import com.teamsolply.solply.onboarding.screen.SelectPersonaScreen
+import com.teamsolply.solply.onboarding.screen.SelectTownScreen
+import com.teamsolply.solply.onboarding.screen.StartingScreen
+import kotlinx.coroutines.launch
 
 @Composable
 fun OnBoardingRoute(
@@ -19,34 +33,104 @@ fun OnBoardingRoute(
     navigateToPlace: () -> Unit,
     viewModel: OnBoardingViewModel = hiltViewModel()
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                OnBoardingSideEffect.NavigateToPlace -> navigateToPlace()
+                is OnBoardingSideEffect.NavigateToPlace -> {navigateToPlace()}
             }
         }
     }
 
-    OnBoardingScreen(
-        onBoardingButtonClick = { viewModel.sendIntent(OnBoardingIntent.OnBoardingButtonClick) }
-    )
+    if (state.showStartingScreen) {
+        StartingScreen(
+            state = state,
+            onFinished = {
+                viewModel.sendIntent(OnBoardingIntent.OnBoardingButtonClick)
+            }
+        )
+    } else {
+        OnBoardingScreen(
+            state = state,
+            onBoardingButtonClick = {
+                viewModel.sendIntent(OnBoardingIntent.ShowStartingScreen)
+            },
+            onPageChanged = { viewModel.sendIntent(OnBoardingIntent.OnPageChanged(it)) },
+            onBoardingIntent = { viewModel.sendIntent(it) }
+        )
+    }
 }
 
 @Composable
 fun OnBoardingScreen(
+    state: OnBoardingState,
     onBoardingButtonClick: () -> Unit,
+    onPageChanged: (Int) -> Unit,
+    onBoardingIntent: (OnBoardingIntent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val pagerState = rememberPagerState(
+        initialPage = state.currentPage,
+        pageCount = { state.totalPageCount })
+
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(pagerState.currentPage) {
+        onPageChanged(pagerState.currentPage)
+    }
+
     Column(
-        modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .fillMaxSize()
+            .background(SolplyTheme.colors.gray100)
     ) {
-        Text(
-            text = "onboarding",
-            modifier = Modifier.customClickable(
-                onClick = onBoardingButtonClick
-            )
+        Spacer(
+            modifier = Modifier
+                .height(32.dp)
         )
+        ProgressBar(
+            pageState = pagerState,
+            totalpageCount = state.totalPageCount
+        )
+
+        HorizontalPager(
+            pageSize = PageSize.Fill,
+            state = pagerState,
+            modifier = Modifier.weight(1f),
+            userScrollEnabled = false
+        ) { page ->
+            when (page) {
+                0 -> SelectTownScreen(
+                    state = state,
+                    onNextClick = {
+                    scope.launch {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
+                    }
+                },
+                    onBoardingIntent = onBoardingIntent
+                )
+
+                1 -> SelectPersonaScreen(
+                    state = state,
+                    onNextClick = {
+                    scope.launch {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
+                    }
+                },
+                    onBoardingIntent = onBoardingIntent
+                )
+
+                2 -> NamingScreen(
+                    state = state,
+                    onNextClick = {
+                    scope.launch {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
+                    }
+                },
+                    onBoardingIntent = onBoardingIntent
+                )
+            }
+        }
     }
 }

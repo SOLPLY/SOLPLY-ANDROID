@@ -3,26 +3,22 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-  <group>
-    <clip-path
-        android:pathData="M0,0h24v24h-24z"/>
-    <path
-        android:pathData="M8,9.6L8,9.6A1,1 0,0 1,9 10.6L9,19.6A1,1 0,0 1,8 20.6L8,20.6A1,1 0,0 1,7 19.6L7,10.6A1,1 0,0 1,8 9.6z"
-        android:fillColor="#242424"/>
-    <path
-        android:pathData="M16,9.6L16,9.6A1,1 0,0 1,17 10.6L17,19.6A1,1 0,0 1,16 20.6L16,20.6A1,1 0,0 1,15 19.6L15,10.6A1,1 0,0 1,16 9.6z"
-        android:fillColor="#242424"/>
-    <path
-        android:pathData="M14,3.6L14,3.6A1,1 0,0 1,15 4.6L15,9.6A1,1 0,0 1,14 10.6L14,10.6A1,1 0,0 1,13 9.6L13,4.6A1,1 0,0 1,14 3.6z"
-        android:fillColor="#242424"/>
-    <path
-        android:pathData="M18,3.6L18,3.6A1,1 0,0 1,19 4.6L19,9.6A1,1 0,0 1,18 10.6L18,10.6A1,1 0,0 1,17 9.6L17,4.6A1,1 0,0 1,18 3.6z"
-        android:fillColor="#242424"/>
-    <path
-        android:pathData="M13,9.6L13,9.6A1,1 0,0 1,14 8.6L18,8.6A1,1 0,0 1,19 9.6L19,9.6A1,1 0,0 1,18 10.6L14,10.6A1,1 0,0 1,13 9.6z"
-        android:fillColor="#242424"/>
-    <path
-        android:pathData="M5,7.1a3,3.5 0,1 0,6 0a3,3.5 0,1 0,-6 0z"
-        android:fillColor="#242424"/>
-  </group>
+  <path
+      android:pathData="M16.5,7L16.5,14.5C16.5,16.985 14.485,19 12,19V19V19C9.515,19 7.5,16.985 7.5,14.5L7.5,12.5"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#242424"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M14,7V9.5C14,10.881 15.119,12 16.5,12V12V12C17.881,12 19,10.881 19,9.5V7"
+      android:strokeLineJoin="round"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#242424"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M7.5,9.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#242424"/>
 </vector>

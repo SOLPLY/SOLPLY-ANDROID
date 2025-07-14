@@ -153,7 +153,7 @@ val Purple800 = Color(0xFF595880)
 val Purple900 = Color(0xFF33324D)
 
 @Stable
-val Kakao = Color(0xFFFFD942)
+val Kakao = Color(0xFFFEE500)
 
 @Stable
 class SolplyColors(
