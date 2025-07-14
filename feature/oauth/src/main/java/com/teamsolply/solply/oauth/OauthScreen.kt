@@ -4,14 +4,18 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -19,10 +23,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.common.model.ClientError
@@ -83,18 +90,53 @@ fun OauthScreen(
 ) {
     Column(
         modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_solply_logo),
+        Image(
+            painter = painterResource(R.drawable.ic_logo_full_vector),
             contentDescription = "app_logo",
-            modifier = Modifier.padding(bottom = 42.dp)
+            modifier = Modifier
+                .padding(top = 115.dp, start = 40.dp)
+                .width(40.dp)
+                .height(60.dp)
         )
+
+        Image(
+            painter = painterResource(R.drawable.ic_lettering_vector),
+            contentDescription = "app_logo",
+            modifier = Modifier
+                .padding(start = 40.dp)
+                .width(215.dp)
+                .height(86.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .width(375.dp)
+                .height(175.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_login_graphic),
+                contentDescription = "loginGraphic",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Text(
+                text = "혼자만의 시간을\n더 쉽게, 더 즐겁게!",
+                color = SolplyTheme.colors.gray800,
+                style = SolplyTheme.typography.display20Sb,
+                modifier = modifier
+                    .padding(top = 8.dp, start = 40.dp)
+            )
+
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 28.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 224.dp)
                 .background(
                     color = SolplyTheme.colors.kakao,
                     shape = RoundedCornerShape(12.dp)
@@ -110,11 +152,12 @@ fun OauthScreen(
             Icon(
                 painter = painterResource(R.drawable.ic_kakao_logo),
                 contentDescription = "kakao_logo",
-                modifier = Modifier.padding(start = 16.dp, end = 12.dp, top = 11.dp, bottom = 11.dp)
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 12.dp, top = 11.dp, bottom = 11.dp)
             )
             Text(
                 text = stringResource(kakao_login),
-                style = SolplyTheme.typography.body14M,
+                style = SolplyTheme.typography.button16M,
                 color = SolplyTheme.colors.gray900
             )
         }
@@ -165,5 +208,15 @@ fun startKakaoLogin(
                 onSuccess(token.accessToken, token.refreshToken)
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "OnBoardingPage1 Preview")
+@Composable
+fun OauthScreenPreview() {
+    SolplyTheme {
+        OauthScreen(
+            kakaoLoginClick = { /* TODO*/ }
+        )
     }
 }
