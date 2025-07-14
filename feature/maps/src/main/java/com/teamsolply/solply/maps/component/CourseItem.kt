@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps.component
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -52,6 +53,7 @@ internal fun CourseItem(
 
     Row(
         modifier = modifier
+            .animateContentSize(animationSpec = tween(durationMillis = 70))
             .fillMaxWidth()
             .border(
                 width = 1.dp,
