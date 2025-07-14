@@ -67,7 +67,7 @@ fun PlaceRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is PlaceSideEffect.NavigateToMap -> {
-                    //TODO. maps로 placeId 전달   sideEffect.placeId
+                    // TODO. maps로 placeId 전달   sideEffect.placeId
                     navigateToMaps(MapsType.PLACE_DETAIL.name)
                 }
             }
@@ -252,7 +252,6 @@ fun PlaceScreen(
                 onSelectType = {
                     selectedType.value = it
                     showFilterSheet.value = false
-
                 },
                 onDismiss = { showFilterSheet.value = false }
             )
@@ -278,8 +277,11 @@ fun PlaceScreen(
                 optionTags = state.optionTags ?: emptyList(),
                 selectedOptionIds = tempOptionIds,
                 onOptionSelected = { tagId ->
-                    if (tempOptionIds.contains(tagId)) tempOptionIds.remove(tagId)
-                    else tempOptionIds.add(tagId)
+                    if (tempOptionIds.contains(tagId)) {
+                        tempOptionIds.remove(tagId)
+                    } else {
+                        tempOptionIds.add(tagId)
+                    }
                 },
                 onDismiss = {
                     showOptionSheet.value = false
@@ -296,7 +298,6 @@ fun PlaceScreen(
         }
     }
 }
-
 
 @Composable
 fun PlaceGridItem(

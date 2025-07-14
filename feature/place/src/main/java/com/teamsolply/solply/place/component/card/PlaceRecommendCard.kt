@@ -32,7 +32,6 @@ fun PlaceRecommendCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-
     val painter = runCatching {
         painterResource(id = imgRes)
     }.getOrElse {
@@ -46,7 +45,7 @@ fun PlaceRecommendCard(
         Image(
             painter = painter,
             contentDescription = title,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
         )
         Box(
             Modifier
@@ -71,7 +70,8 @@ fun PlaceRecommendCard(
                 color = SolplyTheme.colors.white
             )
             Spacer(Modifier.height(4.dp))
-            Text(subtitle,
+            Text(
+                subtitle,
                 style = SolplyTheme.typography.display12R,
                 color = SolplyTheme.colors.white,
                 maxLines = 2

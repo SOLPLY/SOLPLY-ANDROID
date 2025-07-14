@@ -50,7 +50,7 @@ fun PlaceTypeFilterSheet(
             )
         }
         filterItems.forEachIndexed { idx, item ->
-            FilterSheetButton (
+            FilterSheetButton(
                 iconRes = item.iconRes,
                 label = item.label,
                 selected = selectedType == item.type,

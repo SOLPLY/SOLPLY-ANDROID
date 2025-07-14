@@ -5,8 +5,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.teamsolply.solply.place.PlaceRoute
 import com.teamsolply.solply.navigation.Route
+import com.teamsolply.solply.place.PlaceRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigatePlace(navOptions: NavOptions) {
@@ -17,7 +17,7 @@ fun NavGraphBuilder.placeNavGraph(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit
 ) {
-    composable<Place>{
+    composable<Place> {
         PlaceRoute(
             paddingValues = paddingValues,
             navigateToMaps = navigateToMaps

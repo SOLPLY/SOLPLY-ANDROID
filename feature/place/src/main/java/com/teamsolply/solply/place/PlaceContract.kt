@@ -24,7 +24,7 @@ data class PlaceState(
         userId = 0,
         nickname = "숭이",
         favoriteTowns = "연희동",
-        persona = "HEALING",
+        persona = "HEALING"
     ),
 
     val recommendPlaces: List<RecommendPlaceInfo> = immutableListOf(
@@ -48,7 +48,7 @@ data class PlaceState(
             thumbnailImageUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             primaryTag = PlaceType.UNIQUE,
             description = "장소 한 줄 소개 장소 한 줄 소개 두 줄이 되어도 괜찮음음음음음음"
-        ),
+        )
     ),
     val placeList: List<PlaceData> = immutableListOf(
         PlaceData(
@@ -142,7 +142,7 @@ data class PlaceState(
         OptionTag(tagId = 7, tagType = "OPTION2", name = "콘센트 많음", parentId = 1),
         OptionTag(tagId = 8, tagType = "OPTION2", name = "시간 제한 없음", parentId = 1),
         OptionTag(tagId = 9, tagType = "OPTION2", name = "채광 좋음", parentId = 1),
-        OptionTag(tagId = 10, tagType = "OPTION2", name = "창가석 있음", parentId = 1),
+        OptionTag(tagId = 10, tagType = "OPTION2", name = "창가석 있음", parentId = 1)
     ),
 
     val selectedOptionFilter: PersistentList<Int> = persistentListOf()

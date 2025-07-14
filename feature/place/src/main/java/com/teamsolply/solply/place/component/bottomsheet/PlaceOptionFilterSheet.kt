@@ -1,7 +1,15 @@
 package com.teamsolply.solply.place.component.bottomsheet
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,7 +47,7 @@ fun PlaceOptionFilterSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(bottom = 96.dp),
+                .padding(bottom = 96.dp)
         ) {
             groupedTags.entries.forEachIndexed { index, (tagType, tags) ->
                 item {
@@ -76,7 +84,7 @@ fun PlaceOptionFilterSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
+                .padding(start = 20.dp, end = 20.dp, bottom = 24.dp)
         ) {
             SolplyBasicButton(
                 text = "초기화",
@@ -109,10 +117,10 @@ fun ChipRow(
     selectedOptionIds: List<Int>,
     onOptionSelected: (Int) -> Unit
 ) {
-    FlowRow (
+    FlowRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
-    ){
+    ) {
         tags.forEach { tag ->
             FilterChipButton(
                 text = tag.name,

@@ -1,7 +1,6 @@
 package com.teamsolply.solply.place
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +24,7 @@ class PlaceViewModel @Inject constructor(
             is PlaceIntent.SelectOptionFilter -> {
                 val currentOptionFilter = intent.optionTagId
 
-                //TODO. currentOptionFilter가 selectedOptionFilter에 없으면 추가 있으면 삭제
+                // TODO. currentOptionFilter가 selectedOptionFilter에 없으면 추가 있으면 삭제
                 reduce {
                     copy(
                         selectedOptionFilter = selectedOptionFilter
