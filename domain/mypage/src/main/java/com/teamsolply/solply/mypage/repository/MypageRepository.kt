@@ -1,7 +1,7 @@
 package com.teamsolply.solply.mypage.repository
 
-import com.teamsolply.solply.mypage.model.UserInfoEntity
+import com.teamsolply.solply.mypage.model.TownCard
 
 interface MypageRepository {
-    suspend fun getUserInfo(): Result<UserInfoEntity>
+    suspend fun getPlaceTownList(): Result<List<TownCard>>
 }

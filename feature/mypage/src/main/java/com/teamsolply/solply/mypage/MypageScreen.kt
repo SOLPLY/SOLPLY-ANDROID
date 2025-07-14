@@ -63,8 +63,8 @@ fun MypageRoute(
         )
     }
 
-    LaunchedEffect(uiState.isPlaceTownSelected) {
-        Log.d("TownSelectInMy", uiState.isPlaceTownSelected.toString())
+    LaunchedEffect(Unit) {
+        viewModel.getTownList()
     }
 
     LaunchedEffectWithLifecycle {
