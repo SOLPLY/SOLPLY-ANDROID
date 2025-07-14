@@ -20,7 +20,7 @@ fun NavGraphBuilder.onBoardingNavGraph(
     paddingValues: PaddingValues,
     navigateToPlace: () -> Unit,
 
-) {
+    ) {
     composable<OnBoarding> {
         OnBoardingRoute(
             paddingValues = paddingValues,
