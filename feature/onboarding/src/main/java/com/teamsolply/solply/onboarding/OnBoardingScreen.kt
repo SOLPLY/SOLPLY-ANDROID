@@ -104,30 +104,30 @@ fun OnBoardingScreen(
                 0 -> SelectTownScreen(
                     state = state,
                     onNextClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    }
-                },
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
                     onBoardingIntent = onBoardingIntent
                 )
 
                 1 -> SelectPersonaScreen(
                     state = state,
                     onNextClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    }
-                },
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
                     onBoardingIntent = onBoardingIntent
                 )
 
                 2 -> NamingScreen(
                     state = state,
                     onNextClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    }
-                },
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
                     onBoardingIntent = onBoardingIntent
                 )
             }
