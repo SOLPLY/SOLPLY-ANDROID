@@ -7,24 +7,24 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
-import androidx.compose.foundation.pager.PageSize
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.onboarding.component.ProgressBar
 import com.teamsolply.solply.onboarding.screen.NamingScreen
 import com.teamsolply.solply.onboarding.screen.SelectPersonaScreen
 import com.teamsolply.solply.onboarding.screen.SelectTownScreen
 import com.teamsolply.solply.onboarding.screen.StartingScreen
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,7 +38,7 @@ fun OnBoardingRoute(
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                is OnBoardingSideEffect.NavigateToPlace -> {navigateToPlace()}
+                is OnBoardingSideEffect.NavigateToPlace -> { navigateToPlace() }
             }
         }
     }
@@ -72,7 +72,8 @@ fun OnBoardingScreen(
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
-        pageCount = { state.totalPageCount })
+        pageCount = { state.totalPageCount }
+    )
 
     val scope = rememberCoroutineScope()
 
@@ -104,30 +105,30 @@ fun OnBoardingScreen(
                 0 -> SelectTownScreen(
                     state = state,
                     onNextClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    }
-                },
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
                     onBoardingIntent = onBoardingIntent
                 )
 
                 1 -> SelectPersonaScreen(
                     state = state,
                     onNextClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    }
-                },
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
                     onBoardingIntent = onBoardingIntent
                 )
 
                 2 -> NamingScreen(
                     state = state,
                     onNextClick = {
-                    scope.launch {
-                        pagerState.scrollToPage(pagerState.currentPage + 1)
-                    }
-                },
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
                     onBoardingIntent = onBoardingIntent
                 )
             }

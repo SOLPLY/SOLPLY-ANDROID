@@ -6,6 +6,7 @@ import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -113,6 +114,7 @@ internal class MapsViewModel @Inject constructor(
                     reduce {
                         copy(
                             startEditCourse = true,
+                            coursesBeforeEdit = courseDetailInfo.places.toImmutableList(),
                             selectedPlaceInfoId = null
                         )
                     }
@@ -138,6 +140,26 @@ internal class MapsViewModel @Inject constructor(
                 sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility)
             }
 
+            MapsIntent.BeforeEditCourseBackHandler -> {
+                if (uiState.value.coursesBeforeEdit == uiState.value.courseDetailInfo.places) {
+                    reduce { copy(startEditCourse = false) }
+                } else {
+                    reduce { copy(exitEditCourseDialogVisibility = true) }
+                }
+            }
+
+            MapsIntent.BeforeEditCourseDialogInVisible -> reduce {
+                copy(exitEditCourseDialogVisibility = false)
+            }
+
+            MapsIntent.BeforeEditCourseDialogClick -> reduce {
+                copy(
+                    startEditCourse = false,
+                    coursesBeforeEdit = persistentListOf(),
+                    exitEditCourseDialogVisibility = false
+                )
+            }
+
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
@@ -148,6 +170,12 @@ internal class MapsViewModel @Inject constructor(
             is MapsIntent.BackButtonClick -> {
                 postSideEffect(MapsSideEffect.NavigateToBack)
             }
+
+            is MapsIntent.PlaceDetailClick -> postSideEffect(
+                MapsSideEffect.NavigateToPlaceDetail(
+                    intent.placeId
+                )
+            )
         }
     }
 

@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,6 +43,7 @@ import com.teamsolply.solply.maps.courseDetailEntity
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.util.dragContainer
 import com.teamsolply.solply.maps.util.draggableItems
+import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.maps.util.rememberDragDropState
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
@@ -64,7 +66,9 @@ internal fun EditCourseBottomSheet(
     placeInfoClick: (Int) -> Unit,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
-    removeCourse: (itemToRemove: Int) -> Unit
+    removeCourse: (itemToRemove: Int) -> Unit,
+    onCourseEditBackClick: () -> Unit,
+    placeDetailClick: (Int) -> Unit
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -83,6 +87,12 @@ internal fun EditCourseBottomSheet(
         onRemove = removeCourse,
         isInRemoveAreaProvider = { isInRemoveIconArea.value }
     )
+
+    if (startEditCourse) {
+        BackHandler {
+            onCourseEditBackClick()
+        }
+    }
 
     LaunchedEffect(scrollToIndex) {
         scrollToIndex?.let { index ->
@@ -210,6 +220,17 @@ internal fun EditCourseBottomSheet(
                                     }
                                 }
                             ),
+                            placeDetailClick = { placeDetailClick(item.placeId) },
+                            navigatePlaceClick = {
+                                navigateToNaverMapDirections(
+                                    context = context,
+                                    destName = item.placeName,
+                                    destId = item.placeDefaultId.toString(),
+                                    destLongitude = item.longitude.toDouble(),
+                                    destLatitude = item.latitude.toDouble(),
+                                    destType = item.placeTag
+                                )
+                            },
                             iconSelected = item.isBookmarked,
                             iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                             selectedPlaceItem = selectedPlaceItem == item.placeId,

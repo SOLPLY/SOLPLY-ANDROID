@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -64,6 +65,7 @@ fun SolplyConfirmDialog(
                     Text(
                         text = text,
                         style = SolplyTheme.typography.button14R,
+                        textAlign = TextAlign.Center,
                         color = SolplyTheme.colors.black
                     )
                 }
@@ -80,7 +82,7 @@ fun SolplyConfirmDialog(
                         textStyle = SolplyTheme.typography.button14M,
                         textColor = SolplyTheme.colors.black,
                         enabledBackgroundColor = SolplyTheme.colors.white,
-                        textPadding = PaddingValues(vertical = 14.dp, horizontal = 46.dp),
+                        textPadding = PaddingValues(vertical = 14.dp),
                         modifier = Modifier.weight(1f)
                     )
                     SolplyBasicButton(
@@ -89,7 +91,7 @@ fun SolplyConfirmDialog(
                         textStyle = SolplyTheme.typography.button14M,
                         textColor = SolplyTheme.colors.white,
                         enabledBackgroundColor = SolplyTheme.colors.black,
-                        textPadding = PaddingValues(vertical = 14.dp, horizontal = 46.dp),
+                        textPadding = PaddingValues(vertical = 14.dp),
                         modifier = Modifier.weight(1f)
                     )
                 }

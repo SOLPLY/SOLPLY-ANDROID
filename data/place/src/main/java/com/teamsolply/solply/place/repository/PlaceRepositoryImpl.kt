@@ -3,6 +3,7 @@ package com.teamsolply.solply.place.repository
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
+import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.place.source.PlaceLocalDataSource
 import com.teamsolply.solply.place.source.PlaceRemoteDataSource
 import javax.inject.Inject
@@ -41,5 +42,18 @@ class PlaceRepositoryImpl @Inject constructor(
                 description = "장소 한 줄 소개 장소 한 줄 소개 두 줄이 되어도 괜찮음음음음음음"
             )
         )
+    }
+
+    override suspend fun getMainTag(): Result<List<TagEntity>> = runCatching {
+        placeRemoteDataSource.getTags()
+    }.mapCatching { tagDto ->
+        tagDto.map {
+            TagEntity(
+                tagId = it.tagId,
+                tagType = it.tagType,
+                name = it.name,
+                parentId = it.parentId
+            )
+        }
     }
 }

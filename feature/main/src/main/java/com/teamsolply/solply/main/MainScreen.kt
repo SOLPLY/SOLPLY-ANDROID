@@ -253,7 +253,7 @@ internal fun MainScreen(
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
                 snackbar = { snackbarData ->
                     when (currentSnackbarState.value.type) {
                         SnackBarType.TEXT -> {

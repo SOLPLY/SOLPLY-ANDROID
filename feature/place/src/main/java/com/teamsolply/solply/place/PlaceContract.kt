@@ -145,7 +145,12 @@ data class PlaceState(
         OptionTag(tagId = 10, tagType = "OPTION2", name = "창가석 있음", parentId = 1)
     ),
 
+    val isMainFilterBottomSheetVisible: Boolean = false,
+    val selectedMainFilter: String = "ALL",
+
+    val isOptionFilterBottomSheetVisible: Boolean = false,
     val selectedOptionFilter: PersistentList<Int> = persistentListOf()
+
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {
@@ -153,6 +158,17 @@ sealed interface PlaceIntent : UiIntent {
     data class PlaceClicked(val placeId: Int) : PlaceIntent
     data object Retry : PlaceIntent
     data class SelectOptionFilter(val optionTagId: Int) : PlaceIntent
+    data object ClearOptionFilter : PlaceIntent
+
+    data object ChangeMainFilterBottomSheetVisible : PlaceIntent
+    data class ChangeSelectedMainFilter(
+        val mainFilterName: String
+    ) : PlaceIntent
+
+    data object ChangeOptionFilterBottomSheetVisible : PlaceIntent
+    data class ChangeSelectedOptionFilter(
+        val optionFilterId: Int
+    ) : PlaceIntent
 }
 
 sealed interface PlaceSideEffect : SideEffect {

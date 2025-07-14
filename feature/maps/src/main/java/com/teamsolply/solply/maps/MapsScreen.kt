@@ -54,6 +54,7 @@ import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBotto
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
+import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
@@ -84,7 +85,7 @@ internal fun MapsRoute(
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    navigatePlaceDetail: () -> Unit,
+    navigateToPlaceDetail: () -> Unit,
     navigateToEditCourse: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -158,6 +159,8 @@ internal fun MapsRoute(
                 }
 
                 MapsSideEffect.NavigateToBack -> navigateToBack()
+
+                is MapsSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail()
             }
         }
     }
@@ -219,6 +222,12 @@ internal fun MapsRoute(
         },
         onStartEditCourseClick = {
             viewModel.sendIntent(MapsIntent.StartEditCourseIconClick)
+        },
+        onCourseEditBackClick = {
+            viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
+        },
+        onPlaceDetailClick = { placeId ->
+            viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId))
         }
     )
 
@@ -239,6 +248,16 @@ internal fun MapsRoute(
                 )
             },
             onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility) }
+        )
+    }
+
+    if (uiState.exitEditCourseDialogVisibility) {
+        SolplyConfirmDialog(
+            text = "변경 사항을 저장하지 않고\n나가시겠어요?",
+            confirmButtonText = "나가기",
+            dismissButtonText = "취소",
+            onClickConfirm = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogClick) },
+            onClickDismiss = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogInVisible) }
         )
     }
 }
@@ -275,6 +294,8 @@ private fun MapsScreen(
     onReturnToHomeClick: () -> Unit,
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
+    onCourseEditBackClick: () -> Unit,
+    onPlaceDetailClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -335,7 +356,7 @@ private fun MapsScreen(
             }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -553,12 +574,14 @@ private fun MapsScreen(
 
                     MapsType.ADD_COURSE -> {
                         AddCourseBottomSheet(
+                            context = context,
                             places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
-                            placeInfoClick = placeInfoClick
+                            placeInfoClick = placeInfoClick,
+                            placeDetailClick = onPlaceDetailClick
                         )
                     }
 
@@ -579,7 +602,9 @@ private fun MapsScreen(
                             placeInfoClick = placeInfoClick,
                             startCourseMove = startCourseMove,
                             moveCourse = moveCourse,
-                            removeCourse = removeCourse
+                            removeCourse = removeCourse,
+                            onCourseEditBackClick = onCourseEditBackClick,
+                            placeDetailClick = onPlaceDetailClick
                         )
                     }
                 }
