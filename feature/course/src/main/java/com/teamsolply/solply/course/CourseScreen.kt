@@ -3,8 +3,10 @@ package com.teamsolply.solply.course
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -92,6 +94,9 @@ fun CourseScreen(
                         navigateToMaps(MapsType.ADD_COURSE.name)
                     }
                 )
+            }
+            item(span = { GridItemSpan(2) }) {
+                Spacer(modifier = Modifier.height(60.dp))
             }
         }
     }
