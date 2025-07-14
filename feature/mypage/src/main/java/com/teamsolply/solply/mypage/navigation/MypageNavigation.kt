@@ -21,7 +21,10 @@ fun NavGraphBuilder.mypageNavGraph(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
-    navigateToPlaceCollection: (String) -> Unit
+    navigateToPlaceCollection: (String) -> Unit,
+    navigateToCourseCollection: (String) -> Unit,
+    navigateToPlace: () -> Unit,
+    navigateToCourse: () -> Unit
 ) {
     composable<Mypage> { backStackEntry ->
         val viewModel: MypageViewModel = hiltViewModel(backStackEntry)
@@ -30,6 +33,9 @@ fun NavGraphBuilder.mypageNavGraph(
             navigateToMaps = navigateToMaps,
             navigateToBack = navigateToBack,
             navigateToPlaceCollection = navigateToPlaceCollection,
+            navigateToCourseCollection = navigateToCourseCollection,
+            navigateToPlace = navigateToPlace,
+            navigateToCourse = navigateToCourse,
             viewModel = viewModel
         )
     }

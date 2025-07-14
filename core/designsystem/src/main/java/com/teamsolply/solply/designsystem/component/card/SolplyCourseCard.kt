@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +28,8 @@ import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.preview.DefaultPreview
+import okhttp3.internal.immutableListOf
 
 @Composable
 fun SolplyCourseCard(
@@ -44,7 +47,8 @@ fun SolplyCourseCard(
 ) {
     Box(
         modifier = modifier
-            .size(165.dp)
+            .fillMaxWidth()
+            .aspectRatio(1f)
             .alpha(if (savedPlace) 1f else 0.3f)
             .customClickable(rippleEnabled = false) { onClick() },
         contentAlignment = Alignment.Center
@@ -52,9 +56,11 @@ fun SolplyCourseCard(
         Image(
             painter = painterResource(id = imgRes),
             contentDescription = "course_image",
-            modifier = Modifier.clip(
-                RoundedCornerShape(20.dp)
-            ),
+            modifier = Modifier
+                .matchParentSize()
+                .clip(
+                    RoundedCornerShape(20.dp)
+                ),
             contentScale = ContentScale.Crop
         )
         Box(
@@ -129,5 +135,27 @@ fun SolplyCourseCard(
                     .padding(end = 12.dp, top = 16.dp)
             )
         }
+    }
+}
+
+@DefaultPreview
+@Composable
+private fun SolplytCourseCardPreveiw() {
+    SolplyTheme {
+        SolplyCourseCard(
+            title = "오감으로 수집하는 하루",
+            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+            placeType = immutableListOf(
+                PlaceType.CAFE,
+                PlaceType.BOOK
+            ),
+            backgroundColor = SolplyTheme.colors.red300,
+            iconColor = SolplyTheme.colors.red500,
+            iconBackGroundColor = SolplyTheme.colors.red200,
+            savedCourse = true,
+            savedPlace = true,
+            onClick = {},
+            modifier = Modifier.size(158.dp)
+        )
     }
 }

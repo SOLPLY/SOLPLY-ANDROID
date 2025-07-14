@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
@@ -55,7 +57,7 @@ fun SolplyPlaceCard(
     }
     Column(
         modifier = modifier
-            .wrapContentSize()
+            .fillMaxWidth()
             .then(
                 if (touchable) {
                     Modifier.customClickable(rippleEnabled = false) { onClick() }
@@ -67,14 +69,17 @@ fun SolplyPlaceCard(
         horizontalAlignment = Alignment.Start
     ) {
         Box(
-            modifier = Modifier.clip(
-                shape = RoundedCornerShape(20.dp)
-            )
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clip(
+                    shape = RoundedCornerShape(20.dp)
+                )
         ) {
             Image(
                 painter = painterResource(id = imgRes),
                 contentDescription = "place_image",
-                modifier = Modifier
+                modifier = Modifier.matchParentSize()
             )
             if (saved) {
                 SolplySavedMarker(
@@ -94,16 +99,14 @@ fun SolplyPlaceCard(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(Dp(8f)))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            PlaceTag(
-                type = placeType
-            )
-            Spacer(modifier = Modifier.width(Dp(4f)))
+            PlaceTag(type = placeType)
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = name,
                 style = SolplyTheme.typography.body14M
@@ -117,29 +120,34 @@ fun SolplyPlaceCard(
 private fun SolplyPlaceCardPreview() {
     SolplyTheme {
         Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             SolplyPlaceCard(
+                modifier = Modifier.size(158.dp),
                 name = "을지면옥",
                 imgRes = R.drawable.img_course_dummy,
                 placeType = PlaceType.SHOPPING,
                 saved = true,
                 selected = true
             )
-            SolplyPlaceCard(
-                name = "을지면옥",
-                imgRes = R.drawable.img_course_dummy,
-                placeType = PlaceType.CAFE,
-                saved = true,
-                selected = false
-            )
-            SolplyPlaceCard(
-                name = "을지면옥",
-                imgRes = R.drawable.img_course_dummy,
-                placeType = PlaceType.WALK,
-                saved = false,
-                selected = false
-            )
+//            SolplyPlaceCard(
+//                modifier = Modifier.size(158.dp),
+//                name = "을지면옥",
+//                imgRes = R.drawable.img_course_dummy,
+//                placeType = PlaceType.CAFE,
+//                saved = true,
+//                selected = false
+//            )
+//            SolplyPlaceCard(
+//                modifier = Modifier.size(158.dp),
+//                name = "을지면옥",
+//                imgRes = R.drawable.img_course_dummy,
+//                placeType = PlaceType.WALK,
+//                saved = false,
+//                selected = false
+//            )
         }
     }
 }

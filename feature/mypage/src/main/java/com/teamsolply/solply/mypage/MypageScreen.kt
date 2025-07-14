@@ -25,12 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.mypage.component.MypageTopBar
-import com.teamsolply.solply.mypage.component.PlaceTabScreen
+import com.teamsolply.solply.mypage.component.TabScreen
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
@@ -43,6 +42,9 @@ fun MypageRoute(
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
     navigateToPlaceCollection: (String) -> Unit,
+    navigateToCourseCollection: (String) -> Unit,
+    navigateToPlace: () -> Unit,
+    navigateToCourse: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,6 +56,7 @@ fun MypageRoute(
         } else {
             viewModel.sendIntent(MypageIntent.SelectCourseTab)
         }
+//        delay(500L)
         Log.d(
             "asdasdasd",
             pagerState.currentPage.toString() + " " + uiState.selectedTab.name + " " + uiState.isPlaceTownSelected + " " + uiState.isCourseTownSelected
@@ -71,6 +74,18 @@ fun MypageRoute(
                 is MypageSideEffect.NavigateToPlaceCollection -> {
                     navigateToPlaceCollection(sideEffect.town)
                 }
+
+                is MypageSideEffect.NavigateToCourseCollection -> {
+                    navigateToCourseCollection(sideEffect.town)
+                }
+
+                is MypageSideEffect.NavigateToPLace -> {
+                    navigateToPlace()
+                }
+
+                is MypageSideEffect.NavigateToCourse -> {
+                    navigateToCourse()
+                }
             }
         }
     }
@@ -78,14 +93,20 @@ fun MypageRoute(
     MypageScreen(
         navigateToMaps = navigateToMaps,
         onBackButtonClick = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
+        onEmptyButtonClick = { viewModel.sendIntent(MypageIntent.EmptyButtonClick(it)) },
         onClickPlaceTab = { viewModel.sendIntent(MypageIntent.SelectPlaceTab) },
         onClickCourseTab = { viewModel.sendIntent(MypageIntent.SelectCourseTab) },
-        isPlaceTownSelected = uiState.isPlaceTownSelected,
-        isCourseTownSelected = uiState.isCourseTownSelected,
-        selectTown = { viewModel.sendIntent(MypageIntent.SelectTown(it)) },
-        currentTab = uiState.selectedTab,
+        selectTown = {
+            Log.d("town click", "타운 클릭")
+            if (pagerState.currentPage == 0) {
+                Log.d("town click", "0" + "타운 클릭")
+                viewModel.sendIntent(MypageIntent.SelectPlaceTown(it))
+            } else {
+                Log.d("town click", "1" + "타운 클릭")
+                viewModel.sendIntent(MypageIntent.SelectCourseTown(it))
+            }
+        },
         pagerState = pagerState,
-        place = uiState.places,
         town = uiState.towns
     )
 }
@@ -94,16 +115,13 @@ fun MypageRoute(
 fun MypageScreen(
     navigateToMaps: (String) -> Unit,
     onBackButtonClick: () -> Unit,
+    onEmptyButtonClick: (MypageTab) -> Unit,
     onClickPlaceTab: () -> Unit,
     onClickCourseTab: () -> Unit,
-    isPlaceTownSelected: Boolean,
-    isCourseTownSelected: Boolean,
     selectTown: (String) -> Unit,
-    currentTab: MypageTab,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
-    town: List<TownCard>,
-    place: List<PlaceCard>
+    town: List<TownCard>
 ) {
     val coroutineScope = rememberCoroutineScope()
     val selectedIndex = pagerState.currentPage
@@ -114,10 +132,9 @@ fun MypageScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MypageTopBar(
+        SolplyTopBar(
             barText = stringResource(R.string.mypage_collection),
-            onBackButtonClick = { onBackButtonClick() },
-            isTownSelected = false
+            onBackButtonClick = { onBackButtonClick() }
         )
         TabRow(
             selectedTabIndex = 0,
@@ -166,12 +183,18 @@ fun MypageScreen(
             state = pagerState
         ) { page ->
             when (page) {
-                0 -> PlaceTabScreen(
-                    onClickEmptyButton = {},
+                0 -> TabScreen(
+                    onClickEmptyButton = onEmptyButtonClick,
                     town = town,
                     onClickTown = selectTown,
-                    isTownSelected = isPlaceTownSelected,
-                    place = place
+                    mypageTab = MypageTab.PLACE
+                )
+
+                1 -> TabScreen(
+                    onClickEmptyButton = onEmptyButtonClick,
+                    town = town,
+                    onClickTown = selectTown,
+                    mypageTab = MypageTab.COURSE
                 )
             }
         }

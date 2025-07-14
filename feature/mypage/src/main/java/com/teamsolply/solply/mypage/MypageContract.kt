@@ -1,8 +1,6 @@
 package com.teamsolply.solply.mypage
 
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
@@ -10,73 +8,19 @@ import com.teamsolply.solply.ui.base.UiState
 import okhttp3.internal.immutableListOf
 
 data class MypageState(
-    val towns: List<TownCard> = immutableListOf(
-        TownCard(
-            townName = "연희동",
-            imageUrl = ""
+    val towns: List<TownCard> =
+//        emptyList<TownCard>(),
+        immutableListOf(
+            TownCard(
+                townName = "연희동",
+                imageUrl = ""
+            ),
+            TownCard(
+                townName = "망원동",
+                imageUrl = ""
+            )
         ),
-        TownCard(
-            townName = "망원동",
-            imageUrl = ""
-        )
-    ),
     val town: String = "연희동",
-    val places: List<PlaceCard> = immutableListOf(
-        PlaceCard(
-            placeId = 0,
-            placeName = "0번",
-            placeType = PlaceType.CAFE,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 1,
-            placeName = "1번",
-            placeType = PlaceType.BOOK,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 2,
-            placeName = "2번",
-            placeType = PlaceType.SHOPPING,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 3,
-            placeName = "3번",
-            placeType = PlaceType.FOOD,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 3,
-            placeName = "3번",
-            placeType = PlaceType.FOOD,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 3,
-            placeName = "3번",
-            placeType = PlaceType.FOOD,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 3,
-            placeName = "3번",
-            placeType = PlaceType.FOOD,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 3,
-            placeName = "3번",
-            placeType = PlaceType.FOOD,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        ),
-        PlaceCard(
-            placeId = 3,
-            placeName = "3번",
-            placeType = PlaceType.FOOD,
-            imageUrls = listOf(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-        )
-    ),
     val selectedTab: MypageTab = MypageTab.PLACE,
     val isPlaceTownSelected: Boolean = false,
     val isCourseTownSelected: Boolean = false
@@ -88,7 +32,10 @@ sealed interface MypageIntent : UiIntent {
     data object SelectCourseTab : MypageIntent
 
     //
-    data class SelectTown(val selectedTown: String) : MypageIntent
+    data class SelectPlaceTown(val selectedTown: String) : MypageIntent
+    data class SelectCourseTown(val selectedTown: String) : MypageIntent
+
+    data class EmptyButtonClick(val mypageTab: MypageTab) : MypageIntent
 
     // Navigate
     data object BackButtonClick : MypageIntent
@@ -96,5 +43,8 @@ sealed interface MypageIntent : UiIntent {
 
 sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
+    data object NavigateToPLace : MypageSideEffect
+    data object NavigateToCourse : MypageSideEffect
     data class NavigateToPlaceCollection(val town: String) : MypageSideEffect
+    data class NavigateToCourseCollection(val town: String) : MypageSideEffect
 }
