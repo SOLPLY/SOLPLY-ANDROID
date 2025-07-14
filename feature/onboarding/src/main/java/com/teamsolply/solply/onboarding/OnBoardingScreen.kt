@@ -1,5 +1,6 @@
 package com.teamsolply.solply.onboarding
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +21,8 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.teamsolply.solply.onboarding.component.BackHeader
 import com.teamsolply.solply.onboarding.component.ProgressBar
 import com.teamsolply.solply.onboarding.screen.NamingScreen
 import com.teamsolply.solply.onboarding.screen.SelectPersonaScreen
@@ -31,6 +34,7 @@ import kotlinx.coroutines.launch
 fun OnBoardingRoute(
     paddingValues: PaddingValues,
     navigateToPlace: () -> Unit,
+    navController: NavController,
     viewModel: OnBoardingViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -57,7 +61,8 @@ fun OnBoardingRoute(
                 viewModel.sendIntent(OnBoardingIntent.ShowStartingScreen)
             },
             onPageChanged = { viewModel.sendIntent(OnBoardingIntent.OnPageChanged(it)) },
-            onBoardingIntent = { viewModel.sendIntent(it) }
+            onBoardingIntent = { viewModel.sendIntent(it) },
+            navController = navController
         )
     }
 }
@@ -68,13 +73,24 @@ fun OnBoardingScreen(
     onBoardingButtonClick: () -> Unit,
     onPageChanged: (Int) -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
         pageCount = { state.totalPageCount })
 
     val scope = rememberCoroutineScope()
+
+    BackHandler(enabled = true) {
+        if (pagerState.currentPage > 0) {
+            scope.launch {
+                pagerState.scrollToPage(pagerState.currentPage - 1)
+            }
+        } else {
+            navController.popBackStack()
+        }
+    }
 
     LaunchedEffect(pagerState.currentPage) {
         onPageChanged(pagerState.currentPage)
@@ -89,9 +105,33 @@ fun OnBoardingScreen(
             modifier = Modifier
                 .height(32.dp)
         )
+        BackHeader(
+            barText = when (pagerState.currentPage) {
+                0 -> ""
+                1 -> ""
+                2 -> ""
+                else -> ""
+            },
+            onBackButtonClick = {
+                if (pagerState.currentPage > 0) {
+                    scope.launch {
+                        pagerState.scrollToPage(pagerState.currentPage - 1)
+                    }
+                } else {
+                    navController.popBackStack()
+                }
+            },
+            isTownSelected = when (pagerState.currentPage) {
+                0 -> state.selectedTownId != null
+                1 -> state.selectedPersona != null
+                2 -> !state.userNickname.isNullOrBlank()
+                else -> false
+            }
+        )
+
         ProgressBar(
             pageState = pagerState,
-            totalpageCount = state.totalPageCount
+            totalpageCount = state.totalPageCount,
         )
 
         HorizontalPager(
