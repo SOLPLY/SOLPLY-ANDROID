@@ -3,11 +3,13 @@ package com.teamsolply.solply.maps
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
+import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -23,7 +25,9 @@ internal data class MapsState(
     // Edit Course
     val removeIconVisibility: Boolean = false,
     val startEditCourse: Boolean = false,
-    val courseSaveDialogVisibility: Boolean = false
+    val courseSaveDialogVisibility: Boolean = false,
+    val coursesBeforeEdit: ImmutableList<Place> = persistentListOf(),
+    val exitEditCourseDialogVisibility: Boolean = false
 ) : UiState
 
 internal sealed interface MapsIntent : UiIntent {
@@ -59,6 +63,12 @@ internal sealed interface MapsIntent : UiIntent {
         val courseSaveType: CourseSaveType
     ) : MapsIntent
 
+    data object BeforeEditCourseBackHandler : MapsIntent
+
+    data object BeforeEditCourseDialogInVisible : MapsIntent
+
+    data object BeforeEditCourseDialogClick : MapsIntent
+
     // Item Drag and Remove
     data class StartCourseMove(
         val iconVisibility: Boolean
@@ -74,6 +84,10 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     // Navigate
+    data class PlaceDetailClick(
+        val placeId: Int
+    ) : MapsIntent
+
     data object EmptyCourseClick : MapsIntent
     data object ShowMaxSizeCourseSnackBar : MapsIntent
     data object ReturnToHomeClick : MapsIntent
@@ -95,6 +109,9 @@ internal sealed interface MapsSideEffect : SideEffect {
     data object NavigateToCourse : MapsSideEffect
     data object NavigateToReturnHome : MapsSideEffect
     data object NavigateToBack : MapsSideEffect
+    data class NavigateToPlaceDetail(
+        val placeId: Int
+    ) : MapsSideEffect
 }
 
 internal val defaultPlaceDetailEntity = PlaceDetailEntity(

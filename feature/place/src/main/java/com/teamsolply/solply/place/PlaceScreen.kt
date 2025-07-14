@@ -33,7 +33,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,9 +51,11 @@ import com.teamsolply.solply.place.component.button.PlaceChipButton
 import com.teamsolply.solply.place.component.card.PlaceRecommendCard
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
+import com.teamsolply.solply.place.util.LocationPermissionRequest
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
@@ -63,6 +64,8 @@ fun PlaceRoute(
 ) {
     val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
@@ -73,21 +76,80 @@ fun PlaceRoute(
             }
         }
     }
+
+    Log.d("asdasdasd", state.selectedOptionFilter.toString())
+    LocationPermissionRequest()
     PlaceScreen(
         modifier = Modifier.padding(paddingValues),
         state = state,
         onPlaceClick = { viewModel.sendIntent(PlaceIntent.PlaceClicked(it)) },
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
+
+        changeMainFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
+        changeOptionFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible) }
     )
+
+    if (state.isMainFilterBottomSheetVisible) {
+        ModalBottomSheet(
+            onDismissRequest = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
+            sheetState = sheetState,
+            containerColor = SolplyTheme.colors.white,
+            dragHandle = null
+        ) {
+            PlaceTypeFilterSheet(
+                filterItems = state.placeTypeFilterItems,
+                selectedType = state.selectedMainFilter,
+                onSelectType = { mainFilterName ->
+                    // TODO. 메인 태그 API 쏘기
+                    viewModel.sendIntent(PlaceIntent.ChangeSelectedMainFilter(mainFilterName))
+                    viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
+                },
+                onDismiss = {
+                    viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
+                }
+            )
+        }
+    }
+
+    if (state.isOptionFilterBottomSheetVisible) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+                viewModel.sendIntent(PlaceIntent.ClearOptionFilter)
+            },
+            sheetState = sheetState,
+            containerColor = SolplyTheme.colors.white,
+            dragHandle = null
+        ) {
+            PlaceOptionFilterSheet(
+                optionTags = state.optionTags ?: emptyList(),
+                selectedOptionIds = state.selectedOptionFilter,
+                onOptionSelected = { tagId ->
+                    viewModel.sendIntent(PlaceIntent.ChangeSelectedOptionFilter(optionFilterId = tagId))
+                },
+                onDismiss = {
+                    viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+                },
+                onReset = { viewModel.sendIntent(PlaceIntent.ClearOptionFilter) },
+                onDone = {
+                    // TODO. 선택 옵션 API 쏘기
+                    viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+                }
+            )
+        }
+    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceScreen(
     modifier: Modifier = Modifier,
     state: PlaceState,
     onPlaceClick: (Int) -> Unit,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+
+    changeMainFilterBottomSheetVisible: () -> Unit,
+    changeOptionFilterBottomSheetVisible: () -> Unit
+
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val centerItemSize = 240.dp
@@ -107,19 +169,6 @@ fun PlaceScreen(
     val page3ItemSize = animateDpAsState(
         targetValue = if (isCenter[2]) 240.dp else 180.dp
     )
-
-    val showFilterSheet = remember { mutableStateOf(false) }
-    val showOptionSheet = remember { mutableStateOf(false) }
-
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val selectedType = remember { mutableStateOf("ALL") }
-
-    val selectedOptionIds = remember { mutableStateListOf<Int>() }
-    val tempOptionIds = remember { mutableStateListOf<Int>() }
-
-    tempOptionIds.map {
-        Log.d("asdasdasd", it.toString())
-    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -184,18 +233,22 @@ fun PlaceScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             PlaceChipButton(
-                                text = state.placeTypeFilterItems.firstOrNull { it.type == selectedType.value }?.label
+                                text = state.placeTypeFilterItems.firstOrNull { it.type == state.selectedMainFilter }?.label
                                     ?: "전체",
                                 modifier = Modifier,
-                                onClick = { showFilterSheet.value = true }
+                                onClick = { changeMainFilterBottomSheetVisible() }
                             )
 
-                            if (!state.optionTags.isNullOrEmpty() && selectedType.value != "ALL") {
+                            if (!state.optionTags.isNullOrEmpty() && state.selectedMainFilter != "ALL") {
+                                val optionFilterText = getOptionFilterText(
+                                    selectedIds = state.selectedOptionFilter,
+                                    optionTags = state.optionTags
+                                )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 PlaceChipButton(
-                                    text = "추가옵션",
+                                    text = optionFilterText,
                                     modifier = Modifier,
-                                    onClick = { showOptionSheet.value = true }
+                                    onClick = { changeOptionFilterBottomSheetVisible() }
                                 )
                             }
                         }
@@ -236,65 +289,6 @@ fun PlaceScreen(
                     )
                 }
             }
-        }
-    }
-
-    if (showFilterSheet.value) {
-        ModalBottomSheet(
-            onDismissRequest = { showFilterSheet.value = false },
-            sheetState = sheetState,
-            containerColor = SolplyTheme.colors.white,
-            dragHandle = null
-        ) {
-            PlaceTypeFilterSheet(
-                filterItems = state.placeTypeFilterItems,
-                selectedType = selectedType.value,
-                onSelectType = {
-                    selectedType.value = it
-                    showFilterSheet.value = false
-                },
-                onDismiss = { showFilterSheet.value = false }
-            )
-        }
-    }
-
-    if (showOptionSheet.value) {
-        if (tempOptionIds.isEmpty()) {
-            tempOptionIds.clear()
-            tempOptionIds.addAll(selectedOptionIds)
-        }
-
-        ModalBottomSheet(
-            onDismissRequest = {
-                showOptionSheet.value = false
-                tempOptionIds.clear()
-            },
-            sheetState = sheetState,
-            containerColor = SolplyTheme.colors.white,
-            dragHandle = null
-        ) {
-            PlaceOptionFilterSheet(
-                optionTags = state.optionTags ?: emptyList(),
-                selectedOptionIds = tempOptionIds,
-                onOptionSelected = { tagId ->
-                    if (tempOptionIds.contains(tagId)) {
-                        tempOptionIds.remove(tagId)
-                    } else {
-                        tempOptionIds.add(tagId)
-                    }
-                },
-                onDismiss = {
-                    showOptionSheet.value = false
-                    tempOptionIds.clear()
-                },
-                onReset = { tempOptionIds.clear() },
-                onDone = {
-                    selectedOptionIds.clear()
-                    selectedOptionIds.addAll(tempOptionIds)
-                    showOptionSheet.value = false
-                    tempOptionIds.clear()
-                }
-            )
         }
     }
 }
@@ -366,6 +360,23 @@ fun CustomHorizontalPager(
                     ),
                 onClick = { onPlaceClick(place.placeId) }
             )
+        }
+    }
+}
+
+private fun getOptionFilterText(
+    selectedIds: List<Int>,
+    optionTags: List<OptionTag>
+): String {
+    return if (selectedIds.isEmpty()) {
+        "추가옵션"
+    } else {
+        val firstTagName = optionTags.find { it.tagId == selectedIds.firstOrNull() }?.name
+        if (selectedIds.size == 1) {
+            firstTagName ?: "추가옵션"
+        } else {
+            val prefix = firstTagName ?: "추가옵션"
+            "$prefix 외 ${selectedIds.size - 1}개"
         }
     }
 }

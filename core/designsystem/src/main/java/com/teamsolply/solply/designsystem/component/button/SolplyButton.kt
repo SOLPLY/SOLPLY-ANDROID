@@ -62,7 +62,7 @@ private fun BaseButton(
 @Composable
 fun SolplyBasicButton(
     text: String,
-    onClick:() -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = true,
     textColor: Color = SolplyTheme.colors.white,

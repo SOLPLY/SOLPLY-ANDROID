@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,18 +22,21 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.model.Place
+import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
 internal fun AddCourseBottomSheet(
+    context: Context,
     places: PersistentList<Place>,
     courseName: String,
     introduction: String,
     selectedPlaceItem: Int?,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
-    placeInfoClick: (Int) -> Unit
+    placeInfoClick: (Int) -> Unit,
+    placeDetailClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -87,6 +91,17 @@ internal fun AddCourseBottomSheet(
                         iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                         modifier = Modifier.customClickable(rippleEnabled = false) {
                             placeInfoClick(item.placeId)
+                        },
+                        placeDetailClick = { placeDetailClick(item.placeId) },
+                        navigatePlaceClick = {
+                            navigateToNaverMapDirections(
+                                context = context,
+                                destName = item.placeName,
+                                destId = item.placeDefaultId.toString(),
+                                destLongitude = item.longitude.toDouble(),
+                                destLatitude = item.latitude.toDouble(),
+                                destType = item.placeTag
+                            )
                         },
                         selectedPlaceItem = selectedPlaceItem == item.placeId
                     )

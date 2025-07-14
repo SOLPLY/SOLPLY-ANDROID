@@ -4,30 +4,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.PlaceCard
 import com.teamsolply.solply.mypage.model.TownCard
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
 
 @Composable
-fun PlaceTabScreen(
-    isTownSelected: Boolean,
-    onClickEmptyButton: () -> Unit,
+fun TabScreen(
+    onClickEmptyButton: (MypageTab) -> Unit,
     onClickTown: (String) -> Unit,
     town: List<TownCard>,
-    place: List<PlaceCard>,
+    mypageTab: MypageTab,
     modifier: Modifier = Modifier
 ) {
     if (town.isEmpty()) {
         EmptyCollectionScreen(
-            onClick = onClickEmptyButton,
-            mypageTab = MypageTab.PLACE
+            onClick = { onClickEmptyButton(mypageTab) },
+            mypageTab = mypageTab,
+            modifier = modifier
         )
     } else {
-        TownCollectionScreen(
-            town = town,
-            onClickTown = onClickTown
-        )
+        when (mypageTab) {
+            MypageTab.PLACE ->
+                TownCollectionScreen(
+                    town = town,
+                    onClickTown = onClickTown,
+                    mypageTab = mypageTab,
+                    modifier = modifier
+                )
+
+            MypageTab.COURSE ->
+                TownCollectionScreen(
+                    town = town,
+                    onClickTown = onClickTown,
+                    mypageTab = mypageTab,
+                    modifier = modifier
+                )
+        }
     }
 }
 
@@ -35,8 +47,7 @@ fun PlaceTabScreen(
 @Composable
 private fun PlaceTabScreenPreview() {
     SolplyTheme {
-        PlaceTabScreen(
-            isTownSelected = false,
+        TabScreen(
             onClickEmptyButton = {},
             town = immutableListOf(
                 TownCard(
@@ -49,7 +60,7 @@ private fun PlaceTabScreenPreview() {
                 )
             ),
             onClickTown = {},
-            place = emptyList()
+            mypageTab = MypageTab.COURSE
         )
     }
 }

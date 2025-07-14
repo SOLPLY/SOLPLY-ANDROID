@@ -30,6 +30,7 @@ import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
+import com.teamsolply.solply.mypage.collection.course.courseCollectionNavGraph
 import com.teamsolply.solply.mypage.collection.place.placeCollectionNavGraph
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
@@ -171,6 +172,25 @@ internal fun MainScreen(
                                 town = town,
                                 navOptions = navOptions
                             )
+                        },
+                        navigateToCourseCollection = { town ->
+                            val navOptions = navOptions { }
+                            navigator.navigateToCourseCollection(
+                                town = town,
+                                navOptions = navOptions
+                            )
+                        },
+                        navigateToPlace = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToPlace(
+                                navOptions = navOptions
+                            )
+                        },
+                        navigateToCourse = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToCourse(
+                                navOptions = navOptions
+                            )
                         }
                     )
                     mapsNavGraph(
@@ -238,6 +258,14 @@ internal fun MainScreen(
                         },
                         navigateToBack = navigator::navigateToBack
                     )
+                    courseCollectionNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToMaps = { mapsType ->
+                            val navOptions = navOptions { }
+                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                        },
+                        navigateToBack = navigator::navigateToBack
+                    )
                 }
                 MainBottomBar(
                     modifier = Modifier
@@ -254,7 +282,7 @@ internal fun MainScreen(
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
                 snackbar = { snackbarData ->
                     when (currentSnackbarState.value.type) {
                         SnackBarType.TEXT -> {

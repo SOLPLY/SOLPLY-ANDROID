@@ -39,7 +39,6 @@ fun NamingScreen(
             .addFocusCleaner(focusManager),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-
         Column {
             Text(
                 text = "솔플리와 함께할 준비 되셨나요?\n닉네임을 알려주세요.",
@@ -48,7 +47,6 @@ fun NamingScreen(
                 modifier = Modifier
                     .padding(top = 24.dp, bottom = 28.dp)
             )
-
 
             SolplyNicknameTextField(
                 value = nickname,
