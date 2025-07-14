@@ -54,6 +54,7 @@ import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBotto
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
+import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
@@ -63,6 +64,7 @@ import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
+import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.util.calculateCameraPosition
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
@@ -70,6 +72,7 @@ import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -199,6 +202,7 @@ internal fun MapsRoute(
         // Edit Course
         removeIconVisible = uiState.removeIconVisibility,
         startEditCourse = uiState.startEditCourse,
+        coursesBeforeEdit = uiState.coursesBeforeEdit,
         startCourseMove = { iconVisibility ->
             viewModel.sendIntent(MapsIntent.StartCourseMove(iconVisibility = iconVisibility))
         },
@@ -219,6 +223,9 @@ internal fun MapsRoute(
         },
         onStartEditCourseClick = {
             viewModel.sendIntent(MapsIntent.StartEditCourseIconClick)
+        },
+        onCourseEditBackClick = {
+            viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
         }
     )
 
@@ -239,6 +246,16 @@ internal fun MapsRoute(
                 )
             },
             onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility) }
+        )
+    }
+
+    if (uiState.exitEditCourseDialogVisibility) {
+        SolplyConfirmDialog(
+            text = "변경 사항을 저장하지 않고\n나가시겠어요?",
+            confirmButtonText = "나가기",
+            dismissButtonText = "취소",
+            onClickConfirm = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogClick) },
+            onClickDismiss = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogInVisible) }
         )
     }
 }
@@ -268,6 +285,7 @@ private fun MapsScreen(
     // Edit Course
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
+    coursesBeforeEdit: ImmutableList<Place>,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
@@ -275,6 +293,7 @@ private fun MapsScreen(
     onReturnToHomeClick: () -> Unit,
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
+    onCourseEditBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -574,12 +593,14 @@ private fun MapsScreen(
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
                             startEditCourse = startEditCourse,
+                            coursesBeforeEdit = coursesBeforeEdit,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
                             onStartEditCourseClick = onStartEditCourseClick,
                             placeInfoClick = placeInfoClick,
                             startCourseMove = startCourseMove,
                             moveCourse = moveCourse,
-                            removeCourse = removeCourse
+                            removeCourse = removeCourse,
+                            onCourseEditBackClick = onCourseEditBackClick,
                         )
                     }
                 }

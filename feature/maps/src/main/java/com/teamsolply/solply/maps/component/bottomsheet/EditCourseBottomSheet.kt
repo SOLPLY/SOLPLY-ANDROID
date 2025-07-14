@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,7 @@ import com.teamsolply.solply.maps.util.draggableItems
 import com.teamsolply.solply.maps.util.rememberDragDropState
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
@@ -59,12 +61,14 @@ internal fun EditCourseBottomSheet(
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
     startEditCourse: Boolean,
+    coursesBeforeEdit: ImmutableList<Place>,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
     onStartEditCourseClick: () -> Unit,
     placeInfoClick: (Int) -> Unit,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
-    removeCourse: (itemToRemove: Int) -> Unit
+    removeCourse: (itemToRemove: Int) -> Unit,
+    onCourseEditBackClick: () -> Unit,
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -83,6 +87,12 @@ internal fun EditCourseBottomSheet(
         onRemove = removeCourse,
         isInRemoveAreaProvider = { isInRemoveIconArea.value }
     )
+
+    if (startEditCourse) {
+            BackHandler {
+                onCourseEditBackClick()
+        }
+    }
 
     LaunchedEffect(scrollToIndex) {
         scrollToIndex?.let { index ->
