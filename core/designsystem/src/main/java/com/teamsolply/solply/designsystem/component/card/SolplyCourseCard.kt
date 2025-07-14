@@ -146,7 +146,8 @@ private fun SolplytCourseCardPreveiw() {
             title = "오감으로 수집하는 하루",
             imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             placeType = immutableListOf(
-                PlaceType.CAFE, PlaceType.BOOK
+                PlaceType.CAFE,
+                PlaceType.BOOK
             ),
             backgroundColor = SolplyTheme.colors.red300,
             iconColor = SolplyTheme.colors.red500,

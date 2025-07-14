@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable

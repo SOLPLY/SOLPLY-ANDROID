@@ -8,16 +8,18 @@ import com.teamsolply.solply.ui.base.UiState
 import okhttp3.internal.immutableListOf
 
 data class MypageState(
-    val towns: List<TownCard> = immutableListOf(
-        TownCard(
-            townName = "연희동",
-            imageUrl = ""
+    val towns: List<TownCard> =
+//        emptyList<TownCard>(),
+        immutableListOf(
+            TownCard(
+                townName = "연희동",
+                imageUrl = ""
+            ),
+            TownCard(
+                townName = "망원동",
+                imageUrl = ""
+            )
         ),
-        TownCard(
-            townName = "망원동",
-            imageUrl = ""
-        )
-    ),
     val town: String = "연희동",
     val selectedTab: MypageTab = MypageTab.PLACE,
     val isPlaceTownSelected: Boolean = false,
@@ -33,12 +35,16 @@ sealed interface MypageIntent : UiIntent {
     data class SelectPlaceTown(val selectedTown: String) : MypageIntent
     data class SelectCourseTown(val selectedTown: String) : MypageIntent
 
+    data class EmptyButtonClick(val mypageTab: MypageTab) : MypageIntent
+
     // Navigate
     data object BackButtonClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
+    data object NavigateToPLace : MypageSideEffect
+    data object NavigateToCourse : MypageSideEffect
     data class NavigateToPlaceCollection(val town: String) : MypageSideEffect
     data class NavigateToCourseCollection(val town: String) : MypageSideEffect
 }

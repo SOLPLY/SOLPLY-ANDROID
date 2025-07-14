@@ -15,7 +15,8 @@ data class CourseCollectionState(
             courseId = 0,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
-                PlaceType.CAFE, PlaceType.BOOK
+                PlaceType.CAFE,
+                PlaceType.BOOK
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
@@ -23,7 +24,8 @@ data class CourseCollectionState(
             courseId = 1,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
-                PlaceType.BOOK, PlaceType.CAFE
+                PlaceType.BOOK,
+                PlaceType.CAFE
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
@@ -31,7 +33,8 @@ data class CourseCollectionState(
             courseId = 2,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
-                PlaceType.SHOPPING, PlaceType.WALK
+                PlaceType.SHOPPING,
+                PlaceType.WALK
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
@@ -39,7 +42,8 @@ data class CourseCollectionState(
             courseId = 3,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
-                PlaceType.FOOD, PlaceType.SHOPPING
+                PlaceType.FOOD,
+                PlaceType.SHOPPING
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
@@ -47,10 +51,11 @@ data class CourseCollectionState(
             courseId = 5,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
-                PlaceType.WALK, PlaceType.UNIQUE
+                PlaceType.WALK,
+                PlaceType.UNIQUE
             ),
             imageUrls = immutableListOf(1, 2, 3)
-        ),
+        )
     ),
     val selectedCourses: Set<Int> = emptySet(),
     val dialogState: Boolean = false
@@ -64,7 +69,6 @@ sealed interface CourseCollectionIntent : UiIntent {
 
     data object DialogConfirmClick : CourseCollectionIntent
     data object DialogDismissClick : CourseCollectionIntent
-
 
     data class CourseCardClick(val courseId: Int, val index: Int) : CourseCollectionIntent
 

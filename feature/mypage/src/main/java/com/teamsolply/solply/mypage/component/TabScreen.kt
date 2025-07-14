@@ -10,7 +10,7 @@ import okhttp3.internal.immutableListOf
 
 @Composable
 fun TabScreen(
-    onClickEmptyButton: () -> Unit,
+    onClickEmptyButton: (MypageTab) -> Unit,
     onClickTown: (String) -> Unit,
     town: List<TownCard>,
     mypageTab: MypageTab,
@@ -18,7 +18,7 @@ fun TabScreen(
 ) {
     if (town.isEmpty()) {
         EmptyCollectionScreen(
-            onClick = onClickEmptyButton,
+            onClick = { onClickEmptyButton(mypageTab) },
             mypageTab = mypageTab,
             modifier = modifier
         )

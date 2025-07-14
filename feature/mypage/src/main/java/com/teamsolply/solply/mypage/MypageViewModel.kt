@@ -71,6 +71,18 @@ class MypageViewModel @Inject constructor() :
                     copy(selectedTab = MypageTab.COURSE)
                 }
             }
+
+            is MypageIntent.EmptyButtonClick -> {
+                when (intent.mypageTab) {
+                    MypageTab.PLACE -> {
+                        postSideEffect(MypageSideEffect.NavigateToPLace)
+                    }
+
+                    MypageTab.COURSE -> {
+                        postSideEffect(MypageSideEffect.NavigateToCourse)
+                    }
+                }
+            }
         }
     }
 }

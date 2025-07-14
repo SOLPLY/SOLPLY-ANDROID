@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
+import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.R
-import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.preview.DefaultPreview
 

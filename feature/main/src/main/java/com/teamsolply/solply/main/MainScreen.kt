@@ -178,6 +178,18 @@ internal fun MainScreen(
                                 town = town,
                                 navOptions = navOptions
                             )
+                        },
+                        navigateToPlace = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToPlace(
+                                navOptions = navOptions
+                            )
+                        },
+                        navigateToCourse = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToCourse(
+                                navOptions = navOptions
+                            )
                         }
                     )
                     mapsNavGraph(

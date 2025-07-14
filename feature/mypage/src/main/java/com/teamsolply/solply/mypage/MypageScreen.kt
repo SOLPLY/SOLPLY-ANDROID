@@ -25,9 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.mypage.component.TabScreen
 import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.TownCard
@@ -43,6 +43,8 @@ fun MypageRoute(
     navigateToBack: () -> Unit,
     navigateToPlaceCollection: (String) -> Unit,
     navigateToCourseCollection: (String) -> Unit,
+    navigateToPlace: () -> Unit,
+    navigateToCourse: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -76,6 +78,14 @@ fun MypageRoute(
                 is MypageSideEffect.NavigateToCourseCollection -> {
                     navigateToCourseCollection(sideEffect.town)
                 }
+
+                is MypageSideEffect.NavigateToPLace -> {
+                    navigateToPlace()
+                }
+
+                is MypageSideEffect.NavigateToCourse -> {
+                    navigateToCourse()
+                }
             }
         }
     }
@@ -83,6 +93,7 @@ fun MypageRoute(
     MypageScreen(
         navigateToMaps = navigateToMaps,
         onBackButtonClick = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
+        onEmptyButtonClick = { viewModel.sendIntent(MypageIntent.EmptyButtonClick(it)) },
         onClickPlaceTab = { viewModel.sendIntent(MypageIntent.SelectPlaceTab) },
         onClickCourseTab = { viewModel.sendIntent(MypageIntent.SelectCourseTab) },
         selectTown = {
@@ -104,6 +115,7 @@ fun MypageRoute(
 fun MypageScreen(
     navigateToMaps: (String) -> Unit,
     onBackButtonClick: () -> Unit,
+    onEmptyButtonClick: (MypageTab) -> Unit,
     onClickPlaceTab: () -> Unit,
     onClickCourseTab: () -> Unit,
     selectTown: (String) -> Unit,
@@ -122,7 +134,7 @@ fun MypageScreen(
     ) {
         SolplyTopBar(
             barText = stringResource(R.string.mypage_collection),
-            onBackButtonClick = { onBackButtonClick() },
+            onBackButtonClick = { onBackButtonClick() }
         )
         TabRow(
             selectedTabIndex = 0,
@@ -172,14 +184,14 @@ fun MypageScreen(
         ) { page ->
             when (page) {
                 0 -> TabScreen(
-                    onClickEmptyButton = {},
+                    onClickEmptyButton = onEmptyButtonClick,
                     town = town,
                     onClickTown = selectTown,
                     mypageTab = MypageTab.PLACE
                 )
 
                 1 -> TabScreen(
-                    onClickEmptyButton = {},
+                    onClickEmptyButton = onEmptyButtonClick,
                     town = town,
                     onClickTown = selectTown,
                     mypageTab = MypageTab.COURSE
