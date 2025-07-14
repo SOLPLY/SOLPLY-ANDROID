@@ -170,6 +170,12 @@ internal class MapsViewModel @Inject constructor(
             is MapsIntent.BackButtonClick -> {
                 postSideEffect(MapsSideEffect.NavigateToBack)
             }
+
+            is MapsIntent.PlaceDetailClick -> postSideEffect(
+                MapsSideEffect.NavigateToPlaceDetail(
+                    intent.placeId
+                )
+            )
         }
     }
 

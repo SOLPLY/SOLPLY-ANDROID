@@ -39,6 +39,8 @@ internal fun CourseItem(
     placeImageRes: Int,
     iconClick: () -> Unit,
     modifier: Modifier = Modifier,
+    placeDetailClick: () -> Unit,
+    navigatePlaceClick: () -> Unit,
     iconSelected: Boolean = false,
     selectedPlaceItem: Boolean,
     isEditing: Boolean = false
@@ -131,9 +133,7 @@ internal fun CourseItem(
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .padding(horizontal = 15.dp, vertical = 8.dp)
-                            .customClickable(rippleEnabled = false) {
-                                // TODO 장소 상세로 이동
-                            },
+                            .customClickable(rippleEnabled = false) { placeDetailClick() },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -155,9 +155,7 @@ internal fun CourseItem(
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .padding(horizontal = 15.dp, vertical = 8.dp)
-                            .customClickable(rippleEnabled = false) {
-                                // TODO 길찾기
-                            },
+                            .customClickable(rippleEnabled = false) { navigatePlaceClick() },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(

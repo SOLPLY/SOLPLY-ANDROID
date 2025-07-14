@@ -43,10 +43,10 @@ import com.teamsolply.solply.maps.courseDetailEntity
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.util.dragContainer
 import com.teamsolply.solply.maps.util.draggableItems
+import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.maps.util.rememberDragDropState
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
@@ -61,14 +61,14 @@ internal fun EditCourseBottomSheet(
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
     startEditCourse: Boolean,
-    coursesBeforeEdit: ImmutableList<Place>,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
     onStartEditCourseClick: () -> Unit,
     placeInfoClick: (Int) -> Unit,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
-    onCourseEditBackClick: () -> Unit
+    onCourseEditBackClick: () -> Unit,
+    placeDetailClick: (Int) -> Unit,
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -220,6 +220,17 @@ internal fun EditCourseBottomSheet(
                                     }
                                 }
                             ),
+                            placeDetailClick = { placeDetailClick(item.placeId) },
+                            navigatePlaceClick = {
+                                navigateToNaverMapDirections(
+                                    context = context,
+                                    destName = item.placeName,
+                                    destId = item.placeDefaultId.toString(),
+                                    destLongitude = item.longitude.toDouble(),
+                                    destLatitude = item.latitude.toDouble(),
+                                    destType = item.placeTag
+                                )
+                            },
                             iconSelected = item.isBookmarked,
                             iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                             selectedPlaceItem = selectedPlaceItem == item.placeId,

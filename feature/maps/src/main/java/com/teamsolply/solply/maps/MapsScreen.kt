@@ -64,7 +64,6 @@ import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
-import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.util.calculateCameraPosition
 import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
@@ -72,7 +71,6 @@ import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.extension.vibrate
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -87,7 +85,7 @@ internal fun MapsRoute(
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    navigatePlaceDetail: () -> Unit,
+    navigateToPlaceDetail: () -> Unit,
     navigateToEditCourse: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
@@ -161,6 +159,8 @@ internal fun MapsRoute(
                 }
 
                 MapsSideEffect.NavigateToBack -> navigateToBack()
+
+                is MapsSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail()
             }
         }
     }
@@ -202,7 +202,6 @@ internal fun MapsRoute(
         // Edit Course
         removeIconVisible = uiState.removeIconVisibility,
         startEditCourse = uiState.startEditCourse,
-        coursesBeforeEdit = uiState.coursesBeforeEdit,
         startCourseMove = { iconVisibility ->
             viewModel.sendIntent(MapsIntent.StartCourseMove(iconVisibility = iconVisibility))
         },
@@ -226,6 +225,9 @@ internal fun MapsRoute(
         },
         onCourseEditBackClick = {
             viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
+        },
+        onPlaceDetailClick = { placeId ->
+            viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId))
         }
     )
 
@@ -285,7 +287,6 @@ private fun MapsScreen(
     // Edit Course
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
-    coursesBeforeEdit: ImmutableList<Place>,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
@@ -294,6 +295,7 @@ private fun MapsScreen(
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
     onCourseEditBackClick: () -> Unit,
+    onPlaceDetailClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -354,7 +356,7 @@ private fun MapsScreen(
             }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -572,12 +574,14 @@ private fun MapsScreen(
 
                     MapsType.ADD_COURSE -> {
                         AddCourseBottomSheet(
+                            context = context,
                             places = courseDetailInfo.places.toPersistentList(),
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
-                            placeInfoClick = placeInfoClick
+                            placeInfoClick = placeInfoClick,
+                            placeDetailClick = onPlaceDetailClick
                         )
                     }
 
@@ -593,14 +597,14 @@ private fun MapsScreen(
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
                             startEditCourse = startEditCourse,
-                            coursesBeforeEdit = coursesBeforeEdit,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
                             onStartEditCourseClick = onStartEditCourseClick,
                             placeInfoClick = placeInfoClick,
                             startCourseMove = startCourseMove,
                             moveCourse = moveCourse,
                             removeCourse = removeCourse,
-                            onCourseEditBackClick = onCourseEditBackClick
+                            onCourseEditBackClick = onCourseEditBackClick,
+                            placeDetailClick = onPlaceDetailClick,
                         )
                     }
                 }

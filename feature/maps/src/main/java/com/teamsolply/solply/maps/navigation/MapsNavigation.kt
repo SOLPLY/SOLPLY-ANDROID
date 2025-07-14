@@ -37,7 +37,7 @@ fun NavGraphBuilder.mapsNavGraph(
             showTextSnackBar = showTextSnackBar,
             showNotificationSnackBar = showNotificationSnackBar,
             showNavigateSnackBar = showNavigateSnackBar,
-            navigatePlaceDetail = navigateToPlaceDetail,
+            navigateToPlaceDetail = navigateToPlaceDetail,
             navigateToEditCourse = navigateToEditCourse,
             navigateToPlace = navigateToPlace,
             navigateToCourse = navigateToCourse,

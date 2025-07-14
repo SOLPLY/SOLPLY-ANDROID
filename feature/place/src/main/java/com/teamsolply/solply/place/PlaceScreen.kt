@@ -52,6 +52,7 @@ import com.teamsolply.solply.place.component.button.PlaceChipButton
 import com.teamsolply.solply.place.component.card.PlaceRecommendCard
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
+import com.teamsolply.solply.place.util.LocationPermissionRequest
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 
@@ -73,6 +74,7 @@ fun PlaceRoute(
             }
         }
     }
+    LocationPermissionRequest()
     PlaceScreen(
         modifier = Modifier.padding(paddingValues),
         state = state,

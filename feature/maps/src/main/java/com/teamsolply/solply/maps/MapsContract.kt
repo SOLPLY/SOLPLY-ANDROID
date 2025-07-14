@@ -84,6 +84,10 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     // Navigate
+    data class PlaceDetailClick(
+        val placeId: Int
+    ) : MapsIntent
+
     data object EmptyCourseClick : MapsIntent
     data object ShowMaxSizeCourseSnackBar : MapsIntent
     data object ReturnToHomeClick : MapsIntent
@@ -105,6 +109,9 @@ internal sealed interface MapsSideEffect : SideEffect {
     data object NavigateToCourse : MapsSideEffect
     data object NavigateToReturnHome : MapsSideEffect
     data object NavigateToBack : MapsSideEffect
+    data class NavigateToPlaceDetail(
+        val placeId: Int
+    ) : MapsSideEffect
 }
 
 internal val defaultPlaceDetailEntity = PlaceDetailEntity(
