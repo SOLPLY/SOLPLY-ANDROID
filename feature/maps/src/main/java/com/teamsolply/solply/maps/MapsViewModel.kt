@@ -145,7 +145,6 @@ internal class MapsViewModel @Inject constructor(
                     reduce { copy(startEditCourse = false) }
                 } else {
                     reduce { copy(exitEditCourseDialogVisibility = true) }
-
                 }
             }
 

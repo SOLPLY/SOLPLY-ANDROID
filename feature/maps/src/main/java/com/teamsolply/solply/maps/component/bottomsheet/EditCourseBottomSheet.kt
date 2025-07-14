@@ -68,7 +68,7 @@ internal fun EditCourseBottomSheet(
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
-    onCourseEditBackClick: () -> Unit,
+    onCourseEditBackClick: () -> Unit
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -89,8 +89,8 @@ internal fun EditCourseBottomSheet(
     )
 
     if (startEditCourse) {
-            BackHandler {
-                onCourseEditBackClick()
+        BackHandler {
+            onCourseEditBackClick()
         }
     }
 

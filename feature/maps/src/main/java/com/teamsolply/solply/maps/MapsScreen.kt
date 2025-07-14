@@ -600,7 +600,7 @@ private fun MapsScreen(
                             startCourseMove = startCourseMove,
                             moveCourse = moveCourse,
                             removeCourse = removeCourse,
-                            onCourseEditBackClick = onCourseEditBackClick,
+                            onCourseEditBackClick = onCourseEditBackClick
                         )
                     }
                 }
