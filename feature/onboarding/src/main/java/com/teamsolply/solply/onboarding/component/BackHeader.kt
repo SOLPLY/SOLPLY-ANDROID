@@ -23,8 +23,7 @@ fun BackHeader(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -33,7 +32,7 @@ fun BackHeader(
             contentDescription = "back",
             tint = Color.Unspecified,
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 16.dp, bottom = 24.dp)
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
     }
