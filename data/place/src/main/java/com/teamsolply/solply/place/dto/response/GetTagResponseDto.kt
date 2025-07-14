@@ -12,5 +12,5 @@ data class GetTagResponseDto(
     @SerialName("name")
     val name: String,
     @SerialName("parentId")
-    val parentId: Int,
+    val parentId: Int
 )

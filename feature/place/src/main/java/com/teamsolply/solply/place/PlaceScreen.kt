@@ -100,7 +100,7 @@ fun PlaceRoute(
                 filterItems = state.placeTypeFilterItems,
                 selectedType = state.selectedMainFilter,
                 onSelectType = { mainFilterName ->
-                    //TODO. 메인 태그 API 쏘기
+                    // TODO. 메인 태그 API 쏘기
                     viewModel.sendIntent(PlaceIntent.ChangeSelectedMainFilter(mainFilterName))
                     viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
                 },
@@ -132,7 +132,7 @@ fun PlaceRoute(
                 },
                 onReset = { viewModel.sendIntent(PlaceIntent.ClearOptionFilter) },
                 onDone = {
-                    //TODO. 선택 옵션 API 쏘기
+                    // TODO. 선택 옵션 API 쏘기
                     viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
                 }
             )
@@ -148,9 +148,9 @@ fun PlaceScreen(
     snackbarHostState: SnackbarHostState,
 
     changeMainFilterBottomSheetVisible: () -> Unit,
-    changeOptionFilterBottomSheetVisible: () -> Unit,
+    changeOptionFilterBottomSheetVisible: () -> Unit
 
-    ) {
+) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val centerItemSize = 240.dp
     val sideItemSize = 180.dp
@@ -291,8 +291,6 @@ fun PlaceScreen(
             }
         }
     }
-
-
 }
 
 @Composable

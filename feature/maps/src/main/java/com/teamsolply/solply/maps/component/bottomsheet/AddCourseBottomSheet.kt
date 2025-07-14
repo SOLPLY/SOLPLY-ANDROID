@@ -36,7 +36,7 @@ internal fun AddCourseBottomSheet(
     selectedPlaceItem: Int?,
     singleCoursePlaceBookMarkClick: (Int) -> Unit,
     placeInfoClick: (Int) -> Unit,
-    placeDetailClick: (Int) -> Unit,
+    placeDetailClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),

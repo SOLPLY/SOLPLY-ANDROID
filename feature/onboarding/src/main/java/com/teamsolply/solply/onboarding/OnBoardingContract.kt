@@ -1,6 +1,5 @@
 package com.teamsolply.solply.onboarding
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
@@ -19,7 +18,7 @@ data class OnBoardingState(
         Persona(type = "MOODING", description = "취향이 담긴 곳을 찾고 싶어요"),
         Persona(type = "NATURAL", description = "자연을 감상하며 쉬고 싶어요")
     ),
-    val selectedPersona: Persona? =null,
+    val selectedPersona: Persona? = null,
 
     val userNickname: String? = null,
     val showStartingScreen: Boolean = false

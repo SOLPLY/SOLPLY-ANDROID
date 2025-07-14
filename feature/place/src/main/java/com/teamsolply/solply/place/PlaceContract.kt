@@ -149,9 +149,9 @@ data class PlaceState(
     val selectedMainFilter: String = "ALL",
 
     val isOptionFilterBottomSheetVisible: Boolean = false,
-    val selectedOptionFilter: PersistentList<Int> = persistentListOf(),
+    val selectedOptionFilter: PersistentList<Int> = persistentListOf()
 
-    ) : UiState
+) : UiState
 
 sealed interface PlaceIntent : UiIntent {
     data object LoadPlaces : PlaceIntent

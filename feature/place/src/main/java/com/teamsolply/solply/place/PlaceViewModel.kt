@@ -61,9 +61,13 @@ class PlaceViewModel @Inject constructor(
             // 옵션 필터 변경
             is PlaceIntent.ChangeSelectedOptionFilter -> reduce {
                 val updatedList = selectedOptionFilter.toMutableList().apply {
-                    if (contains(intent.optionFilterId)) remove(intent.optionFilterId) else add(
-                        intent.optionFilterId
-                    )
+                    if (contains(intent.optionFilterId)) {
+                        remove(intent.optionFilterId)
+                    } else {
+                        add(
+                            intent.optionFilterId
+                        )
+                    }
                 }
 
                 copy(

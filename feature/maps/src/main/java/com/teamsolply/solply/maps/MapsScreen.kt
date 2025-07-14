@@ -604,7 +604,7 @@ private fun MapsScreen(
                             moveCourse = moveCourse,
                             removeCourse = removeCourse,
                             onCourseEditBackClick = onCourseEditBackClick,
-                            placeDetailClick = onPlaceDetailClick,
+                            placeDetailClick = onPlaceDetailClick
                         )
                     }
                 }
