@@ -10,54 +10,8 @@ import okhttp3.internal.immutableListOf
 data class CourseCollectionState(
     val selectMode: Boolean = false,
     val townId: Int = 1,
-    val townName: String = "연희동",
-    val courses: List<CourseInfoEntity> = immutableListOf(
-        CourseInfoEntity(
-            courseId = 0,
-            courseName = "오감으로 수집하는 하루",
-            placeTypeList = immutableListOf(
-                PlaceType.CAFE,
-                PlaceType.BOOK
-            ),
-            imageUrls = immutableListOf("1")
-        ),
-        CourseInfoEntity(
-            courseId = 1,
-            courseName = "오감으로 수집하는 하루",
-            placeTypeList = immutableListOf(
-                PlaceType.BOOK,
-                PlaceType.CAFE
-            ),
-            imageUrls = immutableListOf("1")
-        ),
-        CourseInfoEntity(
-            courseId = 2,
-            courseName = "오감으로 수집하는 하루",
-            placeTypeList = immutableListOf(
-                PlaceType.SHOPPING,
-                PlaceType.WALK
-            ),
-            imageUrls = immutableListOf("1")
-        ),
-        CourseInfoEntity(
-            courseId = 3,
-            courseName = "오감으로 수집하는 하루",
-            placeTypeList = immutableListOf(
-                PlaceType.FOOD,
-                PlaceType.SHOPPING
-            ),
-            imageUrls = immutableListOf("1")
-        ),
-        CourseInfoEntity(
-            courseId = 5,
-            courseName = "오감으로 수집하는 하루",
-            placeTypeList = immutableListOf(
-                PlaceType.WALK,
-                PlaceType.UNIQUE
-            ),
-            imageUrls = immutableListOf("1")
-        )
-    ),
+    val townName: String = "",
+    val courses: List<CourseInfoEntity> = emptyList(),
     val selectedCourses: Set<Int> = emptySet(),
     val dialogState: Boolean = false
 ) : UiState

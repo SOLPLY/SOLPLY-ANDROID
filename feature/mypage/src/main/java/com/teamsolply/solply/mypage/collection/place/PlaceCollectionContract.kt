@@ -9,8 +9,8 @@ import okhttp3.internal.immutableListOf
 data class PlaceCollectionState(
     val selectMode: Boolean = false,
     val townId: Int = 1,
-    val townName: String = "연희동",
-    val places: List<PlaceInfoEntity> = immutableListOf(),
+    val townName: String = "",
+    val places: List<PlaceInfoEntity> = emptyList(),
     val selectedPlaces: Set<Int> = emptySet(),
     val dialogState: Boolean = false
 ) : UiState
