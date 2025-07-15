@@ -1,11 +1,9 @@
 package com.teamsolply.solply.mypage.collection.course
 
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.CourseInfoEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
-import okhttp3.internal.immutableListOf
 
 data class CourseCollectionState(
     val selectMode: Boolean = false,

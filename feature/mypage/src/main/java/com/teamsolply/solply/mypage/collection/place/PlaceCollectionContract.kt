@@ -4,7 +4,6 @@ import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
-import okhttp3.internal.immutableListOf
 
 data class PlaceCollectionState(
     val selectMode: Boolean = false,
