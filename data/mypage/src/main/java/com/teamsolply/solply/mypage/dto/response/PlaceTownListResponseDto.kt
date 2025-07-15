@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaceTownListResponseDto(
     @SerialName("folderThumbnailList")
-    val townList: List<CourseTownResponseDto>
+    val townList: List<PlaceTownResponseDto>
 )
 
 @Serializable

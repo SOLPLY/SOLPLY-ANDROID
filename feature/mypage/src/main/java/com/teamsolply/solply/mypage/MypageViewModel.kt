@@ -108,7 +108,7 @@ class MypageViewModel @Inject constructor(
             mypageRepository.getCourseTownList().onSuccess {
                 reduce {
                     copy(
-//                        courseTowns = it
+                        courseTowns = it
                     )
                 }
             }

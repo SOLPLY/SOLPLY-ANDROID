@@ -9,12 +9,12 @@ class MypageRemoteDataSourceImpl @Inject constructor(
 ) : MypageRemoteDataSource {
     override suspend fun getPlaceTownList() = mypageService.getPlaceTownList().data
 
-    override suspend fun getCourseTownList() {}
+    override suspend fun getCourseTownList() = mypageService.getCourseTownList().data
     //= mypageService.getCourseTownList().data
 
-    override suspend fun getPlaceList() = mypageService.getPlaceList()
+    override suspend fun getPlaceList() = mypageService.getPlaceList().data
 
-    override suspend fun getCourseList() = mypageService.getCourseList()
+    override suspend fun getCourseList() = mypageService.getCourseList().data
 
     override suspend fun deletePlaces(placeList: List<Int>) = mypageService.deletePlaces(placeList)
 

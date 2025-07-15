@@ -100,7 +100,9 @@ class PlaceCollectionViewModel @Inject constructor(
         viewModelScope.launch {
             mypageRepository.getPlaceList().onSuccess {
                 reduce {
-                    copy()
+                    copy(
+                        places = it
+                    )
                 }
             }
         }
@@ -108,7 +110,13 @@ class PlaceCollectionViewModel @Inject constructor(
 
     fun deletePlaces(selectedPlaces: List<Int>) {
         viewModelScope.launch {
-            mypageRepository.deleteCourses(selectedPlaces).onSuccess { }
+            mypageRepository.deleteCourses(selectedPlaces).onSuccess {
+                reduce {
+                    copy(
+
+                    )
+                }
+            }
         }
     }
 }
