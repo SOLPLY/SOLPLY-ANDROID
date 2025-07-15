@@ -5,4 +5,8 @@ import javax.inject.Inject
 
 class OnBoardingRepositoryImpl @Inject constructor(
     private val onBoardingRemoteDataSource: OnBoardingRemoteDataSource
-) : OnBoardingRepository
+) : OnBoardingRepository {
+    override suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean> = runCatching {
+        onBoardingRemoteDataSource.checkNicknameDuplicate(nickname = nickname).isDuplicated
+    }
+}

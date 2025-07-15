@@ -23,12 +23,12 @@ import com.teamsolply.solply.ui.extension.addFocusCleaner
 @Composable
 fun NamingScreen(
     state: OnBoardingState,
+    inputNickname: String,
+    isNicknameDuplicate: Boolean,
+    changeInputNickname: (String) -> Unit,
     onNextClick: () -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit
 ) {
-    var nickname by remember { mutableStateOf("") }
-
-    val isButtonEnabled = nickname.isNotBlank()
     val focusManager = LocalFocusManager.current
 
     Column(
@@ -49,12 +49,9 @@ fun NamingScreen(
             )
 
             SolplyNicknameTextField(
-                value = nickname,
-                onValueChange = { nickname = it },
-                onDuplicateCheck = { input ->
-                    println("중복 체크 요청: $input")
-                    input.lowercase() == "solply"
-                },
+                value = inputNickname,
+                isNicknameDuplicate = state.isNicknameDuplicate,
+                onValueChange = { changeInputNickname(it) },
                 checkNicknameValidate = { input ->
                     input.all { it.isLetterOrDigit() }
                 }
@@ -66,14 +63,13 @@ fun NamingScreen(
             modifier = Modifier
                 .padding(bottom = 24.dp),
             onClick = {
-                if (isButtonEnabled) {
-                    onBoardingIntent(OnBoardingIntent.Nickname(nickname))
+                if (state.userNickname.isNotBlank()) {
                     onBoardingIntent(OnBoardingIntent.ShowStartingScreen)
                 }
             },
-            selected = isButtonEnabled,
+            selected = state.userNickname.isNotBlank(),
             textStyle = SolplyTheme.typography.button16M,
-            textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
+            textColor = if (state.userNickname.isNotBlank()) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
             enabledBackgroundColor = SolplyTheme.colors.gray900,
             disabledBackgroundColor = SolplyTheme.colors.gray300
         )

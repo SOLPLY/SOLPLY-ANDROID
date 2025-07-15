@@ -32,13 +32,12 @@ class AccessTokenInterceptor @Inject constructor(
             originalRequest
         }
 
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Request URL: ${newRequest.url}")
-            Log.d(
-                TAG,
-                "Authorization header: ${if (newRequest.header("Authorization") != null) "Bearer [REDACTED]" else "null"}"
-            )
-        }
+        Log.d(TAG, "Request URL: ${newRequest.url}")
+        Log.d(
+            TAG,
+            "Authorization header: ${if (newRequest.header("Authorization") != null) "Bearer [REDACTED]" else "null"}"
+        )
+
         return chain.proceed(newRequest)
     }
 

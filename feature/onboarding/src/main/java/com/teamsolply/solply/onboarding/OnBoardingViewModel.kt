@@ -1,8 +1,10 @@
 package com.teamsolply.solply.onboarding
 
+import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.onboarding.repository.OnBoardingRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +41,14 @@ class OnBoardingViewModel @Inject constructor(
             is OnBoardingIntent.ShowStartingScreen -> {
                 reduce { copy(showStartingScreen = true) }
             }
-            is OnBoardingIntent.Nickname -> {
+
+            is OnBoardingIntent.ChangeInputNickname -> {
+                viewModelScope.launch {
+                    onBoardingRepository.checkNicknameDuplicate(nickname = intent.nickname)
+                        .onSuccess {
+                            reduce { copy(isNicknameDuplicate = it) }
+                        }
+                }
                 reduce { copy(userNickname = intent.nickname) }
             }
         }

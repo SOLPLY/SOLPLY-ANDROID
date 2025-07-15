@@ -1,5 +1,6 @@
 package com.teamsolply.solply.onboarding
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -39,10 +40,14 @@ fun OnBoardingRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    Log.d("asdasdasd", "${state.selectedTownId} ${state.selectedPersona} ${state.userNickname}")
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                is OnBoardingSideEffect.NavigateToPlace -> { navigateToPlace() }
+                is OnBoardingSideEffect.NavigateToPlace -> {
+                    navigateToPlace()
+                }
             }
         }
     }
@@ -62,7 +67,10 @@ fun OnBoardingRoute(
             },
             onPageChanged = { viewModel.sendIntent(OnBoardingIntent.OnPageChanged(it)) },
             onBoardingIntent = { viewModel.sendIntent(it) },
-            navController = navController
+            navController = navController,
+            changeInputNickname = { inputNickname ->
+                viewModel.sendIntent(OnBoardingIntent.ChangeInputNickname(inputNickname))
+            }
         )
     }
 }
@@ -74,7 +82,8 @@ fun OnBoardingScreen(
     onPageChanged: (Int) -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    changeInputNickname: (String) -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
@@ -164,6 +173,9 @@ fun OnBoardingScreen(
 
                 2 -> NamingScreen(
                     state = state,
+                    inputNickname = state.userNickname,
+                    isNicknameDuplicate = state.isNicknameDuplicate,
+                    changeInputNickname = changeInputNickname,
                     onNextClick = {
                         scope.launch {
                             pagerState.scrollToPage(pagerState.currentPage + 1)
