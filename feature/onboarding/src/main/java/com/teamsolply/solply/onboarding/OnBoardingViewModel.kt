@@ -1,11 +1,14 @@
 package com.teamsolply.solply.onboarding
 
+import com.teamsolply.solply.onboarding.repository.OnBoardingRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class OnBoardingViewModel @Inject constructor() :
+class OnBoardingViewModel @Inject constructor(
+    private val onBoardingRepository: OnBoardingRepository
+) :
     BaseViewModel<OnBoardingState, OnBoardingIntent, OnBoardingSideEffect>(
         OnBoardingState()
     ) {

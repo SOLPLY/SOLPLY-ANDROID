@@ -1,5 +1,6 @@
 package com.teamsolply.solply.oauth.datasource
 
+import com.teamsolply.solply.oauth.dto.request.SocialLoginRequestDto
 import com.teamsolply.solply.oauth.dto.response.SocialLoginResponseDto
 import com.teamsolply.solply.oauth.service.OauthService
 import com.teamsolply.solply.oauth.source.OauthRemoteDataSource
@@ -12,7 +13,7 @@ class OauthRemoteDataSourceImpl @Inject constructor(
         provider: String,
         oauthAccessToken: String
     ): SocialLoginResponseDto = oauthService.postSocialLogin(
-        provider = provider,
-        oauthAccessToken = oauthAccessToken
+        soicialPlatform = provider,
+        oauthAccessToken = SocialLoginRequestDto(oauthAccessToken = oauthAccessToken)
     ).data
 }

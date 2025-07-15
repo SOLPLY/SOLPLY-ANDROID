@@ -1,4 +1,4 @@
-package com.teamsolply.solply.onboarding.dto.request
+package com.teamsolply.solply.onboarding.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
