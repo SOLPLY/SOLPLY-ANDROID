@@ -2,7 +2,6 @@ package com.teamsolply.solply.maps.repository
 
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
-import com.teamsolply.solply.maps.model.NewCourseEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 
 interface MapsRepository {
@@ -14,5 +13,5 @@ interface MapsRepository {
     suspend fun getAllCourses(): Result<List<CourseInfoEntity>>
 
     // Add Course
-    suspend fun getCourseInfo(courseId: Int): Result<CourseDetailEntity>
+    suspend fun getCourseDetail(courseId: Long): Result<CourseDetailEntity>
 }

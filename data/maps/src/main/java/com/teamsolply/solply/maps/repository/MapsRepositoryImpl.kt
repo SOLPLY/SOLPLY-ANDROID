@@ -1,8 +1,8 @@
 package com.teamsolply.solply.maps.repository
 
+import com.teamsolply.solply.maps.mapper.toEntity
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
-import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import com.teamsolply.solply.model.PlaceType
@@ -151,79 +151,9 @@ class MapsRepositoryImpl @Inject constructor(
     }
 
     // Add Course
-    override suspend fun getCourseInfo(courseId: Int): Result<CourseDetailEntity> = runCatching {
-        CourseDetailEntity(
-            courseId = 1,
-            courseName = "오감으로 수집하는 하루",
-            introduction = "귀여운 당고 디저트와 ...",
-            isBookmarked = true,
-            places = listOf(
-                Place(
-                    placeId = 1,
-                    placeName = "유어마인드",
-                    thumbnailUrl = "",
-                    primaryTag = "카페",
-                    address = "서울 서대문구 연희로11라길 10-6",
-                    isBookmarked = true,
-                    placeOrder = 1,
-                    latitude = "37.4979",
-                    longitude = "127.0276",
-                    placeTag = "shopping",
-                    placeDefaultId = 123
-                ),
-                Place(
-                    placeId = 2,
-                    placeName = "비스트롤 연회",
-                    thumbnailUrl = "",
-                    primaryTag = "카페",
-                    address = "서울 서대문구 연희로11라길 10-6",
-                    isBookmarked = false,
-                    placeOrder = 2,
-                    latitude = "37.4999",
-                    longitude = "127.0286",
-                    placeTag = "shopping",
-                    placeDefaultId = 123
-                ),
-                Place(
-                    placeId = 3,
-                    placeName = "파파연회",
-                    thumbnailUrl = "",
-                    primaryTag = "카페",
-                    address = "서울 서대문구 연희로11라길 10-6",
-                    isBookmarked = false,
-                    placeOrder = 3,
-                    latitude = "37.4999",
-                    longitude = "127.0376",
-                    placeTag = "shopping",
-                    placeDefaultId = 123
-                ),
-                Place(
-                    placeId = 4,
-                    placeName = "라이카시네마",
-                    thumbnailUrl = "",
-                    primaryTag = "카페",
-                    address = "서울 서대문구 연희로11라길 10-6",
-                    isBookmarked = false,
-                    placeOrder = 4,
-                    latitude = "37.4980",
-                    longitude = "127.0226",
-                    placeTag = "shopping",
-                    placeDefaultId = 123
-                ),
-                Place(
-                    placeId = 5,
-                    placeName = "아아아아",
-                    thumbnailUrl = "",
-                    primaryTag = "카페",
-                    address = "서울 서대문구 연희로11라길 10-6",
-                    isBookmarked = true,
-                    placeOrder = 5,
-                    latitude = "37.4999",
-                    longitude = "127.0226",
-                    placeTag = "shopping",
-                    placeDefaultId = 123
-                )
-            )
-        )
+    override suspend fun getCourseDetail(courseId: Long): Result<CourseDetailEntity> = runCatching {
+        mapsRemoteDataSource.getCourseDetail(courseId = courseId)
+    }.mapCatching { dto ->
+        dto.toEntity()
     }
 }

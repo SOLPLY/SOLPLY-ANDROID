@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps.service
 
+import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
 import retrofit2.http.DELETE
@@ -29,5 +30,9 @@ interface MapsService {
     ): BaseResponse<Unit>
 
     // 내 코스에 추가
+    @GET("api/courses/{courseId}")
+    suspend fun getCourseDetail(
+        @Path("courseId") courseId: Long
+    ): BaseResponse<CourseDetailResponseDto>
     //코스 전체 조회
 }

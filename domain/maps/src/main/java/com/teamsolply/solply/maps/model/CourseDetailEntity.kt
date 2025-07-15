@@ -1,7 +1,7 @@
 package com.teamsolply.solply.maps.model
 
 data class CourseDetailEntity(
-    val courseId: Int,
+    val courseId: Long,
     val courseName: String,
     val introduction: String,
     val isBookmarked: Boolean,
@@ -9,7 +9,7 @@ data class CourseDetailEntity(
 )
 
 data class Place(
-    val placeId: Int,
+    val placeId: Long,
     val placeName: String,
     val thumbnailUrl: String,
     val primaryTag: String,

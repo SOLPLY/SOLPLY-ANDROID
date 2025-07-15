@@ -281,9 +281,9 @@ private fun MapsScreen(
     // Add Course
     courseDetailInfo: CourseDetailEntity,
     saveCourse: () -> Unit,
-    selectedPlaceInfoId: Int?,
-    singleCoursePlaceBookMarkClick: (Int) -> Unit,
-    placeInfoClick: (Int) -> Unit,
+    selectedPlaceInfoId: Long?,
+    singleCoursePlaceBookMarkClick: (Long) -> Unit,
+    placeInfoClick: (Long) -> Unit,
     // Edit Course
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
@@ -295,7 +295,7 @@ private fun MapsScreen(
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
     onCourseEditBackClick: () -> Unit,
-    onPlaceDetailClick: (Int) -> Unit,
+    onPlaceDetailClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
