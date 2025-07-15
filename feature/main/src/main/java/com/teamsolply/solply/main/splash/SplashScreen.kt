@@ -4,18 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.R
-import androidx.compose.foundation.layout.size
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SplashScreen(
@@ -51,4 +51,3 @@ fun SplashScreen(
         )
     }
 }
-

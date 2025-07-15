@@ -15,5 +15,5 @@ dependencies {
     implementation(projects.feature.maps)
     implementation(projects.feature.mypage)
     implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation ("com.airbnb.android:lottie-compose:6.1.0")
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 }

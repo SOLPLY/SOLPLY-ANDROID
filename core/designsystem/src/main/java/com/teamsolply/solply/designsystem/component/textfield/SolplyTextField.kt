@@ -130,16 +130,16 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value) {
         if (value.isNotEmpty()) {
             isTyping = true
             delay(300)
 
-            if(value.length<minLength){
-                validationState =NickNameValidateState.TooShort
-                isTyping=false
+            if (value.length < minLength) {
+                validationState = NickNameValidateState.TooShort
+                isTyping = false
                 return@LaunchedEffect
             }
             if (value.length == maxLength) {
@@ -170,7 +170,8 @@ fun SolplyNicknameTextField(
         validationState in listOf(
             NickNameValidateState.Duplicate,
             NickNameValidateState.Invalid,
-            NickNameValidateState.TooShort) ->
+            NickNameValidateState.TooShort
+        ) ->
             Pair(SolplyTheme.colors.white, SolplyTheme.colors.red600)
 
         validationState == NickNameValidateState.Typing ->
