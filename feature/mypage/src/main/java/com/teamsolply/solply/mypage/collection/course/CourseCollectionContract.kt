@@ -9,7 +9,8 @@ import okhttp3.internal.immutableListOf
 
 data class CourseCollectionState(
     val selectMode: Boolean = false,
-    val town: String = "연희동",
+    val townId: Int = 1,
+    val townName: String = "연희동",
     val courses: List<CourseInfoEntity> = immutableListOf(
         CourseInfoEntity(
             courseId = 0,
@@ -62,6 +63,8 @@ data class CourseCollectionState(
 ) : UiState
 
 sealed interface CourseCollectionIntent : UiIntent {
+
+    data class Init(val townId: Int, val townName: String) : CourseCollectionIntent
 
     data object SelectButtonClick : CourseCollectionIntent
     data object DeleteButtonClick : CourseCollectionIntent

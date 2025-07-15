@@ -17,10 +17,14 @@ interface MypageService {
     suspend fun getCourseTownList(): BaseResponse<CourseTownListResponseDto>
 
     @GET("/api/places")
-    suspend fun getPlaceList(): BaseResponse<PlaceListResponseDto>
+    suspend fun getPlaceList(
+        @Query("townId") townId: Int
+    ): BaseResponse<PlaceListResponseDto>
 
     @GET("/api/courses/bookmarks")
-    suspend fun getCourseList(): BaseResponse<CourseListResponseDto>
+    suspend fun getCourseList(
+        @Query("townId") townId: Int
+    ): BaseResponse<CourseListResponseDto>
 
     @DELETE("/api/places/bookmarks")
     suspend fun deletePlaces(

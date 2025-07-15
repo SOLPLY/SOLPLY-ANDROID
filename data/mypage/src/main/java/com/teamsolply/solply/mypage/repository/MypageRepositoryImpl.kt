@@ -36,8 +36,8 @@ class MypageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlaceList(): Result<List<PlaceInfoEntity>> = runCatching {
-        mypageRemoteDataSource.getPlaceList().placeList
+    override suspend fun getPlaceList(townId: Int): Result<List<PlaceInfoEntity>> = runCatching {
+        mypageRemoteDataSource.getPlaceList(townId).placeList
     }.mapCatching { placeList ->
         placeList.map { place ->
             PlaceInfoEntity(
@@ -49,8 +49,8 @@ class MypageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCourseList(): Result<List<CourseInfoEntity>> = runCatching {
-        mypageRemoteDataSource.getCourseList().courseList
+    override suspend fun getCourseList(townId: Int): Result<List<CourseInfoEntity>> = runCatching {
+        mypageRemoteDataSource.getCourseList(townId).courseList
     }.mapCatching { courseList ->
         courseList.map { course ->
             CourseInfoEntity(

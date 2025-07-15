@@ -23,7 +23,12 @@ class MypageViewModel @Inject constructor(
                         reduce {
                             copy(isPlaceTownSelected = true)
                         }
-                        postSideEffect(MypageSideEffect.NavigateToPlaceCollection(town = intent.selectedTown))
+                        postSideEffect(
+                            MypageSideEffect.NavigateToPlaceCollection(
+                                townId = intent.townId,
+                                townName = intent.townName
+                            )
+                        )
                     }
 
                     MypageTab.COURSE -> {
@@ -38,7 +43,12 @@ class MypageViewModel @Inject constructor(
                 reduce {
                     copy(isCourseTownSelected = true)
                 }
-                postSideEffect(MypageSideEffect.NavigateToCourseCollection(town = intent.selectedTown))
+                postSideEffect(
+                    MypageSideEffect.NavigateToCourseCollection(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                )
             }
 
             is MypageIntent.BackButtonClick -> {

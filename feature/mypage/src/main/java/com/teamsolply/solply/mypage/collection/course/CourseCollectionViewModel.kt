@@ -16,6 +16,16 @@ class CourseCollectionViewModel @Inject constructor(
     ) {
     override fun handleIntent(intent: CourseCollectionIntent) {
         when (intent) {
+            is CourseCollectionIntent.Init -> {
+                reduce {
+                    copy(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                }
+                getCourseList(uiState.value.townId)
+            }
+
             is CourseCollectionIntent.SelectButtonClick -> {
                 reduce {
                     copy(selectMode = true)
@@ -84,7 +94,6 @@ class CourseCollectionViewModel @Inject constructor(
                         dialogState = false
                     )
                 }
-                getCourseList()
                 postSideEffect(CourseCollectionSideEffect.DeleteCourses)
             }
 
@@ -96,9 +105,9 @@ class CourseCollectionViewModel @Inject constructor(
         }
     }
 
-    fun getCourseList() {
+    private fun getCourseList(townId: Int) {
         viewModelScope.launch {
-            mypageRepository.getCourseList().onSuccess {
+            mypageRepository.getCourseList(townId).onSuccess {
                 reduce {
                     copy(
                         courses = it
@@ -108,10 +117,10 @@ class CourseCollectionViewModel @Inject constructor(
         }
     }
 
-    fun deleteCourses(selectedCourses: List<Int>) {
+    private fun deleteCourses(selectedCourses: List<Int>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedCourses).onSuccess {
-                getCourseList()
+                getCourseList(townId = uiState.value.townId)
             }
         }
     }

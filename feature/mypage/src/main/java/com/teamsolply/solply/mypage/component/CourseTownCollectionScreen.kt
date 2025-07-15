@@ -14,16 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.CourseTownEntity
 import com.teamsolply.solply.ui.extension.customClickable
-import com.teamsolply.solply.ui.preview.DefaultPreview
-import okhttp3.internal.immutableListOf
 
 @Composable
 fun CourseTownCollectionScreen(
     town: List<CourseTownEntity>,
-    onClickTown: (String) -> Unit,
+    onClickTown: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -41,7 +38,7 @@ fun CourseTownCollectionScreen(
                     .customClickable(
                         rippleEnabled = false
                     ) {
-                        onClickTown(it.townName)
+                        onClickTown(it.townId, it.townName)
                     },
                 contentAlignment = if (index % 2 == 0) {
                     Alignment.CenterEnd
@@ -52,11 +49,11 @@ fun CourseTownCollectionScreen(
                 SolplyTownCard(
                     town = it.townName,
                     modifier =
-                    if (index % 2 == 0) {
-                        Modifier.padding(end = 5.dp)
-                    } else {
-                        Modifier.padding(start = 5.dp)
-                    },
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        },
                     content = {
                         SolplyCourseCard(
                             title = it.courseName,
@@ -67,44 +64,11 @@ fun CourseTownCollectionScreen(
                             iconBackGroundColor = SolplyTheme.colors.purple100,
                             savedPlace = true,
                             savedCourse = true,
-                            onClick = { onClickTown(it.townName) }
+                            onClick = { onClickTown(it.townId, it.townName) }
                         )
                     }
                 )
             }
         }
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun TownCollectionScreenPreview() {
-    SolplyTheme {
-        CourseTownCollectionScreen(
-            town = immutableListOf(
-                CourseTownEntity(
-                    townId = 1,
-                    townName = "연희동",
-                    tagList = listOf(
-                        PlaceType.BOOK,
-                        PlaceType.CAFE
-                    ),
-                    courseName = "오감으로 수집하는 코스",
-                    imageUrl = ""
-                ),
-                CourseTownEntity(
-                    townId = 2,
-                    townName = "망원동",
-                    tagList = listOf(
-                        PlaceType.WALK,
-                        PlaceType.CAFE
-                    ),
-                    courseName = "오감으로 수집하는 코스",
-                    imageUrl = ""
-                )
-            ),
-            onClickTown = { },
-            modifier = Modifier
-        )
     }
 }

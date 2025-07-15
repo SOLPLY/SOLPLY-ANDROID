@@ -42,8 +42,8 @@ fun MypageRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
-    navigateToPlaceCollection: (String) -> Unit,
-    navigateToCourseCollection: (String) -> Unit,
+    navigateToPlaceCollection: (Int, String) -> Unit,
+    navigateToCourseCollection: (Int, String) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
@@ -75,11 +75,11 @@ fun MypageRoute(
             when (sideEffect) {
                 is MypageSideEffect.NavigateToBack -> navigateToBack()
                 is MypageSideEffect.NavigateToPlaceCollection -> {
-                    navigateToPlaceCollection(sideEffect.town)
+                    navigateToPlaceCollection(sideEffect.townId, sideEffect.townName)
                 }
 
                 is MypageSideEffect.NavigateToCourseCollection -> {
-                    navigateToCourseCollection(sideEffect.town)
+                    navigateToCourseCollection(sideEffect.townId, sideEffect.townName)
                 }
 
                 is MypageSideEffect.NavigateToPLace -> {
@@ -99,14 +99,21 @@ fun MypageRoute(
         onEmptyButtonClick = { viewModel.sendIntent(MypageIntent.EmptyButtonClick(it)) },
         onClickPlaceTab = { viewModel.sendIntent(MypageIntent.SelectPlaceTab) },
         onClickCourseTab = { viewModel.sendIntent(MypageIntent.SelectCourseTab) },
-        selectTown = {
-            Log.d("town click", "타운 클릭")
+        selectTown = { townId, townName ->
             if (pagerState.currentPage == 0) {
-                Log.d("town click", "0" + "타운 클릭")
-                viewModel.sendIntent(MypageIntent.SelectPlaceTown(it))
+                viewModel.sendIntent(
+                    MypageIntent.SelectPlaceTown(
+                        townId = townId,
+                        townName = townName
+                    )
+                )
             } else {
-                Log.d("town click", "1" + "타운 클릭")
-                viewModel.sendIntent(MypageIntent.SelectCourseTown(it))
+                viewModel.sendIntent(
+                    MypageIntent.SelectCourseTown(
+                        townId = townId,
+                        townName = townName
+                    )
+                )
             }
         },
         pagerState = pagerState,
@@ -122,7 +129,7 @@ fun MypageScreen(
     onEmptyButtonClick: (MypageTab) -> Unit,
     onClickPlaceTab: () -> Unit,
     onClickCourseTab: () -> Unit,
-    selectTown: (String) -> Unit,
+    selectTown: (Int, String) -> Unit,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
     placeTown: List<PlaceTownEntity>,

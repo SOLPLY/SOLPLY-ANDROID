@@ -22,7 +22,7 @@ import com.teamsolply.solply.ui.preview.DefaultPreview
 @Composable
 fun PlaceTownCollectionScreen(
     town: List<PlaceTownEntity>,
-    onClickTown: (String) -> Unit,
+    onClickTown: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -40,7 +40,7 @@ fun PlaceTownCollectionScreen(
                     .customClickable(
                         rippleEnabled = false
                     ) {
-                        onClickTown(it.townName)
+                        onClickTown(it.townId, it.townName)
                     },
                 contentAlignment = if (index % 2 == 0) {
                     Alignment.CenterEnd
@@ -51,11 +51,11 @@ fun PlaceTownCollectionScreen(
                 SolplyTownCard(
                     town = it.townName,
                     modifier =
-                    if (index % 2 == 0) {
-                        Modifier.padding(end = 5.dp)
-                    } else {
-                        Modifier.padding(start = 5.dp)
-                    },
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        },
                     content = {
                         Image(
                             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
@@ -65,33 +65,5 @@ fun PlaceTownCollectionScreen(
                 )
             }
         }
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun TownCollectionScreenPreview() {
-    SolplyTheme {
-        PlaceTownCollectionScreen(
-            town = listOf(
-                PlaceTownEntity(
-                    townId = 1,
-                    townName = "연희동",
-                    imageUrl = ""
-                ),
-                PlaceTownEntity(
-                    townId = 2,
-                    townName = "망원동",
-                    imageUrl = ""
-                ),
-                PlaceTownEntity(
-                    townId = 3,
-                    townName = "성수동",
-                    imageUrl = ""
-                )
-            ),
-            onClickTown = { },
-            modifier = Modifier
-        )
     }
 }

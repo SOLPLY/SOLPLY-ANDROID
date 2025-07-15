@@ -16,6 +16,16 @@ class PlaceCollectionViewModel @Inject constructor(
     ) {
     override fun handleIntent(intent: PlaceCollectionIntent) {
         when (intent) {
+            is PlaceCollectionIntent.Init -> {
+                reduce {
+                    copy(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                }
+                getPlaceList(townId = uiState.value.townId)
+            }
+
             is PlaceCollectionIntent.SelectButtonClick -> {
                 reduce {
                     copy(selectMode = true)
@@ -97,9 +107,9 @@ class PlaceCollectionViewModel @Inject constructor(
         }
     }
 
-    fun getPlaceList() {
+    private fun getPlaceList(townId: Int) {
         viewModelScope.launch {
-            mypageRepository.getPlaceList().onSuccess {
+            mypageRepository.getPlaceList(townId).onSuccess {
                 reduce {
                     copy(
                         places = it
@@ -109,10 +119,10 @@ class PlaceCollectionViewModel @Inject constructor(
         }
     }
 
-    fun deletePlaces(selectedPlaces: List<Int>) {
+    private fun deletePlaces(selectedPlaces: List<Int>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedPlaces).onSuccess {
-                getPlaceList()
+                getPlaceList(uiState.value.townId)
             }
         }
     }
