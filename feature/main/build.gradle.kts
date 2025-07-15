@@ -16,4 +16,7 @@ dependencies {
     implementation(projects.feature.mypage)
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("com.google.android.material:material:1.11.0")
 }
