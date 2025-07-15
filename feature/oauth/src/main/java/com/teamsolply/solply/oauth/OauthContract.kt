@@ -10,11 +10,17 @@ data class OauthState(
 
 sealed interface OauthIntent : UiIntent {
     data object KakaoLoginClick : OauthIntent
-    data class KakaoLoginSuccess(val accessToken: String, val refreshToken: String?) : OauthIntent
+    data class KakaoLoginSuccess(val provider: String, val accessToken: String) : OauthIntent
     data class KakaoLoginFailure(val error: Throwable) : OauthIntent
+    data class SaveJwtToken(
+        val accessToken: String,
+        val refreshToken: String,
+        val isNewUser: Boolean
+    ) : OauthIntent
 }
 
 sealed interface OauthSideEffect : SideEffect {
     data object StartKakaoLogin : OauthSideEffect
     data object NavigateToOnBoarding : OauthSideEffect
+    data object NavigateToPlace : OauthSideEffect
 }

@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,8 +25,8 @@ fun SelectPersonaScreen(
     onBoardingIntent: (OnBoardingIntent) -> Unit
 ) {
     val options = state.personaList
-    var selectedIndex by remember { mutableStateOf(-1) }
-    val isButtonEnabled = selectedIndex != -1
+    val selectedPersona = state.selectedPersona
+    val isButtonEnabled = selectedPersona != null
 
     Column(
         modifier = Modifier
@@ -41,8 +39,7 @@ fun SelectPersonaScreen(
                 text = "혼자만의 시간,\n어떻게 보내고 싶나요?",
                 style = SolplyTheme.typography.display20Sb,
                 color = SolplyTheme.colors.black,
-                modifier = Modifier
-                    .padding(top = 24.dp)
+                modifier = Modifier.padding(top = 24.dp)
             )
 
             Column(
@@ -50,12 +47,12 @@ fun SelectPersonaScreen(
                     .fillMaxWidth()
                     .padding(top = 28.dp)
             ) {
-                options.forEachIndexed { index, persona ->
+                options.forEach { persona ->
+                    val isSelected = selectedPersona?.type == persona.type
                     MoodOptionBox(
                         text = persona.description,
-                        selected = selectedIndex == index,
+                        selected = isSelected,
                         onClick = {
-                            selectedIndex = index
                             onBoardingIntent(OnBoardingIntent.OnPersonaSelected(persona))
                         },
                         modifier = Modifier
@@ -69,12 +66,9 @@ fun SelectPersonaScreen(
 
         SolplyBasicButton(
             text = "다음",
-            modifier = Modifier
-                .padding(bottom = 24.dp),
+            modifier = Modifier.padding(bottom = 24.dp),
             onClick = {
-                if (isButtonEnabled) {
-                    onNextClick()
-                }
+                if (isButtonEnabled) onNextClick()
             },
             selected = isButtonEnabled,
             textStyle = SolplyTheme.typography.button16M,

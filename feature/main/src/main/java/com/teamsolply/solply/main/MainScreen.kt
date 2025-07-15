@@ -130,9 +130,19 @@ internal fun MainScreen(
                                 launchSingleTop = true
                             }
                             navigator.navigateToOnboarding(navOptions)
+                        },
+                        navigateToPlace = {
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                            navigator.navigateToPlace(navOptions = navOptions)
                         }
                     )
                     onBoardingNavGraph(
+                        navController = navigator.navController,
                         paddingValues = innerPadding,
                         navigateToPlace = {
                             val navOptions = navOptions {
