@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.repository.MapsRepository
@@ -44,6 +45,10 @@ internal class MapsViewModel @Inject constructor(
                 val isBookmarked = !currentState.isBookmarked
                 val placeId = currentState.placeId
 
+                reduce {
+                    copy(placeDetailInfo = currentState.copy(isBookmarked = isBookmarked))
+                }
+                
                 viewModelScope.launch {
                     val result = if (isBookmarked) {
                         mapsRepository.savePlaceBookMark(placeId)
@@ -52,10 +57,6 @@ internal class MapsViewModel @Inject constructor(
                     }
 
                     result.onSuccess {
-                        reduce {
-                            copy(placeDetailInfo = currentState.copy(isBookmarked = isBookmarked))
-                        }
-
                         if (isBookmarked) {
                             postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
                         }
@@ -206,14 +207,22 @@ internal class MapsViewModel @Inject constructor(
     }
 
     // TODO. 장소를 저장 할 코스 리스트 정보 조회 API
-    fun getAllCourseInfo() {
+    fun getAllCourseInfo(
+        townId: Long,
+        placeId: Long
+    ) {
         viewModelScope.launch {
-            mapsRepository.getAllCourses().onSuccess {
+            mapsRepository.getAddMyCourse(
+                townId = townId,
+                placeId = placeId
+            ).onSuccess {
                 reduce {
                     copy(
                         courses = it.toPersistentList()
                     )
                 }
+            }.onFailure {
+                Log.d("asdasdasd", it.toString())
             }
         }
     }

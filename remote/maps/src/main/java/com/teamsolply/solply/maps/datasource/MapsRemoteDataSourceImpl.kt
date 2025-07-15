@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps.datasource
 
 import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
+import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.maps.service.MapsService
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
@@ -19,6 +20,9 @@ class MapsRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun deletePlaceBookMark(placeId: Long): Unit =
         mapsService.deletePlaceBookMark(placeId = placeId).data
+
+    override suspend fun getAddMyCourse(townId: Long, placeId: Long): CoursesResponseDto =
+        mapsService.getAddMyCourse(townId = townId, placeId = placeId).data
 
     override suspend fun getCourseDetail(courseId: Long): CourseDetailResponseDto =
         mapsService.getCourseDetail(courseId = courseId).data

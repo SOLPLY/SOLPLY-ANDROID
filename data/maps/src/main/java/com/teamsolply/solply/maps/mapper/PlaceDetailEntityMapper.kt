@@ -16,7 +16,7 @@ fun GetPlaceDetailResponseDto.toEntity(): PlaceDetailEntity {
         address = address,
         latitude = latitude.toDouble(),
         longitude = longitude.toDouble(),
-        contactNumber = contactNumber,
+        contactNumber = contactNumber ?: "",
         openingHours = openingHours,
         snsLinks = snsLinkDtos.map { it.toEntity() },
         isBookmarked = isBookmarked,

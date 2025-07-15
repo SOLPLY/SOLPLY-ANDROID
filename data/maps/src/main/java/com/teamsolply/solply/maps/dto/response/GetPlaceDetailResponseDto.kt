@@ -31,7 +31,7 @@ data class GetPlaceDetailResponseDto(
     val longitude: String,
 
     @SerialName("contactNumber")
-    val contactNumber: String,
+    val contactNumber: String?,
 
     @SerialName("openingHours")
     val openingHours: String,

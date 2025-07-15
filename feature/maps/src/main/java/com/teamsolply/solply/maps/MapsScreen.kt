@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -81,6 +82,7 @@ import kotlin.math.abs
 @Composable
 internal fun MapsRoute(
     mapsType: MapsType,
+    townId: Long = 0,
     targetId: Long = 1,
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
@@ -102,7 +104,7 @@ internal fun MapsRoute(
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
                 viewModel.getPlaceDetailInfo(targetId)
-                viewModel.getAllCourseInfo()
+                viewModel.getAllCourseInfo(townId = townId, placeId = targetId)
             }
 
             MapsType.ADD_COURSE -> {

@@ -10,7 +10,10 @@ interface MapsRepository {
     suspend fun savePlaceBookMark(placeId: Long): Result<Unit>
     suspend fun deletePlaceBookMark(placeId: Long): Result<Unit>
 
-    suspend fun getAllCourses(): Result<List<CourseInfoEntity>>
+    suspend fun getAddMyCourse(
+        townId: Long,
+        placeId: Long
+    ): Result<List<CourseInfoEntity>>
 
     // Add Course
     suspend fun getCourseDetail(courseId: Long): Result<CourseDetailEntity>
