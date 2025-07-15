@@ -1,7 +1,7 @@
 package com.teamsolply.solply.mypage.collection.course
 
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.mypage.model.CourseCard
+import com.teamsolply.solply.mypage.model.CourseInfoEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
@@ -10,8 +10,8 @@ import okhttp3.internal.immutableListOf
 data class CourseCollectionState(
     val selectMode: Boolean = false,
     val town: String = "연희동",
-    val courses: List<CourseCard> = immutableListOf(
-        CourseCard(
+    val courses: List<CourseInfoEntity> = immutableListOf(
+        CourseInfoEntity(
             courseId = 0,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
@@ -20,7 +20,7 @@ data class CourseCollectionState(
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
-        CourseCard(
+        CourseInfoEntity(
             courseId = 1,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
@@ -29,7 +29,7 @@ data class CourseCollectionState(
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
-        CourseCard(
+        CourseInfoEntity(
             courseId = 2,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
@@ -38,7 +38,7 @@ data class CourseCollectionState(
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
-        CourseCard(
+        CourseInfoEntity(
             courseId = 3,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(
@@ -47,7 +47,7 @@ data class CourseCollectionState(
             ),
             imageUrls = immutableListOf(1, 2, 3)
         ),
-        CourseCard(
+        CourseInfoEntity(
             courseId = 5,
             courseName = "오감으로 수집하는 하루",
             placeTypeList = immutableListOf(

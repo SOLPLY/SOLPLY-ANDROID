@@ -30,7 +30,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.component.TabScreen
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownCard
+import com.teamsolply.solply.mypage.model.TownEntity
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -121,7 +121,7 @@ fun MypageScreen(
     selectTown: (String) -> Unit,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
-    town: List<TownCard>
+    town: List<TownEntity>
 ) {
     val coroutineScope = rememberCoroutineScope()
     val selectedIndex = pagerState.currentPage

@@ -2,10 +2,10 @@ package com.teamsolply.solply.mypage.model
 
 import com.teamsolply.solply.model.PlaceType
 
-data class CourseCard(
-    val courseId: Int,
-    val courseName: String,
-    val placeTypeList: List<PlaceType>,
+data class PlaceInfoEntity(
+    val placeId: Int,
+    val placeName: String,
+    val placeType: PlaceType,
     val imageUrls: List<Int>,
     val isSelected: Boolean = false
 )

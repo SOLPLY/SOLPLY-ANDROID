@@ -18,13 +18,13 @@ import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownCard
+import com.teamsolply.solply.mypage.model.TownEntity
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun TownCollectionScreen(
-    town: List<TownCard>,
+    town: List<TownEntity>,
     onClickTown: (String) -> Unit,
     mypageTab: MypageTab,
     modifier: Modifier = Modifier
@@ -55,11 +55,11 @@ fun TownCollectionScreen(
                 SolplyTownCard(
                     town = it.townName,
                     modifier =
-                    if (index % 2 == 0) {
-                        Modifier.padding(end = 5.dp)
-                    } else {
-                        Modifier.padding(start = 5.dp)
-                    },
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        },
                     content = {
                         when (mypageTab) {
                             MypageTab.PLACE ->
@@ -70,9 +70,9 @@ fun TownCollectionScreen(
 
                             MypageTab.COURSE ->
                                 SolplyCourseCard(
-                                    title = "오감으로 수집하는 하루",
+                                    title = it.courseName,
                                     imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                                    placeType = listOf(PlaceType.BOOK, PlaceType.SHOPPING),
+                                    placeType = it.tagList,
                                     backgroundColor = SolplyTheme.colors.purple200,
                                     iconColor = SolplyTheme.colors.purple400,
                                     iconBackGroundColor = SolplyTheme.colors.purple100,
@@ -94,14 +94,26 @@ private fun TownCollectionScreenPreview() {
     SolplyTheme {
         TownCollectionScreen(
             town = listOf(
-                TownCard(
+                TownEntity(
+                    townId = 1,
                     townName = "연희동",
+                    tagList = listOf(
+                        PlaceType.BOOK,
+                        PlaceType.CAFE
+                    ),
+                    courseName = "오감으로 수집하는 코스",
                     imageUrl = ""
                 ),
-                TownCard(
+                TownEntity(
+                    townId = 2,
                     townName = "망원동",
+                    tagList = listOf(
+                        PlaceType.WALK,
+                        PlaceType.CAFE
+                    ),
+                    courseName = "오감으로 수집하는 코스",
                     imageUrl = ""
-                )
+                ),
             ),
             onClickTown = { },
             mypageTab = MypageTab.COURSE,

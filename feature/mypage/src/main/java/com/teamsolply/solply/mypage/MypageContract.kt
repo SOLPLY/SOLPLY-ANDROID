@@ -1,22 +1,45 @@
 package com.teamsolply.solply.mypage
 
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownCard
+import com.teamsolply.solply.mypage.model.TownEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 import okhttp3.internal.immutableListOf
 
 data class MypageState(
-    val towns: List<TownCard> =
+    val towns: List<TownEntity> =
 //        emptyList<TownCard>(),
         immutableListOf(
-            TownCard(
+            TownEntity(
+                townId = 1,
                 townName = "연희동",
+                tagList = listOf(
+                    PlaceType.BOOK,
+                    PlaceType.CAFE
+                ),
+                courseName = "오감으로 수집하는 코스",
                 imageUrl = ""
             ),
-            TownCard(
+            TownEntity(
+                townId = 2,
                 townName = "망원동",
+                tagList = listOf(
+                    PlaceType.WALK,
+                    PlaceType.CAFE
+                ),
+                courseName = "오감으로 수집하는 코스",
+                imageUrl = ""
+            ),
+            TownEntity(
+                townId = 3,
+                townName = "성수동",
+                tagList = listOf(
+                    PlaceType.FOOD,
+                    PlaceType.CAFE
+                ),
+                courseName = "오감으로 수집하는 코스",
                 imageUrl = ""
             )
         ),
