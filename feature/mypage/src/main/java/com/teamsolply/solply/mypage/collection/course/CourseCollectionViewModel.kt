@@ -74,14 +74,15 @@ class CourseCollectionViewModel @Inject constructor(
             }
 
             is CourseCollectionIntent.DialogConfirmClick -> {
-                reduce {
-                    copy(dialogState = false)
-                }
                 // TODO 삭제 api 요청
                 deleteCourses(selectedCourses = uiState.value.selectedCourses.toList())
                 // TODO 삭제 api 응답 후
                 reduce {
-                    copy(selectMode = false)
+                    copy(
+                        selectedCourses = emptySet(),
+                        selectMode = false,
+                        dialogState = false
+                    )
                 }
                 getCourseList()
                 postSideEffect(CourseCollectionSideEffect.DeleteCourses)
@@ -99,7 +100,9 @@ class CourseCollectionViewModel @Inject constructor(
         viewModelScope.launch {
             mypageRepository.getCourseList().onSuccess {
                 reduce {
-                    copy()
+                    copy(
+                        courses = it
+                    )
                 }
             }
         }
@@ -107,7 +110,9 @@ class CourseCollectionViewModel @Inject constructor(
 
     fun deleteCourses(selectedCourses: List<Int>) {
         viewModelScope.launch {
-            mypageRepository.deleteCourses(selectedCourses).onSuccess { }
+            mypageRepository.deleteCourses(selectedCourses).onSuccess {
+                getCourseList()
+            }
         }
     }
 }

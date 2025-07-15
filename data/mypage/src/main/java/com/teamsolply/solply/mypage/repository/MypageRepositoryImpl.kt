@@ -34,7 +34,6 @@ class MypageRepositoryImpl @Inject constructor(
                 tagList = town.tagList
             )
         }
-
     }
 
     override suspend fun getPlaceList(): Result<List<PlaceInfoEntity>> = runCatching {
@@ -58,7 +57,7 @@ class MypageRepositoryImpl @Inject constructor(
                 courseId = course.courseId,
                 courseName = course.courseName,
                 placeTypeList = listOf(course.tag),
-                imageUrls = listOf(course.imageUrl),
+                imageUrls = listOf(course.imageUrl)
             )
         }
     }

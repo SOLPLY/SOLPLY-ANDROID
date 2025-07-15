@@ -18,7 +18,7 @@ data class CourseCollectionState(
                 PlaceType.CAFE,
                 PlaceType.BOOK
             ),
-            imageUrls = immutableListOf(1, 2, 3)
+            imageUrls = immutableListOf("1")
         ),
         CourseInfoEntity(
             courseId = 1,
@@ -27,7 +27,7 @@ data class CourseCollectionState(
                 PlaceType.BOOK,
                 PlaceType.CAFE
             ),
-            imageUrls = immutableListOf(1, 2, 3)
+            imageUrls = immutableListOf("1")
         ),
         CourseInfoEntity(
             courseId = 2,
@@ -36,7 +36,7 @@ data class CourseCollectionState(
                 PlaceType.SHOPPING,
                 PlaceType.WALK
             ),
-            imageUrls = immutableListOf(1, 2, 3)
+            imageUrls = immutableListOf("1")
         ),
         CourseInfoEntity(
             courseId = 3,
@@ -45,7 +45,7 @@ data class CourseCollectionState(
                 PlaceType.FOOD,
                 PlaceType.SHOPPING
             ),
-            imageUrls = immutableListOf(1, 2, 3)
+            imageUrls = immutableListOf("1")
         ),
         CourseInfoEntity(
             courseId = 5,
@@ -54,7 +54,7 @@ data class CourseCollectionState(
                 PlaceType.WALK,
                 PlaceType.UNIQUE
             ),
-            imageUrls = immutableListOf(1, 2, 3)
+            imageUrls = immutableListOf("1")
         )
     ),
     val selectedCourses: Set<Int> = emptySet(),

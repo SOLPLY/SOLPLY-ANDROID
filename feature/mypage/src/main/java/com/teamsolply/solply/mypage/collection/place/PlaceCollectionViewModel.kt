@@ -75,16 +75,17 @@ class PlaceCollectionViewModel @Inject constructor(
             }
 
             is PlaceCollectionIntent.DialogConfirmClick -> {
-                reduce {
-                    copy(dialogState = false)
-                }
                 // TODO 삭제 api 요청
                 deletePlaces(uiState.value.selectedPlaces.toList())
                 // TODO 삭제 api 응답 후
                 reduce {
-                    copy(selectMode = false)
+                    copy(
+                        selectedPlaces = emptySet(),
+                        selectMode = false,
+                        dialogState = false
+                    )
                 }
-                getPlaceList()
+//                getPlaceList()
                 postSideEffect(PlaceCollectionSideEffect.DeletePlaces)
             }
 
@@ -111,11 +112,7 @@ class PlaceCollectionViewModel @Inject constructor(
     fun deletePlaces(selectedPlaces: List<Int>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedPlaces).onSuccess {
-                reduce {
-                    copy(
-
-                    )
-                }
+                getPlaceList()
             }
         }
     }
