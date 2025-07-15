@@ -30,7 +30,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.component.TabScreen
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownEntity
+import com.teamsolply.solply.mypage.model.CourseTownEntity
+import com.teamsolply.solply.mypage.model.PlaceTownEntity
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -109,7 +110,8 @@ fun MypageRoute(
             }
         },
         pagerState = pagerState,
-        town = uiState.towns
+        placeTown = uiState.placeTowns,
+        courseTown = uiState.courseTowns
     )
 }
 
@@ -123,7 +125,8 @@ fun MypageScreen(
     selectTown: (String) -> Unit,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
-    town: List<TownEntity>
+    placeTown: List<PlaceTownEntity>,
+    courseTown: List<CourseTownEntity>
 ) {
     val coroutineScope = rememberCoroutineScope()
     val selectedIndex = pagerState.currentPage
@@ -187,14 +190,16 @@ fun MypageScreen(
             when (page) {
                 0 -> TabScreen(
                     onClickEmptyButton = onEmptyButtonClick,
-                    town = town,
+                    placeTown = placeTown,
+                    courseTown = courseTown,
                     onClickTown = selectTown,
                     mypageTab = MypageTab.PLACE
                 )
 
                 1 -> TabScreen(
                     onClickEmptyButton = onEmptyButtonClick,
-                    town = town,
+                    placeTown = placeTown,
+                    courseTown = courseTown,
                     onClickTown = selectTown,
                     mypageTab = MypageTab.COURSE
                 )

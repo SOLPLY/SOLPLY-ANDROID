@@ -5,6 +5,6 @@ interface MypageRemoteDataSource {
     suspend fun getCourseTownList()
     suspend fun getPlaceList()
     suspend fun getCourseList()
-    suspend fun deletePlaces()
-    suspend fun deleteCourses()
+    suspend fun deletePlaces(placeList: List<Int>)
+    suspend fun deleteCourses(courseList: List<Int>)
 }

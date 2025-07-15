@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,21 +11,19 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownEntity
+import com.teamsolply.solply.mypage.model.CourseTownEntity
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.preview.DefaultPreview
+import okhttp3.internal.immutableListOf
 
 @Composable
-fun TownCollectionScreen(
-    town: List<TownEntity>,
+fun CourseTownCollectionScreen(
+    town: List<CourseTownEntity>,
     onClickTown: (String) -> Unit,
-    mypageTab: MypageTab,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -61,26 +58,17 @@ fun TownCollectionScreen(
                             Modifier.padding(start = 5.dp)
                         },
                     content = {
-                        when (mypageTab) {
-                            MypageTab.PLACE ->
-                                Image(
-                                    painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
-                                    contentDescription = ""
-                                )
-
-                            MypageTab.COURSE ->
-                                SolplyCourseCard(
-                                    title = it.courseName,
-                                    imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                                    placeType = it.tagList,
-                                    backgroundColor = SolplyTheme.colors.purple200,
-                                    iconColor = SolplyTheme.colors.purple400,
-                                    iconBackGroundColor = SolplyTheme.colors.purple100,
-                                    savedPlace = true,
-                                    savedCourse = true,
-                                    onClick = { onClickTown(it.townName) }
-                                )
-                        }
+                        SolplyCourseCard(
+                            title = it.courseName,
+                            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            placeType = it.tagList,
+                            backgroundColor = SolplyTheme.colors.purple200,
+                            iconColor = SolplyTheme.colors.purple400,
+                            iconBackGroundColor = SolplyTheme.colors.purple100,
+                            savedPlace = true,
+                            savedCourse = true,
+                            onClick = { onClickTown(it.townName) }
+                        )
                     }
                 )
             }
@@ -92,9 +80,9 @@ fun TownCollectionScreen(
 @Composable
 private fun TownCollectionScreenPreview() {
     SolplyTheme {
-        TownCollectionScreen(
-            town = listOf(
-                TownEntity(
+        CourseTownCollectionScreen(
+            town = immutableListOf(
+                CourseTownEntity(
                     townId = 1,
                     townName = "연희동",
                     tagList = listOf(
@@ -104,7 +92,7 @@ private fun TownCollectionScreenPreview() {
                     courseName = "오감으로 수집하는 코스",
                     imageUrl = ""
                 ),
-                TownEntity(
+                CourseTownEntity(
                     townId = 2,
                     townName = "망원동",
                     tagList = listOf(
@@ -116,7 +104,6 @@ private fun TownCollectionScreenPreview() {
                 ),
             ),
             onClickTown = { },
-            mypageTab = MypageTab.COURSE,
             modifier = Modifier
         )
     }

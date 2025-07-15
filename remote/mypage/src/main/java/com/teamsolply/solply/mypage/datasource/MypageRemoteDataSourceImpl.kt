@@ -7,27 +7,16 @@ import javax.inject.Inject
 class MypageRemoteDataSourceImpl @Inject constructor(
     private val mypageService: MypageService
 ) : MypageRemoteDataSource {
-    override suspend fun getPlaceTownList() {
-        mypageService.getPlaceTownList()
-    }
+    override suspend fun getPlaceTownList() = mypageService.getPlaceTownList()
 
-    override suspend fun getCourseTownList() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCourseTownList() = mypageService.getCourseTownList()
 
-    override suspend fun getPlaceList() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getPlaceList() = mypageService.getPlaceList()
 
-    override suspend fun getCourseList() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCourseList() = mypageService.getCourseList()
 
-    override suspend fun deletePlaces() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deletePlaces(placeList: List<Int>) = mypageService.deletePlaces(placeList)
 
-    override suspend fun deleteCourses() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteCourses(courseList: List<Int>) =
+        mypageService.deleteCourses(courseList)
 }

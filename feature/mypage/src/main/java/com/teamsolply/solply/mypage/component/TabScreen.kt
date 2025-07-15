@@ -5,7 +5,8 @@ import androidx.compose.ui.Modifier
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownEntity
+import com.teamsolply.solply.mypage.model.CourseTownEntity
+import com.teamsolply.solply.mypage.model.PlaceTownEntity
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
 
@@ -13,36 +14,45 @@ import okhttp3.internal.immutableListOf
 fun TabScreen(
     onClickEmptyButton: (MypageTab) -> Unit,
     onClickTown: (String) -> Unit,
-    town: List<TownEntity>,
+    placeTown: List<PlaceTownEntity>,
+    courseTown: List<CourseTownEntity>,
     mypageTab: MypageTab,
     modifier: Modifier = Modifier
 ) {
-    if (town.isEmpty()) {
-        EmptyCollectionScreen(
-            onClick = { onClickEmptyButton(mypageTab) },
-            mypageTab = mypageTab,
-            modifier = modifier
-        )
-    } else {
-        when (mypageTab) {
-            MypageTab.PLACE ->
-                TownCollectionScreen(
-                    town = town,
-                    onClickTown = onClickTown,
-                    mypageTab = mypageTab,
-                    modifier = modifier
-                )
 
-            MypageTab.COURSE ->
-                TownCollectionScreen(
-                    town = town,
-                    onClickTown = onClickTown,
+    when (mypageTab) {
+        MypageTab.PLACE ->
+            if (placeTown.isEmpty()) {
+                EmptyCollectionScreen(
+                    onClick = { onClickEmptyButton(mypageTab) },
                     mypageTab = mypageTab,
                     modifier = modifier
                 )
-        }
+            } else {
+                PlaceTownCollectionScreen(
+                    town = placeTown,
+                    onClickTown = onClickTown,
+                    modifier = modifier
+                )
+            }
+
+        MypageTab.COURSE ->
+            if (courseTown.isEmpty()) {
+                EmptyCollectionScreen(
+                    onClick = { onClickEmptyButton(mypageTab) },
+                    mypageTab = mypageTab,
+                    modifier = modifier
+                )
+            } else {
+                CourseTownCollectionScreen(
+                    town = courseTown,
+                    onClickTown = onClickTown,
+                    modifier = modifier
+                )
+            }
     }
 }
+
 
 @DefaultPreview
 @Composable
@@ -50,8 +60,25 @@ private fun PlaceTabScreenPreview() {
     SolplyTheme {
         TabScreen(
             onClickEmptyButton = {},
-            town = immutableListOf(
-                TownEntity(
+            placeTown = immutableListOf(
+                PlaceTownEntity(
+                    townId = 1,
+                    townName = "연희동",
+                    imageUrl = ""
+                ),
+                PlaceTownEntity(
+                    townId = 2,
+                    townName = "망원동",
+                    imageUrl = ""
+                ),
+                PlaceTownEntity(
+                    townId = 3,
+                    townName = "성수동",
+                    imageUrl = ""
+                )
+            ),
+            courseTown = immutableListOf(
+                CourseTownEntity(
                     townId = 1,
                     townName = "연희동",
                     tagList = listOf(
@@ -61,7 +88,7 @@ private fun PlaceTabScreenPreview() {
                     courseName = "오감으로 수집하는 코스",
                     imageUrl = ""
                 ),
-                TownEntity(
+                CourseTownEntity(
                     townId = 2,
                     townName = "망원동",
                     tagList = listOf(
@@ -71,7 +98,7 @@ private fun PlaceTabScreenPreview() {
                     courseName = "오감으로 수집하는 코스",
                     imageUrl = ""
                 ),
-                TownEntity(
+                CourseTownEntity(
                     townId = 3,
                     townName = "성수동",
                     tagList = listOf(
