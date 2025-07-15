@@ -24,11 +24,18 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlaceCollectionRoute(
     paddingValues: PaddingValues,
+    townId: Int,
+    townName: String,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
     viewModel: PlaceCollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        Log.d("townId 찍기", townId.toString())
+        viewModel.sendIntent(PlaceCollectionIntent.Init(townId, townName))
+    }
 
     LaunchedEffect(uiState.selectMode) {
         Log.d("select Mode", uiState.selectMode.toString())
@@ -48,7 +55,7 @@ fun PlaceCollectionRoute(
     }
 
     CollectionScreen(
-        town = uiState.town,
+        town = uiState.townName,
         onBackButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.BackButtonClick) },
         onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectButtonClick) },
         onDeleteButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.DeleteButtonClick) },
@@ -80,7 +87,7 @@ fun PlaceCollectionRoute(
                     SolplyPlaceCard(
                         name = it.placeName,
                         placeType = it.placeType,
-                        imgRes = it.imageUrls[0],
+                        imgRes = 0,
                         selected = it.isSelected,
                         touchable = false,
                         modifier =

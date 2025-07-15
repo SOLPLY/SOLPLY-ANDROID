@@ -1,16 +1,31 @@
 package com.teamsolply.solply.mypage.collection.course
 
+import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CourseCollectionViewModel @Inject constructor() :
+class CourseCollectionViewModel @Inject constructor(
+    private val mypageRepository: MypageRepository
+) :
     BaseViewModel<CourseCollectionState, CourseCollectionIntent, CourseCollectionSideEffect>(
         CourseCollectionState()
     ) {
     override fun handleIntent(intent: CourseCollectionIntent) {
         when (intent) {
+            is CourseCollectionIntent.Init -> {
+                reduce {
+                    copy(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                }
+                getCourseList(uiState.value.townId)
+            }
+
             is CourseCollectionIntent.SelectButtonClick -> {
                 reduce {
                     copy(selectMode = true)
@@ -69,14 +84,15 @@ class CourseCollectionViewModel @Inject constructor() :
             }
 
             is CourseCollectionIntent.DialogConfirmClick -> {
-                reduce {
-                    copy(dialogState = false)
-                }
                 // TODO 삭제 api 요청
-
+                deleteCourses(selectedCourses = uiState.value.selectedCourses.toList())
                 // TODO 삭제 api 응답 후
                 reduce {
-                    copy(selectMode = false)
+                    copy(
+                        selectedCourses = emptySet(),
+                        selectMode = false,
+                        dialogState = false
+                    )
                 }
                 postSideEffect(CourseCollectionSideEffect.DeleteCourses)
             }
@@ -85,6 +101,26 @@ class CourseCollectionViewModel @Inject constructor() :
                 reduce {
                     copy(dialogState = false)
                 }
+            }
+        }
+    }
+
+    private fun getCourseList(townId: Int) {
+        viewModelScope.launch {
+            mypageRepository.getCourseList(townId).onSuccess {
+                reduce {
+                    copy(
+                        courses = it
+                    )
+                }
+            }
+        }
+    }
+
+    private fun deleteCourses(selectedCourses: List<Int>) {
+        viewModelScope.launch {
+            mypageRepository.deleteCourses(selectedCourses).onSuccess {
+                getCourseList(townId = uiState.value.townId)
             }
         }
     }
