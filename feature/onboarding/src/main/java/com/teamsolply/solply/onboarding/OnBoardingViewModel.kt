@@ -22,6 +22,7 @@ class OnBoardingViewModel @Inject constructor(
     private val nicknameFlow = MutableStateFlow("")
 
     init {
+        getPersonaQuestions()
         viewModelScope.launch {
             nicknameFlow
                 .debounce(500)
@@ -77,6 +78,18 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
+    private fun getPersonaQuestions() {
+        viewModelScope.launch {
+            onBoardingRepository.getPersonaQuestions().onSuccess {
+                reduce {
+                    copy(
+                        personaList = it
+                    )
+                }
+            }
+        }
+    }
+
     private fun onNicknameChanged(nickname: String) {
         nicknameFlow.value = nickname
     }
@@ -87,7 +100,7 @@ class OnBoardingViewModel @Inject constructor(
                 uiState.value.selectedPersona?.let { selectedPersona ->
                     onBoardingRepository.patchUserInfo(
                         favoriteTown = selectedTownId,
-                        persona = selectedPersona.type,
+                        persona = selectedPersona,
                         nickname = uiState.value.userNickname
                     )
                 }

@@ -15,7 +15,7 @@ fun AdaptationImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
     contentScale: ContentScale = ContentScale.Fit,
-    contentDescription: String? = null,
+    contentDescription: String? = null
 ) {
     val context = LocalContext.current
 
@@ -41,7 +41,7 @@ fun AdaptationImage(
         imageLoader = imageLoader,
         contentScale = contentScale,
         contentDescription = contentDescription,
-        modifier = modifier,
+        modifier = modifier
     )
 }
 

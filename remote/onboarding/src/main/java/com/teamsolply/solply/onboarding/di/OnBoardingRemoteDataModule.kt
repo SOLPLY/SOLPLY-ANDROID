@@ -1,7 +1,7 @@
 package com.teamsolply.solply.onboarding.di
 
 import com.teamsolply.solply.onboarding.datasource.OnBoardingRemoteDataSourceImpl
-import com.teamsolply.solply.onboarding.source.OnBoardingRemoteDataSource
+import com.teamsolply.solply.onboarding.source.remote.OnBoardingRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

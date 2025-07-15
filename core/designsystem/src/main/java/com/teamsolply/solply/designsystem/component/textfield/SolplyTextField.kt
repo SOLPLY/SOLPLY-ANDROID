@@ -32,7 +32,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import kotlinx.coroutines.delay
 
 @Composable
 private fun BaseTextField(

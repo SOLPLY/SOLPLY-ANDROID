@@ -87,7 +87,7 @@ fun OnBoardingScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     changeInputNickname: (String) -> Unit,
-    checkOnBoardingSuccess: (Boolean) -> Unit,
+    checkOnBoardingSuccess: (Boolean) -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
@@ -138,7 +138,7 @@ fun OnBoardingScreen(
             isTownSelected = when (pagerState.currentPage) {
                 0 -> state.selectedTownId != null
                 1 -> state.selectedPersona != null
-                2 -> !state.userNickname.isNullOrBlank()
+                2 -> state.userNickname.isNotBlank()
                 else -> false
             }
         )

@@ -38,12 +38,11 @@ interface MapsService {
         @Query("placeId") placeId: Long
     ): BaseResponse<CoursesResponseDto>
 
-
     // 내 코스에 추가
 
     @GET("api/courses/{courseId}")
     suspend fun getCourseDetail(
         @Path("courseId") courseId: Long
     ): BaseResponse<CourseDetailResponseDto>
-    //코스 전체 조회
+    // 코스 전체 조회
 }
