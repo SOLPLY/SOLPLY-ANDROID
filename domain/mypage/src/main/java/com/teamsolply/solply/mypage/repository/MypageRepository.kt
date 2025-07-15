@@ -1,8 +1,8 @@
 package com.teamsolply.solply.mypage.repository
 
 import com.teamsolply.solply.mypage.model.CourseInfoEntity
-import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.CourseTownEntity
+import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.PlaceTownEntity
 
 interface MypageRepository {

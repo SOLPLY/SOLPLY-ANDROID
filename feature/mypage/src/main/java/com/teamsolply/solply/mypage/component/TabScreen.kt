@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.CourseTownEntity
+import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceTownEntity
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
@@ -19,7 +19,6 @@ fun TabScreen(
     mypageTab: MypageTab,
     modifier: Modifier = Modifier
 ) {
-
     when (mypageTab) {
         MypageTab.PLACE ->
             if (placeTown.isEmpty()) {
@@ -52,7 +51,6 @@ fun TabScreen(
             }
     }
 }
-
 
 @DefaultPreview
 @Composable

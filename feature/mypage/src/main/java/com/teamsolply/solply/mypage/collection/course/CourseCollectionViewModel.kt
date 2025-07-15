@@ -93,7 +93,6 @@ class CourseCollectionViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun getCourseList() {

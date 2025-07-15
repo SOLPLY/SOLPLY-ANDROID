@@ -1,8 +1,8 @@
 package com.teamsolply.solply.mypage
 
 import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.CourseTownEntity
+import com.teamsolply.solply.mypage.model.MypageTab
 import com.teamsolply.solply.mypage.model.PlaceTownEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
