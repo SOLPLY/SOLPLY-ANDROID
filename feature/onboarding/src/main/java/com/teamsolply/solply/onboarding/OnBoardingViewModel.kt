@@ -53,4 +53,11 @@ class OnBoardingViewModel @Inject constructor(
             }
         }
     }
+
+    private fun patchUserInfo() {
+        viewModelScope.launch {
+            //TODO. 여기서 회원가입 api 쏘기
+            //onBoardingRepository
+        }
+    }
 }
