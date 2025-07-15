@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.local.main)
     implementation(projects.local.oauth)
     implementation(projects.local.place)
+    implementation(projects.remote.oauth)
     implementation(projects.remote.onboarding)
     implementation(projects.remote.place)
     implementation(projects.remote.course)
