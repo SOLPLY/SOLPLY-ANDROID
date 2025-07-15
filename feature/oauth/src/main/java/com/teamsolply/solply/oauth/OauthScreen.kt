@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun OauthRoute(
     paddingValues: PaddingValues,
     navigateToOnBoarding: () -> Unit,
+    navigateToPlace: () -> Unit,
     viewModel: OauthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -65,6 +66,7 @@ fun OauthRoute(
                 )
 
                 OauthSideEffect.NavigateToOnBoarding -> navigateToOnBoarding()
+                OauthSideEffect.NavigateToPlace -> navigateToPlace()
             }
         }
     }

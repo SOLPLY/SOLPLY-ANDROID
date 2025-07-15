@@ -31,7 +31,11 @@ class OauthViewModel @Inject constructor(
                         intent.accessToken,
                         intent.refreshToken
                     ).onSuccess {
-                        postSideEffect(OauthSideEffect.NavigateToOnBoarding)
+                        if (intent.isNewUser) {
+                            postSideEffect(OauthSideEffect.NavigateToOnBoarding)
+                        } else {
+                            postSideEffect(OauthSideEffect.NavigateToPlace)
+                        }
                     }
                 }
             }
@@ -50,7 +54,8 @@ class OauthViewModel @Inject constructor(
                 sendIntent(
                     OauthIntent.SaveJwtToken(
                         accessToken = it.accessToken,
-                        refreshToken = it.refreshToken
+                        refreshToken = it.refreshToken,
+                        isNewUser = it.isNewUser
                     )
                 )
             }.onFailure {
