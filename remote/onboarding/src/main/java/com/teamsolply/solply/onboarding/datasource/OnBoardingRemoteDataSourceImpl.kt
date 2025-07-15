@@ -15,5 +15,4 @@ class OnBoardingRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun patchUserInfo(patchUserInfoRequestDto: PatchUserInfoRequestDto): PatchUserInfoResponseDto =
         onBoardingService.patchUserInfo(patchUserInfoRequestDto = patchUserInfoRequestDto).data
-
 }

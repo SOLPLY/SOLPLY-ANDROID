@@ -31,6 +31,5 @@ class OnBoardingRepositoryImpl @Inject constructor(
             persona = it.persona,
             nickname = it.nickname
         )
-
     }
 }

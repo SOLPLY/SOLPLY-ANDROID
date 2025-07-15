@@ -12,5 +12,5 @@ data class PatchUserInfoResponseDto(
     @SerialName("persona")
     val persona: String,
     @SerialName("nickname")
-    val nickname: String,
+    val nickname: String
 )
