@@ -114,12 +114,12 @@ private fun BaseTextField(
 @Composable
 fun SolplyNicknameTextField(
     value: String,
+    isNicknameDuplicate: Boolean,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "여기에 입력하세요.",
     maxLength: Int = 8,
     minLength: Int = 2,
-    onDuplicateCheck: (String) -> Boolean,
     checkNicknameValidate: (String) -> Boolean
 ) {
     var validationState by remember { mutableStateOf<NickNameValidateState>(NickNameValidateState.Empty) }
@@ -153,9 +153,8 @@ fun SolplyNicknameTextField(
                 validationState = NickNameValidateState.Invalid
                 isTyping = false
             } else {
-                val duplicate = onDuplicateCheck(value)
                 validationState =
-                    if (duplicate) NickNameValidateState.Duplicate else NickNameValidateState.Valid
+                    if (isNicknameDuplicate) NickNameValidateState.Duplicate else NickNameValidateState.Valid
                 isTyping = false
             }
         } else {

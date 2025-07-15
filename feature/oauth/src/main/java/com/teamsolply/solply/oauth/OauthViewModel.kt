@@ -1,7 +1,7 @@
 package com.teamsolply.solply.oauth
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.oauth.model.TokenEntity
 import com.teamsolply.solply.oauth.repository.OauthRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,28 +16,50 @@ class OauthViewModel @Inject constructor(
     override fun handleIntent(intent: OauthIntent) {
         when (intent) {
             OauthIntent.KakaoLoginClick -> postSideEffect(OauthSideEffect.StartKakaoLogin)
-            is OauthIntent.KakaoLoginSuccess -> saveJwtToken(
-                intent.accessToken,
-                intent.refreshToken
+            is OauthIntent.KakaoLoginSuccess -> postSocialLogin(
+                provider = intent.provider,
+                oauthAccessToken = intent.accessToken
             )
 
             is OauthIntent.KakaoLoginFailure -> {
                 TODO()
             }
+
+            is OauthIntent.SaveJwtToken -> {
+                viewModelScope.launch {
+                    oauthRepository.saveJwtToken(
+                        intent.accessToken,
+                        intent.refreshToken
+                    ).onSuccess {
+                        if (intent.isNewUser) {
+                            postSideEffect(OauthSideEffect.NavigateToOnBoarding)
+                        } else {
+                            postSideEffect(OauthSideEffect.NavigateToPlace)
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun saveJwtToken(accessToken: String, refreshToken: String?) {
+    private fun postSocialLogin(
+        provider: String,
+        oauthAccessToken: String
+    ) {
         viewModelScope.launch {
-            refreshToken?.let { checkedRefreshToken ->
-                val token = TokenEntity(
-                    accessToken = accessToken,
-                    refreshToken = checkedRefreshToken
+            oauthRepository.postSocialLogin(
+                provider = provider,
+                oauthAccessToken = oauthAccessToken
+            ).onSuccess {
+                sendIntent(
+                    OauthIntent.SaveJwtToken(
+                        accessToken = it.accessToken,
+                        refreshToken = it.refreshToken,
+                        isNewUser = it.isNewUser
+                    )
                 )
-                oauthRepository.saveJwtToken(token)
-                    .onSuccess {
-                        postSideEffect(OauthSideEffect.NavigateToOnBoarding)
-                    }
+            }.onFailure {
+                Log.d("asdasdasd", it.toString())
             }
         }
     }

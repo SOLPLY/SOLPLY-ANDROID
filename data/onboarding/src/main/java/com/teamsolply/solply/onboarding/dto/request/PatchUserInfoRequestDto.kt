@@ -4,9 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SignUpRequestDto(
+data class PatchUserInfoRequestDto(
+    @SerialName("favoriteTown")
+    val favoriteTown: Long,
+    @SerialName("persona")
+    val persona: String,
     @SerialName("nickname")
-    val nickname: String,
-    @SerialName("id")
-    val id: Int
+    val nickname: String
 )

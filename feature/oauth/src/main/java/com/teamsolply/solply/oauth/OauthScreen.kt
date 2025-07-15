@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun OauthRoute(
     paddingValues: PaddingValues,
     navigateToOnBoarding: () -> Unit,
+    navigateToPlace: () -> Unit,
     viewModel: OauthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -54,24 +55,18 @@ fun OauthRoute(
             when (sideEffect) {
                 OauthSideEffect.StartKakaoLogin -> startKakaoLogin(
                     context = context,
-                    onSuccess = { accessToken, refreshToken ->
+                    onSuccess = { accessToken, _ ->
                         viewModel.sendIntent(
                             OauthIntent.KakaoLoginSuccess(
-                                accessToken = accessToken,
-                                refreshToken = refreshToken
+                                provider = "KAKAO",
+                                accessToken = accessToken
                             )
                         )
-                        Log.d(
-                            "asdasdasd",
-                            "accessToken: ${accessToken}\n refreshToken: $refreshToken"
-                        )
-                    },
-                    onFailure = { error ->
-                        Log.d("asdasdasd", error.toString())
                     }
                 )
 
                 OauthSideEffect.NavigateToOnBoarding -> navigateToOnBoarding()
+                OauthSideEffect.NavigateToPlace -> navigateToPlace()
             }
         }
     }

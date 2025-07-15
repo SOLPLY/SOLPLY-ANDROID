@@ -5,8 +5,8 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface TokenRefreshService {
-    @POST("")
+    @POST("api/auth/refresh")
     suspend fun postRefreshJwtToken(
-        @Header("Authorization") refreshToken: String
+        @Header("Refresh-Token") refreshToken: String
     ): ResponsePostAuthRefreshDto
 }
