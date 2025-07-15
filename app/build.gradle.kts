@@ -11,7 +11,7 @@ android {
         getByName("debug") {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
-            storeFile = File("${project.rootDir.absolutePath}/keystore/debug.keystore")
+            storeFile = file("debug.keystore")
         }
     }
 
