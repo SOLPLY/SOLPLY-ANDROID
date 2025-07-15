@@ -14,10 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.model.PlaceTownEntity
 import com.teamsolply.solply.ui.extension.customClickable
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun PlaceTownCollectionScreen(
@@ -51,11 +49,11 @@ fun PlaceTownCollectionScreen(
                 SolplyTownCard(
                     town = it.townName,
                     modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        },
+                    if (index % 2 == 0) {
+                        Modifier.padding(end = 5.dp)
+                    } else {
+                        Modifier.padding(start = 5.dp)
+                    },
                     content = {
                         Image(
                             painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
