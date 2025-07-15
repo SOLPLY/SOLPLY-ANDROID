@@ -17,12 +17,14 @@ fun NavController.navigateOauth(
 
 fun NavGraphBuilder.oauthNavGraph(
     paddingValues: PaddingValues,
-    navigateToOnBoarding: () -> Unit
+    navigateToOnBoarding: () -> Unit,
+    navigateToPlace: () -> Unit
 ) {
     composable<Oauth> {
         OauthRoute(
             paddingValues = paddingValues,
-            navigateToOnBoarding = navigateToOnBoarding
+            navigateToOnBoarding = navigateToOnBoarding,
+            navigateToPlace = navigateToPlace
         )
     }
 }

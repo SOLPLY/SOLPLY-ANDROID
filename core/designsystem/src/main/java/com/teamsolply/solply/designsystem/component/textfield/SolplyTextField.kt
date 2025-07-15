@@ -114,12 +114,12 @@ private fun BaseTextField(
 @Composable
 fun SolplyNicknameTextField(
     value: String,
+    isNicknameDuplicate: Boolean,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "여기에 입력하세요.",
     maxLength: Int = 8,
     minLength: Int = 2,
-    onDuplicateCheck: (String) -> Boolean,
     checkNicknameValidate: (String) -> Boolean
 ) {
     var validationState by remember { mutableStateOf<NickNameValidateState>(NickNameValidateState.Empty) }
@@ -130,16 +130,16 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value) {
         if (value.isNotEmpty()) {
             isTyping = true
             delay(300)
 
-            if(value.length<minLength){
-                validationState =NickNameValidateState.TooShort
-                isTyping=false
+            if (value.length < minLength) {
+                validationState = NickNameValidateState.TooShort
+                isTyping = false
                 return@LaunchedEffect
             }
             if (value.length == maxLength) {
@@ -153,9 +153,8 @@ fun SolplyNicknameTextField(
                 validationState = NickNameValidateState.Invalid
                 isTyping = false
             } else {
-                val duplicate = onDuplicateCheck(value)
                 validationState =
-                    if (duplicate) NickNameValidateState.Duplicate else NickNameValidateState.Valid
+                    if (isNicknameDuplicate) NickNameValidateState.Duplicate else NickNameValidateState.Valid
                 isTyping = false
             }
         } else {
@@ -170,7 +169,8 @@ fun SolplyNicknameTextField(
         validationState in listOf(
             NickNameValidateState.Duplicate,
             NickNameValidateState.Invalid,
-            NickNameValidateState.TooShort) ->
+            NickNameValidateState.TooShort
+        ) ->
             Pair(SolplyTheme.colors.white, SolplyTheme.colors.red600)
 
         validationState == NickNameValidateState.Typing ->

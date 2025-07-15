@@ -6,6 +6,25 @@ plugins {
 
 android {
     namespace = "com.teamsolply.solply"
+
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+            storeFile = File("${project.rootDir.absolutePath}/keystore/debug.keystore")
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        release {
+            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
 }
 
 dependencies {
@@ -32,6 +51,7 @@ dependencies {
     implementation(projects.local.main)
     implementation(projects.local.oauth)
     implementation(projects.local.place)
+    implementation(projects.remote.oauth)
     implementation(projects.remote.onboarding)
     implementation(projects.remote.place)
     implementation(projects.remote.course)

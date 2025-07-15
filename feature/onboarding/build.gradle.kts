@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.domain.onboarding)
     implementation("androidx.compose.foundation:foundation:1.6.1")
 }

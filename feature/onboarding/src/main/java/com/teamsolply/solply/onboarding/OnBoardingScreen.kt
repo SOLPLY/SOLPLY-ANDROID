@@ -1,5 +1,6 @@
 package com.teamsolply.solply.onboarding
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,26 +9,26 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
-import androidx.compose.foundation.pager.PageSize
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.onboarding.component.BackHeader
 import com.teamsolply.solply.onboarding.component.ProgressBar
 import com.teamsolply.solply.onboarding.screen.NamingScreen
 import com.teamsolply.solply.onboarding.screen.SelectPersonaScreen
 import com.teamsolply.solply.onboarding.screen.SelectTownScreen
 import com.teamsolply.solply.onboarding.screen.StartingScreen
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,10 +40,14 @@ fun OnBoardingRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    Log.d("asdasdasd", "${state.selectedTownId} ${state.selectedPersona} ${state.userNickname}")
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                is OnBoardingSideEffect.NavigateToPlace -> {navigateToPlace()}
+                is OnBoardingSideEffect.NavigateToPlace -> {
+                    navigateToPlace()
+                }
             }
         }
     }
@@ -62,7 +67,10 @@ fun OnBoardingRoute(
             },
             onPageChanged = { viewModel.sendIntent(OnBoardingIntent.OnPageChanged(it)) },
             onBoardingIntent = { viewModel.sendIntent(it) },
-            navController = navController
+            navController = navController,
+            changeInputNickname = { inputNickname ->
+                viewModel.sendIntent(OnBoardingIntent.ChangeInputNickname(inputNickname))
+            }
         )
     }
 }
@@ -74,11 +82,13 @@ fun OnBoardingScreen(
     onPageChanged: (Int) -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    changeInputNickname: (String) -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
-        pageCount = { state.totalPageCount })
+        pageCount = { state.totalPageCount }
+    )
 
     val scope = rememberCoroutineScope()
 
@@ -131,7 +141,7 @@ fun OnBoardingScreen(
 
         ProgressBar(
             pageState = pagerState,
-            totalpageCount = state.totalPageCount,
+            totalpageCount = state.totalPageCount
         )
 
         HorizontalPager(
@@ -163,6 +173,9 @@ fun OnBoardingScreen(
 
                 2 -> NamingScreen(
                     state = state,
+                    inputNickname = state.userNickname,
+                    isNicknameDuplicate = state.isNicknameDuplicate,
+                    changeInputNickname = changeInputNickname,
                     onNextClick = {
                         scope.launch {
                             pagerState.scrollToPage(pagerState.currentPage + 1)
