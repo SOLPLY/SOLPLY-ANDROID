@@ -7,7 +7,7 @@ import javax.inject.Inject
 class MypageRemoteDataSourceImpl @Inject constructor(
     private val mypageService: MypageService
 ) : MypageRemoteDataSource {
-    override suspend fun getPlaceTownList() = mypageService.getPlaceTownList()
+    override suspend fun getPlaceTownList() = mypageService.getPlaceTownList().data
 
     override suspend fun getCourseTownList() = mypageService.getCourseTownList()
 
