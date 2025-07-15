@@ -6,7 +6,7 @@ data class CourseInfoEntity(
     val courseId: Int,
     val title: String,
     val placeCount: Int,
-    val thumbnailImage: Int,
+    val thumbnailImage: String,
     val mainTag: List<PlaceType>,
     val isBookmarked: Boolean,
     val isActive: Boolean

@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.repository.MapsRepository
@@ -40,16 +41,29 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.PlaceBookMarkClick -> {
-                val bookmark = !uiState.value.placeDetailInfo.isBookmarked
-                // TODO 장소 개별 저장 상태 post
+                val currentState = uiState.value.placeDetailInfo
+                val isBookmarked = !currentState.isBookmarked
+                val placeId = currentState.placeId
+
                 reduce {
-                    copy(placeDetailInfo = placeDetailInfo.copy(isBookmarked = bookmark))
+                    copy(placeDetailInfo = currentState.copy(isBookmarked = isBookmarked))
                 }
 
-                if (bookmark) {
-                    postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
+                viewModelScope.launch {
+                    val result = if (isBookmarked) {
+                        mapsRepository.savePlaceBookMark(placeId)
+                    } else {
+                        mapsRepository.deletePlaceBookMark(placeId)
+                    }
+
+                    result.onSuccess {
+                        if (isBookmarked) {
+                            postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
+                        }
+                    }
                 }
             }
+
             // Add Course
             MapsIntent.SaveCourse -> {
                 val bookmark = !uiState.value.courseDetailInfo.isBookmarked
@@ -180,9 +194,9 @@ internal class MapsViewModel @Inject constructor(
     }
 
     // TODO. 장소 상세 정보 조회 API
-    fun getPlaceDetailInfo(placeId: Int) {
+    fun getPlaceDetailInfo(placeId: Long) {
         viewModelScope.launch {
-            mapsRepository.getPlaceInfo(placeId).onSuccess {
+            mapsRepository.getPlaceDetail(placeId).onSuccess {
                 reduce {
                     copy(
                         placeDetailInfo = it
@@ -193,14 +207,22 @@ internal class MapsViewModel @Inject constructor(
     }
 
     // TODO. 장소를 저장 할 코스 리스트 정보 조회 API
-    fun getAllCourseInfo() {
+    fun getAllCourseInfo(
+        townId: Long,
+        placeId: Long
+    ) {
         viewModelScope.launch {
-            mapsRepository.getAllCourses().onSuccess {
+            mapsRepository.getAddMyCourse(
+                townId = townId,
+                placeId = placeId
+            ).onSuccess {
                 reduce {
                     copy(
                         courses = it.toPersistentList()
                     )
                 }
+            }.onFailure {
+                Log.d("asdasdasd", it.toString())
             }
         }
     }
@@ -208,7 +230,7 @@ internal class MapsViewModel @Inject constructor(
     // TODO. 코스 상세 정보 조회 API
     fun getCourseDetailInfo() {
         viewModelScope.launch {
-            mapsRepository.getCourseInfo(courseId = 1).onSuccess {
+            mapsRepository.getCourseDetail(courseId = 1).onSuccess {
                 reduce {
                     copy(
                         courseDetailInfo = it

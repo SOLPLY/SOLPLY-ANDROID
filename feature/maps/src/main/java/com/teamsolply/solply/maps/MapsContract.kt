@@ -21,7 +21,7 @@ internal data class MapsState(
     val addMyCourseSelectedCount: PersistentList<Int> = persistentListOf(),
     // Add Course
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
-    val selectedPlaceInfoId: Int? = null,
+    val selectedPlaceInfoId: Long? = null,
     // Edit Course
     val removeIconVisibility: Boolean = false,
     val startEditCourse: Boolean = false,
@@ -47,11 +47,11 @@ internal sealed interface MapsIntent : UiIntent {
     // Add course
     data object SaveCourse : MapsIntent
     data class SingleCoursePlaceBookMarkClick(
-        val placeId: Int
+        val placeId: Long
     ) : MapsIntent
 
     data class PlaceInfoClick(
-        val placeId: Int
+        val placeId: Long
     ) : MapsIntent
 
     // Edit Course
@@ -85,7 +85,7 @@ internal sealed interface MapsIntent : UiIntent {
 
     // Navigate
     data class PlaceDetailClick(
-        val placeId: Int
+        val placeId: Long
     ) : MapsIntent
 
     data object EmptyCourseClick : MapsIntent
@@ -110,7 +110,7 @@ internal sealed interface MapsSideEffect : SideEffect {
     data object NavigateToReturnHome : MapsSideEffect
     data object NavigateToBack : MapsSideEffect
     data class NavigateToPlaceDetail(
-        val placeId: Int
+        val placeId: Long
     ) : MapsSideEffect
 }
 
@@ -121,11 +121,11 @@ internal val defaultPlaceDetailEntity = PlaceDetailEntity(
     address = "",
     latitude = 37.4979,
     longitude = 127.0276,
-    description = "",
+    introduction = "",
     imageInfos = persistentListOf(),
     contactNumber = "",
     openingHours = "",
-    snsLink = persistentListOf(),
+    snsLinks = persistentListOf(),
     isBookmarked = false,
     placeType = "",
     placeDefaultId = 0
