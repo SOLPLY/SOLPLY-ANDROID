@@ -1,12 +1,17 @@
 package com.teamsolply.solply.mypage
 
+import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.model.MypageTab
+import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MypageViewModel @Inject constructor() :
+class MypageViewModel @Inject constructor(
+    private val mypageRepository: MypageRepository
+) :
     BaseViewModel<MypageState, MypageIntent, MypageSideEffect>(MypageState()) {
     override fun handleIntent(intent: MypageIntent) {
         when (intent) {
@@ -18,7 +23,12 @@ class MypageViewModel @Inject constructor() :
                         reduce {
                             copy(isPlaceTownSelected = true)
                         }
-                        postSideEffect(MypageSideEffect.NavigateToPlaceCollection(town = intent.selectedTown))
+                        postSideEffect(
+                            MypageSideEffect.NavigateToPlaceCollection(
+                                townId = intent.townId,
+                                townName = intent.townName
+                            )
+                        )
                     }
 
                     MypageTab.COURSE -> {
@@ -33,7 +43,12 @@ class MypageViewModel @Inject constructor() :
                 reduce {
                     copy(isCourseTownSelected = true)
                 }
-                postSideEffect(MypageSideEffect.NavigateToCourseCollection(town = intent.selectedTown))
+                postSideEffect(
+                    MypageSideEffect.NavigateToCourseCollection(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                )
             }
 
             is MypageIntent.BackButtonClick -> {
@@ -81,6 +96,30 @@ class MypageViewModel @Inject constructor() :
                     MypageTab.COURSE -> {
                         postSideEffect(MypageSideEffect.NavigateToCourse)
                     }
+                }
+            }
+        }
+    }
+
+    fun getPlaceTownList() {
+        viewModelScope.launch {
+            mypageRepository.getPlaceTownList().onSuccess {
+                reduce {
+                    copy(
+                        placeTowns = it
+                    )
+                }
+            }
+        }
+    }
+
+    fun getCourseTownList() {
+        viewModelScope.launch {
+            mypageRepository.getCourseTownList().onSuccess {
+                reduce {
+                    copy(
+                        courseTowns = it
+                    )
                 }
             }
         }

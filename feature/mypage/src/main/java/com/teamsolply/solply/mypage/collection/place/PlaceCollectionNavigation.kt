@@ -5,13 +5,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 
 fun NavController.navigatePlaceCollection(
+    townId: Int,
+    townName: String,
     navOptions: NavOptions
 ) {
-    navigate(PlaceCollection, navOptions)
+    navigate(PlaceCollection(townId = townId, townName = townName), navOptions)
 }
 
 fun NavGraphBuilder.placeCollectionNavGraph(
@@ -19,9 +22,11 @@ fun NavGraphBuilder.placeCollectionNavGraph(
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit
 ) {
-    composable<PlaceCollection> {
+    composable<PlaceCollection> { backStackEntry ->
         PlaceCollectionRoute(
             paddingValues = paddingValues,
+            townId = backStackEntry.toRoute<PlaceCollection>().townId,
+            townName = backStackEntry.toRoute<PlaceCollection>().townName,
             navigateToMaps = navigateToMaps,
             navigateToBack = navigateToBack
         )
@@ -29,4 +34,4 @@ fun NavGraphBuilder.placeCollectionNavGraph(
 }
 
 @Serializable
-data object PlaceCollection : Route
+data class PlaceCollection(val townId: Int, val townName: String) : Route

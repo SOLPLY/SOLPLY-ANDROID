@@ -1,16 +1,31 @@
 package com.teamsolply.solply.mypage.collection.place
 
+import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PlaceCollectionViewModel @Inject constructor() :
+class PlaceCollectionViewModel @Inject constructor(
+    private val mypageRepository: MypageRepository
+) :
     BaseViewModel<PlaceCollectionState, PlaceCollectionIntent, PlaceCollectionSideEffect>(
         PlaceCollectionState()
     ) {
     override fun handleIntent(intent: PlaceCollectionIntent) {
         when (intent) {
+            is PlaceCollectionIntent.Init -> {
+                reduce {
+                    copy(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                }
+                getPlaceList(townId = uiState.value.townId)
+            }
+
             is PlaceCollectionIntent.SelectButtonClick -> {
                 reduce {
                     copy(selectMode = true)
@@ -70,15 +85,17 @@ class PlaceCollectionViewModel @Inject constructor() :
             }
 
             is PlaceCollectionIntent.DialogConfirmClick -> {
-                reduce {
-                    copy(dialogState = false)
-                }
                 // TODO 삭제 api 요청
-
+                deletePlaces(uiState.value.selectedPlaces.toList())
                 // TODO 삭제 api 응답 후
                 reduce {
-                    copy(selectMode = false)
+                    copy(
+                        selectedPlaces = emptySet(),
+                        selectMode = false,
+                        dialogState = false
+                    )
                 }
+//                getPlaceList()
                 postSideEffect(PlaceCollectionSideEffect.DeletePlaces)
             }
 
@@ -86,6 +103,26 @@ class PlaceCollectionViewModel @Inject constructor() :
                 reduce {
                     copy(dialogState = false)
                 }
+            }
+        }
+    }
+
+    private fun getPlaceList(townId: Int) {
+        viewModelScope.launch {
+            mypageRepository.getPlaceList(townId).onSuccess {
+                reduce {
+                    copy(
+                        places = it
+                    )
+                }
+            }
+        }
+    }
+
+    private fun deletePlaces(selectedPlaces: List<Int>) {
+        viewModelScope.launch {
+            mypageRepository.deleteCourses(selectedPlaces).onSuccess {
+                getPlaceList(uiState.value.townId)
             }
         }
     }

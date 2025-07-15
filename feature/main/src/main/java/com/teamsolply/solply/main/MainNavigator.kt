@@ -103,19 +103,25 @@ internal class MainNavigator(
     }
 
     fun navigateToPlaceCollection(
-        town: String,
+        townId: Int,
+        townName: String,
         navOptions: NavOptions
     ) {
         navController.navigatePlaceCollection(
+            townId = townId,
+            townName = townName,
             navOptions = navOptions
         )
     }
 
     fun navigateToCourseCollection(
-        town: String,
+        townId: Int,
+        townName: String,
         navOptions: NavOptions
     ) {
         navController.navigateCourseCollection(
+            townId = townId,
+            townName = townName,
             navOptions
         )
     }

@@ -21,8 +21,8 @@ fun NavGraphBuilder.mypageNavGraph(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
-    navigateToPlaceCollection: (String) -> Unit,
-    navigateToCourseCollection: (String) -> Unit,
+    navigateToPlaceCollection: (Int, String) -> Unit,
+    navigateToCourseCollection: (Int, String) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit
 ) {
