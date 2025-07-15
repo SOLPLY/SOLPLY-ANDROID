@@ -81,7 +81,7 @@ import kotlin.math.abs
 @Composable
 internal fun MapsRoute(
     mapsType: MapsType,
-    targetId: Int = 1,
+    targetId: Long = 1,
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
@@ -557,12 +557,12 @@ private fun MapsScreen(
                             addPlace = startAddMyCourse,
                             placeType = placeDetailEntity.primaryTag,
                             title = placeDetailEntity.placeName,
-                            description = placeDetailEntity.description,
+                            description = placeDetailEntity.introduction,
                             placeImageUrls = placeDetailEntity.imageInfos.toPersistentList(),
                             placeAddress = placeDetailEntity.address,
                             placeContactNumber = placeDetailEntity.contactNumber,
                             placeOpeningHours = placeDetailEntity.openingHours,
-                            placeSnsLink = placeDetailEntity.snsLink.toPersistentList(),
+                            placeSnsLink = placeDetailEntity.snsLinks.toPersistentList(),
                             courses = courses,
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },

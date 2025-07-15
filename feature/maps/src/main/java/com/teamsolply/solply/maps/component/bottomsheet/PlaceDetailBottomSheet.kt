@@ -36,6 +36,7 @@ import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.ImageInfo
 import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
@@ -47,7 +48,7 @@ fun PlaceDetailBottomSheet(
     placeType: PlaceType,
     title: String,
     description: String,
-    placeImageUrls: PersistentList<Int>,
+    placeImageUrls: PersistentList<ImageInfo>,
     placeAddress: String,
     placeContactNumber: String,
     placeOpeningHours: String,
@@ -61,7 +62,7 @@ fun PlaceDetailBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
-        // placeImageUrls.size
+        placeImageUrls.size
         3
     })
     val copyText = "복사"
@@ -261,7 +262,7 @@ fun PlaceDetailBottomSheet(
                         Column {
                             placeSnsLink.forEach {
                                 Text(
-                                    text = it.platform,
+                                    text = it.snsPlatform,
                                     color = SolplyTheme.colors.black,
                                     style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
                                 )

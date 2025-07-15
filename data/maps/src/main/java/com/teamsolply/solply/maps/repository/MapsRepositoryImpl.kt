@@ -2,41 +2,31 @@ package com.teamsolply.solply.maps.repository
 
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
-import com.teamsolply.solply.maps.model.NewCourseEntity
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
-import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import com.teamsolply.solply.model.PlaceType
+import toEntity
 import javax.inject.Inject
 
 class MapsRepositoryImpl @Inject constructor(
     private val mapsRemoteDataSource: MapsRemoteDataSource
 ) : MapsRepository {
     // Add Place
-    override suspend fun getPlaceInfo(placeId: Int): Result<PlaceDetailEntity> = runCatching {
-        PlaceDetailEntity(
-            placeId = 1,
-            placeName = "유어마인드",
-            primaryTag = PlaceType.CAFE,
-            address = "서울 서대문구 연희로 189 - 16 단독주택 어쩌구",
-            latitude = 37.4979,
-            longitude = 127.0276,
-            description = "귀여운 당고 디저트와 커피, 에이드가 있는 펫 프렌들리",
-            imageInfos = listOf(),
-            contactNumber = "0507 - 1324 - 9018",
-            openingHours = "월 - 금 10:00 - 19:00",
-            isBookmarked = true,
-            snsLink = listOf(
-                SnsLink(
-                    platform = "인스타그램",
-                    url = "asd"
-                )
-            ),
-            placeType = "SUBWAY_STATION",
-            placeDefaultId = 222
-        )
+    override suspend fun getPlaceDetail(placeId: Long): Result<PlaceDetailEntity> = runCatching {
+        mapsRemoteDataSource.getPlaceDetail(placeId = placeId)
+    }.mapCatching { responseDto ->
+        responseDto.toEntity()
     }
+
+    override suspend fun savePlaceBookMark(placeId: Long): Result<Unit> = runCatching {
+        mapsRemoteDataSource.savePlaceBookMark(placeId = placeId)
+    }
+
+    override suspend fun deletePlaceBookMark(placeId: Long): Result<Unit> = runCatching {
+        mapsRemoteDataSource.deletePlaceBookMark(placeId = placeId)
+    }
+
 
     override suspend fun getAllCourses(): Result<List<CourseInfoEntity>> = runCatching {
         listOf(
@@ -234,12 +224,6 @@ class MapsRepositoryImpl @Inject constructor(
                     placeDefaultId = 123
                 )
             )
-        )
-    }
-
-    override suspend fun saveCourse(courseInfo: NewCourseEntity): Result<Unit> = runCatching {
-        mapsRemoteDataSource.saveCourse(
-            courseInfo = courseInfo.courseName
         )
     }
 }

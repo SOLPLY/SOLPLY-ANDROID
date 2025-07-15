@@ -7,10 +7,12 @@ import com.teamsolply.solply.maps.model.PlaceDetailEntity
 
 interface MapsRepository {
     // Add Place
-    suspend fun getPlaceInfo(placeId: Int): Result<PlaceDetailEntity>
+    suspend fun getPlaceDetail(placeId: Long): Result<PlaceDetailEntity>
+    suspend fun savePlaceBookMark(placeId: Long): Result<Unit>
+    suspend fun deletePlaceBookMark(placeId: Long): Result<Unit>
+
     suspend fun getAllCourses(): Result<List<CourseInfoEntity>>
 
     // Add Course
     suspend fun getCourseInfo(courseId: Int): Result<CourseDetailEntity>
-    suspend fun saveCourse(courseInfo: NewCourseEntity): Result<Unit>
 }
