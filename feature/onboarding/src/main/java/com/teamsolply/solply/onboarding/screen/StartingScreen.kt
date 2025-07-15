@@ -62,7 +62,7 @@ fun StartingScreen(
             )
             LottieAnimation(
                 composition = composition,
-                progress = {progress},
+                progress = { progress },
                 modifier = Modifier
                     .size(270.dp)
                     .padding(top = 72.dp)
