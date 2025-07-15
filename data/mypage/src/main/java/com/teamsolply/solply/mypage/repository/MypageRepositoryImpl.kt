@@ -13,24 +13,15 @@ class MypageRepositoryImpl @Inject constructor(
     private val mypageRemoteDataSource: MypageRemoteDataSource
 ) : MypageRepository {
     override suspend fun getPlaceTownList(): Result<List<PlaceTownEntity>> = runCatching {
-        mypageRemoteDataSource.getPlaceTownList()
-        listOf(
+        mypageRemoteDataSource.getPlaceTownList().townList
+    }.mapCatching { townList ->
+        townList.map { town ->
             PlaceTownEntity(
-                townId = 1,
-                townName = "연희동",
-                imageUrl = ""
-            ),
-            PlaceTownEntity(
-                townId = 2,
-                townName = "망원동",
-                imageUrl = ""
-            ),
-            PlaceTownEntity(
-                townId = 3,
-                townName = "성수동",
-                imageUrl = ""
+                townId = town.townId,
+                townName = town.townName,
+                imageUrl = town.imageUrl
             )
-        )
+        }
     }
 
     override suspend fun getCourseTownList(): Result<List<CourseTownEntity>> = runCatching {

@@ -11,7 +11,8 @@ android {
         getByName("debug") {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
-            storeFile = file("debug.keystore")
+            storeFile = file("${project.projectDir}/debug.keystore")
+            storePassword = "android"
         }
     }
 
@@ -22,7 +23,10 @@ android {
         release {
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
