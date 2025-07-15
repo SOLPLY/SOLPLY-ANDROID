@@ -48,7 +48,7 @@ internal class MapsViewModel @Inject constructor(
                 reduce {
                     copy(placeDetailInfo = currentState.copy(isBookmarked = isBookmarked))
                 }
-                
+
                 viewModelScope.launch {
                     val result = if (isBookmarked) {
                         mapsRepository.savePlaceBookMark(placeId)

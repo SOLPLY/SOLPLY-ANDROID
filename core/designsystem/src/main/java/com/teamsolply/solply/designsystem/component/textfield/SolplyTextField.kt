@@ -116,6 +116,7 @@ fun SolplyNicknameTextField(
     value: String,
     isNicknameDuplicate: Boolean,
     onValueChange: (String) -> Unit,
+    changeNicknameValidate: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "여기에 입력하세요.",
     maxLength: Int = 8,
@@ -132,18 +133,18 @@ fun SolplyNicknameTextField(
     ) ||
         (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
-    LaunchedEffect(value) {
+    LaunchedEffect(value, isNicknameDuplicate) {
         if (value.isNotEmpty()) {
             isTyping = true
-            delay(300)
-
             if (value.length < minLength) {
                 validationState = NickNameValidateState.TooShort
+                changeNicknameValidate(false)
                 isTyping = false
                 return@LaunchedEffect
             }
             if (value.length == maxLength) {
                 validationState = NickNameValidateState.MaxLength
+                changeNicknameValidate(false)
                 isTyping = false
                 return@LaunchedEffect
             }
@@ -151,14 +152,21 @@ fun SolplyNicknameTextField(
             val hasInvalidChars = !checkNicknameValidate(value)
             if (hasInvalidChars) {
                 validationState = NickNameValidateState.Invalid
+                changeNicknameValidate(false)
                 isTyping = false
             } else {
-                validationState =
-                    if (isNicknameDuplicate) NickNameValidateState.Duplicate else NickNameValidateState.Valid
+                if (isNicknameDuplicate) {
+                    validationState = NickNameValidateState.Duplicate
+                    changeNicknameValidate(false)
+                } else {
+                    validationState = NickNameValidateState.Valid
+                    changeNicknameValidate(true)
+                }
                 isTyping = false
             }
         } else {
             validationState = NickNameValidateState.Empty
+            changeNicknameValidate(false)
             isTyping = false
         }
     }

@@ -22,7 +22,8 @@ data class OnBoardingState(
 
     val userNickname: String = "",
     val isNicknameDuplicate: Boolean = false,
-    val showStartingScreen: Boolean = false
+    val showStartingScreen: Boolean = false,
+    val isOnBoardingSuccess: Boolean = false
 ) : UiState
 
 sealed interface OnBoardingIntent : UiIntent {
@@ -33,6 +34,9 @@ sealed interface OnBoardingIntent : UiIntent {
     data class OnPersonaChanged(val newPage: Int) : OnBoardingIntent
     data class OnPersonaSelected(val persona: Persona) : OnBoardingIntent
     data class ChangeInputNickname(val nickname: String) : OnBoardingIntent
+    data class ChangeOnBoardingSuccess(
+        val state: Boolean
+    ) : OnBoardingIntent
     data object ShowStartingScreen : OnBoardingIntent
 }
 

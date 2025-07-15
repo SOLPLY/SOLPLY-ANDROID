@@ -4,9 +4,14 @@ import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.onboarding.repository.OnBoardingRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val onBoardingRepository: OnBoardingRepository
@@ -14,6 +19,24 @@ class OnBoardingViewModel @Inject constructor(
     BaseViewModel<OnBoardingState, OnBoardingIntent, OnBoardingSideEffect>(
         OnBoardingState()
     ) {
+    private val nicknameFlow = MutableStateFlow("")
+
+    init {
+        viewModelScope.launch {
+            nicknameFlow
+                .debounce(500)
+                .filter { it.isNotBlank() }
+                .collect { nickname ->
+                    onBoardingRepository.checkNicknameDuplicate(nickname)
+                        .onSuccess { isDuplicate ->
+                            reduce { copy(isNicknameDuplicate = isDuplicate) }
+                        }.onFailure {
+                            reduce { copy(isNicknameDuplicate = false) }
+                        }
+                }
+        }
+    }
+
     override fun handleIntent(intent: OnBoardingIntent) {
         when (intent) {
             is OnBoardingIntent.OnPageChanged -> {
@@ -38,26 +61,37 @@ class OnBoardingViewModel @Inject constructor(
             is OnBoardingIntent.OnPersonaChanged -> {
             }
 
-            is OnBoardingIntent.ShowStartingScreen -> {
-                reduce { copy(showStartingScreen = true) }
+            is OnBoardingIntent.ChangeInputNickname -> {
+                reduce { copy(userNickname = intent.nickname) }
+                onNicknameChanged(intent.nickname)
             }
 
-            is OnBoardingIntent.ChangeInputNickname -> {
-                viewModelScope.launch {
-                    onBoardingRepository.checkNicknameDuplicate(nickname = intent.nickname)
-                        .onSuccess {
-                            reduce { copy(isNicknameDuplicate = it) }
-                        }
-                }
-                reduce { copy(userNickname = intent.nickname) }
+            is OnBoardingIntent.ChangeOnBoardingSuccess -> {
+                reduce { copy(isOnBoardingSuccess = intent.state) }
+            }
+
+            is OnBoardingIntent.ShowStartingScreen -> {
+                patchUserInfo()
+                reduce { copy(showStartingScreen = true) }
             }
         }
     }
 
+    private fun onNicknameChanged(nickname: String) {
+        nicknameFlow.value = nickname
+    }
+
     private fun patchUserInfo() {
         viewModelScope.launch {
-            // TODO. 여기서 회원가입 api 쏘기
-            // onBoardingRepository
+            uiState.value.selectedTownId?.let { selectedTownId ->
+                uiState.value.selectedPersona?.let { selectedPersona ->
+                    onBoardingRepository.patchUserInfo(
+                        favoriteTown = selectedTownId,
+                        persona = selectedPersona.type,
+                        nickname = uiState.value.userNickname
+                    )
+                }
+            }
         }
     }
 }
