@@ -30,6 +30,10 @@ fun PlaceCollectionRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.getPlaceList()
+    }
+
     LaunchedEffect(uiState.selectMode) {
         Log.d("select Mode", uiState.selectMode.toString())
     }
@@ -84,11 +88,11 @@ fun PlaceCollectionRoute(
                         selected = it.isSelected,
                         touchable = false,
                         modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        }
+                            if (index % 2 == 0) {
+                                Modifier.padding(end = 5.dp)
+                            } else {
+                                Modifier.padding(start = 5.dp)
+                            }
                     )
                 }
             }

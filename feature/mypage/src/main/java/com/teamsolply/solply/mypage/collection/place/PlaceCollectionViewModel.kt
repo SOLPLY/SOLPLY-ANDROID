@@ -1,11 +1,16 @@
 package com.teamsolply.solply.mypage.collection.place
 
+import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PlaceCollectionViewModel @Inject constructor() :
+class PlaceCollectionViewModel @Inject constructor(
+    private val mypageRepository: MypageRepository
+) :
     BaseViewModel<PlaceCollectionState, PlaceCollectionIntent, PlaceCollectionSideEffect>(
         PlaceCollectionState()
     ) {
@@ -74,11 +79,12 @@ class PlaceCollectionViewModel @Inject constructor() :
                     copy(dialogState = false)
                 }
                 // TODO 삭제 api 요청
-
+                deletePlaces(uiState.value.selectedPlaces.toList())
                 // TODO 삭제 api 응답 후
                 reduce {
                     copy(selectMode = false)
                 }
+                getPlaceList()
                 postSideEffect(PlaceCollectionSideEffect.DeletePlaces)
             }
 
@@ -87,6 +93,22 @@ class PlaceCollectionViewModel @Inject constructor() :
                     copy(dialogState = false)
                 }
             }
+        }
+    }
+
+    fun getPlaceList() {
+        viewModelScope.launch {
+            mypageRepository.getPlaceList().onSuccess {
+                reduce {
+                    copy()
+                }
+            }
+        }
+    }
+
+    fun deletePlaces(selectedPlaces: List<Int>) {
+        viewModelScope.launch {
+            mypageRepository.deleteCourses(selectedPlaces).onSuccess { }
         }
     }
 }

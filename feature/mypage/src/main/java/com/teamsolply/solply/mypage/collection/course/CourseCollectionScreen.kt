@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,10 @@ fun CourseCollectionRoute(
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getCourseList()
+    }
 
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
@@ -113,11 +118,11 @@ fun CourseCollectionRoute(
                             )
                         },
                         modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        },
+                            if (index % 2 == 0) {
+                                Modifier.padding(end = 5.dp)
+                            } else {
+                                Modifier.padding(start = 5.dp)
+                            },
                         savedPlace = true,
                         savedCourse = true
                     )

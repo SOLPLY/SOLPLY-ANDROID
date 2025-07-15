@@ -10,4 +10,24 @@ class MypageRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPlaceTownList() {
         mypageService.getPlaceTownList()
     }
+
+    override suspend fun getCourseTownList() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPlaceList() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getCourseList() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deletePlaces() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteCourses() {
+        TODO("Not yet implemented")
+    }
 }

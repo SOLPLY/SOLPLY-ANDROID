@@ -91,12 +91,24 @@ class MypageViewModel @Inject constructor(
         }
     }
 
-    fun getTownList() {
+    fun getPlaceTownList() {
         viewModelScope.launch {
             mypageRepository.getPlaceTownList().onSuccess {
                 reduce {
                     copy(
                         towns = it
+                    )
+                }
+            }
+        }
+    }
+
+    fun getCourseTownList() {
+        viewModelScope.launch {
+            mypageRepository.getCourseTownList().onSuccess {
+                reduce {
+                    copy(
+//                        towns = it
                     )
                 }
             }

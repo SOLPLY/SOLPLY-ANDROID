@@ -49,6 +49,7 @@ fun MypageRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { 2 })
+
     LaunchedEffect(pagerState.currentPage) {
         // TODO pagerState 이중관리
         if (pagerState.currentPage == 0) {
@@ -64,7 +65,8 @@ fun MypageRoute(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getTownList()
+        viewModel.getPlaceTownList()
+        viewModel.getCourseTownList()
     }
 
     LaunchedEffectWithLifecycle {
