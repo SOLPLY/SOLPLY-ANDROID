@@ -57,7 +57,7 @@ fun CourseTownCollectionScreen(
                     content = {
                         SolplyCourseCard(
                             title = it.courseName,
-                            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            imgRes = it.imageUrl,
                             placeType = it.tagList,
                             backgroundColor = SolplyTheme.colors.purple200,
                             iconColor = SolplyTheme.colors.purple400,

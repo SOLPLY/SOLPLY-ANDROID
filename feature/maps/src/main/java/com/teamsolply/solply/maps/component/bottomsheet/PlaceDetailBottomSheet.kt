@@ -120,9 +120,7 @@ fun PlaceDetailBottomSheet(
                 ) {
                     items(courses) { courseInfo ->
                         SolplyCourseCard(
-                            // TODO. 서버 코스 이미지로 변경
-                            // imgRes = courseInfo.thumbnailImage,
-                            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            imgRes = courseInfo.thumbnailImage,
                             placeType = courseInfo.mainTag,
                             backgroundColor = SolplyTheme.colors.green300,
                             iconColor = SolplyTheme.colors.green400,
