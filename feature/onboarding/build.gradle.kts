@@ -8,6 +8,7 @@ android {
 
 dependencies {
     implementation(projects.domain.onboarding)
-    implementation("androidx.compose.foundation:foundation:1.6.1")
-    implementation("com.airbnb.android:lottie-compose:6.1.0")
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
+    implementation(libs.ui.foundation)
 }
