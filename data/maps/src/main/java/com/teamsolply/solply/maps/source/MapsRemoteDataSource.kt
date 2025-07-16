@@ -1,5 +1,18 @@
 package com.teamsolply.solply.maps.source
 
+import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
+import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
+import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
+
 interface MapsRemoteDataSource {
-    suspend fun saveCourse(courseInfo: String)
+    suspend fun getPlaceDetail(placeId: Long): GetPlaceDetailResponseDto
+    suspend fun savePlaceBookMark(placeId: Long)
+    suspend fun deletePlaceBookMark(placeId: Long)
+
+    suspend fun getAddMyCourse(
+        townId: Long,
+        placeId: Long
+    ): CoursesResponseDto
+
+    suspend fun getCourseDetail(courseId: Long): CourseDetailResponseDto
 }

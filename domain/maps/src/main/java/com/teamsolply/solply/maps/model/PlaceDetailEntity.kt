@@ -3,23 +3,28 @@ package com.teamsolply.solply.maps.model
 import com.teamsolply.solply.model.PlaceType
 
 data class PlaceDetailEntity(
-    val placeId: Int,
+    val placeId: Long,
     val placeName: String,
     val primaryTag: PlaceType,
-    val description: String,
-    val imageInfos: List<Int>,
+    val introduction: String,
+    val imageInfos: List<ImageInfo>,
     val address: String,
     val latitude: Double,
     val longitude: Double,
     val contactNumber: String,
     val openingHours: String,
-    val snsLink: List<SnsLink>,
+    val snsLinks: List<SnsLink>,
     val isBookmarked: Boolean,
     val placeType: String,
-    val placeDefaultId: Int
+    val placeDefaultId: Long
+)
+
+data class ImageInfo(
+    val displayOrder: Int,
+    val url: String
 )
 
 data class SnsLink(
-    val platform: String,
+    val snsPlatform: String,
     val url: String
 )

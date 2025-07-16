@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.dto.request
+package com.teamsolply.solply.maps.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

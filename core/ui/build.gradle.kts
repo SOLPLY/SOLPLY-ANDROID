@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.teamsolply.solply.ui"
 }
+
+dependencies {
+    implementation(libs.bundles.coil)
+}

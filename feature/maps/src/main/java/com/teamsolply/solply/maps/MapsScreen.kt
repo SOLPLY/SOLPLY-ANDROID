@@ -81,7 +81,8 @@ import kotlin.math.abs
 @Composable
 internal fun MapsRoute(
     mapsType: MapsType,
-    targetId: Int = 1,
+    townId: Long = 0,
+    targetId: Long = 1,
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
@@ -102,7 +103,7 @@ internal fun MapsRoute(
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
                 viewModel.getPlaceDetailInfo(targetId)
-                viewModel.getAllCourseInfo()
+                viewModel.getAllCourseInfo(townId = townId, placeId = targetId)
             }
 
             MapsType.ADD_COURSE -> {
@@ -281,9 +282,9 @@ private fun MapsScreen(
     // Add Course
     courseDetailInfo: CourseDetailEntity,
     saveCourse: () -> Unit,
-    selectedPlaceInfoId: Int?,
-    singleCoursePlaceBookMarkClick: (Int) -> Unit,
-    placeInfoClick: (Int) -> Unit,
+    selectedPlaceInfoId: Long?,
+    singleCoursePlaceBookMarkClick: (Long) -> Unit,
+    placeInfoClick: (Long) -> Unit,
     // Edit Course
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
@@ -295,7 +296,7 @@ private fun MapsScreen(
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
     onCourseEditBackClick: () -> Unit,
-    onPlaceDetailClick: (Int) -> Unit,
+    onPlaceDetailClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -557,12 +558,12 @@ private fun MapsScreen(
                             addPlace = startAddMyCourse,
                             placeType = placeDetailEntity.primaryTag,
                             title = placeDetailEntity.placeName,
-                            description = placeDetailEntity.description,
+                            description = placeDetailEntity.introduction,
                             placeImageUrls = placeDetailEntity.imageInfos.toPersistentList(),
                             placeAddress = placeDetailEntity.address,
                             placeContactNumber = placeDetailEntity.contactNumber,
                             placeOpeningHours = placeDetailEntity.openingHours,
-                            placeSnsLink = placeDetailEntity.snsLink.toPersistentList(),
+                            placeSnsLink = placeDetailEntity.snsLinks.toPersistentList(),
                             courses = courses,
                             addMyCourseSelectedCount = addMyCourseSelectedCount,
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
