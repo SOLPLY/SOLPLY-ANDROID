@@ -1,6 +1,7 @@
 package com.teamsolply.solply.onboarding
 
 import com.teamsolply.solply.onboarding.model.PersonaEntity
+import com.teamsolply.solply.onboarding.model.TownEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
@@ -8,10 +9,7 @@ import com.teamsolply.solply.ui.base.UiState
 data class OnBoardingState(
     val currentPage: Int = 0,
     val totalPageCount: Int = 3,
-    val townList: List<Town> = listOf(
-        Town(id = 0L, name = "망원동"),
-        Town(id = 1L, name = "연희동")
-    ),
+    val townList: List<TownEntity> = emptyList(),
     val selectedTownId: Long? = null,
     val personaList: PersonaEntity = PersonaEntity(personaList = emptyList()),
     val selectedPersona: String? = null,
@@ -40,5 +38,3 @@ sealed interface OnBoardingIntent : UiIntent {
 sealed interface OnBoardingSideEffect : SideEffect {
     data object NavigateToPlace : OnBoardingSideEffect
 }
-
-data class Town(val id: Long, val name: String)

@@ -1,6 +1,7 @@
 package com.teamsolply.solply.onboarding.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,13 +50,18 @@ fun SelectTownScreen(
                     .padding(top = 28.dp),
                 horizontalArrangement = Arrangement.spacedBy(18.dp, Alignment.CenterHorizontally)
             ) {
-                townList.forEach { town ->
-                    AddLocalAreaButton(
-                        text = town.name,
-                        onClick = { onBoardingIntent(OnBoardingIntent.OnTownSelected(town.id)) },
-                        isShowMore = false,
-                        selected = state.selectedTownId == town.id
-                    )
+                val towns = townList.firstOrNull()?.subTowns
+                if (towns.isNullOrEmpty()) {
+                    Box {}
+                } else {
+                    towns.forEach { subTown ->
+                        AddLocalAreaButton(
+                            text = subTown.townName,
+                            onClick = { onBoardingIntent(OnBoardingIntent.OnTownSelected(subTown.townId)) },
+                            isShowMore = false,
+                            selected = state.selectedTownId == subTown.townId
+                        )
+                    }
                 }
 
                 AddLocalAreaButton(
