@@ -1,5 +1,8 @@
 package com.teamsolply.solply.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class PlaceType(val displayName: String) {
     EMPTY(""),
     CAFE("카페"),

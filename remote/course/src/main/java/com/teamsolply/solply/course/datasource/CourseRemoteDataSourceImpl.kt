@@ -7,6 +7,10 @@ import javax.inject.Inject
 class CourseRemoteDataSourceImpl @Inject constructor(
     private val courseService: CourseService
 ) : CourseRemoteDataSource {
-    override suspend fun getRecommendedCourse(): String =
-        courseService.getRecommendedCourse().data.courseName
+    override suspend fun getUserInfo() = courseService.getUserInfo().data
+
+
+    override suspend fun getRecommendedCourse(townId: Int) =
+        courseService.getRecommendedCourseList(townId).data
+
 }
