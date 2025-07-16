@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,17 +51,11 @@ fun MypageRoute(
     val pagerState = rememberPagerState(pageCount = { 2 })
 
     LaunchedEffect(pagerState.currentPage) {
-        // TODO pagerState 이중관리
         if (pagerState.currentPage == 0) {
             viewModel.sendIntent(MypageIntent.SelectPlaceTab)
         } else {
             viewModel.sendIntent(MypageIntent.SelectCourseTab)
         }
-//        delay(500L)
-        Log.d(
-            "asdasdasd",
-            pagerState.currentPage.toString() + " " + uiState.selectedTab.name + " " + uiState.isPlaceTownSelected + " " + uiState.isCourseTownSelected
-        )
     }
 
     LaunchedEffect(Unit) {

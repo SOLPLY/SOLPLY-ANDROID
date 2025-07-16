@@ -42,11 +42,6 @@ fun CourseCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 CourseCollectionSideEffect.NavigateToBack -> navigateToBack()
-                CourseCollectionSideEffect.DeleteCourses -> {
-                    Log.d("selected Places", uiState.selectedCourses.joinToString(","))
-                    // TODO 장소 리스트 조회 api
-                }
-
                 CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.EDIT_COURSE.name)
             }
         }

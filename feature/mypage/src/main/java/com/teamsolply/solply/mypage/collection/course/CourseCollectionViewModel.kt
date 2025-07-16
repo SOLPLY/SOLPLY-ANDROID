@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,21 +61,21 @@ class CourseCollectionViewModel @Inject constructor(
                 if (uiState.value.selectMode) {
                     if (uiState.value.selectedCourses.contains(intent.courseId)) {
                         reduce {
-                            val updatedCourses = courses.toMutableList()
-                            val oldCourses = updatedCourses[intent.index]
-                            updatedCourses[intent.index] = oldCourses.copy(isSelected = false)
+                            val updatedCourses = courses.map {
+                                if (it.courseId == intent.courseId) it.copy(isSelected = false) else it
+                            }.toPersistentList()
                             copy(
-                                selectedCourses = selectedCourses - intent.courseId,
+                                selectedCourses = (selectedCourses - intent.courseId).toPersistentSet(),
                                 courses = updatedCourses
                             )
                         }
                     } else {
                         reduce {
-                            val updatedCourses = courses.toMutableList()
-                            val oldCourses = updatedCourses[intent.index]
-                            updatedCourses[intent.index] = oldCourses.copy(isSelected = true)
+                            val updatedCourses = courses.map {
+                                if (it.courseId == intent.courseId) it.copy(isSelected = true) else it
+                            }.toPersistentList()
                             copy(
-                                selectedCourses = selectedCourses + intent.courseId,
+                                selectedCourses = (selectedCourses + intent.courseId).toPersistentSet(),
                                 courses = updatedCourses
                             )
                         }
@@ -84,17 +86,7 @@ class CourseCollectionViewModel @Inject constructor(
             }
 
             is CourseCollectionIntent.DialogConfirmClick -> {
-                // TODO 삭제 api 요청
                 deleteCourses(selectedCourses = uiState.value.selectedCourses.toList())
-                // TODO 삭제 api 응답 후
-                reduce {
-                    copy(
-                        selectedCourses = emptySet(),
-                        selectMode = false,
-                        dialogState = false
-                    )
-                }
-                postSideEffect(CourseCollectionSideEffect.DeleteCourses)
             }
 
             is CourseCollectionIntent.DialogDismissClick -> {
@@ -110,7 +102,7 @@ class CourseCollectionViewModel @Inject constructor(
             mypageRepository.getCourseList(townId).onSuccess {
                 reduce {
                     copy(
-                        courses = it
+                        courses = it.toPersistentList()
                     )
                 }
             }
@@ -120,6 +112,13 @@ class CourseCollectionViewModel @Inject constructor(
     private fun deleteCourses(selectedCourses: List<Int>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedCourses).onSuccess {
+                reduce {
+                    copy(
+                        selectedCourses = emptySet(),
+                        selectMode = false,
+                        dialogState = false
+                    )
+                }
                 getCourseList(townId = uiState.value.townId)
             }
         }

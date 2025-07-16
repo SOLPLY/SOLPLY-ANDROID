@@ -4,8 +4,9 @@ import com.teamsolply.solply.model.PlaceType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class CourseTownListResponseDto(
-    @SerialName("folderThumbnailList")
+    @SerialName("folders")
     val townList: List<CourseTownResponseDto>
 )
 

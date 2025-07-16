@@ -13,25 +13,26 @@ interface MypageService {
     @GET("api/places/bookmarks/folders/preview")
     suspend fun getPlaceTownList(): BaseResponse<PlaceTownListResponseDto>
 
-    @GET("/api/courses/bookmarks/folders")
+    @GET("api/courses/bookmarks/folders")
     suspend fun getCourseTownList(): BaseResponse<CourseTownListResponseDto>
 
-    @GET("/api/places")
+    @GET("api/places")
     suspend fun getPlaceList(
-        @Query("townId") townId: Int
+        @Query("townId") townId: Int,
+        @Query("isBookmarkedSearch") isBookmarkedSearch: Boolean = true
     ): BaseResponse<PlaceListResponseDto>
 
-    @GET("/api/courses/bookmarks")
+    @GET("api/courses/bookmarks")
     suspend fun getCourseList(
         @Query("townId") townId: Int
     ): BaseResponse<CourseListResponseDto>
 
-    @DELETE("/api/places/bookmarks")
+    @DELETE("api/places/bookmarks")
     suspend fun deletePlaces(
         @Query(value = "placeIds") placeIds: List<Int>
     )
 
-    @DELETE("/api/courses/bookmarks")
+    @DELETE("api/courses/bookmarks")
     suspend fun deleteCourses(
         @Query(value = "courseIds") courseIds: List<Int>
     )
