@@ -18,25 +18,15 @@ class MypageViewModel @Inject constructor(
             is MypageIntent.SelectPlaceTown -> {
                 // TODO town에 저장된 place or course 리스트 조회 api
                 // MypageContract places에 반영하면 되나?
-                when (currentState.selectedTab) {
-                    MypageTab.PLACE -> {
-                        reduce {
-                            copy(isPlaceTownSelected = true)
-                        }
-                        postSideEffect(
-                            MypageSideEffect.NavigateToPlaceCollection(
-                                townId = intent.townId,
-                                townName = intent.townName
-                            )
-                        )
-                    }
-
-                    MypageTab.COURSE -> {
-                        reduce {
-                            copy(isCourseTownSelected = true)
-                        }
-                    }
+                reduce {
+                    copy(isPlaceTownSelected = true)
                 }
+                postSideEffect(
+                    MypageSideEffect.NavigateToPlaceCollection(
+                        townId = intent.townId,
+                        townName = intent.townName
+                    )
+                )
             }
 
             is MypageIntent.SelectCourseTown -> {

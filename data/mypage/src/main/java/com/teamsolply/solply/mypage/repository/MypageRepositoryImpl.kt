@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.repository
 
+import android.util.Log
 import com.teamsolply.solply.mypage.model.CourseInfoEntity
 import com.teamsolply.solply.mypage.model.CourseTownEntity
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
@@ -23,8 +24,9 @@ class MypageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCourseTownList(): Result<List<CourseTownEntity>> = runCatching {
+        Log.d("course town", "repository impl1 start")
         mypageRemoteDataSource.getCourseTownList().townList
-    }.map { townList ->
+    }.mapCatching { townList ->
         townList.map { town ->
             CourseTownEntity(
                 townId = town.townId,

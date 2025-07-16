@@ -8,6 +8,7 @@ import com.teamsolply.solply.mypage.model.PlaceTownEntity
 interface MypageRepository {
     suspend fun getPlaceTownList(): Result<List<PlaceTownEntity>>
     suspend fun getCourseTownList(): Result<List<CourseTownEntity>>
+
     suspend fun getPlaceList(townId: Int): Result<List<PlaceInfoEntity>>
     suspend fun getCourseList(townId: Int): Result<List<CourseInfoEntity>>
 
