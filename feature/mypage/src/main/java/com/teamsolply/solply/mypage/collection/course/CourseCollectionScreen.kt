@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,28 +26,29 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun CourseCollectionRoute(
     paddingValues: PaddingValues,
+    townId: Int,
+    townName: String,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent(CourseCollectionIntent.Init(townId, townName))
+    }
+
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 CourseCollectionSideEffect.NavigateToBack -> navigateToBack()
-                CourseCollectionSideEffect.DeleteCourses -> {
-                    Log.d("selected Places", uiState.selectedCourses.joinToString(","))
-                    // TODO 장소 리스트 조회 api
-                }
-
                 CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.EDIT_COURSE.name)
             }
         }
     }
 
     CollectionScreen(
-        town = uiState.town,
+        town = uiState.townName,
         onBackButtonClick = { viewModel.sendIntent(CourseCollectionIntent.BackButtonClick) },
         onSelectButtonClick = { viewModel.sendIntent(CourseCollectionIntent.SelectButtonClick) },
         onDeleteButtonClick = { viewModel.sendIntent(CourseCollectionIntent.DeleteButtonClick) },

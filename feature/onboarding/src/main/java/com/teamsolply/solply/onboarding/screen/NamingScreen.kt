@@ -3,11 +3,10 @@ package com.teamsolply.solply.onboarding.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
@@ -25,6 +24,7 @@ fun NamingScreen(
     isNicknameDuplicate: Boolean,
     changeInputNickname: (String) -> Unit,
     onNextClick: () -> Unit,
+    checkOnBoardingSuccess: (Boolean) -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -48,8 +48,9 @@ fun NamingScreen(
 
             SolplyNicknameTextField(
                 value = inputNickname,
-                isNicknameDuplicate = state.isNicknameDuplicate,
+                isNicknameDuplicate = isNicknameDuplicate,
                 onValueChange = { changeInputNickname(it) },
+                changeNicknameValidate = { checkOnBoardingSuccess(it) },
                 checkNicknameValidate = { input ->
                     input.all { it.isLetterOrDigit() }
                 }
@@ -59,15 +60,16 @@ fun NamingScreen(
         SolplyBasicButton(
             text = "다음",
             modifier = Modifier
-                .padding(bottom = 24.dp),
+                .padding(bottom = 24.dp)
+                .imePadding(),
             onClick = {
-                if (state.userNickname.isNotBlank()) {
+                if (state.isOnBoardingSuccess) {
                     onBoardingIntent(OnBoardingIntent.ShowStartingScreen)
                 }
             },
-            selected = state.userNickname.isNotBlank(),
+            selected = state.isOnBoardingSuccess,
             textStyle = SolplyTheme.typography.button16M,
-            textColor = if (state.userNickname.isNotBlank()) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
+            textColor = if (state.isOnBoardingSuccess) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
             enabledBackgroundColor = SolplyTheme.colors.gray900,
             disabledBackgroundColor = SolplyTheme.colors.gray300
         )

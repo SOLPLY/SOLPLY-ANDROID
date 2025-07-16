@@ -33,10 +33,10 @@ internal fun AddCourseBottomSheet(
     places: PersistentList<Place>,
     courseName: String,
     introduction: String,
-    selectedPlaceItem: Int?,
-    singleCoursePlaceBookMarkClick: (Int) -> Unit,
-    placeInfoClick: (Int) -> Unit,
-    placeDetailClick: (Int) -> Unit
+    selectedPlaceItem: Long?,
+    singleCoursePlaceBookMarkClick: (Long) -> Unit,
+    placeInfoClick: (Long) -> Unit,
+    placeDetailClick: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),

@@ -1,25 +1,15 @@
 package com.teamsolply.solply.mypage
 
+import com.teamsolply.solply.mypage.model.CourseTownEntity
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.mypage.model.TownCard
+import com.teamsolply.solply.mypage.model.PlaceTownEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
-import okhttp3.internal.immutableListOf
 
 data class MypageState(
-    val towns: List<TownCard> =
-//        emptyList<TownCard>(),
-        immutableListOf(
-            TownCard(
-                townName = "연희동",
-                imageUrl = ""
-            ),
-            TownCard(
-                townName = "망원동",
-                imageUrl = ""
-            )
-        ),
+    val placeTowns: List<PlaceTownEntity> = emptyList(),
+    val courseTowns: List<CourseTownEntity> = emptyList(),
     val town: String = "연희동",
     val selectedTab: MypageTab = MypageTab.PLACE,
     val isPlaceTownSelected: Boolean = false,
@@ -32,8 +22,8 @@ sealed interface MypageIntent : UiIntent {
     data object SelectCourseTab : MypageIntent
 
     //
-    data class SelectPlaceTown(val selectedTown: String) : MypageIntent
-    data class SelectCourseTown(val selectedTown: String) : MypageIntent
+    data class SelectPlaceTown(val townId: Int, val townName: String) : MypageIntent
+    data class SelectCourseTown(val townId: Int, val townName: String) : MypageIntent
 
     data class EmptyButtonClick(val mypageTab: MypageTab) : MypageIntent
 
@@ -45,6 +35,6 @@ sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
     data object NavigateToPLace : MypageSideEffect
     data object NavigateToCourse : MypageSideEffect
-    data class NavigateToPlaceCollection(val town: String) : MypageSideEffect
-    data class NavigateToCourseCollection(val town: String) : MypageSideEffect
+    data class NavigateToPlaceCollection(val townId: Int, val townName: String) : MypageSideEffect
+    data class NavigateToCourseCollection(val townId: Int, val townName: String) : MypageSideEffect
 }

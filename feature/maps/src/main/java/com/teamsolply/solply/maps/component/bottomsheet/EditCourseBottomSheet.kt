@@ -55,20 +55,20 @@ internal fun EditCourseBottomSheet(
     places: PersistentList<Place>,
     courseName: String,
     introduction: String,
-    selectedPlaceItem: Int?,
+    selectedPlaceItem: Long?,
     removeIconBounds: Rect?,
     isInRemoveIconArea: MutableState<Boolean>,
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
     startEditCourse: Boolean,
-    singleCoursePlaceBookMarkClick: (Int) -> Unit,
+    singleCoursePlaceBookMarkClick: (Long) -> Unit,
     onStartEditCourseClick: () -> Unit,
-    placeInfoClick: (Int) -> Unit,
+    placeInfoClick: (Long) -> Unit,
     startCourseMove: (Boolean) -> Unit,
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
     onCourseEditBackClick: () -> Unit,
-    placeDetailClick: (Int) -> Unit
+    placeDetailClick: (Long) -> Unit
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }

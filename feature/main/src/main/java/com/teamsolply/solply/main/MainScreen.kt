@@ -175,17 +175,19 @@ internal fun MainScreen(
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         },
                         navigateToBack = navigator::navigateToBack,
-                        navigateToPlaceCollection = { town ->
+                        navigateToPlaceCollection = { townId, townName ->
                             val navOptions = navOptions { }
                             navigator.navigateToPlaceCollection(
-                                town = town,
+                                townId = townId,
+                                townName = townName,
                                 navOptions = navOptions
                             )
                         },
-                        navigateToCourseCollection = { town ->
+                        navigateToCourseCollection = { townId, townName ->
                             val navOptions = navOptions { }
                             navigator.navigateToCourseCollection(
-                                town = town,
+                                townId = townId,
+                                townName = townName,
                                 navOptions = navOptions
                             )
                         },

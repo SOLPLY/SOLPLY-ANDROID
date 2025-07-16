@@ -70,6 +70,9 @@ fun OnBoardingRoute(
             navController = navController,
             changeInputNickname = { inputNickname ->
                 viewModel.sendIntent(OnBoardingIntent.ChangeInputNickname(inputNickname))
+            },
+            checkOnBoardingSuccess = { isOnBoardingSuccess ->
+                viewModel.sendIntent(OnBoardingIntent.ChangeOnBoardingSuccess(isOnBoardingSuccess))
             }
         )
     }
@@ -83,7 +86,8 @@ fun OnBoardingScreen(
     onBoardingIntent: (OnBoardingIntent) -> Unit,
     modifier: Modifier = Modifier,
     navController: NavController,
-    changeInputNickname: (String) -> Unit
+    changeInputNickname: (String) -> Unit,
+    checkOnBoardingSuccess: (Boolean) -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
@@ -134,7 +138,7 @@ fun OnBoardingScreen(
             isTownSelected = when (pagerState.currentPage) {
                 0 -> state.selectedTownId != null
                 1 -> state.selectedPersona != null
-                2 -> !state.userNickname.isNullOrBlank()
+                2 -> state.userNickname.isNotBlank()
                 else -> false
             }
         )
@@ -181,6 +185,7 @@ fun OnBoardingScreen(
                             pagerState.scrollToPage(pagerState.currentPage + 1)
                         }
                     },
+                    checkOnBoardingSuccess = checkOnBoardingSuccess,
                     onBoardingIntent = onBoardingIntent
                 )
             }
