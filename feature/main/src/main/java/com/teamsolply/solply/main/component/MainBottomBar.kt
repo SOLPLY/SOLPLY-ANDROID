@@ -1,6 +1,14 @@
 package com.teamsolply.solply.main.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOut
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +42,16 @@ internal fun MainBottomBar(
     currentTab: MainNavTab?,
     onTabSelected: (MainNavTab) -> Unit
 ) {
-    AnimatedVisibility(visible = visible) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = slideInHorizontally(
+            animationSpec = tween(250),
+            initialOffsetX = { it }
+        ),
+        exit = slideOutHorizontally(
+            animationSpec = tween(250),
+            targetOffsetX = { it }
+        )) {
         Box(modifier = modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
