@@ -33,8 +33,6 @@ sealed interface CourseCollectionIntent : UiIntent {
 
 sealed interface CourseCollectionSideEffect : SideEffect {
 
-    data object DeleteCourses : CourseCollectionSideEffect
-
     data object NavigateToBack : CourseCollectionSideEffect
     data object NavigateToMap : CourseCollectionSideEffect
 }

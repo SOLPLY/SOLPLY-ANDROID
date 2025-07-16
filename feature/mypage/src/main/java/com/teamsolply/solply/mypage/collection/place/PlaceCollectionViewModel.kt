@@ -4,7 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.launch
+import okhttp3.internal.toImmutableList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,7 +49,7 @@ class PlaceCollectionViewModel @Inject constructor(
                         if (it.isSelected) it.copy(isSelected = false) else it
                     }
                     copy(
-                        places = updatedPlaces,
+                        places = updatedPlaces.toPersistentList(),
                         selectMode = false
                     )
                 }
@@ -60,21 +63,21 @@ class PlaceCollectionViewModel @Inject constructor(
                 if (uiState.value.selectMode) {
                     if (uiState.value.selectedPlaces.contains(intent.placeId)) {
                         reduce {
-                            val updatedPlaces = places.toMutableList()
-                            val oldPlace = updatedPlaces[intent.index]
-                            updatedPlaces[intent.index] = oldPlace.copy(isSelected = false)
+                            val updatedPlaces = places.map {
+                                if (it.placeId == intent.placeId) it.copy(isSelected = false) else it
+                            }.toPersistentList()
                             copy(
-                                selectedPlaces = selectedPlaces - intent.placeId,
+                                selectedPlaces = (selectedPlaces - intent.placeId).toPersistentSet(),
                                 places = updatedPlaces
                             )
                         }
                     } else {
                         reduce {
-                            val updatedPlaces = places.toMutableList()
-                            val oldPlace = updatedPlaces[intent.index]
-                            updatedPlaces[intent.index] = oldPlace.copy(isSelected = true)
+                            val updatedPlaces = places.map {
+                                if (it.placeId == intent.placeId) it.copy(isSelected = true) else it
+                            }.toPersistentList()
                             copy(
-                                selectedPlaces = selectedPlaces + intent.placeId,
+                                selectedPlaces = (selectedPlaces + intent.placeId).toPersistentSet(),
                                 places = updatedPlaces
                             )
                         }
@@ -85,18 +88,7 @@ class PlaceCollectionViewModel @Inject constructor(
             }
 
             is PlaceCollectionIntent.DialogConfirmClick -> {
-                // TODO 삭제 api 요청
                 deletePlaces(uiState.value.selectedPlaces.toList())
-                // TODO 삭제 api 응답 후
-                reduce {
-                    copy(
-                        selectedPlaces = emptySet(),
-                        selectMode = false,
-                        dialogState = false
-                    )
-                }
-//                getPlaceList()
-                postSideEffect(PlaceCollectionSideEffect.DeletePlaces)
             }
 
             is PlaceCollectionIntent.DialogDismissClick -> {
@@ -112,7 +104,7 @@ class PlaceCollectionViewModel @Inject constructor(
             mypageRepository.getPlaceList(townId).onSuccess {
                 reduce {
                     copy(
-                        places = it
+                        places = it.toPersistentList()
                     )
                 }
             }
@@ -122,6 +114,13 @@ class PlaceCollectionViewModel @Inject constructor(
     private fun deletePlaces(selectedPlaces: List<Int>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedPlaces).onSuccess {
+                reduce {
+                    copy(
+                        selectedPlaces = emptySet(),
+                        selectMode = false,
+                        dialogState = false
+                    )
+                }
                 getPlaceList(uiState.value.townId)
             }
         }

@@ -33,12 +33,7 @@ fun PlaceCollectionRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        Log.d("townId 찍기", townId.toString())
         viewModel.sendIntent(PlaceCollectionIntent.Init(townId, townName))
-    }
-
-    LaunchedEffect(uiState.selectMode) {
-        Log.d("select Mode", uiState.selectMode.toString())
     }
 
     LaunchedEffectWithLifecycle {
@@ -46,10 +41,6 @@ fun PlaceCollectionRoute(
             when (sideEffect) {
                 is PlaceCollectionSideEffect.NavigateToBack -> navigateToBack()
                 is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.PLACE_DETAIL.name)
-                is PlaceCollectionSideEffect.DeletePlaces -> {
-                    Log.d("selected Places", uiState.selectedPlaces.joinToString(","))
-                    // TODO 장소 리스트 조회 api
-                }
             }
         }
     }
