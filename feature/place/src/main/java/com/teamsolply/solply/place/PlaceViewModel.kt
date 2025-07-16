@@ -136,27 +136,43 @@ class PlaceViewModel @Inject constructor(
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
 
-                    repository.getPlaces(
+                    loadPlaces(
                         townId = userInfo.selectedTown.townId,
                         mainTagId = null,
-                        subTagAIdList = emptyList(),
-                        subTagBIdList = emptyList()
-                    ).onSuccess {
-                        reduce {
-                            copy(
-                                placeList = it.map {
-                                    PlaceData(
-                                        placeId = it.placeId,
-                                        placeName = it.placeName,
-                                        thumbnailUrl = it.thumbnailImageUrl,
-                                        primaryTag = PlaceType.valueOf(it.primaryTag),
-                                        isBookmarked = it.isBookmarked
-                                    )
-                                }.toPersistentList()
-                            )
-                        }
-                    }
+                        subTagAIdList = null,
+                        subTagBIdList = null
+                    )
                 }
+        }
+    }
+
+    private fun loadPlaces(
+        townId: Long,
+        mainTagId: Long? = null,
+        subTagAIdList: List<Long>? = null,
+        subTagBIdList: List<Long>? = null
+    ) {
+        viewModelScope.launch {
+            repository.getPlaces(
+                townId = townId,
+                mainTagId = mainTagId,
+                subTagAIdList = subTagAIdList,
+                subTagBIdList = subTagBIdList,
+            ).onSuccess { placeEntities ->
+                reduce {
+                    copy(
+                        placeList = placeEntities.map {
+                            PlaceData(
+                                placeId = it.placeId,
+                                placeName = it.placeName,
+                                thumbnailUrl = it.thumbnailImageUrl,
+                                primaryTag = PlaceType.valueOf(it.primaryTag),
+                                isBookmarked = it.isBookmarked
+                            )
+                        }.toPersistentList()
+                    )
+                }
+            }
         }
     }
 }

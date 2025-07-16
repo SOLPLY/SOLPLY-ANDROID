@@ -321,7 +321,7 @@ fun PlaceGridItem(
 ) {
     SolplyPlaceCard(
         name = place.placeName,
-        imgRes = "",
+        imgRes = place.thumbnailUrl,
         placeType = place.primaryTag,
         modifier = modifier,
         onClick = onClick,
