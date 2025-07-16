@@ -1,6 +1,5 @@
 package com.teamsolply.solply.designsystem.component.card
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
@@ -28,12 +26,13 @@ import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun SolplyPlaceCard(
     name: String,
-    imgRes: Int,
+    imgRes: String,
     placeType: PlaceType,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -76,9 +75,8 @@ fun SolplyPlaceCard(
                     shape = RoundedCornerShape(20.dp)
                 )
         ) {
-            Image(
-                painter = painterResource(id = imgRes),
-                contentDescription = "place_image",
+            AdaptationImage(
+                imageUrl = imgRes,
                 modifier = Modifier.matchParentSize()
             )
             if (saved) {
@@ -127,7 +125,7 @@ private fun SolplyPlaceCardPreview() {
             SolplyPlaceCard(
                 modifier = Modifier.size(158.dp),
                 name = "을지면옥",
-                imgRes = R.drawable.img_course_dummy,
+                imgRes = "",
                 placeType = PlaceType.SHOPPING,
                 saved = true,
                 selected = true

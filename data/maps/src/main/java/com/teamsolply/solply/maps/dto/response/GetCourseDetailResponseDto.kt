@@ -30,7 +30,7 @@ data class CoursePlaceDto(
     val placeName: String,
 
     @SerialName("thumbnailUrl")
-    val thumbnailUrl: String,
+    val thumbnailUrl: String?,
 
     @SerialName("primaryTag")
     val primaryTag: String,

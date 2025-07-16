@@ -2,8 +2,6 @@ package com.teamsolply.solply.oauth
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -174,17 +172,11 @@ fun startKakaoLogin(
         UserApiClient.instance.loginWithKakaoTalk(activity) { token, error ->
             if (error != null) {
                 if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                    Toast.makeText(context, "로그인 취소", Toast.LENGTH_SHORT).show()
                     return@loginWithKakaoTalk
                 }
                 UserApiClient.instance.loginWithKakaoAccount(context) { accountToken, accountError ->
                     if (accountError != null) {
                         onFailure(accountError)
-                        Toast.makeText(
-                            context,
-                            "로그인 실패: ${accountError.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         return@loginWithKakaoAccount
                     }
                     if (accountToken != null) {
@@ -197,10 +189,8 @@ fun startKakaoLogin(
         }
     } else {
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
-            Log.d("KAKAO_LOGIN", "loginWithKakaoAccount called. token=$token, error=$error")
             if (error != null) {
                 onFailure(error)
-                Toast.makeText(context, "로그인 실패: ${error.message}", Toast.LENGTH_SHORT).show()
                 return@loginWithKakaoAccount
             }
             if (token != null) {

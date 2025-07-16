@@ -27,10 +27,10 @@ deploymentTargetDropDown.xml
 render.experimental.xml
 
 # Keystore files
-*.jks
-*.keystore
-app/release.keystore
-app/debug.keystore
+#*.jks
+#*.keystore
+#app/release.keystore
+#app/debug.keystore
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json

@@ -396,12 +396,12 @@ private fun MapsScreen(
                                 isSelected = selectedPlaceInfoId == place.placeId
                             )
                             val currentLatLng =
-                                LatLng(place.latitude.toDouble(), place.longitude.toDouble())
+                                LatLng(place.latitude, place.longitude)
                             Marker(
                                 state = MarkerState(
                                     position = LatLng(
-                                        place.latitude.toDouble(),
-                                        place.longitude.toDouble()
+                                        place.latitude,
+                                        place.longitude
                                     )
                                 ),
                                 icon = OverlayImage.fromResource(markerIconRes),
@@ -410,8 +410,8 @@ private fun MapsScreen(
                             if (index < courseDetailInfo.places.lastIndex) {
                                 val nextCourse = courseDetailInfo.places[index + 1]
                                 val nextLatLng = LatLng(
-                                    nextCourse.latitude.toDouble(),
-                                    nextCourse.longitude.toDouble()
+                                    nextCourse.latitude,
+                                    nextCourse.longitude
                                 )
 
                                 PathOverlay(
