@@ -72,10 +72,8 @@ fun CourseScreen(
         CourseHeader(
             townName = user.selectedTown.townName,
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(bottom = 8.dp)
         )
-
-        Spacer(modifier = Modifier.height(24.dp))
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
