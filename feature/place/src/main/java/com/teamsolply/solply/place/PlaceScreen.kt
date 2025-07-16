@@ -103,10 +103,17 @@ fun PlaceRoute(
             dragHandle = null
         ) {
             PlaceTypeFilterSheet(
-                filterItems = state.mainFilterItems.map { it.toPlaceType().toPlaceTypeFilterItem() },
+                filterItems = state.mainFilterItems.map {
+                    it.toPlaceType().toPlaceTypeFilterItem()
+                },
                 selectedType = state.selectedMainFilter,
                 onSelectType = { mainFilterId, mainFilterName ->
-                    viewModel.sendIntent(PlaceIntent.ChangeSelectedMainFilter(mainFilterId, mainFilterName))
+                    viewModel.sendIntent(
+                        PlaceIntent.ChangeSelectedMainFilter(
+                            mainFilterId,
+                            mainFilterName
+                        )
+                    )
                     viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
                 },
                 onDismiss = {

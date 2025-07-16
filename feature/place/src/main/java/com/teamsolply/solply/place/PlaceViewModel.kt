@@ -1,6 +1,8 @@
 package com.teamsolply.solply.place
 
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -133,6 +135,27 @@ class PlaceViewModel @Inject constructor(
             repository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
+
+                    repository.getPlaces(
+                        townId = userInfo.selectedTown.townId,
+                        mainTagId = null,
+                        subTagAIdList = emptyList(),
+                        subTagBIdList = emptyList()
+                    ).onSuccess {
+                        reduce {
+                            copy(
+                                placeList = it.map {
+                                    PlaceData(
+                                        placeId = it.placeId,
+                                        placeName = it.placeName,
+                                        thumbnailUrl = it.thumbnailImageUrl,
+                                        primaryTag = PlaceType.valueOf(it.primaryTag),
+                                        isBookmarked = it.isBookmarked
+                                    )
+                                }
+                            )
+                        }
+                    }
                 }
         }
     }

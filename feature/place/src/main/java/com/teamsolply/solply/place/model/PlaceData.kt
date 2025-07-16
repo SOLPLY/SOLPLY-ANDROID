@@ -5,7 +5,7 @@ import com.teamsolply.solply.model.PlaceType
 data class PlaceData(
     val placeId: Long,
     val placeName: String,
-    val thumbnailUrl: Int,
+    val thumbnailUrl: String,
     val primaryTag: PlaceType,
     val isBookmarked: Boolean
 )
