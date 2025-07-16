@@ -9,8 +9,6 @@ class CourseRemoteDataSourceImpl @Inject constructor(
 ) : CourseRemoteDataSource {
     override suspend fun getUserInfo() = courseService.getUserInfo().data
 
-
     override suspend fun getRecommendedCourse(townId: Int) =
         courseService.getRecommendedCourseList(townId).data
-
 }

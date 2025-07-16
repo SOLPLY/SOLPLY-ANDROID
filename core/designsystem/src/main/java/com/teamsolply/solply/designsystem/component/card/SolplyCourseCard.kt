@@ -147,7 +147,7 @@ private fun SolplytCourseCardPreveiw() {
             imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
             placeType = immutableListOf(
                 PlaceType.CAFE,
-                PlaceType.BOOK
+                PlaceType.BOOKSTORE
             ),
             backgroundColor = SolplyTheme.colors.red300,
             iconColor = SolplyTheme.colors.red500,

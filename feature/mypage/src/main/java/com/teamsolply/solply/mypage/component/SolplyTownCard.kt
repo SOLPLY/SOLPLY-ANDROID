@@ -72,7 +72,7 @@ private fun TownCardPreview() {
                     SolplyCourseCard(
                         title = "오감으로 수집하는 하루",
                         imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                        placeType = listOf(PlaceType.BOOK, PlaceType.SHOPPING),
+                        placeType = listOf(PlaceType.BOOKSTORE, PlaceType.SHOPPING),
                         backgroundColor = SolplyTheme.colors.purple200,
                         iconColor = SolplyTheme.colors.purple400,
                         iconBackGroundColor = SolplyTheme.colors.purple100,

@@ -19,18 +19,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 @Composable
 fun PlaceHeader(
     townName: String,
-    persona: String,
-    nickname: String,
     modifier: Modifier = Modifier
 ) {
-    val recommendText = when (persona) {
-        "HEALING" -> "조용히 사색을 즐기는\n${nickname}님을 위한 오늘의 추천"
-        "EXPLORER" -> "골목 곳곳을 탐색하는\n${nickname}님을 위한 오늘의 추천"
-        "MOODING" -> "취향을 모으는\n${nickname}님을 위한 오늘의 추천"
-        "NATURAL" -> "힐링이 필요한\n${nickname}님을 위한 오늘의 추천"
-        else -> "솔플리가 추천하는\n${nickname}님을 위한 오늘의 추천"
-    }
-
     Column(
         modifier = modifier
             .fillMaxWidth()

@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
@@ -18,15 +19,32 @@ class PlaceViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             repository.saveAutoSignIn(autoSignIn = SaveAutoSignInEntity(autoSignIn = true))
-            sendIntent(PlaceIntent.LoadPlaces)
+            sendIntent(PlaceIntent.LoadUserInfo)
+            sendIntent(PlaceIntent.LoadPlaces(townId = uiState.value.townId))
+            sendIntent(PlaceIntent.LoadMainTags)
+            sendIntent(PlaceIntent.LoadSubTags(parentId = uiState.value.selectedMainTagId))
         }
     }
 
     override fun handleIntent(intent: PlaceIntent) {
         when (intent) {
-            PlaceIntent.LoadPlaces -> fetchPlaces()
+            is PlaceIntent.LoadUserInfo -> fetchUserInfo()
+            is PlaceIntent.LoadPlaces -> fetchRecommendPlace(intent.townId)
+            is PlaceIntent.LoadMainTags -> fetchMainTags()
+            is PlaceIntent.ChangeSelectedMainFilter -> {
+                reduce {
+                    copy(
+                        selectedMainTagId = intent.mainFilterId,
+                        selectedMainFilter = intent.mainFilterName,
+                        selectedOptionFilter = persistentListOf()
+                    )
+                }
+                sendIntent(PlaceIntent.LoadSubTags(parentId = intent.mainFilterId))
+            }
+
+            is PlaceIntent.LoadSubTags -> fetchSubTags(intent.parentId)
             is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
-            PlaceIntent.Retry -> fetchPlaces()
+            PlaceIntent.Retry -> {}
 
             is PlaceIntent.SelectOptionFilter -> {
                 val currentOptionFilter = intent.optionTagId
@@ -82,23 +100,51 @@ class PlaceViewModel @Inject constructor(
         }
     }
 
-    private fun fetchPlaces() {
+    private fun fetchRecommendPlace(townId: Long) {
         viewModelScope.launch {
-            repository.getRecommendedPlace()
+            repository.getRecommendedPlace(townId)
                 .onSuccess { placesList ->
                     reduce { copy(recommendPlaces = placesList) }
                 }
         }
     }
 
-    fun onMainTypeSelected(type: String) {
-        val tags = when (type) {
-            "WALK", "BOOK" -> emptyList()
-            else -> listOf(
-                OptionTag(9, "OPTION1", "커피/디저트", 1),
-                OptionTag(10, "OPTION2", "시그니쳐메뉴", 1)
-            )
+//    fun onMainTypeSelected(type: String) {
+//        val tags = when (type) {
+//            "WALK", "BOOK" -> emptyList()
+//            else -> listOf(
+//                OptionTag(9, "OPTION1", "커피/디저트", 1),
+//                OptionTag(10, "OPTION2", "시그니쳐메뉴", 1)
+//            )
+//        }
+//        reduce { copy(optionTags = tags) }
+//    }
+
+    private fun fetchMainTags() {
+        viewModelScope.launch {
+            repository.getMainTags()
+                .onSuccess { tagList ->
+                    reduce { copy(mainFilterItems = tagList) }
+                }
         }
-        reduce { copy(optionTags = tags) }
+    }
+
+    private fun fetchSubTags(parentId: Int) {
+        viewModelScope.launch {
+            repository.getSubTags(parentId)
+                .onSuccess { tagList ->
+                    Log.d("tagList", tagList.toString())
+                    reduce { copy(subFilterItems = tagList) }
+                }
+        }
+    }
+
+    private fun fetchUserInfo() {
+        viewModelScope.launch {
+            repository.getUserInfo()
+                .onSuccess { userInfo ->
+                    reduce { copy(userInfo = userInfo) }
+                }
+        }
     }
 }
