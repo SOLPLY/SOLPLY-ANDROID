@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SelectedTownInfo
@@ -11,7 +10,6 @@ import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import okhttp3.internal.immutableListOf
 
 data class PlaceState(
     val townId: Long = 0,
@@ -23,29 +21,8 @@ data class PlaceState(
         persona = "REST"
     ),
 
-    val recommendPlaces: List<RecommendPlaceInfo> = immutableListOf(
-        RecommendPlaceInfo(
-            placeId = 0,
-            placeName = "장소 이름",
-            thumbnailImageUrl = "",
-            primaryTag = PlaceType.CAFE,
-            introduction = "장소 한 줄 소개 장소 한 줄 소개"
-        ),
-        RecommendPlaceInfo(
-            placeId = 1,
-            placeName = "장소 이름",
-            thumbnailImageUrl = "",
-            primaryTag = PlaceType.FOOD,
-            introduction = "장소 한 줄 소개 장소 한 줄 소개"
-        ),
-        RecommendPlaceInfo(
-            placeId = 2,
-            placeName = "장소 이름",
-            thumbnailImageUrl = "",
-            primaryTag = PlaceType.UNIQUE_SPACE,
-            introduction = "장소 한 줄 소개 장소 한 줄 소개 두 줄이 되어도 괜찮음음음음음음"
-        )
-    ),
+    val recommendPlaces: PersistentList<RecommendPlaceInfo> = persistentListOf(),
+
     val placeList: PersistentList<PlaceData> = persistentListOf(),
 
     val selectedMainTagId: Int = 0,

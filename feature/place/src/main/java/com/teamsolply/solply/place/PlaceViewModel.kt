@@ -97,7 +97,7 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace(townId)
                 .onSuccess { placesList ->
-                    reduce { copy(recommendPlaces = placesList) }
+                    reduce { copy(recommendPlaces = placesList.toPersistentList()) }
                 }
         }
     }
@@ -109,7 +109,7 @@ class PlaceViewModel @Inject constructor(
                     reduce {
                         copy(
                             selectedMainTagId = tagList[0].tagId,
-                            mainFilterItems = tagList
+                            mainFilterItems = tagList.toPersistentList()
                         )
                     }
                     // TODO 전체 선택할 때 404 예외 처리
@@ -123,7 +123,7 @@ class PlaceViewModel @Inject constructor(
                 .onSuccess { tagList ->
                     reduce {
                         copy(
-                            subFilterItems = tagList
+                            subFilterItems = tagList.toPersistentList()
                         )
                     }
                 }
@@ -152,7 +152,7 @@ class PlaceViewModel @Inject constructor(
                                         primaryTag = PlaceType.valueOf(it.primaryTag),
                                         isBookmarked = it.isBookmarked
                                     )
-                                }
+                                }.toPersistentList()
                             )
                         }
                     }
