@@ -128,7 +128,7 @@ fun OauthScreen(
 
         Spacer(
             modifier = Modifier
-                .padding(top=224.dp)
+                .padding(top = 224.dp)
         )
 
         Row(
