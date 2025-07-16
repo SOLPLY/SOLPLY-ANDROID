@@ -75,6 +75,8 @@ fun CourseScreen(
                 .padding(start = 16.dp, end = 16.dp)
         )
 
+        Spacer(modifier = Modifier.height(24.dp))
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = gridState,
@@ -90,7 +92,7 @@ fun CourseScreen(
                     style = SolplyTheme.typography.display20Sb,
                     color = SolplyTheme.colors.black,
                     modifier = Modifier
-                        .padding(start = 4.dp, top = 16.dp, bottom = 9.dp)
+                        .padding(start = 4.dp, bottom = 9.dp)
                 )
             }
 
