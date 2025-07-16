@@ -31,6 +31,7 @@ import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import formatTextToPlaceItem
 
 @Composable
 internal fun CourseItem(
@@ -91,7 +92,7 @@ internal fun CourseItem(
                         )
                     }
                     Text(
-                        text = placeAddress,
+                        text = placeAddress.formatTextToPlaceItem(),
                         modifier = Modifier,
                         color = SolplyTheme.colors.gray700,
                         style = SolplyTheme.typography.caption12R

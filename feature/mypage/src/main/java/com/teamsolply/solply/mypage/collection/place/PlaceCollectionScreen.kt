@@ -77,7 +77,7 @@ fun PlaceCollectionRoute(
                     SolplyPlaceCard(
                         name = it.placeName,
                         placeType = it.placeType,
-                        imgRes = 0,
+                        imgRes = it.imageUrls,
                         selected = it.isSelected,
                         touchable = false,
                         modifier =

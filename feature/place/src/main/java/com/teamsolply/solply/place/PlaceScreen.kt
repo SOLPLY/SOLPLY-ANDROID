@@ -91,7 +91,6 @@ fun PlaceRoute(
 
         changeMainFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
         changeOptionFilterBottomSheetVisible = {
-            viewModel.sendIntent(PlaceIntent.LoadSubTags(parentId = state.selectedMainTagId))
             viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
         }
     )
@@ -260,7 +259,9 @@ fun PlaceScreen(
                                 PlaceChipButton(
                                     text = optionFilterText,
                                     modifier = Modifier,
-                                    onClick = { changeOptionFilterBottomSheetVisible() }
+                                    onClick = {
+                                        changeOptionFilterBottomSheetVisible()
+                                    }
                                 )
                             }
                         }
@@ -313,7 +314,7 @@ fun PlaceGridItem(
 ) {
     SolplyPlaceCard(
         name = place.placeName,
-        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+        imgRes = "",
         placeType = place.primaryTag,
         modifier = modifier,
         onClick = onClick,
