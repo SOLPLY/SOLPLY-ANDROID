@@ -178,7 +178,7 @@ fun PlaceDetailBottomSheet(
                         .height(218.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp)),
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Crop
                 )
             }
             Box(

@@ -82,7 +82,7 @@ fun SolplyPlaceCard(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(20.dp))
                     .matchParentSize(),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Crop
             )
             if (saved) {
                 SolplySavedMarker(

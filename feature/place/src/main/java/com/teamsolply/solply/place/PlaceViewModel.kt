@@ -142,7 +142,7 @@ class PlaceViewModel @Inject constructor(
                 townId = townId,
                 mainTagId = mainTagId,
                 subTagAIdList = subTagAIdList,
-                subTagBIdList = subTagBIdList,
+                subTagBIdList = subTagBIdList
             ).onSuccess { placeEntities ->
                 reduce {
                     copy(

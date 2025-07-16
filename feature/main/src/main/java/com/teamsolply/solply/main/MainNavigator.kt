@@ -98,7 +98,7 @@ internal class MainNavigator(
             mapsType = mapsType,
             townId = townId,
             placeId = placeId,
-            navOptions = navOptions,
+            navOptions = navOptions
         )
     }
 

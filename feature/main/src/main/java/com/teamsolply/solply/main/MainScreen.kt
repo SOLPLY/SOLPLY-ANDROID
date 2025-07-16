@@ -170,7 +170,7 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
-                            //TODO. 타운 아이디
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
                                 townId = 0,
@@ -182,7 +182,7 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
-                            //TODO. 타운 아이디
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
                                 townId = 0,
@@ -238,7 +238,7 @@ internal fun MainScreen(
                         },
                         navigateToPlaceDetail = {
                             val navOptions = navOptions {}
-                            //TODO. 타운 아이디
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = MapsType.PLACE_DETAIL.name,
                                 townId = 0,
@@ -247,7 +247,7 @@ internal fun MainScreen(
                         },
                         navigateToEditCourse = {
                             val navOptions = navOptions {}
-                            //TODO. 타운 아이디
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = MapsType.EDIT_COURSE.name,
                                 townId = 0,
@@ -284,7 +284,7 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
-                            //TODO. 타운 아이디
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
                                 townId = 0,
@@ -297,7 +297,7 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions { }
-                            //TODO. 타운 아이디
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
                                 townId = 0,
