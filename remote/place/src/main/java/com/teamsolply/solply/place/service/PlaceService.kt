@@ -1,6 +1,7 @@
 package com.teamsolply.solply.place.service
 
 import com.teamsolply.solply.network.model.BaseResponse
+import com.teamsolply.solply.place.dto.response.GetPlacesResponseDto
 import com.teamsolply.solply.place.dto.response.GetRecommendPlaceListDto
 import com.teamsolply.solply.place.dto.response.GetTagListResponseDto
 import com.teamsolply.solply.place.dto.response.GetUserInfoResponseDto
@@ -22,4 +23,13 @@ interface PlaceService {
         @Query("townId")
         townId: Long
     ): BaseResponse<GetRecommendPlaceListDto>
+
+    @GET("/api/places")
+    suspend fun getPlaces(
+        @Query("townId") townId: Long,
+        @Query("isBookmarkSearch") isBookmarkSearch: Boolean,
+        @Query("mainTagId") mainTagId: Long?,
+        @Query("subTagAIdList") subTagAIdList: List<Long>?,
+        @Query("subTagBIdList") subTagBIdList: List<Long>?
+    ): BaseResponse<GetPlacesResponseDto>
 }

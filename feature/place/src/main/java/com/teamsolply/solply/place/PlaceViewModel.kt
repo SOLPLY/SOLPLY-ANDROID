@@ -1,6 +1,8 @@
 package com.teamsolply.solply.place
 
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -42,21 +44,6 @@ class PlaceViewModel @Inject constructor(
             is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
             PlaceIntent.Retry -> {}
 
-            is PlaceIntent.SelectOptionFilter -> {
-                val currentOptionFilter = intent.optionTagId
-                val updatedOptionFilter =
-                    if (uiState.value.selectedOptionFilter.contains(currentOptionFilter)) {
-                        uiState.value.selectedOptionFilter - currentOptionFilter
-                    } else {
-                        uiState.value.selectedOptionFilter + currentOptionFilter
-                    }
-                reduce {
-                    copy(
-                        selectedOptionFilter = updatedOptionFilter.toPersistentList()
-                    )
-                }
-            }
-
             // 메인 필터 바텀시트 visible
             PlaceIntent.ChangeMainFilterBottomSheetVisible -> reduce {
                 copy(isMainFilterBottomSheetVisible = !isMainFilterBottomSheetVisible)
@@ -95,7 +82,7 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace(townId)
                 .onSuccess { placesList ->
-                    reduce { copy(recommendPlaces = placesList) }
+                    reduce { copy(recommendPlaces = placesList.toPersistentList()) }
                 }
         }
     }
@@ -107,7 +94,7 @@ class PlaceViewModel @Inject constructor(
                     reduce {
                         copy(
                             selectedMainTagId = tagList[0].tagId,
-                            mainFilterItems = tagList
+                            mainFilterItems = tagList.toPersistentList()
                         )
                     }
                     // TODO 전체 선택할 때 404 예외 처리
@@ -121,7 +108,7 @@ class PlaceViewModel @Inject constructor(
                 .onSuccess { tagList ->
                     reduce {
                         copy(
-                            subFilterItems = tagList
+                            subFilterItems = tagList.toPersistentList()
                         )
                     }
                 }
@@ -133,7 +120,44 @@ class PlaceViewModel @Inject constructor(
             repository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
+
+                    loadPlaces(
+                        townId = userInfo.selectedTown.townId,
+                        mainTagId = null,
+                        subTagAIdList = null,
+                        subTagBIdList = null
+                    )
                 }
+        }
+    }
+
+    private fun loadPlaces(
+        townId: Long,
+        mainTagId: Long? = null,
+        subTagAIdList: List<Long>? = null,
+        subTagBIdList: List<Long>? = null
+    ) {
+        viewModelScope.launch {
+            repository.getPlaces(
+                townId = townId,
+                mainTagId = mainTagId,
+                subTagAIdList = subTagAIdList,
+                subTagBIdList = subTagBIdList
+            ).onSuccess { placeEntities ->
+                reduce {
+                    copy(
+                        placeList = placeEntities.map {
+                            PlaceData(
+                                placeId = it.placeId,
+                                placeName = it.placeName,
+                                thumbnailUrl = it.thumbnailImageUrl,
+                                primaryTag = PlaceType.valueOf(it.primaryTag),
+                                isBookmarked = it.isBookmarked
+                            )
+                        }.toPersistentList()
+                    )
+                }
+            }
         }
     }
 }

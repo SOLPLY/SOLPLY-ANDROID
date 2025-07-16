@@ -2,6 +2,7 @@ package com.teamsolply.solply.place.repository
 
 import android.util.Log
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.place.model.PlaceEntity
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.model.SelectedTownInfo
@@ -90,4 +91,29 @@ class PlaceRepositoryImpl @Inject constructor(
                 )
             }
         }
+
+    override suspend fun getPlaces(
+        townId: Long,
+        mainTagId: Long?,
+        subTagAIdList: List<Long>?,
+        subTagBIdList: List<Long>?
+    ): Result<List<PlaceEntity>> = runCatching {
+        placeRemoteDataSource.getPlaces(
+            townId = townId,
+            isBookmarkSearch = false,
+            mainTagId = mainTagId,
+            subTagAIdList = subTagAIdList,
+            subTagBIdList = subTagBIdList
+        )
+    }.mapCatching { responseDto ->
+        responseDto.places.map { dto ->
+            PlaceEntity(
+                placeId = dto.placeId,
+                placeName = dto.placeName,
+                thumbnailImageUrl = dto.thumbnailImageUrl,
+                primaryTag = dto.primaryTag,
+                isBookmarked = dto.isBookmarked
+            )
+        }
+    }
 }

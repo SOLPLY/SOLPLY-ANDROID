@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SelectedTownInfo
@@ -11,7 +10,6 @@ import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import okhttp3.internal.immutableListOf
 
 data class PlaceState(
     val townId: Long = 0,
@@ -23,98 +21,14 @@ data class PlaceState(
         persona = "REST"
     ),
 
-    val recommendPlaces: List<RecommendPlaceInfo> = immutableListOf(
-        RecommendPlaceInfo(
-            placeId = 0,
-            placeName = "장소 이름",
-            thumbnailImageUrl = "",
-            primaryTag = PlaceType.CAFE,
-            introduction = "장소 한 줄 소개 장소 한 줄 소개"
-        ),
-        RecommendPlaceInfo(
-            placeId = 1,
-            placeName = "장소 이름",
-            thumbnailImageUrl = "",
-            primaryTag = PlaceType.FOOD,
-            introduction = "장소 한 줄 소개 장소 한 줄 소개"
-        ),
-        RecommendPlaceInfo(
-            placeId = 2,
-            placeName = "장소 이름",
-            thumbnailImageUrl = "",
-            primaryTag = PlaceType.UNIQUE_SPACE,
-            introduction = "장소 한 줄 소개 장소 한 줄 소개 두 줄이 되어도 괜찮음음음음음음"
-        )
-    ),
-    val placeList: List<PlaceData> = immutableListOf(
-        PlaceData(
-            placeId = 1,
-            placeName = "바보",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.FOOD,
-            isBookmarked = true
-        ),
-        PlaceData(
-            placeId = 2,
-            placeName = "연남동",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.CAFE,
-            isBookmarked = false
-        ),
-        PlaceData(
-            placeId = 3,
-            placeName = "홍대어딘가",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.UNIQUE_SPACE,
-            isBookmarked = true
-        ),
-        PlaceData(
-            placeId = 4,
-            placeName = "하현상최고",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.WALKING,
-            isBookmarked = false
-        ),
-        PlaceData(
-            placeId = 5,
-            placeName = "크크르상회",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.CAFE,
-            isBookmarked = true
-        ),
-        PlaceData(
-            placeId = 6,
-            placeName = "메롱2",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.CAFE,
-            isBookmarked = true
-        ),
-        PlaceData(
-            placeId = 7,
-            placeName = "메롱3",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.CAFE,
-            isBookmarked = true
-        ),
-        PlaceData(
-            placeId = 8,
-            placeName = "불꽃놀이",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.SHOPPING,
-            isBookmarked = false
-        ),
-        PlaceData(
-            placeId = 9,
-            placeName = "연희동달팽이",
-            thumbnailUrl = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-            primaryTag = PlaceType.BOOKSTORE,
-            isBookmarked = false
-        )
-    ),
+    val recommendPlaces: PersistentList<RecommendPlaceInfo> = persistentListOf(),
+
+    val placeList: PersistentList<PlaceData> = persistentListOf(),
+
     val selectedMainTagId: Int = 0,
 
-    val mainFilterItems: List<TagEntity> = listOf(),
-    val subFilterItems: List<TagEntity>? = listOf(),
+    val mainFilterItems: PersistentList<TagEntity> = persistentListOf(),
+    val subFilterItems: PersistentList<TagEntity>? = persistentListOf(),
 
     val isMainFilterBottomSheetVisible: Boolean = false,
     val selectedMainFilter: String = "ALL",
@@ -129,7 +43,6 @@ sealed interface PlaceIntent : UiIntent {
     data class LoadPlaces(val townId: Long) : PlaceIntent
     data class PlaceClicked(val placeId: Long) : PlaceIntent
     data object Retry : PlaceIntent
-    data class SelectOptionFilter(val optionTagId: Int) : PlaceIntent
     data object ClearOptionFilter : PlaceIntent
 
     data object ChangeMainFilterBottomSheetVisible : PlaceIntent

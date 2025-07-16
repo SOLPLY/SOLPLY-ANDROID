@@ -90,10 +90,14 @@ internal class MainNavigator(
 
     fun navigateToMaps(
         mapsType: String,
+        townId: Long,
+        placeId: Long? = null,
         navOptions: NavOptions
     ) {
         navController.navigateMaps(
             mapsType = mapsType,
+            townId = townId,
+            placeId = placeId,
             navOptions = navOptions
         )
     }

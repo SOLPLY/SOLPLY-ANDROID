@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place.repository
 
+import com.teamsolply.solply.place.model.PlaceEntity
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.model.TagEntity
@@ -11,4 +12,10 @@ interface PlaceRepository {
     suspend fun getMainTags(): Result<List<TagEntity>>
     suspend fun getSubTags(parentId: Int): Result<List<TagEntity>>
     suspend fun getUserInfo(): Result<UserInfo>
+    suspend fun getPlaces(
+        townId: Long,
+        mainTagId: Long?,
+        subTagAIdList: List<Long>?,
+        subTagBIdList: List<Long>?
+    ): Result<List<PlaceEntity>>
 }

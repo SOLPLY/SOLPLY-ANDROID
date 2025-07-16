@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place.datasource
 
+import com.teamsolply.solply.place.dto.response.GetPlacesResponseDto
 import com.teamsolply.solply.place.dto.response.GetRecommendPlaceDto
 import com.teamsolply.solply.place.dto.response.GetTagResponseDto
 import com.teamsolply.solply.place.dto.response.GetUserInfoResponseDto
@@ -20,5 +21,21 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getRecommendPlace(townId: Long): List<GetRecommendPlaceDto> {
         return placeService.getRecommendPlace(townId).data.placeInfos
+    }
+
+    override suspend fun getPlaces(
+        townId: Long,
+        isBookmarkSearch: Boolean,
+        mainTagId: Long?,
+        subTagAIdList: List<Long>?,
+        subTagBIdList: List<Long>?
+    ): GetPlacesResponseDto {
+        return placeService.getPlaces(
+            townId = townId,
+            isBookmarkSearch = isBookmarkSearch,
+            mainTagId = mainTagId,
+            subTagAIdList = subTagAIdList,
+            subTagBIdList = subTagBIdList
+        ).data
     }
 }

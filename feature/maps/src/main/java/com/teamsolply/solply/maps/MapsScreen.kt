@@ -81,8 +81,8 @@ import kotlin.math.abs
 @Composable
 internal fun MapsRoute(
     mapsType: MapsType,
-    townId: Long = 0,
-    targetId: Long = 1,
+    townId: Long,
+    placeId: Long?,
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
@@ -102,8 +102,10 @@ internal fun MapsRoute(
     LaunchedEffect(Unit) {
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
-                viewModel.getPlaceDetailInfo(targetId)
-                viewModel.getAllCourseInfo(townId = townId, placeId = targetId)
+                if (placeId != null) {
+                    viewModel.getPlaceDetailInfo(placeId)
+                    viewModel.getAllCourseInfo(townId = townId, placeId = placeId)
+                }
             }
 
             MapsType.ADD_COURSE -> {
