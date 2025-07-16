@@ -313,7 +313,7 @@ fun PlaceGridItem(
 ) {
     SolplyPlaceCard(
         name = place.placeName,
-        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+        imgRes = "",
         placeType = place.primaryTag,
         modifier = modifier,
         onClick = onClick,
