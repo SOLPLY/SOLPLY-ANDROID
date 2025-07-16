@@ -75,13 +75,6 @@ class PlaceViewModel @Inject constructor(
             PlaceIntent.ClearOptionFilter -> reduce {
                 copy(selectedOptionFilter = persistentListOf())
             }
-
-            PlaceIntent.RequestPlaces -> {
-                loadPlaces(
-                    townId = uiState.value.userInfo.selectedTown.townId,
-                    mainTagId = uiState.value.selectedMainTagId.toLong()
-                )
-            }
         }
     }
 

@@ -64,7 +64,7 @@ import toPlaceTypeFilterItem
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -75,8 +75,9 @@ fun PlaceRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is PlaceSideEffect.NavigateToMap -> {
-                    // TODO. maps로 placeId 전달   sideEffect.placeId
-                    navigateToMaps(MapsType.PLACE_DETAIL.name)
+                    navigateToMaps(
+                        MapsType.PLACE_DETAIL.name, state.townId, sideEffect.placeId
+                    )
                 }
             }
         }
