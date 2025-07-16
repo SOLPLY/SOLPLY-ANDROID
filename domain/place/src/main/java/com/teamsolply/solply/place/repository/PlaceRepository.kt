@@ -8,6 +8,7 @@ import com.teamsolply.solply.place.model.UserInfo
 interface PlaceRepository {
     suspend fun saveAutoSignIn(autoSignIn: SaveAutoSignInEntity): Result<Unit>
     suspend fun getRecommendedPlace(townId: Long): Result<List<RecommendPlaceInfo>>
-    suspend fun getTags(parentId: Int?): Result<List<TagEntity>>
+    suspend fun getMainTags(): Result<List<TagEntity>>
+    suspend fun getSubTags(parentId: Int): Result<List<TagEntity>>
     suspend fun getUserInfo(): Result<UserInfo>
 }

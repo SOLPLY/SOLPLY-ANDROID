@@ -47,7 +47,9 @@ fun PlaceTypeFilterSheet(
             Icon(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_close),
                 contentDescription = "close",
-                modifier = Modifier.size(24.dp).customClickable { onDismiss() }
+                modifier = Modifier
+                    .size(24.dp)
+                    .customClickable { onDismiss() }
             )
         }
         filterItems.forEachIndexed { idx, item ->
@@ -55,7 +57,7 @@ fun PlaceTypeFilterSheet(
                 iconRes = item.iconRes,
                 label = item.label,
                 showCheck = selectedType == item.type,
-                onClick = { onSelectType(idx + 1, item.type) }
+                onClick = { onSelectType(idx, item.type) }
             )
             if (idx < filterItems.size - 1) {
                 HorizontalDivider(thickness = 1.dp, color = SolplyTheme.colors.gray100)

@@ -122,9 +122,8 @@ class PlaceViewModel @Inject constructor(
 
     private fun fetchMainTags() {
         viewModelScope.launch {
-            repository.getTags(null)
+            repository.getMainTags()
                 .onSuccess { tagList ->
-                    Log.d("tagList", tagList.toString())
                     reduce { copy(mainFilterItems = tagList) }
                 }
         }
@@ -132,8 +131,9 @@ class PlaceViewModel @Inject constructor(
 
     private fun fetchSubTags(parentId: Int) {
         viewModelScope.launch {
-            repository.getTags(parentId)
+            repository.getSubTags(parentId)
                 .onSuccess { tagList ->
+                    Log.d("tagList", tagList.toString())
                     reduce { copy(subFilterItems = tagList) }
                 }
 
