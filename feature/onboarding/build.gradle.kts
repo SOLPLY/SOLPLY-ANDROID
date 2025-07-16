@@ -8,5 +8,7 @@ android {
 
 dependencies {
     implementation(projects.domain.onboarding)
-    implementation("androidx.compose.foundation:foundation:1.6.1")
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
+    implementation(libs.ui.foundation)
 }

@@ -32,8 +32,6 @@ sealed interface PlaceCollectionIntent : UiIntent {
 
 sealed interface PlaceCollectionSideEffect : SideEffect {
 
-    data object DeletePlaces : PlaceCollectionSideEffect
-
     data object NavigateToBack : PlaceCollectionSideEffect
     data object NavigateToMap : PlaceCollectionSideEffect
 }

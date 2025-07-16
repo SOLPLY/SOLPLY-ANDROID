@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.onboarding.OnBoardingState
@@ -30,6 +35,10 @@ fun StartingScreen(
     }
 
     val name = state.userNickname
+    val compositionResult = rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.finish_onboarding))
+    val composition = compositionResult.value
+    val progressState = animateLottieCompositionAsState(composition)
+    val progress = progressState.value
 
     Box(
         modifier = Modifier
@@ -50,6 +59,13 @@ fun StartingScreen(
                 text = "솔플리를 시작할게요!",
                 style = SolplyTheme.typography.display20Sb,
                 color = SolplyTheme.colors.black
+            )
+            LottieAnimation(
+                composition = composition,
+                progress = { progress },
+                modifier = Modifier
+                    .size(270.dp)
+                    .padding(top = 72.dp)
             )
         }
 
