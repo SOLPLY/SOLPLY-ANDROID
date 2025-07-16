@@ -196,12 +196,15 @@ fun AddCourseButton(
     BaseButton(
         onClick = onClick,
         modifier =
-            if(selected) modifier
+        if (selected) {
+            modifier
                 .width(128.dp)
                 .height(48.dp)
-            else modifier
+        } else {
+            modifier
                 .width(116.dp)
-                .height(48.dp),
+                .height(48.dp)
+        },
         backgroundColor = backgroundColor,
         shape = RoundedCornerShape(26.dp)
     ) {
