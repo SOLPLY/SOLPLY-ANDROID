@@ -35,7 +35,7 @@ data class MypageState(
                 townId = 1,
                 townName = "연희동",
                 tagList = listOf(
-                    PlaceType.BOOK,
+                    PlaceType.BOOKSTORE,
                     PlaceType.CAFE
                 ),
                 courseName = "오감으로 수집하는 코스",
@@ -45,7 +45,7 @@ data class MypageState(
                 townId = 2,
                 townName = "망원동",
                 tagList = listOf(
-                    PlaceType.WALK,
+                    PlaceType.WALKING,
                     PlaceType.CAFE
                 ),
                 courseName = "오감으로 수집하는 코스",

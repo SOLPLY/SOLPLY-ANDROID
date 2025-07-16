@@ -4,6 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class GetTagListResponseDto(
+    @SerialName("tags")
+    val tags: List<GetTagResponseDto>
+)
+
+@Serializable
 data class GetTagResponseDto(
     @SerialName("tagId")
     val tagId: Int,
@@ -12,5 +18,5 @@ data class GetTagResponseDto(
     @SerialName("name")
     val name: String,
     @SerialName("parentId")
-    val parentId: Int
+    val parentId: Int?
 )

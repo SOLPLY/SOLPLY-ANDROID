@@ -18,13 +18,14 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.place.component.button.FilterSheetButton
 import com.teamsolply.solply.place.model.PlaceTypeFilterItem
+import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun PlaceTypeFilterSheet(
     filterItems: List<PlaceTypeFilterItem>,
     selectedType: String,
-    onSelectType: (String) -> Unit,
+    onSelectType: (Int, String) -> Unit,
     onDismiss: () -> Unit
 ) {
     Column(
@@ -53,9 +54,8 @@ fun PlaceTypeFilterSheet(
             FilterSheetButton(
                 iconRes = item.iconRes,
                 label = item.label,
-                selected = selectedType == item.type,
                 showCheck = selectedType == item.type,
-                onClick = { onSelectType(item.type) }
+                onClick = { onSelectType(idx + 1, item.type) }
             )
             if (idx < filterItems.size - 1) {
                 HorizontalDivider(thickness = 1.dp, color = SolplyTheme.colors.gray100)

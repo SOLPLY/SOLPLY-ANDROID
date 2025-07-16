@@ -20,13 +20,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.place.OptionTag
+import com.teamsolply.solply.model.PlaceSubType
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.component.button.FilterChipButton
+import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.ui.extension.customClickable
+import timber.log.Timber.Forest.tag
 
 @Composable
 fun PlaceOptionFilterSheet(
-    optionTags: List<OptionTag>,
+    optionTags: List<TagEntity>,
     selectedOptionIds: List<Int>,
     onOptionSelected: (Int) -> Unit,
     onDismiss: () -> Unit,
@@ -58,7 +61,7 @@ fun PlaceOptionFilterSheet(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = tagType,
+                            text = "옵션 " + (index + 1),
                             style = SolplyTheme.typography.title18Sb,
                             modifier = Modifier.weight(1f)
                         )
@@ -113,7 +116,7 @@ fun PlaceOptionFilterSheet(
 
 @Composable
 fun ChipRow(
-    tags: List<OptionTag>,
+    tags: List<TagEntity>,
     selectedOptionIds: List<Int>,
     onOptionSelected: (Int) -> Unit
 ) {
@@ -123,7 +126,7 @@ fun ChipRow(
     ) {
         tags.forEach { tag ->
             FilterChipButton(
-                text = tag.name,
+                text = PlaceSubType.valueOf(tag.name).displayName,
                 isSelected = selectedOptionIds.contains(tag.tagId),
                 onClick = { onOptionSelected(tag.tagId) }
             )

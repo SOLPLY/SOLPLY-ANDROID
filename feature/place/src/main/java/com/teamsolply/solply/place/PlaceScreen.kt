@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,15 +46,20 @@ import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.component.header.PlaceHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.model.PlaceSubType
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.component.bottomsheet.PlaceOptionFilterSheet
 import com.teamsolply.solply.place.component.bottomsheet.PlaceTypeFilterSheet
 import com.teamsolply.solply.place.component.button.PlaceChipButton
 import com.teamsolply.solply.place.component.card.PlaceRecommendCard
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
+import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.place.util.LocationPermissionRequest
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import toPlaceType
+import toPlaceTypeFilterItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +92,10 @@ fun PlaceRoute(
         snackbarHostState = snackbarHostState,
 
         changeMainFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
-        changeOptionFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible) }
+        changeOptionFilterBottomSheetVisible = {
+            viewModel.sendIntent(PlaceIntent.LoadSubTags(parentId = state.selectedMainTagId))
+            viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+        }
     )
 
     if (state.isMainFilterBottomSheetVisible) {
@@ -97,11 +106,10 @@ fun PlaceRoute(
             dragHandle = null
         ) {
             PlaceTypeFilterSheet(
-                filterItems = state.placeTypeFilterItems,
+                filterItems = state.mainFilterItems.map { it.toPlaceType().toPlaceTypeFilterItem() },
                 selectedType = state.selectedMainFilter,
-                onSelectType = { mainFilterName ->
-                    // TODO. 메인 태그 API 쏘기
-                    viewModel.sendIntent(PlaceIntent.ChangeSelectedMainFilter(mainFilterName))
+                onSelectType = { mainFilterId, mainFilterName ->
+                    viewModel.sendIntent(PlaceIntent.ChangeSelectedMainFilter(mainFilterId, mainFilterName))
                     viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
                 },
                 onDismiss = {
@@ -122,7 +130,7 @@ fun PlaceRoute(
             dragHandle = null
         ) {
             PlaceOptionFilterSheet(
-                optionTags = state.optionTags ?: emptyList(),
+                optionTags = state.subFilterItems ?: emptyList(),
                 selectedOptionIds = state.selectedOptionFilter,
                 onOptionSelected = { tagId ->
                     viewModel.sendIntent(PlaceIntent.ChangeSelectedOptionFilter(optionFilterId = tagId))
@@ -132,7 +140,6 @@ fun PlaceRoute(
                 },
                 onReset = { viewModel.sendIntent(PlaceIntent.ClearOptionFilter) },
                 onDone = {
-                    // TODO. 선택 옵션 API 쏘기
                     viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
                 }
             )
@@ -144,7 +151,7 @@ fun PlaceRoute(
 fun PlaceScreen(
     modifier: Modifier = Modifier,
     state: PlaceState,
-    onPlaceClick: (Int) -> Unit,
+    onPlaceClick: (Long) -> Unit,
     snackbarHostState: SnackbarHostState,
 
     changeMainFilterBottomSheetVisible: () -> Unit,
@@ -154,8 +161,9 @@ fun PlaceScreen(
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val centerItemSize = 240.dp
     val sideItemSize = 180.dp
+    val pagerSize = state.recommendPlaces.size.coerceAtLeast(1)
     val pagerState = rememberPagerState(
-        initialPage = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % state.recommendPlaces.size),
+        initialPage = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % pagerSize),
         pageCount = { Int.MAX_VALUE }
     )
     val isCenter = remember { mutableStateListOf(false, false, false) }
@@ -174,9 +182,7 @@ fun PlaceScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         PlaceHeader(
-            townName = state.user.favoriteTowns,
-            persona = state.user.persona,
-            nickname = state.user.nickname,
+            townName = state.userInfo.selectedTown.townName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -185,33 +191,42 @@ fun PlaceScreen(
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 32.dp, top = 0.dp)
+            contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             item(span = { GridItemSpan(2) }) {
                 Text(
-                    text = when (state.user.persona) {
-                        "HEALING" -> "조용히 사색을 즐기는\n${state.user.nickname}님을 위한 오늘의 추천"
-                        "EXPLORER" -> "골목 곳곳을 탐색하는\n${state.user.nickname}님을 위한 오늘의 추천"
-                        "MOODING" -> "취향을 모으는\n${state.user.nickname}님을 위한 오늘의 추천"
-                        "NATURAL" -> "힐링이 필요한\n${state.user.nickname}님을 위한 오늘의 추천"
-                        else -> "솔플리가 추천하는\n${state.user.nickname}님을 위한 오늘의 추천"
-                    },
+                    text = getRecommendText(state.userInfo.persona, state.userInfo.nickname),
                     style = SolplyTheme.typography.display20Sb,
                     modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 28.dp)
                 )
             }
             item(span = { GridItemSpan(2) }) {
-                CustomHorizontalPager(
-                    pagerState = pagerState,
-                    recommendPlaces = state.recommendPlaces,
-                    centerItemSize = centerItemSize,
-                    horizontalPadding = horizontalPadding,
-                    isCenter = isCenter,
-                    page1ItemSize = page1ItemSize,
-                    page2ItemSize = page2ItemSize,
-                    page3ItemSize = page3ItemSize,
-                    onPlaceClick = onPlaceClick
-                )
+                if (state.recommendPlaces.isNotEmpty()) {
+                    CustomHorizontalPager(
+                        pagerState = pagerState,
+                        recommendPlaces = state.recommendPlaces,
+                        centerItemSize = centerItemSize,
+                        horizontalPadding = horizontalPadding,
+                        isCenter = isCenter,
+                        page1ItemSize = page1ItemSize,
+                        page2ItemSize = page2ItemSize,
+                        page3ItemSize = page3ItemSize,
+                        onPlaceClick = onPlaceClick
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(centerItemSize),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "추천 장소가 없습니다.",
+                            style = SolplyTheme.typography.display16Sb,
+                            color = SolplyTheme.colors.gray400
+                        )
+                    }
+                }
             }
             item(span = { GridItemSpan(2) }) {
                 Spacer(modifier = Modifier.height(21.dp))
@@ -233,16 +248,15 @@ fun PlaceScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             PlaceChipButton(
-                                text = state.placeTypeFilterItems.firstOrNull { it.type == state.selectedMainFilter }?.label
-                                    ?: "전체",
+                                text = PlaceType.valueOf(state.selectedMainFilter).displayName,
                                 modifier = Modifier,
                                 onClick = { changeMainFilterBottomSheetVisible() }
                             )
 
-                            if (!state.optionTags.isNullOrEmpty() && state.selectedMainFilter != "ALL") {
+                            if (!state.subFilterItems.isNullOrEmpty() && state.selectedMainFilter != "ALL") {
                                 val optionFilterText = getOptionFilterText(
                                     selectedIds = state.selectedOptionFilter,
-                                    optionTags = state.optionTags
+                                    optionTags = state.subFilterItems
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 PlaceChipButton(
@@ -312,7 +326,7 @@ fun PlaceGridItem(
 @Composable
 fun CustomHorizontalPager(
     modifier: Modifier = Modifier,
-    pagerState: androidx.compose.foundation.pager.PagerState,
+    pagerState: PagerState,
     recommendPlaces: List<RecommendPlaceInfo>,
     centerItemSize: Dp = 240.dp,
     horizontalPadding: Dp = 0.dp,
@@ -320,7 +334,7 @@ fun CustomHorizontalPager(
     page1ItemSize: State<Dp>,
     page2ItemSize: State<Dp>,
     page3ItemSize: State<Dp>,
-    onPlaceClick: (Int) -> Unit
+    onPlaceClick: (Long) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -340,7 +354,7 @@ fun CustomHorizontalPager(
 
             PlaceRecommendCard(
                 title = place.placeName,
-                subtitle = place.description,
+                subtitle = place.introduction,
                 type = place.primaryTag,
                 imgRes = place.thumbnailImageUrl,
                 modifier = Modifier
@@ -366,17 +380,33 @@ fun CustomHorizontalPager(
 
 private fun getOptionFilterText(
     selectedIds: List<Int>,
-    optionTags: List<OptionTag>
+    optionTags: List<TagEntity>
 ): String {
-    return if (selectedIds.isEmpty()) {
-        "추가옵션"
-    } else {
-        val firstTagName = optionTags.find { it.tagId == selectedIds.firstOrNull() }?.name
-        if (selectedIds.size == 1) {
-            firstTagName ?: "추가옵션"
-        } else {
-            val prefix = firstTagName ?: "추가옵션"
-            "$prefix 외 ${selectedIds.size - 1}개"
+    if (selectedIds.isEmpty()) return "추가옵션"
+
+    val minTagId = selectedIds.minOrNull()
+    val firstTagName = optionTags.find { it.tagId == minTagId }?.let { tag ->
+        try {
+            PlaceSubType.valueOf(tag.name).displayName
+        } catch (e: Exception) {
+            tag.name
         }
+    } ?: "추가옵션"
+
+    return if (selectedIds.size == 1) {
+        firstTagName
+    } else {
+        "$firstTagName 외 ${selectedIds.size - 1}개"
+    }
+}
+
+
+fun getRecommendText(persona: String, nickname: String): String {
+    return when (persona) {
+        "REST" -> "조용히 사색을 즐기는\n${nickname}님을 위한 오늘의 추천"
+        "EXPLORER" -> "골목 곳곳을 탐색하는\n${nickname}님을 위한 오늘의 추천"
+        "MOODING" -> "취향을 모으는\n${nickname}님을 위한 오늘의 추천"
+        "NATURAL" -> "힐링이 필요한\n${nickname}님을 위한 오늘의 추천"
+        else -> "솔플리가 추천하는\n${nickname}님을 위한 오늘의 추천"
     }
 }

@@ -82,7 +82,7 @@ internal fun AddCourseBottomSheet(
                         placeName = item.placeName,
                         placeTag = PlaceType.entries.firstOrNull {
                             it.displayName == item.primaryTag
-                        } ?: PlaceType.EMPTY,
+                        } ?: PlaceType.ALL,
                         placeAddress = item.address,
                         // TODO. 코스의 장소 이미지로
                         // placeImageRes = item.thumbnailUrl
