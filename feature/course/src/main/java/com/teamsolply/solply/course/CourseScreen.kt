@@ -99,7 +99,7 @@ fun CourseScreen(
             items(courseList) { course ->
                 SolplyCourseCard(
                     title = course.courseName,
-                    imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                    imgRes = course.imageUrl,
                     placeType = course.tagList,
                     backgroundColor = SolplyTheme.colors.red300,
                     iconColor = SolplyTheme.colors.red500,

@@ -98,7 +98,7 @@ fun CourseCollectionRoute(
                     SolplyCourseCard(
                         title = it.courseName,
                         placeType = it.placeTypeList,
-                        imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                        imgRes = it.imageUrls.first(),
                         selected = it.isSelected,
                         iconColor = iconColor,
                         iconBackGroundColor = iconBackgroundColor,

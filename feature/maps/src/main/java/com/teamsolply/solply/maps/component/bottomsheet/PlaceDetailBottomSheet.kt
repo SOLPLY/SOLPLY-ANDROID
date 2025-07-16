@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
 import ClickableAnnotatedText
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +38,7 @@ import com.teamsolply.solply.maps.model.ImageInfo
 import com.teamsolply.solply.maps.model.SnsLink
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
@@ -60,10 +59,8 @@ fun PlaceDetailBottomSheet(
     showMaxSizeCourseSnackBar: () -> Unit,
     emptyCourseClick: () -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
         placeImageUrls.size
-        3
     })
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
@@ -123,9 +120,7 @@ fun PlaceDetailBottomSheet(
                 ) {
                     items(courses) { courseInfo ->
                         SolplyCourseCard(
-                            // TODO. 서버 코스 이미지로 변경
-                            // imgRes = courseInfo.thumbnailImage,
-                            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                            imgRes = courseInfo.thumbnailImage,
                             placeType = courseInfo.mainTag,
                             backgroundColor = SolplyTheme.colors.green300,
                             iconColor = SolplyTheme.colors.green400,
@@ -174,11 +169,8 @@ fun PlaceDetailBottomSheet(
                 contentPadding = PaddingValues(horizontal = 20.dp),
                 pageSpacing = 10.dp
             ) { page ->
-                Image(
-                    // TODO. 서버 코스 이미지로 변경
-                    // painter = painterResource(placeImageUrls[page]),
-                    painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_place_img_dummy),
-                    contentDescription = "place-image-url",
+                AdaptationImage(
+                    imageUrl = placeImageUrls[page].url,
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
                 )
@@ -206,15 +198,19 @@ fun PlaceDetailBottomSheet(
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.caption14M
                         )
-                        ClickableAnnotatedText(
-                            originalText = "$placeAddress $copyText",
-                            originalTextStyle = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp),
-                            targetText = copyText,
-                            spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
-                            onClick = {
-                                clipboardManager.setText(AnnotatedString(placeAddress))
-                            }
-                        )
+                        if (placeAddress.isNotEmpty()) {
+                            ClickableAnnotatedText(
+                                originalText = "$placeAddress $copyText",
+                                originalTextStyle = SolplyTheme.typography.caption14M.copy(
+                                    lineHeight = 15.sp
+                                ),
+                                targetText = copyText,
+                                spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                                onClick = {
+                                    clipboardManager.setText(AnnotatedString(placeAddress))
+                                }
+                            )
+                        }
                     }
                     Row(modifier = Modifier.padding(bottom = 8.dp)) {
                         Text(
@@ -225,15 +221,19 @@ fun PlaceDetailBottomSheet(
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.caption14M
                         )
-                        ClickableAnnotatedText(
-                            originalText = "$placeContactNumber $copyText",
-                            originalTextStyle = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp),
-                            targetText = copyText,
-                            spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
-                            onClick = {
-                                clipboardManager.setText(AnnotatedString(placeContactNumber))
-                            }
-                        )
+                        if (placeContactNumber.isNotEmpty()) {
+                            ClickableAnnotatedText(
+                                originalText = "$placeContactNumber $copyText",
+                                originalTextStyle = SolplyTheme.typography.caption14M.copy(
+                                    lineHeight = 15.sp
+                                ),
+                                targetText = copyText,
+                                spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                                onClick = {
+                                    clipboardManager.setText(AnnotatedString(placeContactNumber))
+                                }
+                            )
+                        }
                     }
                     Row(modifier = Modifier.padding(bottom = 8.dp)) {
                         Text(
@@ -245,7 +245,7 @@ fun PlaceDetailBottomSheet(
                             style = SolplyTheme.typography.caption14M
                         )
                         Text(
-                            text = placeOpeningHours,
+                            text = placeOpeningHours.replace("\\n", "\n"),
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
                         )

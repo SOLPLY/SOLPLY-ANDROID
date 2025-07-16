@@ -22,6 +22,7 @@ class OnBoardingViewModel @Inject constructor(
     private val nicknameFlow = MutableStateFlow("")
 
     init {
+        getAllTown()
         getPersonaQuestions()
         viewModelScope.launch {
             nicknameFlow
@@ -73,7 +74,18 @@ class OnBoardingViewModel @Inject constructor(
 
             is OnBoardingIntent.ShowStartingScreen -> {
                 patchUserInfo()
-                reduce { copy(showStartingScreen = true) }
+            }
+        }
+    }
+
+    private fun getAllTown() {
+        viewModelScope.launch {
+            onBoardingRepository.getAllTowns().onSuccess {
+                reduce {
+                    copy(
+                        townList = it
+                    )
+                }
             }
         }
     }
@@ -99,10 +111,13 @@ class OnBoardingViewModel @Inject constructor(
             uiState.value.selectedTownId?.let { selectedTownId ->
                 uiState.value.selectedPersona?.let { selectedPersona ->
                     onBoardingRepository.patchUserInfo(
-                        favoriteTown = selectedTownId,
+                        selectedTownId = selectedTownId,
+                        favoriteTownIdList = uiState.value.townList.favoriteTownList.map { it.townId },
                         persona = selectedPersona,
                         nickname = uiState.value.userNickname
-                    )
+                    ).onSuccess {
+                        reduce { copy(showStartingScreen = true) }
+                    }
                 }
             }
         }

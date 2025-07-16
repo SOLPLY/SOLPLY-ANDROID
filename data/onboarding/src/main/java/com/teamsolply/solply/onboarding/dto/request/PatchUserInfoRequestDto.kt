@@ -5,10 +5,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PatchUserInfoRequestDto(
-    @SerialName("favoriteTown")
-    val favoriteTown: Long,
+    @SerialName("selectedTownId")
+    val selectedTownId: Long,
+
+    @SerialName("favoriteTownIdList")
+    val favoriteTownIdList: List<Long>,
+
     @SerialName("persona")
     val persona: String,
+
     @SerialName("nickname")
     val nickname: String
 )
