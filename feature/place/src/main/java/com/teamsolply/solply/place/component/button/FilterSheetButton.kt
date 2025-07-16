@@ -21,7 +21,6 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun FilterSheetButton(
     iconRes: Int,
     label: String,
-    selected: Boolean,
     showCheck: Boolean,
     onClick: () -> Unit
 ) {

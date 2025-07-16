@@ -1,14 +1,23 @@
 package com.teamsolply.solply.main.splash
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.main.R
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -27,13 +36,21 @@ fun SplashScreen(
         }
     }
 
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
+    val progress by animateLottieCompositionAsState(composition)
+
     Column(
-        modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = SolplyTheme.colors.green300),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Splash"
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier
+                .size(122.dp)
         )
     }
 }

@@ -204,7 +204,7 @@ internal fun EditCourseBottomSheet(
                             placeName = item.placeName,
                             placeTag = PlaceType.entries.firstOrNull {
                                 it.displayName == item.primaryTag
-                            } ?: PlaceType.EMPTY,
+                            } ?: PlaceType.ALL,
                             placeAddress = item.address,
                             // TODO. 서버 이미지 url로 변경하기
                             // placeImageRes = item.thumbnailUrl,

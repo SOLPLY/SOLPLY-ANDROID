@@ -1,9 +1,12 @@
 package com.teamsolply.solply.place.repository
 
+import android.util.Log
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
+import com.teamsolply.solply.place.model.SelectedTownInfo
 import com.teamsolply.solply.place.model.TagEntity
+import com.teamsolply.solply.place.model.UserInfo
 import com.teamsolply.solply.place.source.PlaceLocalDataSource
 import com.teamsolply.solply.place.source.PlaceRemoteDataSource
 import javax.inject.Inject
@@ -18,36 +21,36 @@ class PlaceRepositoryImpl @Inject constructor(
             placeLocalDataSource.saveAutoSignIn(autoSignIn.autoSignIn)
         }
 
-    override suspend fun getRecommendedPlace(): Result<List<RecommendPlaceInfo>> = runCatching {
-        listOf(
-            RecommendPlaceInfo(
-                placeId = 0,
-                placeName = "장소 이름",
-                thumbnailImageUrl = 0,
-                primaryTag = PlaceType.CAFE,
-                description = "장소 한 줄 소개 장소 한 줄 소개"
-            ),
-            RecommendPlaceInfo(
-                placeId = 1,
-                placeName = "장소 이름",
-                thumbnailImageUrl = 1,
-                primaryTag = PlaceType.FOOD,
-                description = "장소 한 줄 소개 장소 한 줄 소개"
-            ),
-            RecommendPlaceInfo(
-                placeId = 2,
-                placeName = "장소 이름",
-                thumbnailImageUrl = 2,
-                primaryTag = PlaceType.UNIQUE,
-                description = "장소 한 줄 소개 장소 한 줄 소개 두 줄이 되어도 괜찮음음음음음음"
+    override suspend fun getMainTags(): Result<List<TagEntity>> = runCatching {
+        placeRemoteDataSource.getTags(null)
+    }.mapCatching { tagDtoList ->
+        Log.d("tagList", tagDtoList.toString())
+        val tagEntityList = tagDtoList.map {
+            TagEntity(
+                tagId = it.tagId,
+                tagType = it.tagType,
+                name = it.name,
+                parentId = it.parentId
+            )
+        }.toMutableList()
+        tagEntityList.add(
+            0,
+            TagEntity(
+                tagId = 0,
+                tagType = "MAIN",
+                name = "ALL",
+                parentId = null
             )
         )
+        Log.d("tagList", tagEntityList.toString())
+        tagEntityList
     }
 
-    override suspend fun getMainTag(): Result<List<TagEntity>> = runCatching {
-        placeRemoteDataSource.getTags()
-    }.mapCatching { tagDto ->
-        tagDto.map {
+    override suspend fun getSubTags(parentId: Int): Result<List<TagEntity>> = runCatching {
+        placeRemoteDataSource.getTags(parentId)
+    }.mapCatching { tagDtoList ->
+        Log.d("tagList", tagDtoList.toString())
+        val tagEntityList = tagDtoList.map {
             TagEntity(
                 tagId = it.tagId,
                 tagType = it.tagType,
@@ -55,5 +58,36 @@ class PlaceRepositoryImpl @Inject constructor(
                 parentId = it.parentId
             )
         }
+        Log.d("tagList", tagEntityList.toString())
+        tagEntityList
     }
+
+    override suspend fun getUserInfo(): Result<UserInfo> = runCatching {
+        placeRemoteDataSource.getUserInfo()
+    }.mapCatching { userDto ->
+        UserInfo(
+            userId = userDto.userId,
+            nickname = userDto.nickname,
+            selectedTown = SelectedTownInfo(
+                townId = userDto.selectedTown.townId,
+                townName = userDto.selectedTown.townName
+            ),
+            persona = userDto.persona
+        )
+    }
+
+    override suspend fun getRecommendedPlace(townId: Long): Result<List<RecommendPlaceInfo>> =
+        runCatching {
+            placeRemoteDataSource.getRecommendPlace(townId)
+        }.mapCatching { recommendDto ->
+            recommendDto.map {
+                RecommendPlaceInfo(
+                    placeId = it.placeId,
+                    placeName = it.placeName,
+                    thumbnailImageUrl = it.thumbnailImageUrl,
+                    primaryTag = PlaceType.fromApiName(it.primaryTag),
+                    introduction = it.introduction
+                )
+            }
+        }
 }

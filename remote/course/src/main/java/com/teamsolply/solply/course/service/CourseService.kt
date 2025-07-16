@@ -1,8 +1,17 @@
 package com.teamsolply.solply.course.service
 
-import com.teamsolply.solply.course.dto.response.RecommendedCourseResponseDto
+import com.teamsolply.solply.course.dto.response.RecommendedCourseListResponseDto
+import com.teamsolply.solply.course.dto.response.UserInfoResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface CourseService {
-    suspend fun getRecommendedCourse(): BaseResponse<RecommendedCourseResponseDto>
+    @GET("api/users")
+    suspend fun getUserInfo(): BaseResponse<UserInfoResponseDto>
+
+    @GET("api/courses/bookmarks")
+    suspend fun getRecommendedCourseList(
+        @Query("townId") townId: Int
+    ): BaseResponse<RecommendedCourseListResponseDto>
 }

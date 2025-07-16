@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Solply.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowSplashScreenBackground">@null</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@null</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@null</item>
+        <item name="android:windowSplashScreenBrandingImage">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

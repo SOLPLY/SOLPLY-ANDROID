@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -102,8 +103,8 @@ fun OauthScreen(
 
         Box(
             modifier = Modifier
-                .width(375.dp)
-                .height(175.dp)
+                .fillMaxWidth()
+                .height(200.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.img_login_graphic),
@@ -123,10 +124,16 @@ fun OauthScreen(
             )
         }
 
+        Spacer(
+            modifier = Modifier
+                .padding(top = 224.dp)
+        )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp, top = 224.dp)
+                .height(52.dp)
+                .padding(start = 20.dp, end = 20.dp)
                 .background(
                     color = SolplyTheme.colors.kakao,
                     shape = RoundedCornerShape(12.dp)

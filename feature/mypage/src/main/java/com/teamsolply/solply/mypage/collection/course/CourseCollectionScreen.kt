@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage.collection.course
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,19 +59,19 @@ fun CourseCollectionRoute(
         content = {
             itemsIndexed(uiState.courses) { index, it ->
                 val iconColor = when (it.placeTypeList[0]) {
-                    PlaceType.BOOK, PlaceType.SHOPPING -> SolplyTheme.colors.purple400
+                    PlaceType.BOOKSTORE, PlaceType.SHOPPING -> SolplyTheme.colors.purple400
                     PlaceType.FOOD -> SolplyTheme.colors.yellow300
                     PlaceType.CAFE -> SolplyTheme.colors.red500
                     else -> SolplyTheme.colors.green400
                 }
                 val iconBackgroundColor = when (it.placeTypeList[0]) {
-                    PlaceType.BOOK, PlaceType.SHOPPING -> SolplyTheme.colors.purple100
+                    PlaceType.BOOKSTORE, PlaceType.SHOPPING -> SolplyTheme.colors.purple100
                     PlaceType.FOOD -> SolplyTheme.colors.yellow100
                     PlaceType.CAFE -> SolplyTheme.colors.red200
                     else -> SolplyTheme.colors.green200
                 }
                 val backgroundColor = when (it.placeTypeList[0]) {
-                    PlaceType.BOOK, PlaceType.SHOPPING -> SolplyTheme.colors.purple300
+                    PlaceType.BOOKSTORE, PlaceType.SHOPPING -> SolplyTheme.colors.purple300
                     PlaceType.FOOD -> SolplyTheme.colors.yellow200
                     PlaceType.CAFE -> SolplyTheme.colors.red300
                     else -> SolplyTheme.colors.green300
@@ -83,7 +82,6 @@ fun CourseCollectionRoute(
                         .customClickable(
                             rippleEnabled = false
                         ) {
-                            Log.d("tq", "tlqkf")
                             viewModel.sendIntent(
                                 CourseCollectionIntent.CourseCardClick(
                                     it.courseId,
@@ -106,7 +104,6 @@ fun CourseCollectionRoute(
                         iconBackGroundColor = iconBackgroundColor,
                         backgroundColor = backgroundColor,
                         onClick = {
-                            Log.d("tq", "tlqkf")
                             viewModel.sendIntent(
                                 CourseCollectionIntent.CourseCardClick(
                                     it.courseId,
