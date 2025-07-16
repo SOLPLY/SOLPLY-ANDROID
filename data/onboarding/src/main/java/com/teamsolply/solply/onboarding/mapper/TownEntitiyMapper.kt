@@ -1,27 +1,20 @@
 package com.teamsolply.solply.onboarding.mapper
 
 import com.teamsolply.solply.onboarding.dto.response.GetAllTownResponseDto
-import com.teamsolply.solply.onboarding.dto.response.MainTownDto
-import com.teamsolply.solply.onboarding.dto.response.SubTownDto
+import com.teamsolply.solply.onboarding.dto.response.TownDto
 import com.teamsolply.solply.onboarding.model.SubTownEntity
 import com.teamsolply.solply.onboarding.model.TownEntity
 
-fun GetAllTownResponseDto.toTownEntities(): List<TownEntity> {
-    return mainTownDto.map { it.toTownEntity() }
-}
-
-fun MainTownDto.toTownEntity(): TownEntity {
+fun GetAllTownResponseDto.toEntity(): TownEntity {
     return TownEntity(
-        townId = this.townId,
-        townName = this.townName,
-        subTowns = this.subTowns?.map { it.toSubTownEntity() }
+        selectedTown = selectedTown?.toSubEntity(),
+        favoriteTownList = favoriteTownList.map { it.toSubEntity() }
     )
 }
 
-fun SubTownDto.toSubTownEntity(): SubTownEntity {
+fun TownDto.toSubEntity(): SubTownEntity {
     return SubTownEntity(
         townId = this.townId,
-        townName = this.townName,
-        subTowns = this.subTowns?.map { it.toSubTownEntity() }
+        townName = this.townName
     )
 }

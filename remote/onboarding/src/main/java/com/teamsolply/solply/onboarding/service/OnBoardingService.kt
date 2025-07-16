@@ -16,7 +16,7 @@ interface OnBoardingService {
     @GET("api/onboarding/questions/persona")
     suspend fun getPersonaQuestions(): BaseResponse<GetPersonaQuestionsResponseDto>
 
-    @GET("api/towns")
+    @GET("api/users/towns")
     suspend fun getAllTowns(): BaseResponse<GetAllTownResponseDto>
 
     @GET("api/users/check-nickname")
@@ -24,7 +24,7 @@ interface OnBoardingService {
         @Query("nickname") nickname: String
     ): BaseResponse<NicknameDuplicateResponseDto>
 
-    @PATCH("api/users")
+    @PATCH("api/onboarding/users")
     suspend fun patchUserInfo(
         @Body patchUserInfoRequestDto: PatchUserInfoRequestDto
     ): BaseResponse<PatchUserInfoResponseDto>

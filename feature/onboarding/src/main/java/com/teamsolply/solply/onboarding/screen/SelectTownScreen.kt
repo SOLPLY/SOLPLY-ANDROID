@@ -50,8 +50,8 @@ fun SelectTownScreen(
                     .padding(top = 28.dp),
                 horizontalArrangement = Arrangement.spacedBy(18.dp, Alignment.CenterHorizontally)
             ) {
-                val towns = townList.firstOrNull()?.subTowns
-                if (towns.isNullOrEmpty()) {
+                val towns = townList.favoriteTownList
+                if (towns.isEmpty()) {
                     Box {}
                 } else {
                     towns.forEach { subTown ->

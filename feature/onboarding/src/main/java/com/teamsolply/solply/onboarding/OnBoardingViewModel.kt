@@ -111,7 +111,8 @@ class OnBoardingViewModel @Inject constructor(
             uiState.value.selectedTownId?.let { selectedTownId ->
                 uiState.value.selectedPersona?.let { selectedPersona ->
                     onBoardingRepository.patchUserInfo(
-                        favoriteTown = selectedTownId,
+                        selectedTownId = selectedTownId,
+                        favoriteTownIdList = uiState.value.townList.favoriteTownList.map { it.townId },
                         persona = selectedPersona,
                         nickname = uiState.value.userNickname
                     ).onSuccess {

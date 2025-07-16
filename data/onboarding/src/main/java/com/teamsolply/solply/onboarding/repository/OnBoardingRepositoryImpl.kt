@@ -2,7 +2,6 @@ package com.teamsolply.solply.onboarding.repository
 
 import com.teamsolply.solply.onboarding.dto.request.PatchUserInfoRequestDto
 import com.teamsolply.solply.onboarding.mapper.toEntity
-import com.teamsolply.solply.onboarding.mapper.toTownEntities
 import com.teamsolply.solply.onboarding.model.PersonaEntity
 import com.teamsolply.solply.onboarding.model.TownEntity
 import com.teamsolply.solply.onboarding.model.UserInfoEntity
@@ -18,10 +17,10 @@ class OnBoardingRepositoryImpl @Inject constructor(
         responseDto.toEntity()
     }
 
-    override suspend fun getAllTowns(): Result<List<TownEntity>> = runCatching {
+    override suspend fun getAllTowns(): Result<TownEntity> = runCatching {
         onBoardingRemoteDataSource.getAllTowns()
     }.mapCatching { responseDto ->
-        responseDto.toTownEntities()
+        responseDto.toEntity()
     }
 
     override suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean> = runCatching {
@@ -29,21 +28,23 @@ class OnBoardingRepositoryImpl @Inject constructor(
     }
 
     override suspend fun patchUserInfo(
-        favoriteTown: Long,
+        selectedTownId: Long,
+        favoriteTownIdList: List<Long>,
         persona: String,
         nickname: String
     ): Result<UserInfoEntity> = runCatching {
         onBoardingRemoteDataSource.patchUserInfo(
             PatchUserInfoRequestDto(
-                favoriteTown = favoriteTown,
+                selectedTownId = selectedTownId,
+                favoriteTownIdList = favoriteTownIdList,
                 persona = persona,
                 nickname = nickname
             )
         )
     }.mapCatching {
         UserInfoEntity(
-            favoriteTownId = it.favoriteTownId,
-            favoriteTownName = it.favoriteTownName,
+            selectedTownId = it.selectedTownId,
+            selectedTownName = it.selectedTownName,
             persona = it.persona,
             nickname = it.nickname
         )
