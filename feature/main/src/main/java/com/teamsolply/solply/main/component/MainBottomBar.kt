@@ -44,7 +44,7 @@ internal fun MainBottomBar(
                     )
                     .wrapContentWidth()
                     .align(Alignment.Center)
-                    .height(50.dp),
+                    .height(60.dp),
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -71,8 +71,8 @@ private fun TabItem(
     onClick: () -> Unit
 ) {
     val paddingValues = when (tab) {
-        MainNavTab.PLACE -> PaddingValues(start = 4.dp)
-        else -> PaddingValues(end = 4.dp)
+        MainNavTab.PLACE -> PaddingValues(start = 6.dp)
+        else -> PaddingValues(end = 6.dp)
     }
 
     Box(
@@ -91,10 +91,10 @@ private fun TabItem(
         Text(
             text = tab.contentDescription,
             style = SolplyTheme.typography.button16M,
-            color = SolplyTheme.colors.black,
+            color = if (isSelected) SolplyTheme.colors.black else SolplyTheme.colors.gray100,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(horizontal = 26.dp, vertical = 10.dp)
+                .padding(horizontal = 20.dp, vertical = 14.dp)
         )
     }
 }
@@ -106,8 +106,8 @@ private fun MypageButton(
 ) {
     Box(
         modifier = modifier
-            .padding(end = 15.dp)
-            .size(50.dp)
+            .padding(end = 11.dp)
+            .size(60.dp)
             .background(
                 color = SolplyTheme.colors.gray900,
                 shape = CircleShape

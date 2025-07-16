@@ -94,7 +94,7 @@ private fun BaseTextField(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            if (value.isNotEmpty() && value.length < maxLength) {
+            if (value.isNotEmpty() && value.length <= maxLength) {
                 val iconRes =
                     if (isCorrect) R.drawable.ic_textfield_correct else R.drawable.ic_textfield_wrong
                 val contentDescription = if (isCorrect) "textfield_correct" else "textfield_wrong"
@@ -141,7 +141,7 @@ fun SolplyNicknameTextField(
                 isTyping = false
                 return@LaunchedEffect
             }
-            if (value.length == maxLength) {
+            if (value.length > maxLength) {
                 validationState = NickNameValidateState.MaxLength
                 changeNicknameValidate(false)
                 isTyping = false
@@ -172,7 +172,7 @@ fun SolplyNicknameTextField(
 
     val (backgroundColor, borderColor) = when {
         value.isEmpty() -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray300)
-        value.length == maxLength -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray900)
+        value.length > maxLength -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.gray900)
         validationState in listOf(
             NickNameValidateState.Duplicate,
             NickNameValidateState.Invalid,
@@ -181,9 +181,9 @@ fun SolplyNicknameTextField(
             Pair(SolplyTheme.colors.white, SolplyTheme.colors.red600)
 
         validationState == NickNameValidateState.Typing ->
-            Pair(SolplyTheme.colors.green200, SolplyTheme.colors.green500)
+            Pair(SolplyTheme.colors.white, SolplyTheme.colors.green500)
 
-        else -> Pair(SolplyTheme.colors.green200, SolplyTheme.colors.green500)
+        else -> Pair(SolplyTheme.colors.white, SolplyTheme.colors.green500)
     }
 
     Column(modifier = modifier) {
