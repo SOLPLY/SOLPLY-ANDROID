@@ -17,7 +17,6 @@ import com.teamsolply.solply.mypage.collection.place.navigatePlaceCollection
 import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
-import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(

@@ -1,7 +1,6 @@
 package com.teamsolply.solply.onboarding
 
 import com.teamsolply.solply.onboarding.model.PersonaEntity
-import com.teamsolply.solply.onboarding.model.SubTownEntity
 import com.teamsolply.solply.onboarding.model.TownEntity
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent

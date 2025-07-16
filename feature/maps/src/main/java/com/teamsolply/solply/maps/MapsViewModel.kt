@@ -88,7 +88,6 @@ internal class MapsViewModel @Inject constructor(
                 // TODO. 장소 개별 저장 API
 
                 viewModelScope.launch {
-
                 }
             }
 

@@ -1,6 +1,5 @@
 package com.teamsolply.solply.maps.util
 
-import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.teamsolply.solply.maps.model.Place
