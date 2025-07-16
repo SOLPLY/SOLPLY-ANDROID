@@ -12,8 +12,7 @@ interface PlaceService {
 
     @GET("/api/tags")
     suspend fun getTags(
-        @Query("parentId")
-        parentId: Int?
+        @Query("parentId") parentId: Int?
     ): BaseResponse<GetTagListResponseDto>
 
     @GET("/api/users")

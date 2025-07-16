@@ -83,7 +83,6 @@ fun PlaceRoute(
         }
     }
 
-    Log.d("asdasdasd", state.selectedOptionFilter.toString())
     LocationPermissionRequest()
     PlaceScreen(
         modifier = Modifier.padding(paddingValues),

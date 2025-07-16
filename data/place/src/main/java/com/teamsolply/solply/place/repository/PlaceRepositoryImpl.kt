@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place.repository
 
+import android.util.Log
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
@@ -22,15 +23,27 @@ class PlaceRepositoryImpl @Inject constructor(
 
     override suspend fun getTags(parentId: Int?): Result<List<TagEntity>> = runCatching {
         placeRemoteDataSource.getTags(parentId)
-    }.mapCatching { tagDto ->
-        tagDto.map {
+    }.mapCatching { tagDtoList ->
+        Log.d("tagList", tagDtoList.toString())
+        val tagEntityList = tagDtoList.map {
             TagEntity(
                 tagId = it.tagId,
                 tagType = it.tagType,
                 name = it.name,
                 parentId = it.parentId
             )
-        }
+        }.toMutableList()
+        tagEntityList.add(
+            0,
+            TagEntity(
+                tagId = 0,
+                tagType = "MAIN",
+                name = "ALL",
+                parentId = null
+            )
+        )
+        Log.d("tagList", tagEntityList.toString())
+        tagEntityList
     }
 
     override suspend fun getUserInfo(): Result<UserInfo> = runCatching {
@@ -47,17 +60,18 @@ class PlaceRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getRecommendedPlace(townId: Long): Result<List<RecommendPlaceInfo>> = runCatching {
-        placeRemoteDataSource.getRecommendPlace(townId)
-    }.mapCatching { recommendDto ->
-        recommendDto.map {
-            RecommendPlaceInfo(
-                placeId = it.placeId,
-                placeName = it.placeName,
-                thumbnailImageUrl = it.thumbnailImageUrl,
-                primaryTag = PlaceType.fromApiName(it.primaryTag),
-                introduction = it.introduction
-            )
+    override suspend fun getRecommendedPlace(townId: Long): Result<List<RecommendPlaceInfo>> =
+        runCatching {
+            placeRemoteDataSource.getRecommendPlace(townId)
+        }.mapCatching { recommendDto ->
+            recommendDto.map {
+                RecommendPlaceInfo(
+                    placeId = it.placeId,
+                    placeName = it.placeName,
+                    thumbnailImageUrl = it.thumbnailImageUrl,
+                    primaryTag = PlaceType.fromApiName(it.primaryTag),
+                    introduction = it.introduction
+                )
+            }
         }
-    }
 }

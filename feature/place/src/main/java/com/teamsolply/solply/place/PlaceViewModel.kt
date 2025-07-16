@@ -124,6 +124,7 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getTags(null)
                 .onSuccess { tagList ->
+                    Log.d("tagList", tagList.toString())
                     reduce { copy(mainFilterItems = tagList) }
                 }
         }
