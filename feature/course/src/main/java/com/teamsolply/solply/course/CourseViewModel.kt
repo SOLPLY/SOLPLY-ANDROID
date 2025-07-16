@@ -1,6 +1,5 @@
 package com.teamsolply.solply.course
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.course.repository.CourseRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -61,7 +60,6 @@ class CourseViewModel @Inject constructor(
     }
 
     private suspend fun getCourseList(townId: Int) {
-        Log.d("courselist", "get courselist start")
         courseRepository.getRecommendedCourse(townId).onSuccess {
             reduce {
                 copy(

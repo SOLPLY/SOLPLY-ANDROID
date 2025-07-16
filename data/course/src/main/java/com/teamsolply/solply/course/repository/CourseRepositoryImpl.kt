@@ -25,7 +25,6 @@ class CourseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getRecommendedCourse(townId: Int) = runCatching {
-        Log.d("courselist", "repo impl")
         courseRemoteDataSource.getRecommendedCourse(townId).courseList
     }.mapCatching { courseList ->
         courseList.map { course ->
