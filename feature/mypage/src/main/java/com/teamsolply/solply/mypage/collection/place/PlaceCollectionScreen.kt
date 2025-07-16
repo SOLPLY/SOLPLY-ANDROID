@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage.collection.place
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
