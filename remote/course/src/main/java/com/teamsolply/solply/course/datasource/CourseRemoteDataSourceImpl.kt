@@ -2,7 +2,6 @@ package com.teamsolply.solply.course.datasource
 
 import android.util.Log
 import com.teamsolply.solply.course.dto.response.RecommendedCourseListResponseDto
-import com.teamsolply.solply.course.dto.response.RecommendedCourseResponseDto
 import com.teamsolply.solply.course.dto.response.UserInfoResponseDto
 import com.teamsolply.solply.course.service.CourseService
 import com.teamsolply.solply.course.source.CourseRemoteDataSource
