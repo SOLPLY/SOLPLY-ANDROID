@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,11 +78,12 @@ internal fun AddCourseBottomSheet(
                             style = SolplyTheme.typography.caption12M
                         )
                     }
+
                     Spacer(modifier = Modifier.width(14.dp))
                     CourseItem(
                         placeName = item.placeName,
                         placeTag = PlaceType.entries.firstOrNull {
-                            it.displayName == item.primaryTag
+                            it.name == item.primaryTag
                         } ?: PlaceType.EMPTY,
                         placeAddress = item.address,
                         // TODO. 코스의 장소 이미지로

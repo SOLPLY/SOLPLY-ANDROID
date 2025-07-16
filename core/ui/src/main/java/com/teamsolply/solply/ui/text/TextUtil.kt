@@ -56,3 +56,9 @@ fun String.formatTextToNoticeSnackBar(): String {
     }
     return "'$processedText'"
 }
+
+fun String.formatTextToPlaceItem(): String = if (this.length > 15) {
+    this.take(15) + "..."
+} else {
+    this
+}
