@@ -43,7 +43,6 @@ sealed interface PlaceIntent : UiIntent {
     data class LoadPlaces(val townId: Long) : PlaceIntent
     data class PlaceClicked(val placeId: Long) : PlaceIntent
     data object Retry : PlaceIntent
-    data class SelectOptionFilter(val optionTagId: Int) : PlaceIntent
     data object ClearOptionFilter : PlaceIntent
 
     data object ChangeMainFilterBottomSheetVisible : PlaceIntent

@@ -44,21 +44,6 @@ class PlaceViewModel @Inject constructor(
             is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
             PlaceIntent.Retry -> {}
 
-            is PlaceIntent.SelectOptionFilter -> {
-                val currentOptionFilter = intent.optionTagId
-                val updatedOptionFilter =
-                    if (uiState.value.selectedOptionFilter.contains(currentOptionFilter)) {
-                        uiState.value.selectedOptionFilter - currentOptionFilter
-                    } else {
-                        uiState.value.selectedOptionFilter + currentOptionFilter
-                    }
-                reduce {
-                    copy(
-                        selectedOptionFilter = updatedOptionFilter.toPersistentList()
-                    )
-                }
-            }
-
             // 메인 필터 바텀시트 visible
             PlaceIntent.ChangeMainFilterBottomSheetVisible -> reduce {
                 copy(isMainFilterBottomSheetVisible = !isMainFilterBottomSheetVisible)
@@ -89,6 +74,13 @@ class PlaceViewModel @Inject constructor(
             // 옵션 필터 초기화
             PlaceIntent.ClearOptionFilter -> reduce {
                 copy(selectedOptionFilter = persistentListOf())
+            }
+
+            PlaceIntent.RequestPlaces -> {
+                loadPlaces(
+                    townId = uiState.value.userInfo.selectedTown.townId,
+                    mainTagId = uiState.value.selectedMainTagId.toLong()
+                )
             }
         }
     }
