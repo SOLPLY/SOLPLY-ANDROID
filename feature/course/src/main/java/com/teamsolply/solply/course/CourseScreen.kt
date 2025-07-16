@@ -15,9 +15,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,7 +25,8 @@ import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.header.CourseHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun CourseRoute(
@@ -34,6 +35,20 @@ fun CourseRoute(
     viewModel: CourseViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent(CourseIntent.Init)
+    }
+
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            when (sideEffect) {
+                is CourseSideEffect.NavigateToCourseMap -> {
+                    navigateToMaps(MapsType.EDIT_COURSE.name)
+                }
+            }
+        }
+    }
 
     CourseScreen(
         state = state,
@@ -55,7 +70,7 @@ fun CourseScreen(
 
     Column {
         CourseHeader(
-            townName = user.favoriteTowns,
+            townName = user.selectedTown.townName,
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp)
         )
@@ -81,13 +96,13 @@ fun CourseScreen(
 
             items(courseList) { course ->
                 SolplyCourseCard(
-                    title = course.title,
+                    title = course.courseName,
                     imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
-                    placeType = course.mainTags.map { PlaceType.valueOf(it) },
+                    placeType = course.tagList,
                     backgroundColor = SolplyTheme.colors.red300,
                     iconColor = SolplyTheme.colors.red500,
                     iconBackGroundColor = SolplyTheme.colors.red200,
-                    savedCourse = course.isBookmarked,
+                    savedCourse = course.isSaved,
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
@@ -99,12 +114,5 @@ fun CourseScreen(
                 Spacer(modifier = Modifier.height(60.dp))
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CourseScreenPreview() {
-    SolplyTheme {
     }
 }

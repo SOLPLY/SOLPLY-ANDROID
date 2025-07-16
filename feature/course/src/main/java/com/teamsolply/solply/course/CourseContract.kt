@@ -1,68 +1,75 @@
 package com.teamsolply.solply.course
 
 import com.teamsolply.solply.course.model.CourseData
+import com.teamsolply.solply.course.model.CourseEntity
 import com.teamsolply.solply.course.model.CourseUser
+import com.teamsolply.solply.course.model.TownEntity
+import com.teamsolply.solply.course.model.UserEntity
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 
 data class CourseState(
-    val user: CourseUser = CourseUser(
+    val user: UserEntity = UserEntity(
         userId = 0,
         nickname = "숭이숭이숭이",
-        favoriteTowns = "연희동",
+        selectedTown = TownEntity(
+            townId = 1,
+            townName = "연희동"
+        ),
         persona = "HEALING"
     ),
 
-    val courseList: List<CourseData> = listOf(
-        CourseData(
-            courseId = 0L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+    val courseList: List<CourseEntity> = listOf(
+        CourseEntity(
+            courseId = 0,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         ),
-        CourseData(
-            courseId = 1L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+        CourseEntity(
+            courseId = 1,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         ),
-        CourseData(
-            courseId = 2L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+        CourseEntity(
+            courseId = 2,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         ),
-        CourseData(
-            courseId = 3L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+        CourseEntity(
+            courseId = 3,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         ),
-        CourseData(
-            courseId = 4L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+        CourseEntity(
+            courseId = 4,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         ),
-        CourseData(
-            courseId = 5L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+        CourseEntity(
+            courseId = 5,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         ),
-        CourseData(
-            courseId = 6L,
-            title = "오감으로 수집하는 하루",
-            thumbnailImage = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            mainTags = listOf("CAFE", "SHOPPING"),
-            isBookmarked = true
+        CourseEntity(
+            courseId = 6,
+            courseName = "오감으로 수집하는 하루",
+            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
+            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
+            isSaved = true
         )
     ),
     val errorMessage: String? = null
@@ -78,6 +85,9 @@ data class CourseState(
 }
 
 sealed interface CourseIntent : UiIntent {
+    data object Init : CourseIntent
+
+    data class CourseCardClick(val courseId: Int) : CourseIntent
 
     data class LoadSuccess(
         val user: CourseUser,
@@ -89,4 +99,6 @@ sealed interface CourseIntent : UiIntent {
     ) : CourseIntent
 }
 
-sealed interface CourseSideEffect : SideEffect
+sealed interface CourseSideEffect : SideEffect {
+    data class NavigateToCourseMap(val courseId: Int) : CourseSideEffect
+}
