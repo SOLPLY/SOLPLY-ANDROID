@@ -13,7 +13,6 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import okhttp3.internal.immutableListOf
 
-
 data class PlaceState(
     val townId: Long = 0,
 
@@ -114,12 +113,8 @@ data class PlaceState(
     ),
     val selectedMainTagId: Int = 0,
 
-    val mainFilterItems: List<TagEntity> = listOf(
-
-    ),
-    val subFilterItems: List<TagEntity>? = listOf(
-
-    ),
+    val mainFilterItems: List<TagEntity> = listOf(),
+    val subFilterItems: List<TagEntity>? = listOf(),
 
     val isMainFilterBottomSheetVisible: Boolean = false,
     val selectedMainFilter: String = "ALL",

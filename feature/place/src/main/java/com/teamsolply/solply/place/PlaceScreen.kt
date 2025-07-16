@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -398,7 +397,6 @@ private fun getOptionFilterText(
         "$firstTagName 외 ${selectedIds.size - 1}개"
     }
 }
-
 
 fun getRecommendText(persona: String, nickname: String): String {
     return when (persona) {

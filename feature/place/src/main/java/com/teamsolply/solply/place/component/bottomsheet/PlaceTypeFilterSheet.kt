@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.place.component.button.FilterSheetButton
 import com.teamsolply.solply.place.model.PlaceTypeFilterItem
-import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable

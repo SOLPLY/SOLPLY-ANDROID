@@ -136,8 +136,6 @@ class PlaceViewModel @Inject constructor(
                     Log.d("tagList", tagList.toString())
                     reduce { copy(subFilterItems = tagList) }
                 }
-
-
         }
     }
 

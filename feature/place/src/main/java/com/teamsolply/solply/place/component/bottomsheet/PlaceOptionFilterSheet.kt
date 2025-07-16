@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceSubType
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.component.button.FilterChipButton
 import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.ui.extension.customClickable
