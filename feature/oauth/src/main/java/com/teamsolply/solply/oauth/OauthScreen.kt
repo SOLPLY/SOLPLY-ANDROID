@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -85,13 +85,12 @@ fun OauthScreen(
     Column(
         modifier.fillMaxSize()
     ) {
+        Spacer(modifier = Modifier.height(115.dp))
         Image(
             painter = painterResource(R.drawable.ic_logo_full_vector),
             contentDescription = "app_logo",
             modifier = Modifier
-                .padding(top = 115.dp, start = 40.dp)
-                .width(40.dp)
-                .height(60.dp)
+                .padding(start = 40.dp)
         )
 
         Image(
@@ -99,21 +98,20 @@ fun OauthScreen(
             contentDescription = "app_logo",
             modifier = Modifier
                 .padding(start = 40.dp)
-                .width(215.dp)
-                .height(86.dp)
         )
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(173.dp)
+                .padding(8.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.img_login_graphic),
                 contentDescription = "loginGraphic",
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp),
+                    .padding(top = 8.dp),
                 contentScale = ContentScale.Crop
             )
 
@@ -122,15 +120,11 @@ fun OauthScreen(
                 color = SolplyTheme.colors.gray800,
                 style = SolplyTheme.typography.display20Sb,
                 modifier = modifier
-                    .padding(top = 8.dp, start = 40.dp)
+                    .padding(start = 40.dp)
             )
         }
 
-        Spacer(
-            modifier = Modifier
-                .padding(top = 224.dp)
-        )
-
+        Spacer(modifier = Modifier.weight(1f))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,7 +146,7 @@ fun OauthScreen(
                 painter = painterResource(R.drawable.ic_kakao_logo),
                 contentDescription = "kakao_logo",
                 modifier = Modifier
-                    .padding(start = 16.dp, end = 12.dp, top = 11.dp, bottom = 11.dp)
+                    .padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
             )
             Text(
                 text = stringResource(kakao_login),
@@ -160,6 +154,7 @@ fun OauthScreen(
                 color = SolplyTheme.colors.gray900
             )
         }
+        Spacer(modifier = Modifier.height(102.dp))
     }
 }
 
