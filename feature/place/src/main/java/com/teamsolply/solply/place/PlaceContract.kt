@@ -127,8 +127,6 @@ data class PlaceState(
 sealed interface PlaceIntent : UiIntent {
     data object LoadUserInfo : PlaceIntent
     data class LoadPlaces(val townId: Long) : PlaceIntent
-    data object LoadMainTags : PlaceIntent
-    data class LoadSubTags(val parentId: Int) : PlaceIntent
     data class PlaceClicked(val placeId: Long) : PlaceIntent
     data object Retry : PlaceIntent
     data class SelectOptionFilter(val optionTagId: Int) : PlaceIntent

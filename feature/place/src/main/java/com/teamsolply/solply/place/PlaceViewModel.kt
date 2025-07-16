@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
@@ -21,8 +20,7 @@ class PlaceViewModel @Inject constructor(
             repository.saveAutoSignIn(autoSignIn = SaveAutoSignInEntity(autoSignIn = true))
             sendIntent(PlaceIntent.LoadUserInfo)
             sendIntent(PlaceIntent.LoadPlaces(townId = uiState.value.townId))
-            sendIntent(PlaceIntent.LoadMainTags)
-            sendIntent(PlaceIntent.LoadSubTags(parentId = uiState.value.selectedMainTagId))
+            fetchMainTags()
         }
     }
 
@@ -30,7 +28,6 @@ class PlaceViewModel @Inject constructor(
         when (intent) {
             is PlaceIntent.LoadUserInfo -> fetchUserInfo()
             is PlaceIntent.LoadPlaces -> fetchRecommendPlace(intent.townId)
-            is PlaceIntent.LoadMainTags -> fetchMainTags()
             is PlaceIntent.ChangeSelectedMainFilter -> {
                 reduce {
                     copy(
@@ -39,10 +36,9 @@ class PlaceViewModel @Inject constructor(
                         selectedOptionFilter = persistentListOf()
                     )
                 }
-                sendIntent(PlaceIntent.LoadSubTags(parentId = intent.mainFilterId))
+                fetchSubTags()
             }
 
-            is PlaceIntent.LoadSubTags -> fetchSubTags(intent.parentId)
             is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
             PlaceIntent.Retry -> {}
 
@@ -64,11 +60,6 @@ class PlaceViewModel @Inject constructor(
             // 메인 필터 바텀시트 visible
             PlaceIntent.ChangeMainFilterBottomSheetVisible -> reduce {
                 copy(isMainFilterBottomSheetVisible = !isMainFilterBottomSheetVisible)
-            }
-
-            // 메인 필터 변경
-            is PlaceIntent.ChangeSelectedMainFilter -> reduce {
-                copy(selectedMainFilter = intent.mainFilterName)
             }
 
             // 옵션 필터 바텀시트 visible
@@ -124,17 +115,25 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getMainTags()
                 .onSuccess { tagList ->
-                    reduce { copy(mainFilterItems = tagList) }
+                    reduce {
+                        copy(
+                            selectedMainTagId = tagList[0].tagId,
+                            mainFilterItems = tagList
+                        )
+                    }
                 }
         }
     }
 
-    private fun fetchSubTags(parentId: Int) {
+    private fun fetchSubTags() {
         viewModelScope.launch {
-            repository.getSubTags(parentId)
+            repository.getSubTags(uiState.value.selectedMainTagId)
                 .onSuccess { tagList ->
-                    Log.d("tagList", tagList.toString())
-                    reduce { copy(subFilterItems = tagList) }
+                    reduce {
+                        copy(
+                            subFilterItems = tagList
+                        )
+                    }
                 }
         }
     }

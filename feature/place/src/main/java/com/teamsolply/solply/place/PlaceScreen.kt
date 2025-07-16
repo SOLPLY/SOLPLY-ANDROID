@@ -91,7 +91,7 @@ fun PlaceRoute(
 
         changeMainFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
         changeOptionFilterBottomSheetVisible = {
-            viewModel.sendIntent(PlaceIntent.LoadSubTags(parentId = state.selectedMainTagId))
+//            viewModel.sendIntent(PlaceIntent.LoadSubTags(parentId = state.selectedMainTagId))
             viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
         }
     )
@@ -260,7 +260,9 @@ fun PlaceScreen(
                                 PlaceChipButton(
                                     text = optionFilterText,
                                     modifier = Modifier,
-                                    onClick = { changeOptionFilterBottomSheetVisible() }
+                                    onClick = {
+//                                        changeOptionFilterBottomSheetVisible()
+                                    }
                                 )
                             }
                         }
