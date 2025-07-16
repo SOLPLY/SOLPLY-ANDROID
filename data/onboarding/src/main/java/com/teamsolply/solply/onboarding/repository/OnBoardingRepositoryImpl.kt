@@ -1,6 +1,5 @@
 package com.teamsolply.solply.onboarding.repository
 
-import android.util.Log
 import com.teamsolply.solply.onboarding.dto.request.PatchUserInfoRequestDto
 import com.teamsolply.solply.onboarding.mapper.toEntity
 import com.teamsolply.solply.onboarding.mapper.toTownEntities
