@@ -69,7 +69,7 @@ fun SelectTownScreen(
                         text = "",
                         onClick = { },
                         isShowMore = true,
-                        selected = false,
+                        selected = false
                     )
                 }
             }
