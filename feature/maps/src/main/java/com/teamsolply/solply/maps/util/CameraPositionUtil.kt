@@ -1,12 +1,13 @@
 package com.teamsolply.solply.maps.util
 
+import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.teamsolply.solply.maps.model.Place
 
 fun calculateCameraPosition(places: List<Place>): CameraPosition {
-    val latitudes = places.map { it.latitude.toDouble() }
-    val longitudes = places.map { it.longitude.toDouble() }
+    val latitudes = places.map { it.latitude }
+    val longitudes = places.map { it.longitude }
 
     val minLat = latitudes.minOrNull() ?: 0.0
     val maxLat = latitudes.maxOrNull() ?: 0.0
@@ -22,8 +23,7 @@ fun calculateCameraPosition(places: List<Place>): CameraPosition {
     val zoomLevel = when {
         maxDiff > 0.1 -> 10.0
         maxDiff > 0.05 -> 12.0
-        maxDiff > 0.01 -> 14.0
-        else -> 16.0
+        else -> 14.0
     }
 
     return CameraPosition(

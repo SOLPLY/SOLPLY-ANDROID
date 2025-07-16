@@ -17,8 +17,12 @@ fun ClickableAnnotatedText(
     onClick: () -> Unit
 ) {
     val annotatedText = buildAnnotatedString {
-        append(originalText)
-
+        append(
+            originalText.replace(
+                "\\n",
+                "\n"
+            )
+        )
         val startIndex = originalText.indexOf(targetText)
         if (startIndex >= 0) {
             val endIndex = startIndex + targetText.length

@@ -17,6 +17,7 @@ import com.teamsolply.solply.mypage.collection.place.navigatePlaceCollection
 import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
+import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.navigatePlace
 
 internal class MainNavigator(
@@ -26,7 +27,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Splash
+    val startDestination = Place
 
     val currentTab: MainNavTab?
         @Composable get() = MainNavTab.find { tab ->
