@@ -100,17 +100,6 @@ class PlaceViewModel @Inject constructor(
         }
     }
 
-//    fun onMainTypeSelected(type: String) {
-//        val tags = when (type) {
-//            "WALK", "BOOK" -> emptyList()
-//            else -> listOf(
-//                OptionTag(9, "OPTION1", "커피/디저트", 1),
-//                OptionTag(10, "OPTION2", "시그니쳐메뉴", 1)
-//            )
-//        }
-//        reduce { copy(optionTags = tags) }
-//    }
-
     private fun fetchMainTags() {
         viewModelScope.launch {
             repository.getMainTags()
@@ -121,6 +110,7 @@ class PlaceViewModel @Inject constructor(
                             mainFilterItems = tagList
                         )
                     }
+                    // TODO 전체 선택할 때 404 예외 처리
                 }
         }
     }
