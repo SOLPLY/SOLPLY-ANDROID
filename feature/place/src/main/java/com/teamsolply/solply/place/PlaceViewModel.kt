@@ -29,6 +29,19 @@ class PlaceViewModel @Inject constructor(
         when (intent) {
             PlaceIntent.Retry -> fetchInitInfo()
 
+            // 메인 필터
+            PlaceIntent.MainFilterChipClick -> reduce {
+                copy(
+                    isMainFilterBottomSheetVisible = true
+                )
+            }
+
+            PlaceIntent.MainFilterBottomSheetDismiss -> reduce {
+                copy(
+                    isMainFilterBottomSheetVisible = false
+                )
+            }
+
             is PlaceIntent.MainFilterClick -> {
                 reduce {
                     copy(
@@ -58,29 +71,38 @@ class PlaceViewModel @Inject constructor(
             }
 
             is PlaceIntent.SubFilterClick -> {
-                reduce {
-                    val updatedAList = selectedOptionAFilter.toMutableList().apply {
-                        if (contains(intent.optionFilterId)) {
-                            remove(intent.optionFilterId)
-                        } else {
-                            add(
-                                intent.optionFilterId
+                when (intent.selectedTagType) {
+                    "OPTION1" -> {
+                        reduce {
+                            val updatedAList = selectedOptionAFilter.toMutableList().apply {
+                                if (contains(intent.optionFilterId)) {
+                                    remove(intent.optionFilterId)
+                                } else {
+                                    add(
+                                        intent.optionFilterId
+                                    )
+                                }
+                            }
+                            copy(
+                                selectedOptionAFilter = updatedAList.toPersistentList(),
                             )
                         }
                     }
 
-                    val updatedBList = selectedOptionBFilter.toMutableList().apply {
-                        if (contains(intent.optionFilterId)) {
-                            remove(intent.optionFilterId)
-                        } else {
-                            add(intent.optionFilterId)
+                    "OPTION2" -> {
+                        reduce {
+                            val updatedBList = selectedOptionBFilter.toMutableList().apply {
+                                if (contains(intent.optionFilterId)) {
+                                    remove(intent.optionFilterId)
+                                } else {
+                                    add(intent.optionFilterId)
+                                }
+                            }
+                            copy(
+                                selectedOptionBFilter = updatedBList.toPersistentList()
+                            )
                         }
                     }
-
-                    copy(
-                        selectedOptionAFilter = updatedAList.toPersistentList(),
-                        selectedOptionBFilter = updatedBList.toPersistentList()
-                    )
                 }
             }
 
@@ -102,19 +124,8 @@ class PlaceViewModel @Inject constructor(
             PlaceIntent.SubFilterBottomSheetDismiss -> reduce {
                 copy(
                     selectedOptionAFilter = persistentListOf(),
-                    selectedOptionBFilter = persistentListOf()
-                )
-            }
-
-            PlaceIntent.MainFilterChipClick -> reduce {
-                copy(
-                    isMainFilterBottomSheetVisible = true
-                )
-            }
-
-            PlaceIntent.MainFilterBottomSheetDismiss -> reduce {
-                copy(
-                    isMainFilterBottomSheetVisible = false
+                    selectedOptionBFilter = persistentListOf(),
+                    isOptionFilterBottomSheetVisible = false
                 )
             }
         }

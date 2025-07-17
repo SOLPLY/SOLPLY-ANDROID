@@ -37,11 +37,11 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
             townId = townId,
             isBookmarkSearch = isBookmarkSearch,
             mainTagId = mainTagId,
-            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) null else Json.encodeToString(
-                subTagAIdList
+            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) null else subTagAIdList.joinToString(
+                separator = ","
             ),
-            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) null else Json.encodeToString(
-                subTagBIdList
+            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) null else subTagBIdList.joinToString(
+                separator = ","
             )
         ).data
     }

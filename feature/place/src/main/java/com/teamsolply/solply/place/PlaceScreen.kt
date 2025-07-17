@@ -94,7 +94,7 @@ fun PlaceRoute(
 
         onClickMainFilterChip = {
             viewModel.sendIntent(PlaceIntent.MainFilterChipClick)
-                                },
+        },
         onClickSubFilterChip = {
             viewModel.sendIntent(PlaceIntent.SubFilterChipClick)
         }
@@ -142,7 +142,7 @@ fun PlaceRoute(
         ) {
             PlaceOptionFilterSheet(
                 optionTags = state.subFilterItems ?: emptyList(),
-                selectedOptionIds = state.selectedOptionAFilter,
+                selectedOptionIds = state.selectedOptionAFilter + state.selectedOptionBFilter,
                 onOptionSelected = { tagId, tagType ->
                     viewModel.sendIntent(
                         PlaceIntent.SubFilterClick(
@@ -271,7 +271,7 @@ fun PlaceScreen(
 
                             if (!state.subFilterItems.isNullOrEmpty() && state.selectedMainFilter != "ALL") {
                                 val optionFilterText = getOptionFilterText(
-                                    selectedIds = state.selectedOptionAFilter,
+                                    selectedIds = state.selectedOptionAFilter + state.selectedOptionBFilter,
                                     optionTags = state.subFilterItems
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
