@@ -45,7 +45,7 @@ fun CourseRoute(
             when (sideEffect) {
                 is CourseSideEffect.NavigateToCourseMap -> {
                     navigateToMaps(
-                        MapsType.EDIT_COURSE.name,
+                        MapsType.ADD_COURSE.name,
                         state.user.selectedTown.townId,
                         sideEffect.courseId
                     )

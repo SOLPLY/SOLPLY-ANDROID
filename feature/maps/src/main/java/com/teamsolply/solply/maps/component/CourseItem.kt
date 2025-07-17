@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
@@ -31,6 +32,7 @@ import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 import formatTextToPlaceItem
 
 @Composable
@@ -38,7 +40,7 @@ internal fun CourseItem(
     placeName: String,
     placeTag: PlaceType,
     placeAddress: String,
-    placeImageRes: Int,
+    placeImageRes: String,
     iconClick: () -> Unit,
     modifier: Modifier = Modifier,
     placeDetailClick: () -> Unit,
@@ -68,13 +70,13 @@ internal fun CourseItem(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(placeImageRes),
-            contentDescription = "place_image",
+        AdaptationImage(
+            imageUrl = placeImageRes,
             modifier = Modifier
                 .padding(8.dp)
                 .size(imageSize)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Crop
         )
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
