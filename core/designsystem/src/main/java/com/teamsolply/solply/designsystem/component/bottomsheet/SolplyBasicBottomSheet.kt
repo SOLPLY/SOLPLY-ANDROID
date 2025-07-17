@@ -49,7 +49,7 @@ fun SolplyBasicBottomSheet(
     val collapsedHeight = with(density) { 0.dp.toPx() }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val expandedHeight = with(density) { (screenHeight * 0.57f).toPx() }
+    val expandedHeight = with(density) { (screenHeight * 0.61f).toPx() }
     val currentHeight = when (currentState) {
         BottomSheetState.EXPANDED -> collapsedHeight
         BottomSheetState.COLLAPSED -> expandedHeight
