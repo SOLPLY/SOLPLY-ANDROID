@@ -17,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun CourseHeader(
     townName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickTownName: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -35,7 +37,13 @@ fun CourseHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .customClickable(
+                        rippleEnabled = false
+                    ) { onClickTownName() }
+            ) {
                 Icon(
                     painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_home_location),
                     contentDescription = "town-icon",

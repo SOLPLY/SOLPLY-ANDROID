@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.favoriteTownNavGraph
 import com.teamsolply.solply.course.navigation.courseNavGraph
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNavigateSnackBar
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNotificationSnackBar
@@ -57,7 +59,7 @@ internal fun MainScreen(
             currentSnackbarState.value = SolplySnackBarData(type = SnackBarType.TEXT, action = null)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short
+                duration = SnackbarDuration.Short
             )
         }
     }
@@ -69,7 +71,7 @@ internal fun MainScreen(
                 SolplySnackBarData(type = SnackBarType.NOTIFICATION, action = null)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short
+                duration = SnackbarDuration.Short
             )
         }
     }
@@ -81,7 +83,7 @@ internal fun MainScreen(
                 SolplySnackBarData(type = SnackBarType.NAVIGATE, action = onAction)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short
+                duration = SnackbarDuration.Short
             )
         }
     }
@@ -164,6 +166,9 @@ internal fun MainScreen(
                                 placeId = placeId,
                                 navOptions = navOptions
                             )
+                        },
+                        navigateToTownSelect = {
+                            navigator.navigateToFavoriteTown()
                         }
                     )
                     courseNavGraph(
@@ -177,6 +182,9 @@ internal fun MainScreen(
                                 courseId = courseId,
                                 navOptions = navOptions
                             )
+                        },
+                        navigateToTownSelect = {
+                            navigator.navigateToFavoriteTown()
                         }
                     )
                     mypageNavGraph(
@@ -305,6 +313,10 @@ internal fun MainScreen(
                                 navOptions = navOptions
                             )
                         },
+                        navigateToBack = navigator::navigateToBack
+                    )
+                    favoriteTownNavGraph(
+                        paddingValues = innerPadding,
                         navigateToBack = navigator::navigateToBack
                     )
                 }
