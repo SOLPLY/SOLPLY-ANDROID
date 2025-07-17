@@ -9,6 +9,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.navigateFavoriteTown
 import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.main.splash.Splash
 import com.teamsolply.solply.maps.navigation.navigateMaps
@@ -130,6 +131,10 @@ internal class MainNavigator(
             townName = townName,
             navOptions
         )
+    }
+
+    fun navigateToFavoriteTown(navOptions: NavOptions = navOptions {}) {
+        navController.navigateFavoriteTown(navOptions)
     }
 
     @Composable

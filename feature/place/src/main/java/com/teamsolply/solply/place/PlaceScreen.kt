@@ -66,6 +66,7 @@ import toPlaceTypeFilterItem
 fun PlaceRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String, Long, Long) -> Unit,
+    navigateToTownSelect: () -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -101,7 +102,8 @@ fun PlaceRoute(
         },
         onClickSubFilterChip = {
             viewModel.sendIntent(PlaceIntent.SubFilterChipClick)
-        }
+        },
+        navigateToTownSelect = navigateToTownSelect
     )
 
     if (state.isMainFilterBottomSheetVisible) {
@@ -171,7 +173,9 @@ fun PlaceScreen(
     snackbarHostState: SnackbarHostState,
 
     onClickMainFilterChip: () -> Unit,
-    onClickSubFilterChip: () -> Unit
+    onClickSubFilterChip: () -> Unit,
+
+    navigateToTownSelect: () -> Unit
 
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
@@ -201,7 +205,8 @@ fun PlaceScreen(
             townName = state.userInfo.selectedTown.townName,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp)
+                .padding(bottom = 8.dp),
+            onClickTownName = { navigateToTownSelect() }
         )
 
         LazyVerticalGrid(

@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun CourseRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String, Long, Long) -> Unit,
+    navigateToTownSelect: () -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -59,6 +60,7 @@ fun CourseRoute(
         navigateToMaps = { courseId ->
             viewModel.sendIntent(CourseIntent.CourseCardClick(courseId = courseId))
         },
+        navigateToTownSelect = navigateToTownSelect,
         modifier = Modifier.padding(paddingValues)
     )
 }
@@ -67,6 +69,7 @@ fun CourseRoute(
 fun CourseScreen(
     state: CourseState,
     navigateToMaps: (Long) -> Unit,
+    navigateToTownSelect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val courseList = state.courseList
@@ -78,7 +81,8 @@ fun CourseScreen(
         CourseHeader(
             townName = user.selectedTown.townName,
             modifier = Modifier
-                .padding(bottom = 8.dp)
+                .padding(bottom = 8.dp),
+            onClickTownName = { navigateToTownSelect() }
         )
 
         LazyVerticalGrid(
