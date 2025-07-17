@@ -519,7 +519,7 @@ private fun MapsScreen(
                             )
                     ) {
                         Text(
-                            text = "장소 저장",
+                            text = if (placeBookmarked) "저장된 장소" else "장소 저장",
                             modifier = Modifier.padding(start = 16.dp),
                             style = SolplyTheme.typography.body14M,
                             color = if (startAddMyCourse) {

@@ -98,7 +98,7 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "자세히 보기",
+                    text = "코스 수정하기",
                     style = SolplyTheme.typography.body14R,
                     color = SolplyTheme.colors.purple400
                 )

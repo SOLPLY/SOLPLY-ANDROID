@@ -25,7 +25,6 @@ class PlaceRepositoryImpl @Inject constructor(
     override suspend fun getMainTags(): Result<List<TagEntity>> = runCatching {
         placeRemoteDataSource.getTags(null)
     }.mapCatching { tagDtoList ->
-        Log.d("tagList", tagDtoList.toString())
         val tagEntityList = tagDtoList.map {
             TagEntity(
                 tagId = it.tagId,
@@ -43,14 +42,12 @@ class PlaceRepositoryImpl @Inject constructor(
                 parentId = null
             )
         )
-        Log.d("tagList", tagEntityList.toString())
         tagEntityList
     }
 
     override suspend fun getSubTags(parentId: Int): Result<List<TagEntity>> = runCatching {
         placeRemoteDataSource.getTags(parentId)
     }.mapCatching { tagDtoList ->
-        Log.d("tagList", tagDtoList.toString())
         val tagEntityList = tagDtoList.map {
             TagEntity(
                 tagId = it.tagId,
@@ -59,7 +56,6 @@ class PlaceRepositoryImpl @Inject constructor(
                 parentId = it.parentId
             )
         }
-        Log.d("tagList", tagEntityList.toString())
         tagEntityList
     }
 

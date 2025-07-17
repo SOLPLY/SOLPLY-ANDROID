@@ -210,7 +210,7 @@ fun PlaceDetailBottomSheet(
                                 if (placeAddress.isNotEmpty()) {
                                     ClickableAnnotatedText(
                                         originalText = "$placeAddress $copyText",
-                                        originalTextStyle = SolplyTheme.typography.caption14M.copy(
+                                        originalTextStyle = SolplyTheme.typography.caption14R.copy(
                                             lineHeight = 15.sp
                                         ),
                                         targetText = copyText,
@@ -233,7 +233,7 @@ fun PlaceDetailBottomSheet(
                                 if (placeContactNumber.isNotEmpty()) {
                                     ClickableAnnotatedText(
                                         originalText = "$placeContactNumber $copyText",
-                                        originalTextStyle = SolplyTheme.typography.caption14M.copy(
+                                        originalTextStyle = SolplyTheme.typography.caption14R.copy(
                                             lineHeight = 15.sp
                                         ),
                                         targetText = copyText,
@@ -260,7 +260,7 @@ fun PlaceDetailBottomSheet(
                                 Text(
                                     text = placeOpeningHours.replace("\\n", "\n"),
                                     color = SolplyTheme.colors.black,
-                                    style = SolplyTheme.typography.caption14M.copy(lineHeight = 15.sp)
+                                    style = SolplyTheme.typography.caption14R.copy(lineHeight = 15.sp)
                                 )
                             }
                             Row(modifier = Modifier.padding(bottom = 8.dp)) {
@@ -277,7 +277,7 @@ fun PlaceDetailBottomSheet(
                                         Text(
                                             text = it.snsPlatform,
                                             color = SolplyTheme.colors.black,
-                                            style = SolplyTheme.typography.caption14M.copy(
+                                            style = SolplyTheme.typography.caption14R.copy(
                                                 lineHeight = 15.sp
                                             )
                                         )
