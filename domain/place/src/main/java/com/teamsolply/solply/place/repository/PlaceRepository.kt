@@ -14,8 +14,8 @@ interface PlaceRepository {
     suspend fun getUserInfo(): Result<UserInfo>
     suspend fun getPlaces(
         townId: Long,
-        mainTagId: Long?,
-        subTagAIdList: List<Long>?,
-        subTagBIdList: List<Long>?
+        mainTagId: Int?,
+        subTagAIdList: List<Int>?,
+        subTagBIdList: List<Int>?
     ): Result<List<PlaceEntity>>
 }

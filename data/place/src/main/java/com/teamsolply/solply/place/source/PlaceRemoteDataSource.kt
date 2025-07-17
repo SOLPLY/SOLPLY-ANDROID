@@ -12,8 +12,8 @@ interface PlaceRemoteDataSource {
     suspend fun getPlaces(
         townId: Long,
         isBookmarkSearch: Boolean,
-        mainTagId: Long?,
-        subTagAIdList: List<Long>?,
-        subTagBIdList: List<Long>?
+        mainTagId: Int?,
+        subTagAIdList: List<Int>?,
+        subTagBIdList: List<Int>?
     ): GetPlacesResponseDto
 }

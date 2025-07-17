@@ -3,7 +3,6 @@ package com.teamsolply.solply.place
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
-import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,64 +16,137 @@ class PlaceViewModel @Inject constructor(
     private val repository: PlaceRepository
 ) : BaseViewModel<PlaceState, PlaceIntent, PlaceSideEffect>(PlaceState()) {
 
-    init {
-        viewModelScope.launch {
-            repository.saveAutoSignIn(autoSignIn = SaveAutoSignInEntity(autoSignIn = true))
-            sendIntent(PlaceIntent.LoadUserInfo)
-            sendIntent(PlaceIntent.LoadPlaces(townId = uiState.value.townId))
-            fetchMainTags()
-        }
-    }
-
     override fun handleIntent(intent: PlaceIntent) {
         when (intent) {
-            is PlaceIntent.LoadUserInfo -> fetchUserInfo()
-            is PlaceIntent.LoadPlaces -> fetchRecommendPlace(intent.townId)
-            is PlaceIntent.ChangeSelectedMainFilter -> {
+            PlaceIntent.Retry -> fetchInitInfo()
+
+            // 메인 필터
+            PlaceIntent.MainFilterChipClick -> reduce {
+                copy(
+                    isMainFilterBottomSheetVisible = true
+                )
+            }
+
+            PlaceIntent.MainFilterBottomSheetDismiss -> reduce {
+                copy(
+                    isMainFilterBottomSheetVisible = false
+                )
+            }
+
+            is PlaceIntent.MainFilterClick -> {
                 reduce {
                     copy(
                         selectedMainTagId = intent.mainFilterId,
                         selectedMainFilter = intent.mainFilterName,
-                        selectedOptionFilter = persistentListOf()
+                        selectedOptionAFilter = persistentListOf(),
+                        selectedOptionBFilter = persistentListOf()
                     )
                 }
+                fetchPlaces(
+                    townId = uiState.value.userInfo.selectedTown.townId,
+                    mainTagId = uiState.value.selectedMainTagId
+                )
                 fetchSubTags()
+                reduce {
+                    copy(
+                        isMainFilterBottomSheetVisible = false
+                    )
+                }
             }
 
             is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
-            PlaceIntent.Retry -> {}
 
-            // 메인 필터 바텀시트 visible
-            PlaceIntent.ChangeMainFilterBottomSheetVisible -> reduce {
-                copy(isMainFilterBottomSheetVisible = !isMainFilterBottomSheetVisible)
+            // 서브 필터 인텐트
+            PlaceIntent.SubFilterChipClick -> reduce {
+                copy(isOptionFilterBottomSheetVisible = true)
             }
 
-            // 옵션 필터 바텀시트 visible
-            PlaceIntent.ChangeOptionFilterBottomSheetVisible -> reduce {
-                copy(isOptionFilterBottomSheetVisible = !isOptionFilterBottomSheetVisible)
-            }
+            is PlaceIntent.SubFilterClick -> {
+                when (intent.selectedTagType) {
+                    "OPTION1" -> {
+                        reduce {
+                            val updatedAList = selectedOptionAFilter.toMutableList().apply {
+                                if (contains(intent.optionFilterId)) {
+                                    remove(intent.optionFilterId)
+                                } else {
+                                    add(
+                                        intent.optionFilterId
+                                    )
+                                }
+                            }
+                            copy(
+                                selectedOptionAFilter = updatedAList.toPersistentList()
+                            )
+                        }
+                    }
 
-            // 옵션 필터 변경
-            is PlaceIntent.ChangeSelectedOptionFilter -> reduce {
-                val updatedList = selectedOptionFilter.toMutableList().apply {
-                    if (contains(intent.optionFilterId)) {
-                        remove(intent.optionFilterId)
-                    } else {
-                        add(
-                            intent.optionFilterId
-                        )
+                    "OPTION2" -> {
+                        reduce {
+                            val updatedBList = selectedOptionBFilter.toMutableList().apply {
+                                if (contains(intent.optionFilterId)) {
+                                    remove(intent.optionFilterId)
+                                } else {
+                                    add(intent.optionFilterId)
+                                }
+                            }
+                            copy(
+                                selectedOptionBFilter = updatedBList.toPersistentList()
+                            )
+                        }
                     }
                 }
+            }
 
+            is PlaceIntent.SubFilterBottomSheetCompleteButtonClick -> {
+                fetchPlaces(
+                    townId = uiState.value.userInfo.selectedTown.townId,
+                    mainTagId = uiState.value.selectedMainTagId,
+                    subTagAIdList = uiState.value.selectedOptionAFilter,
+                    subTagBIdList = uiState.value.selectedOptionBFilter
+                )
+                reduce {
+                    copy(
+                        isOptionFilterBottomSheetVisible = false
+                    )
+                }
+            }
+
+            PlaceIntent.SubFilterBottomSheetDismiss -> reduce {
                 copy(
-                    selectedOptionFilter = updatedList.toPersistentList()
+                    selectedOptionAFilter = persistentListOf(),
+                    selectedOptionBFilter = persistentListOf(),
+                    isOptionFilterBottomSheetVisible = false
                 )
             }
+        }
+    }
 
-            // 옵션 필터 초기화
-            PlaceIntent.ClearOptionFilter -> reduce {
-                copy(selectedOptionFilter = persistentListOf())
-            }
+    private fun fetchInitInfo() {
+        viewModelScope.launch {
+            repository.getUserInfo()
+                .onSuccess { userInfo ->
+                    reduce { copy(userInfo = userInfo) }
+
+                    fetchPlaces(
+                        townId = userInfo.selectedTown.townId,
+                        mainTagId = null,
+                        subTagAIdList = null,
+                        subTagBIdList = null
+                    )
+                    fetchRecommendPlace(
+                        townId = userInfo.selectedTown.townId
+                    )
+                    fetchMainTags()
+                }
+        }
+    }
+
+    private fun fetchUserInfo() {
+        viewModelScope.launch {
+            repository.getUserInfo()
+                .onSuccess { userInfo ->
+                    reduce { copy(userInfo = userInfo) }
+                }
         }
     }
 
@@ -93,7 +165,7 @@ class PlaceViewModel @Inject constructor(
                 .onSuccess { tagList ->
                     reduce {
                         copy(
-                            selectedMainTagId = tagList[0].tagId,
+                            selectedMainTagId = 0,
                             mainFilterItems = tagList.toPersistentList()
                         )
                     }
@@ -115,27 +187,11 @@ class PlaceViewModel @Inject constructor(
         }
     }
 
-    private fun fetchUserInfo() {
-        viewModelScope.launch {
-            repository.getUserInfo()
-                .onSuccess { userInfo ->
-                    reduce { copy(userInfo = userInfo) }
-
-                    loadPlaces(
-                        townId = userInfo.selectedTown.townId,
-                        mainTagId = null,
-                        subTagAIdList = null,
-                        subTagBIdList = null
-                    )
-                }
-        }
-    }
-
-    private fun loadPlaces(
+    private fun fetchPlaces(
         townId: Long,
-        mainTagId: Long? = null,
-        subTagAIdList: List<Long>? = null,
-        subTagBIdList: List<Long>? = null
+        mainTagId: Int? = null,
+        subTagAIdList: List<Int>? = null,
+        subTagBIdList: List<Int>? = null
     ) {
         viewModelScope.launch {
             repository.getPlaces(

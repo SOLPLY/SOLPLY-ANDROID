@@ -30,7 +30,7 @@ import timber.log.Timber.Forest.tag
 fun PlaceOptionFilterSheet(
     optionTags: List<TagEntity>,
     selectedOptionIds: List<Int>,
-    onOptionSelected: (Int) -> Unit,
+    onOptionSelected: (Int, String) -> Unit,
     onDismiss: () -> Unit,
     onReset: () -> Unit,
     onDone: () -> Unit
@@ -117,7 +117,7 @@ fun PlaceOptionFilterSheet(
 fun ChipRow(
     tags: List<TagEntity>,
     selectedOptionIds: List<Int>,
-    onOptionSelected: (Int) -> Unit
+    onOptionSelected: (Int, String) -> Unit
 ) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -127,7 +127,7 @@ fun ChipRow(
             FilterChipButton(
                 text = PlaceSubType.valueOf(tag.name).displayName,
                 isSelected = selectedOptionIds.contains(tag.tagId),
-                onClick = { onOptionSelected(tag.tagId) }
+                onClick = { onOptionSelected(tag.tagId, tag.tagType) }
             )
         }
     }

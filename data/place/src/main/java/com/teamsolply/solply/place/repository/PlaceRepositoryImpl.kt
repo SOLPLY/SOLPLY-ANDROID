@@ -89,14 +89,14 @@ class PlaceRepositoryImpl @Inject constructor(
                     primaryTag = PlaceType.fromApiName(it.primaryTag),
                     introduction = it.introduction
                 )
-            }
+            }.take(3)
         }
 
     override suspend fun getPlaces(
         townId: Long,
-        mainTagId: Long?,
-        subTagAIdList: List<Long>?,
-        subTagBIdList: List<Long>?
+        mainTagId: Int?,
+        subTagAIdList: List<Int>?,
+        subTagBIdList: List<Int>?
     ): Result<List<PlaceEntity>> = runCatching {
         placeRemoteDataSource.getPlaces(
             townId = townId,
