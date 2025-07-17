@@ -83,6 +83,7 @@ internal fun MapsRoute(
     mapsType: MapsType,
     townId: Long,
     placeId: Long?,
+    courseId: Long?,
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
@@ -109,11 +110,15 @@ internal fun MapsRoute(
             }
 
             MapsType.ADD_COURSE -> {
-                viewModel.getCourseDetailInfo()
+                if (courseId != null) {
+                    viewModel.getCourseDetailInfo(courseId = courseId)
+                }
             }
 
             MapsType.EDIT_COURSE -> {
-                viewModel.getCourseDetailInfo()
+                if (courseId != null) {
+                    viewModel.getCourseDetailInfo(courseId = courseId)
+                }
             }
         }
     }

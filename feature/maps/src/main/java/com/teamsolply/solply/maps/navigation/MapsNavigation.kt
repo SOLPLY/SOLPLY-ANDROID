@@ -15,9 +15,13 @@ fun NavController.navigateMaps(
     mapsType: String,
     townId: Long,
     placeId: Long?,
+    courseId: Long?,
     navOptions: NavOptions
 ) {
-    navigate(Maps(mapsType = mapsType, townId = townId, placeId = placeId), navOptions)
+    navigate(
+        Maps(mapsType = mapsType, townId = townId, placeId = placeId, courseId = courseId),
+        navOptions
+    )
 }
 
 fun NavGraphBuilder.mapsNavGraph(
@@ -36,11 +40,13 @@ fun NavGraphBuilder.mapsNavGraph(
         val mapsType = MapsType.valueOf(backStackEntry.toRoute<Maps>().mapsType)
         val townId = backStackEntry.toRoute<Maps>().townId
         val placeId = backStackEntry.toRoute<Maps>().placeId
+        val courseId = backStackEntry.toRoute<Maps>().courseId
 
         MapsRoute(
             mapsType = mapsType,
             townId = townId,
             placeId = placeId,
+            courseId = courseId,
             showTextSnackBar = showTextSnackBar,
             showNotificationSnackBar = showNotificationSnackBar,
             showNavigateSnackBar = showNavigateSnackBar,
@@ -59,5 +65,6 @@ fun NavGraphBuilder.mapsNavGraph(
 data class Maps(
     val mapsType: String,
     val townId: Long,
-    val placeId: Long?
+    val placeId: Long?,
+    val courseId: Long?
 ) : Route

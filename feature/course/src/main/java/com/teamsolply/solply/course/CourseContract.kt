@@ -87,7 +87,7 @@ data class CourseState(
 sealed interface CourseIntent : UiIntent {
     data object Init : CourseIntent
 
-    data class CourseCardClick(val courseId: Int) : CourseIntent
+    data class CourseCardClick(val courseId: Long) : CourseIntent
 
     data class LoadSuccess(
         val user: CourseUser,
@@ -100,5 +100,5 @@ sealed interface CourseIntent : UiIntent {
 }
 
 sealed interface CourseSideEffect : SideEffect {
-    data class NavigateToCourseMap(val courseId: Int) : CourseSideEffect
+    data class NavigateToCourseMap(val courseId: Long) : CourseSideEffect
 }

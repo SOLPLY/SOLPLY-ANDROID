@@ -13,7 +13,7 @@ data class RecommendedCourseListResponseDto(
 @Serializable
 data class RecommendedCourseResponseDto(
     @SerialName("courseId")
-    val courseId: Int,
+    val courseId: Long,
 
     @SerialName("title")
     val courseName: String,

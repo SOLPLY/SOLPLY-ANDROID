@@ -226,9 +226,9 @@ internal class MapsViewModel @Inject constructor(
     }
 
     // TODO. 코스 상세 정보 조회 API
-    fun getCourseDetailInfo() {
+    fun getCourseDetailInfo(courseId: Long) {
         viewModelScope.launch {
-            mapsRepository.getCourseDetail(courseId = 1).onSuccess {
+            mapsRepository.getCourseDetail(courseId = courseId).onSuccess {
                 reduce {
                     copy(
                         courseDetailInfo = it

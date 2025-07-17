@@ -59,7 +59,7 @@ class CourseViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getCourseList(townId: Int) {
+    private suspend fun getCourseList(townId: Long) {
         courseRepository.getRecommendedCourse(townId).onSuccess {
             reduce {
                 copy(

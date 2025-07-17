@@ -92,12 +92,14 @@ internal class MainNavigator(
         mapsType: String,
         townId: Long,
         placeId: Long? = null,
+        courseId: Long? = null,
         navOptions: NavOptions
     ) {
         navController.navigateMaps(
             mapsType = mapsType,
             townId = townId,
             placeId = placeId,
+            courseId= courseId,
             navOptions = navOptions
         )
     }

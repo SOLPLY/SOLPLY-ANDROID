@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserInfoResponseDto(
     @SerialName("userId")
-    val userId: Int,
+    val userId: Long,
 
     @SerialName("nickname")
     val nickname: String,
@@ -21,7 +21,7 @@ data class UserInfoResponseDto(
 @Serializable
 data class TownDto(
     @SerialName("townId")
-    val townId: Int,
+    val townId: Long,
 
     @SerialName("townName")
     val townName: String
