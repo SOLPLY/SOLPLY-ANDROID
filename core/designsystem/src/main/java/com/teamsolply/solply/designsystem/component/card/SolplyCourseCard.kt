@@ -48,7 +48,7 @@ fun SolplyCourseCard(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .alpha(if (savedPlace) 1f else 0.3f)
+            .alpha(if (savedPlace) 0.3f else 1f)
             .customClickable(rippleEnabled = false) { onClick() },
         contentAlignment = Alignment.Center
     ) {
