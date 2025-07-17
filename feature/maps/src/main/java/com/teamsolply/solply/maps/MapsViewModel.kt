@@ -34,11 +34,17 @@ internal class MapsViewModel @Inject constructor(
                     currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.courseName
                         ?: ""
 
+                uiState.value.townId?.let {
+                    savePlaceToCourse(
+                        townId = it,
+                        courseId = uiState.value.isAddMyCourseSelected,
+                        placeId = uiState.value.placeDetailInfo.placeId,
+                        selectedCourseName = selectedCourseName
+                    )
+                }
                 reduce {
                     copy(isAddMyCourseSelected = null)
                 }
-                postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
-                // TODO 코스에 저장 api
             }
 
             is MapsIntent.PlaceBookMarkClick -> {
@@ -230,6 +236,24 @@ internal class MapsViewModel @Inject constructor(
         }
     }
 
+    private fun savePlaceToCourse(
+        townId: Long,
+        courseId: Long?,
+        placeId: Long,
+        selectedCourseName: String
+    ) {
+        viewModelScope.launch {
+            mapsRepository.postPlaceToCourse(
+                courseId = courseId!!,
+                placeId = placeId
+            ).onSuccess {
+                getAllCourseInfo(townId = townId, placeId = placeId)
+                postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
+            }
+
+        }
+    }
+
     // TODO. 장소 상세 정보 조회 API
     fun getPlaceDetailInfo(placeId: Long) {
         viewModelScope.launch {
@@ -255,6 +279,7 @@ internal class MapsViewModel @Inject constructor(
             ).onSuccess {
                 reduce {
                     copy(
+                        townId = townId,
                         courses = it.toPersistentList()
                     )
                 }

@@ -6,6 +6,7 @@ import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
+import com.teamsolply.solply.maps.dto.response.SavePlaceToCourseResponseDto
 import com.teamsolply.solply.maps.service.MapsService
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import javax.inject.Inject
@@ -25,6 +26,12 @@ class MapsRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getAddMyCourse(townId: Long, candidatePlaceId: Long): CoursesResponseDto =
         mapsService.getAddMyCourse(townId = townId, candidatePlaceId = candidatePlaceId).data
+
+    override suspend fun postPlaceToCourse(
+        courseId: Long,
+        placeId: Long
+    ): SavePlaceToCourseResponseDto =
+        mapsService.postPlaceToCourse(courseId = courseId, placeId = placeId).data
 
     override suspend fun getCourseDetail(courseId: Long): CourseDetailResponseDto =
         mapsService.getCourseDetail(courseId = courseId).data

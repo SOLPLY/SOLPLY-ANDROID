@@ -15,6 +15,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal data class MapsState(
     // Add Place
+    val townId: Long? = null,
     val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
     val startAddMyCourse: Boolean = false,

@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -100,7 +99,6 @@ internal fun MapsRoute(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Log.d("asdasdasd", uiState.isAddMyCourseSelected.toString())
     // TODO. 초기 로드 데이터
     LaunchedEffect(Unit) {
         when (mapsType) {
