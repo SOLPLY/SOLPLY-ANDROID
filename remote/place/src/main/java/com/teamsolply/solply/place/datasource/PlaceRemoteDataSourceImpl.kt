@@ -26,16 +26,28 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPlaces(
         townId: Long,
         isBookmarkSearch: Boolean,
-        mainTagId: Long?,
-        subTagAIdList: List<Long>?,
-        subTagBIdList: List<Long>?
+        mainTagId: Int?,
+        subTagAIdList: List<Int>?,
+        subTagBIdList: List<Int>?
     ): GetPlacesResponseDto {
         return placeService.getPlaces(
             townId = townId,
             isBookmarkSearch = isBookmarkSearch,
             mainTagId = mainTagId,
-            subTagAIdList = subTagAIdList,
-            subTagBIdList = subTagBIdList
+            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) {
+                null
+            } else {
+                subTagAIdList.joinToString(
+                    separator = ","
+                )
+            },
+            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) {
+                null
+            } else {
+                subTagBIdList.joinToString(
+                    separator = ","
+                )
+            }
         ).data
     }
 }

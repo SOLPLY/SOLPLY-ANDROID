@@ -29,6 +29,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -84,6 +85,9 @@ fun PlaceRoute(
             }
         }
     }
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent(PlaceIntent.Retry)
+    }
 
     LocationPermissionRequest()
     PlaceScreen(
@@ -92,15 +96,17 @@ fun PlaceRoute(
         onPlaceClick = { viewModel.sendIntent(PlaceIntent.PlaceClicked(it)) },
         snackbarHostState = snackbarHostState,
 
-        changeMainFilterBottomSheetVisible = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
-        changeOptionFilterBottomSheetVisible = {
-            viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+        onClickMainFilterChip = {
+            viewModel.sendIntent(PlaceIntent.MainFilterChipClick)
+        },
+        onClickSubFilterChip = {
+            viewModel.sendIntent(PlaceIntent.SubFilterChipClick)
         }
     )
 
     if (state.isMainFilterBottomSheetVisible) {
         ModalBottomSheet(
-            onDismissRequest = { viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible) },
+            onDismissRequest = { viewModel.sendIntent(PlaceIntent.MainFilterBottomSheetDismiss) },
             sheetState = sheetState,
             containerColor = SolplyTheme.colors.white,
             dragHandle = null
@@ -112,15 +118,14 @@ fun PlaceRoute(
                 selectedType = state.selectedMainFilter,
                 onSelectType = { mainFilterId, mainFilterName ->
                     viewModel.sendIntent(
-                        PlaceIntent.ChangeSelectedMainFilter(
+                        PlaceIntent.MainFilterClick(
                             mainFilterId,
                             mainFilterName
                         )
                     )
-                    viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
                 },
                 onDismiss = {
-                    viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
+                    viewModel.sendIntent(PlaceIntent.MainFilterBottomSheetDismiss)
                 }
             )
         }
@@ -129,8 +134,7 @@ fun PlaceRoute(
     if (state.isOptionFilterBottomSheetVisible) {
         ModalBottomSheet(
             onDismissRequest = {
-                viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
-                viewModel.sendIntent(PlaceIntent.ClearOptionFilter)
+                viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetDismiss)
             },
             sheetState = sheetState,
             containerColor = SolplyTheme.colors.white,
@@ -138,16 +142,21 @@ fun PlaceRoute(
         ) {
             PlaceOptionFilterSheet(
                 optionTags = state.subFilterItems ?: emptyList(),
-                selectedOptionIds = state.selectedOptionFilter,
-                onOptionSelected = { tagId ->
-                    viewModel.sendIntent(PlaceIntent.ChangeSelectedOptionFilter(optionFilterId = tagId))
+                selectedOptionIds = state.selectedOptionAFilter + state.selectedOptionBFilter,
+                onOptionSelected = { tagId, tagType ->
+                    viewModel.sendIntent(
+                        PlaceIntent.SubFilterClick(
+                            optionFilterId = tagId,
+                            selectedTagType = tagType
+                        )
+                    )
                 },
                 onDismiss = {
-                    viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+                    viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetDismiss)
                 },
-                onReset = { viewModel.sendIntent(PlaceIntent.ClearOptionFilter) },
+                onReset = { viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetDismiss) },
                 onDone = {
-                    viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
+                    viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetCompleteButtonClick)
                 }
             )
         }
@@ -161,8 +170,8 @@ fun PlaceScreen(
     onPlaceClick: (Long) -> Unit,
     snackbarHostState: SnackbarHostState,
 
-    changeMainFilterBottomSheetVisible: () -> Unit,
-    changeOptionFilterBottomSheetVisible: () -> Unit
+    onClickMainFilterChip: () -> Unit,
+    onClickSubFilterChip: () -> Unit
 
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
@@ -257,12 +266,12 @@ fun PlaceScreen(
                             PlaceChipButton(
                                 text = PlaceType.valueOf(state.selectedMainFilter).displayName,
                                 modifier = Modifier,
-                                onClick = { changeMainFilterBottomSheetVisible() }
+                                onClick = { onClickMainFilterChip() }
                             )
 
                             if (!state.subFilterItems.isNullOrEmpty() && state.selectedMainFilter != "ALL") {
                                 val optionFilterText = getOptionFilterText(
-                                    selectedIds = state.selectedOptionFilter,
+                                    selectedIds = state.selectedOptionAFilter + state.selectedOptionBFilter,
                                     optionTags = state.subFilterItems
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
@@ -270,7 +279,7 @@ fun PlaceScreen(
                                     text = optionFilterText,
                                     modifier = Modifier,
                                     onClick = {
-                                        changeOptionFilterBottomSheetVisible()
+                                        onClickSubFilterChip()
                                     }
                                 )
                             }
