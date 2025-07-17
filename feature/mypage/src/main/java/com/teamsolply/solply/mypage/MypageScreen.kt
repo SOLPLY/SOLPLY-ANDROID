@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -133,7 +134,9 @@ fun MypageScreen(
     val list = listOf("장소", "코스")
 
     Column(
-        modifier.fillMaxSize(),
+        modifier
+            .fillMaxSize()
+            .background(color = SolplyTheme.colors.white),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
