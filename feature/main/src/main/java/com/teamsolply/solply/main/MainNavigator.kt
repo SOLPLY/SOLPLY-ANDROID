@@ -109,7 +109,7 @@ internal class MainNavigator(
     }
 
     fun navigateToPlaceCollection(
-        townId: Int,
+        townId: Long,
         townName: String,
         navOptions: NavOptions
     ) {
@@ -121,7 +121,7 @@ internal class MainNavigator(
     }
 
     fun navigateToCourseCollection(
-        townId: Int,
+        townId: Long,
         townName: String,
         navOptions: NavOptions
     ) {

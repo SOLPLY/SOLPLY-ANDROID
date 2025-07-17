@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.collection.course
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -97,7 +98,7 @@ class CourseCollectionViewModel @Inject constructor(
         }
     }
 
-    private fun getCourseList(townId: Int) {
+    private fun getCourseList(townId: Long) {
         viewModelScope.launch {
             mypageRepository.getCourseList(townId).onSuccess {
                 reduce {
@@ -109,7 +110,7 @@ class CourseCollectionViewModel @Inject constructor(
         }
     }
 
-    private fun deleteCourses(selectedCourses: List<Int>) {
+    private fun deleteCourses(selectedCourses: List<Long>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedCourses).onSuccess {
                 reduce {

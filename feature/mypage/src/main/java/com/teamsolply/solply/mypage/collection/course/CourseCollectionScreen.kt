@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun CourseCollectionRoute(
     paddingValues: PaddingValues,
-    townId: Int,
+    townId: Long,
     townName: String,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
@@ -112,11 +112,11 @@ fun CourseCollectionRoute(
                             )
                         },
                         modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        },
+                            if (index % 2 == 0) {
+                                Modifier.padding(end = 5.dp)
+                            } else {
+                                Modifier.padding(start = 5.dp)
+                            },
                         savedPlace = true,
                         savedCourse = true
                     )

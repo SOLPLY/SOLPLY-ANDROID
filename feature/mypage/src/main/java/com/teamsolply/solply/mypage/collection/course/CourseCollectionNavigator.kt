@@ -10,7 +10,7 @@ import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateCourseCollection(
-    townId: Int,
+    townId: Long,
     townName: String,
     navOptions: NavOptions
 ) {
@@ -34,4 +34,4 @@ fun NavGraphBuilder.courseCollectionNavGraph(
 }
 
 @Serializable
-data class CourseCollection(val townId: Int, val townName: String) : Route
+data class CourseCollection(val townId: Long, val townName: String) : Route

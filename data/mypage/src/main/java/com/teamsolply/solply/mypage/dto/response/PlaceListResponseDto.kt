@@ -14,7 +14,7 @@ data class PlaceListResponseDto(
 @Serializable
 data class PlaceResponseDto(
     @SerialName("placeId")
-    val placeId: Int,
+    val placeId: Long,
 
     @SerialName("placeName")
     val placeName: String,

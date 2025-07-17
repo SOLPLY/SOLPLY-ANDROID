@@ -7,16 +7,16 @@ import com.teamsolply.solply.ui.base.UiState
 
 data class CourseCollectionState(
     val selectMode: Boolean = false,
-    val townId: Int = 1,
+    val townId: Long = 0,
     val townName: String = "",
     val courses: List<CourseInfoEntity> = emptyList(),
-    val selectedCourses: Set<Int> = emptySet(),
+    val selectedCourses: Set<Long> = emptySet(),
     val dialogState: Boolean = false
 ) : UiState
 
 sealed interface CourseCollectionIntent : UiIntent {
 
-    data class Init(val townId: Int, val townName: String) : CourseCollectionIntent
+    data class Init(val townId: Long, val townName: String) : CourseCollectionIntent
 
     data object SelectButtonClick : CourseCollectionIntent
     data object DeleteButtonClick : CourseCollectionIntent
@@ -25,7 +25,7 @@ sealed interface CourseCollectionIntent : UiIntent {
     data object DialogConfirmClick : CourseCollectionIntent
     data object DialogDismissClick : CourseCollectionIntent
 
-    data class CourseCardClick(val courseId: Int, val index: Int) : CourseCollectionIntent
+    data class CourseCardClick(val courseId: Long, val index: Int) : CourseCollectionIntent
 
     // Navigate
     data object BackButtonClick : CourseCollectionIntent

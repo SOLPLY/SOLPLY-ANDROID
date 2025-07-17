@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PlaceCollectionRoute(
     paddingValues: PaddingValues,
-    townId: Int,
+    townId: Long,
     townName: String,
     navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
