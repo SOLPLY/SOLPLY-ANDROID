@@ -51,7 +51,7 @@ fun StartingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "${name}의 취향을 담았어요.",
+                text = "${name}님의 취향을 담았어요.",
                 style = SolplyTheme.typography.display20Sb,
                 color = SolplyTheme.colors.black
             )
