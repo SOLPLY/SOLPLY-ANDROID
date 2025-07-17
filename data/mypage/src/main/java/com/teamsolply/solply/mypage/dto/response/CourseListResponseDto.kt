@@ -16,7 +16,7 @@ data class CourseResponseDto(
     @SerialName("courseId")
     val courseId: Long,
 
-    @SerialName("title")
+    @SerialName("courseName")
     val title: String,
 
     @SerialName("thumbnailImage")

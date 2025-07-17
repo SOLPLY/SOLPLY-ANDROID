@@ -9,6 +9,8 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 data class CourseState(
     val user: UserEntity = UserEntity(
@@ -21,57 +23,7 @@ data class CourseState(
         persona = "HEALING"
     ),
 
-    val courseList: List<CourseEntity> = listOf(
-        CourseEntity(
-            courseId = 0,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        ),
-        CourseEntity(
-            courseId = 1,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        ),
-        CourseEntity(
-            courseId = 2,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        ),
-        CourseEntity(
-            courseId = 3,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        ),
-        CourseEntity(
-            courseId = 4,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        ),
-        CourseEntity(
-            courseId = 5,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        ),
-        CourseEntity(
-            courseId = 6,
-            courseName = "오감으로 수집하는 하루",
-            imageUrl = "com.teamsolply.solply.designsystem.R.drawable.img_course_dummy",
-            tagList = listOf(PlaceType.CAFE, PlaceType.SHOPPING),
-            isSaved = true
-        )
-    ),
+    val courseList: PersistentList<CourseEntity> = persistentListOf(),
     val errorMessage: String? = null
 ) : UiState {
     val recommendText: String
