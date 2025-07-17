@@ -29,16 +29,22 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.SavePlaceInMyCourse -> {
-                val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
+                val selectedCourseId = currentState.isAddMyCourseSelected
                 val selectedCourseName =
-                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
+                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.courseName
                         ?: ""
 
-                reduce {
-                    copy(addMyCourseSelectedCount = persistentListOf())
+                uiState.value.townId?.let {
+                    savePlaceToCourse(
+                        townId = it,
+                        courseId = uiState.value.isAddMyCourseSelected,
+                        placeId = uiState.value.placeDetailInfo.placeId,
+                        selectedCourseName = selectedCourseName
+                    )
                 }
-                postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
-                // TODO 코스에 저장 api
+                reduce {
+                    copy(isAddMyCourseSelected = null)
+                }
             }
 
             is MapsIntent.PlaceBookMarkClick -> {
@@ -213,6 +219,7 @@ internal class MapsViewModel @Inject constructor(
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
+            is MapsIntent.ShowDuplicateSnackBar -> postSideEffect(MapsSideEffect.ShowDuplicateSnackBar)
             is MapsIntent.ReturnToHomeClick -> {
                 postSideEffect(MapsSideEffect.NavigateToReturnHome)
             }
@@ -226,6 +233,23 @@ internal class MapsViewModel @Inject constructor(
                     intent.placeId
                 )
             )
+        }
+    }
+
+    private fun savePlaceToCourse(
+        townId: Long,
+        courseId: Long?,
+        placeId: Long,
+        selectedCourseName: String
+    ) {
+        viewModelScope.launch {
+            mapsRepository.postPlaceToCourse(
+                courseId = courseId!!,
+                placeId = placeId
+            ).onSuccess {
+                getAllCourseInfo(townId = townId, placeId = placeId)
+                postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
+            }
         }
     }
 
@@ -250,10 +274,11 @@ internal class MapsViewModel @Inject constructor(
         viewModelScope.launch {
             mapsRepository.getAddMyCourse(
                 townId = townId,
-                placeId = placeId
+                candidatePlaceId = placeId
             ).onSuccess {
                 reduce {
                     copy(
+                        townId = townId,
                         courses = it.toPersistentList()
                     )
                 }
@@ -328,15 +353,9 @@ internal class MapsViewModel @Inject constructor(
         }
     }
 
-    private fun filterSelectedCourseCount(courseId: Int) {
+    private fun filterSelectedCourseCount(courseId: Long) {
         reduce {
-            val updatedList = if (addMyCourseSelectedCount.contains(courseId)) {
-                addMyCourseSelectedCount - courseId
-            } else {
-                addMyCourseSelectedCount + courseId
-            }
-
-            copy(addMyCourseSelectedCount = updatedList.toPersistentList())
+            copy(isAddMyCourseSelected = if (isAddMyCourseSelected == courseId) null else courseId)
         }
     }
 
