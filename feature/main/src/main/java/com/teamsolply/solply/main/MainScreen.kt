@@ -166,6 +166,9 @@ internal fun MainScreen(
                                 placeId = placeId,
                                 navOptions = navOptions
                             )
+                        },
+                        navigateToTownSelect = {
+                            navigator.navigateToFavoriteTown()
                         }
                     )
                     courseNavGraph(
@@ -178,12 +181,6 @@ internal fun MainScreen(
                                 townId = townId,
                                 courseId = courseId,
                                 navOptions = navOptions
-                            )
-                            navigator.navigateToMaps(
-                                mapsType = mapsType,
-                                navOptions = navOptions,
-                                townId = townId,
-                                courseId = courseId
                             )
                         },
                         navigateToTownSelect = {
