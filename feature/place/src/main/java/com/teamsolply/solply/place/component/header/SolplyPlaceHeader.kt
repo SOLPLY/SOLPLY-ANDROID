@@ -1,5 +1,6 @@
 package com.teamsolply.solply.designsystem.component.header
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,11 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun PlaceHeader(
     townName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickTownName: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -36,7 +39,11 @@ fun PlaceHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .customClickable(
+                        rippleEnabled = false
+                    ) { onClickTownName() }) {
                 Icon(
                     painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_home_location),
                     contentDescription = "town-icon",

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun CourseHeader(
@@ -40,7 +41,9 @@ fun CourseHeader(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clickable { onClickTownName() }
+                    .customClickable(
+                        rippleEnabled = false
+                    ) { onClickTownName() }
             ) {
                 Icon(
                     painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_home_location),
