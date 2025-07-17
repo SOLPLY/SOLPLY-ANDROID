@@ -60,7 +60,7 @@ internal sealed interface MapsIntent : UiIntent {
     data object ChangeCourseSaveDialogInVisibility : MapsIntent
 
     data class CourseSaveDialogClick(
-        val courseSaveType: CourseSaveType,
+        val courseSaveType: CourseSaveType
     ) : MapsIntent
 
     data object BeforeEditCourseBackHandler : MapsIntent

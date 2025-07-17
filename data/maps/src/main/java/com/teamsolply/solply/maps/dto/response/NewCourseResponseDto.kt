@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NewCourseResponseDto(
     @SerialName("courseId")
-    val courseId: Long,
+    val courseId: Long
 )

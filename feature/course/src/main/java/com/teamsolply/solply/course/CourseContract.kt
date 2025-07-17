@@ -5,7 +5,6 @@ import com.teamsolply.solply.course.model.CourseEntity
 import com.teamsolply.solply.course.model.CourseUser
 import com.teamsolply.solply.course.model.TownEntity
 import com.teamsolply.solply.course.model.UserEntity
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState

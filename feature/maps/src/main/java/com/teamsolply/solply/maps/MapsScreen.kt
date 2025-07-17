@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -245,7 +244,7 @@ internal fun MapsRoute(
             saveToCourseClick = {
                 viewModel.sendIntent(
                     MapsIntent.CourseSaveDialogClick(
-                        courseSaveType = CourseSaveType.SaveToExistingCourse,
+                        courseSaveType = CourseSaveType.SaveToExistingCourse
                     )
                 )
             },
