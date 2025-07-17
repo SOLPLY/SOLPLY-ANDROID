@@ -86,7 +86,7 @@ class PlaceRepositoryImpl @Inject constructor(
                     placeId = it.placeId,
                     placeName = it.placeName,
                     thumbnailImageUrl = it.thumbnailImageUrl,
-                    primaryTag = PlaceType.fromApiName(it.primaryTag),
+                    primaryTag = it.primaryTag,
                     introduction = it.introduction
                 )
             }.take(3)
