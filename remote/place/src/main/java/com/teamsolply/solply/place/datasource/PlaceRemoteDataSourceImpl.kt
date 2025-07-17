@@ -1,11 +1,14 @@
 package com.teamsolply.solply.place.datasource
 
+import android.util.Log
 import com.teamsolply.solply.place.dto.response.GetPlacesResponseDto
 import com.teamsolply.solply.place.dto.response.GetRecommendPlaceDto
 import com.teamsolply.solply.place.dto.response.GetTagResponseDto
 import com.teamsolply.solply.place.dto.response.GetUserInfoResponseDto
 import com.teamsolply.solply.place.service.PlaceService
 import com.teamsolply.solply.place.source.PlaceRemoteDataSource
+import kotlinx.serialization.json.Json
+import java.net.URLEncoder
 import javax.inject.Inject
 
 class PlaceRemoteDataSourceImpl @Inject constructor(
@@ -26,16 +29,21 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPlaces(
         townId: Long,
         isBookmarkSearch: Boolean,
-        mainTagId: Long?,
-        subTagAIdList: List<Long>?,
-        subTagBIdList: List<Long>?
+        mainTagId: Int?,
+        subTagAIdList: List<Int>?,
+        subTagBIdList: List<Int>?
     ): GetPlacesResponseDto {
         return placeService.getPlaces(
             townId = townId,
             isBookmarkSearch = isBookmarkSearch,
             mainTagId = mainTagId,
-            subTagAIdList = subTagAIdList,
-            subTagBIdList = subTagBIdList
+            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) null else Json.encodeToString(
+                subTagAIdList
+            ),
+            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) null else Json.encodeToString(
+                subTagBIdList
+            )
         ).data
     }
+
 }

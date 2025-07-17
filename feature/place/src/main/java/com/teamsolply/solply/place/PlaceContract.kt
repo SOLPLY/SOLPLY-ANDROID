@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
 data class PlaceState(
-    val townId: Long = 0,
+//    val townId: Long = 0,
 
     val userInfo: UserInfo = UserInfo(
         userId = 1,
@@ -34,26 +34,28 @@ data class PlaceState(
     val selectedMainFilter: String = "ALL",
 
     val isOptionFilterBottomSheetVisible: Boolean = false,
-    val selectedOptionFilter: PersistentList<Int> = persistentListOf()
+    val selectedOptionAFilter: PersistentList<Int> = persistentListOf(),
+    val selectedOptionBFilter: PersistentList<Int> = persistentListOf()
 
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {
-    data object LoadUserInfo : PlaceIntent
-    data class LoadPlaces(val townId: Long) : PlaceIntent
     data class PlaceClicked(val placeId: Long) : PlaceIntent
     data object Retry : PlaceIntent
-    data object ClearOptionFilter : PlaceIntent
 
-    data object ChangeMainFilterBottomSheetVisible : PlaceIntent
-    data class ChangeSelectedMainFilter(
+    data object MainFilterChipClick : PlaceIntent
+    data object MainFilterBottomSheetDismiss : PlaceIntent
+    data class MainFilterClick(
         val mainFilterId: Int,
         val mainFilterName: String
     ) : PlaceIntent
 
-    data object ChangeOptionFilterBottomSheetVisible : PlaceIntent
-    data class ChangeSelectedOptionFilter(
-        val optionFilterId: Int
+    data object SubFilterChipClick : PlaceIntent
+    data object SubFilterBottomSheetCompleteButtonClick : PlaceIntent
+    data object SubFilterBottomSheetDismiss : PlaceIntent
+    data class SubFilterClick(
+        val optionFilterId: Int,
+        val selectedTagType: String
     ) : PlaceIntent
 }
 

@@ -27,9 +27,9 @@ interface PlaceService {
     @GET("/api/places")
     suspend fun getPlaces(
         @Query("townId") townId: Long,
-        @Query("isBookmarkSearch") isBookmarkSearch: Boolean,
-        @Query("mainTagId") mainTagId: Long?,
-        @Query("subTagAIdList") subTagAIdList: List<Long>?,
-        @Query("subTagBIdList") subTagBIdList: List<Long>?
+        @Query("isBookmarkSearch") isBookmarkSearch: Boolean = false,
+        @Query("mainTagId") mainTagId: Int?,
+        @Query("subTagAIdList") subTagAIdList: String?,
+        @Query("subTagBIdList") subTagBIdList: String?
     ): BaseResponse<GetPlacesResponseDto>
 }
