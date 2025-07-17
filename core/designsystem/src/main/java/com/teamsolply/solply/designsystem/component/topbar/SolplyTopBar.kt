@@ -27,6 +27,7 @@ fun SolplyTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 4.dp)
             .background(SolplyTheme.colors.white),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
@@ -40,14 +41,13 @@ fun SolplyTopBar(
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
         Spacer(
-            modifier = Modifier
-                .width(Dp(12f))
+            modifier = Modifier.width(12.dp)
         )
         Text(
             text = barText,
-            style = SolplyTheme.typography.title18Sb,
+            style = SolplyTheme.typography.head16M,
             color = SolplyTheme.colors.black,
-            modifier = Modifier.padding(vertical = 18.dp)
+            modifier = Modifier.padding(vertical = 16.dp)
         )
     }
 }
