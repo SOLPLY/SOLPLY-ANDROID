@@ -264,6 +264,9 @@ internal fun MapsRoute(
         onCourseEditBackClick = {
             viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
         },
+        onCourseEditTopBarBackClick = {
+            viewModel.sendIntent(MapsIntent.BeforeEditCourseTopBarBackHandler)
+        },
         onPlaceDetailClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
         }
@@ -296,6 +299,16 @@ internal fun MapsRoute(
             dismissButtonText = "취소",
             onClickConfirm = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogClick) },
             onClickDismiss = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogInVisible) }
+        )
+    }
+
+    if (uiState.navigateToBackDialogVisibility) {
+        SolplyConfirmDialog(
+            text = "변경 사항을 저장하지 않고\n나가시겠어요?",
+            confirmButtonText = "나가기",
+            dismissButtonText = "취소",
+            onClickConfirm = { viewModel.sendIntent(MapsIntent.BackButtonClick) },
+            onClickDismiss = { viewModel.sendIntent(MapsIntent.NavigateToBackDialogInVisible) }
         )
     }
 }
@@ -334,6 +347,7 @@ private fun MapsScreen(
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
     onCourseEditBackClick: () -> Unit,
+    onCourseEditTopBarBackClick: () -> Unit,
     onPlaceDetailClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -406,7 +420,13 @@ private fun MapsScreen(
                 else -> placeDetailEntity.placeName
             }
             SolplyTopBar(
-                onBackButtonClick = { onBackButtonClick() },
+                onBackButtonClick = {
+                    if (startEditCourse) {
+                        onCourseEditTopBarBackClick()
+                    } else {
+                        onBackButtonClick()
+                    }
+                },
                 barText = topBarTitle
             ) {
                 Icon(

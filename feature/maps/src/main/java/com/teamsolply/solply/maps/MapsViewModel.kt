@@ -206,6 +206,18 @@ internal class MapsViewModel @Inject constructor(
                 }
             }
 
+            MapsIntent.BeforeEditCourseTopBarBackHandler -> {
+                if (uiState.value.coursesBeforeEdit == uiState.value.courseDetailInfo.places) {
+                    postSideEffect(MapsSideEffect.NavigateToBack)
+                } else {
+                    reduce { copy(navigateToBackDialogVisibility = true) }
+                }
+            }
+
+            MapsIntent.NavigateToBackDialogInVisible -> {
+                reduce { copy(navigateToBackDialogVisibility = false) }
+            }
+
             MapsIntent.BeforeEditCourseDialogInVisible -> reduce {
                 copy(exitEditCourseDialogVisibility = false)
             }

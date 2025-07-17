@@ -28,7 +28,8 @@ internal data class MapsState(
     val startEditCourse: Boolean = false,
     val courseSaveDialogVisibility: Boolean = false,
     val coursesBeforeEdit: ImmutableList<Place> = persistentListOf(),
-    val exitEditCourseDialogVisibility: Boolean = false
+    val exitEditCourseDialogVisibility: Boolean = false,
+    val navigateToBackDialogVisibility: Boolean = false
 ) : UiState
 
 internal sealed interface MapsIntent : UiIntent {
@@ -65,10 +66,11 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     data object BeforeEditCourseBackHandler : MapsIntent
-
     data object BeforeEditCourseDialogInVisible : MapsIntent
-
     data object BeforeEditCourseDialogClick : MapsIntent
+
+    data object BeforeEditCourseTopBarBackHandler: MapsIntent
+    data object NavigateToBackDialogInVisible: MapsIntent
 
     // Item Drag and Remove
     data class StartCourseMove(
