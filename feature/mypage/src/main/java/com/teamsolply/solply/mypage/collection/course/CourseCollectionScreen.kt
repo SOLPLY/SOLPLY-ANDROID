@@ -32,7 +32,6 @@ fun CourseCollectionRoute(
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     LaunchedEffect(Unit) {
         viewModel.sendIntent(CourseCollectionIntent.Init(townId, townName))
     }
@@ -117,7 +116,6 @@ fun CourseCollectionRoute(
                             } else {
                                 Modifier.padding(start = 5.dp)
                             },
-                        savedPlace = true,
                         savedCourse = true
                     )
                 }

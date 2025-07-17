@@ -19,7 +19,7 @@ data class CourseResponseDto(
     @SerialName("title")
     val title: String,
 
-    @SerialName("thumbnailImageUrl")
+    @SerialName("thumbnailImage")
     val imageUrl: String,
 
     @SerialName("mainTags")
