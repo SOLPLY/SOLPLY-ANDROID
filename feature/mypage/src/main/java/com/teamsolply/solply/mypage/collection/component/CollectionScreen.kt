@@ -53,7 +53,8 @@ fun CollectionScreen(
         )
     }
     Column(
-        modifier.fillMaxSize(),
+        modifier.fillMaxSize()
+            .background(color = SolplyTheme.colors.white),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -64,10 +65,7 @@ fun CollectionScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
-                .background(
-                    color = SolplyTheme.colors.white
-                ),
+                .height(48.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
