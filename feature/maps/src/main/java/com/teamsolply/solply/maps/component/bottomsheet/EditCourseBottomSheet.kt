@@ -224,8 +224,8 @@ internal fun EditCourseBottomSheet(
                                     context = context,
                                     destName = item.placeName,
                                     destId = item.placeDefaultId.toString(),
-                                    destLongitude = item.longitude.toDouble(),
-                                    destLatitude = item.latitude.toDouble(),
+                                    destLongitude = item.longitude,
+                                    destLatitude = item.latitude,
                                     destType = item.placeTag
                                 )
                             },

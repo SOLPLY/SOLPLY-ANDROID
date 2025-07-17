@@ -1,7 +1,6 @@
 package com.teamsolply.solply.place.repository
 
 import android.util.Log
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceEntity
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
@@ -82,7 +81,7 @@ class PlaceRepositoryImpl @Inject constructor(
                     placeId = it.placeId,
                     placeName = it.placeName,
                     thumbnailImageUrl = it.thumbnailImageUrl,
-                    primaryTag = PlaceType.fromApiName(it.primaryTag),
+                    primaryTag = it.primaryTag,
                     introduction = it.introduction
                 )
             }.take(3)

@@ -43,7 +43,7 @@ class PlaceViewModel @Inject constructor(
             is PlaceIntent.MainFilterClick -> {
                 reduce {
                     copy(
-                        selectedMainTagId = intent.mainFilterId,
+                        selectedMainFilterId = intent.mainFilterId,
                         selectedMainFilter = intent.mainFilterName,
                         selectedOptionAFilter = persistentListOf(),
                         selectedOptionBFilter = persistentListOf()
@@ -51,7 +51,7 @@ class PlaceViewModel @Inject constructor(
                 }
                 fetchPlaces(
                     townId = uiState.value.userInfo.selectedTown.townId,
-                    mainTagId = uiState.value.selectedMainTagId
+                    mainTagId = uiState.value.selectedMainFilterId
                 )
                 fetchSubTags()
                 reduce {
@@ -107,7 +107,7 @@ class PlaceViewModel @Inject constructor(
             is PlaceIntent.SubFilterBottomSheetCompleteButtonClick -> {
                 fetchPlaces(
                     townId = uiState.value.userInfo.selectedTown.townId,
-                    mainTagId = uiState.value.selectedMainTagId,
+                    mainTagId = uiState.value.selectedMainFilterId,
                     subTagAIdList = uiState.value.selectedOptionAFilter,
                     subTagBIdList = uiState.value.selectedOptionBFilter
                 )
@@ -144,6 +144,13 @@ class PlaceViewModel @Inject constructor(
                         townId = userInfo.selectedTown.townId
                     )
                     fetchMainTags()
+                    reduce {
+                        copy(
+                            selectedMainFilter = "ALL",
+                            mainFilterItems = persistentListOf(),
+                            subFilterItems = persistentListOf()
+                        )
+                    }
                 }
         }
     }
@@ -172,7 +179,7 @@ class PlaceViewModel @Inject constructor(
                 .onSuccess { tagList ->
                     reduce {
                         copy(
-                            selectedMainTagId = 0,
+                            selectedMainFilterId = 0,
                             mainFilterItems = tagList.toPersistentList()
                         )
                     }
@@ -182,15 +189,19 @@ class PlaceViewModel @Inject constructor(
     }
 
     private fun fetchSubTags() {
-        viewModelScope.launch {
-            repository.getSubTags(uiState.value.selectedMainTagId)
-                .onSuccess { tagList ->
-                    reduce {
-                        copy(
-                            subFilterItems = tagList.toPersistentList()
-                        )
+        if (uiState.value.selectedMainFilterId != 0) {
+            viewModelScope.launch {
+                repository.getSubTags(uiState.value.selectedMainFilterId)
+                    .onSuccess { tagList ->
+                        reduce {
+                            copy(
+                                subFilterItems = tagList.toPersistentList()
+                            )
+                        }
                     }
-                }
+            }
+        } else {
+            reduce { copy(subFilterItems = persistentListOf()) }
         }
     }
 
@@ -203,7 +214,7 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getPlaces(
                 townId = townId,
-                mainTagId = mainTagId,
+                mainTagId = if (mainTagId == 0) null else mainTagId,
                 subTagAIdList = subTagAIdList,
                 subTagBIdList = subTagBIdList
             ).onSuccess { placeEntities ->

@@ -3,11 +3,12 @@ package com.teamsolply.solply.maps.model
 import com.teamsolply.solply.model.PlaceType
 
 data class CourseInfoEntity(
-    val courseId: Int,
-    val title: String,
-    val placeCount: Int,
+    val courseId: Long,
+    val courseName: String,
     val thumbnailImage: String,
-    val mainTag: List<PlaceType>,
+    val mainTags: List<PlaceType>,
     val isBookmarked: Boolean,
+    val isDuplicated: Boolean,
+    val isPlaceCountLimited: Boolean,
     val isActive: Boolean
 )

@@ -57,10 +57,11 @@ fun PlaceDetailBottomSheet(
     placeOpeningHours: String,
     placeSnsLink: PersistentList<SnsLink>,
     courses: PersistentList<CourseInfoEntity>,
-    addMyCourseSelectedCount: PersistentList<Int>,
+    addMyCourseSelectedCount: Long?,
     addMyCourseBackClick: () -> Unit,
-    selectedCourseForPlace: (Int) -> Unit,
+    selectedCourseForPlace: (Long) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
+    showDuplicateSnackBar: () -> Unit,
     emptyCourseClick: () -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
@@ -125,18 +126,24 @@ fun PlaceDetailBottomSheet(
                     items(courses) { courseInfo ->
                         SolplyCourseCard(
                             imgRes = courseInfo.thumbnailImage,
-                            placeType = courseInfo.mainTag,
+                            placeType = courseInfo.mainTags,
                             backgroundColor = SolplyTheme.colors.green300,
                             iconColor = SolplyTheme.colors.green400,
                             iconBackGroundColor = SolplyTheme.colors.green200,
-                            title = courseInfo.title,
-                            savedPlace = courseInfo.placeCount < 6,
-                            selected = addMyCourseSelectedCount.contains(courseInfo.courseId),
+                            title = courseInfo.courseName,
+                            savedPlace = !courseInfo.isActive,
+                            selected = if (!courseInfo.isActive) {
+                                false
+                            } else {
+                                addMyCourseSelectedCount == courseInfo.courseId
+                            },
                             onClick = {
-                                if (courseInfo.placeCount < 6) {
-                                    selectedCourseForPlace(courseInfo.courseId)
-                                } else {
+                                if (courseInfo.isDuplicated) {
+                                    showDuplicateSnackBar()
+                                } else if (courseInfo.isPlaceCountLimited) {
                                     showMaxSizeCourseSnackBar()
+                                } else {
+                                    selectedCourseForPlace(courseInfo.courseId)
                                 }
                             }
                         )

@@ -6,6 +6,7 @@ import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
+import com.teamsolply.solply.maps.dto.response.SavePlaceToCourseResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -40,8 +41,15 @@ interface MapsService {
     @GET("api/courses/bookmarks")
     suspend fun getAddMyCourse(
         @Query("townId") townId: Long,
-        @Query("placeId") placeId: Long
+        @Query("candidatePlaceId") candidatePlaceId: Long
     ): BaseResponse<CoursesResponseDto>
+
+    // 장소를 코스에 추가
+    @POST("api/courses/{courseId}/places/{placeId}")
+    suspend fun postPlaceToCourse(
+        @Path("courseId") courseId: Long,
+        @Path("placeId") placeId: Long
+    ): BaseResponse<SavePlaceToCourseResponseDto>
 
     // 내 코스에 추가
 

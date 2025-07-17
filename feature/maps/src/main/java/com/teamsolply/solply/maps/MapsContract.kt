@@ -15,10 +15,11 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal data class MapsState(
     // Add Place
+    val townId: Long? = null,
     val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
     val startAddMyCourse: Boolean = false,
-    val addMyCourseSelectedCount: PersistentList<Int> = persistentListOf(),
+    val isAddMyCourseSelected: Long? = null,
     // Add Course
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
     val selectedPlaceInfoId: Long? = null,
@@ -37,7 +38,7 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     data class SelectedCourseForPlace(
-        val courseId: Int
+        val courseId: Long
     ) : MapsIntent
 
     data object SavePlaceInMyCourse : MapsIntent
@@ -90,6 +91,7 @@ internal sealed interface MapsIntent : UiIntent {
 
     data object EmptyCourseClick : MapsIntent
     data object ShowMaxSizeCourseSnackBar : MapsIntent
+    data object ShowDuplicateSnackBar : MapsIntent
     data object ReturnToHomeClick : MapsIntent
     data object BackButtonClick : MapsIntent
 }
@@ -99,6 +101,7 @@ internal sealed interface MapsSideEffect : SideEffect {
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
     data object ShowSuccessSavePlaceSnackBar : MapsSideEffect
+    data object ShowDuplicateSnackBar : MapsSideEffect
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect
