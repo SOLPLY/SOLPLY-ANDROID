@@ -40,9 +40,21 @@ interface MapsService {
 
     // 내 코스에 추가
 
+    // 코스 단건 상세 조회
     @GET("api/courses/{courseId}")
     suspend fun getCourseDetail(
         @Path("courseId") courseId: Long
     ): BaseResponse<CourseDetailResponseDto>
-    // 코스 전체 조회
+
+    // 코스 단건 북마크 저장
+    @POST("api/courses/{courseId}/bookmarks")
+    suspend fun postCourseBookMark(
+        @Path("courseId") courseId: Long
+    ): BaseResponse<Unit>
+
+    // 코스 단건 북마크 삭제
+    @DELETE("api/courses/{courseId}/bookmarks")
+    suspend fun deleteCourseBookMark(
+        @Path("courseId") courseId: Long
+    ): BaseResponse<Unit>
 }

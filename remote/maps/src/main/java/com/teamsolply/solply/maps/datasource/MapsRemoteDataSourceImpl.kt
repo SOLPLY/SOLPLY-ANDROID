@@ -25,4 +25,10 @@ class MapsRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getCourseDetail(courseId: Long): CourseDetailResponseDto =
         mapsService.getCourseDetail(courseId = courseId).data
+
+    override suspend fun postCourseBookMark(courseId: Long): Unit =
+        mapsService.postCourseBookMark(courseId = courseId).data
+
+    override suspend fun deleteCourseBookMark(courseId: Long): Unit =
+        mapsService.deleteCourseBookMark(courseId = courseId).data
 }

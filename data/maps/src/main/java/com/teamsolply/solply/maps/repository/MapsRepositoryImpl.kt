@@ -41,4 +41,12 @@ class MapsRepositoryImpl @Inject constructor(
     }.mapCatching { dto ->
         dto.toEntity()
     }
+
+    override suspend fun postCourseBookMark(courseId: Long): Result<Unit> = runCatching {
+        mapsRemoteDataSource.postCourseBookMark(courseId = courseId)
+    }
+
+    override suspend fun deleteCourseBookMark(courseId: Long): Result<Unit> = runCatching {
+        mapsRemoteDataSource.deleteCourseBookMark(courseId = courseId)
+    }
 }
