@@ -77,7 +77,7 @@ fun PlaceRoute(
                 is PlaceSideEffect.NavigateToMap -> {
                     navigateToMaps(
                         MapsType.PLACE_DETAIL.name,
-                        state.townId,
+                        state.userInfo.selectedTown.townId,
                         sideEffect.placeId
                     )
                 }

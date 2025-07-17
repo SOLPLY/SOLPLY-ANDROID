@@ -53,6 +53,7 @@ internal class MapsViewModel @Inject constructor(
                     placeId = placeId,
                     isBookmarked = isBookmarked,
                     onSuccess = {
+                        Log.d("asdasdasd", "asd")
                         if (isBookmarked) {
                             postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
                         }
@@ -220,8 +221,6 @@ internal class MapsViewModel @Inject constructor(
                         courses = it.toPersistentList()
                     )
                 }
-            }.onFailure {
-                Log.d("asdasdasd", it.toString())
             }
         }
     }
@@ -239,21 +238,18 @@ internal class MapsViewModel @Inject constructor(
         }
     }
 
-    fun togglePlaceBookmark(
+    private fun togglePlaceBookmark(
         placeId: Long,
         isBookmarked: Boolean,
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
-            val result = if (isBookmarked) {
+            if (isBookmarked) {
                 mapsRepository.savePlaceBookMark(placeId)
             } else {
                 mapsRepository.deletePlaceBookMark(placeId)
             }
-
-            result.onSuccess {
-                onSuccess()
-            }
+            onSuccess()
         }
     }
 
