@@ -180,9 +180,10 @@ internal fun MainScreen(
                                 navOptions = navOptions
                             )
                             navigator.navigateToMaps(
-                                mapsType = mapsType, navOptions = navOptions,
-                                townId = TODO(),
-                                placeId = TODO()
+                                mapsType = mapsType,
+                                navOptions = navOptions,
+                                townId = townId,
+                                courseId = courseId
                             )
                         },
                         navigateToTownSelect = {
