@@ -25,13 +25,13 @@ data class PlaceState(
 
     val placeList: PersistentList<PlaceData> = persistentListOf(),
 
-    val selectedMainTagId: Int = 0,
+    val selectedMainFilterId: Int = 0,
+    val selectedMainFilter: String = "ALL",
 
     val mainFilterItems: PersistentList<TagEntity> = persistentListOf(),
     val subFilterItems: PersistentList<TagEntity>? = persistentListOf(),
 
     val isMainFilterBottomSheetVisible: Boolean = false,
-    val selectedMainFilter: String = "ALL",
 
     val isOptionFilterBottomSheetVisible: Boolean = false,
     val selectedOptionAFilter: PersistentList<Int> = persistentListOf(),
