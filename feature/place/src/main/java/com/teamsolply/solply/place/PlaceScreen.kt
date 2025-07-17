@@ -154,7 +154,7 @@ fun PlaceRoute(
                 onDismiss = {
                     viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetDismiss)
                 },
-                onReset = { viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetDismiss) },
+                onReset = { viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetResetButtonClick) },
                 onDone = {
                     viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetCompleteButtonClick)
                 }
