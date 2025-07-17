@@ -117,26 +117,3 @@ fun FavoriteTownScreen(
         )
     }
 }
-
-@Preview(showBackground = true, name = "FavoriteTownScreen Preview")
-@Composable
-fun FavoriteTownScreenPreview() {
-    // 예시용 TownModel 리스트
-    val fakeTownList = listOf(
-        TownModel(id = 1, name = "망원동"),
-        TownModel(id = 2, name = "연남동")
-    )
-
-    SolplyTheme {
-        FavoriteTownScreen(
-            state = CourseState(
-                townList = fakeTownList,
-                selectedTownId = 2 // 연남동 선택됨
-            ),
-            onNextClick = {}, // no-op
-            onBoardingIntent = {}, // no-op
-            onBackButtonClick = {}, // no-op
-            onReturnToHomeClick = {} // no-op
-        )
-    }
-}
