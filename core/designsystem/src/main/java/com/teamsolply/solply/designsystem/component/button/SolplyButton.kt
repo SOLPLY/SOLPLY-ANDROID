@@ -160,7 +160,8 @@ fun AddPlaceButton(
     BaseButton(
         onClick = onClick,
         modifier = modifier
-            .height(49.dp),
+            .width(116.dp)
+            .height(48.dp),
         backgroundColor = backgroundColor,
         shape = RoundedCornerShape(26.dp)
     ) {
@@ -194,7 +195,16 @@ fun AddCourseButton(
 
     BaseButton(
         onClick = onClick,
-        modifier = modifier.width(126.dp),
+        modifier =
+        if (selected) {
+            modifier
+                .width(128.dp)
+                .height(48.dp)
+        } else {
+            modifier
+                .width(116.dp)
+                .height(48.dp)
+        },
         backgroundColor = backgroundColor,
         shape = RoundedCornerShape(26.dp)
     ) {

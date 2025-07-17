@@ -19,13 +19,13 @@ fun CoursePlaceDto.toEntity(): Place {
     return Place(
         placeId = placeId,
         placeName = placeName,
-        thumbnailUrl = thumbnailUrl,
+        thumbnailUrl = if (thumbnailUrl.isNullOrEmpty()) " " else thumbnailUrl,
         primaryTag = primaryTag,
         address = address,
         isBookmarked = isBookmarked,
         placeOrder = placeOrder,
-        latitude = latitude,
-        longitude = longitude,
+        latitude = latitude.toDouble(),
+        longitude = longitude.toDouble(),
         placeTag = placeType,
         placeDefaultId = placeDefaultId.toInt()
     )

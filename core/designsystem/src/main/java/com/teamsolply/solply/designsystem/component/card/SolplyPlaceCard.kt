@@ -1,6 +1,5 @@
 package com.teamsolply.solply.designsystem.component.card
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,21 +18,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun SolplyPlaceCard(
     name: String,
-    imgRes: Int,
+    imgRes: String,
     placeType: PlaceType,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -44,15 +44,15 @@ fun SolplyPlaceCard(
     val iconColor = when (placeType) {
         PlaceType.CAFE -> SolplyTheme.colors.red500
         PlaceType.FOOD -> SolplyTheme.colors.yellow300
-        PlaceType.WALK, PlaceType.UNIQUE -> SolplyTheme.colors.green400
-        PlaceType.SHOPPING, PlaceType.BOOK -> SolplyTheme.colors.purple400
+        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green400
+        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple400
         else -> SolplyTheme.colors.gray400
     }
     val iconBackGroundColor = when (placeType) {
         PlaceType.CAFE -> SolplyTheme.colors.red200
         PlaceType.FOOD -> SolplyTheme.colors.yellow100
-        PlaceType.WALK, PlaceType.UNIQUE -> SolplyTheme.colors.green200
-        PlaceType.SHOPPING, PlaceType.BOOK -> SolplyTheme.colors.purple100
+        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green200
+        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple100
         else -> SolplyTheme.colors.gray200
     }
     Column(
@@ -76,10 +76,14 @@ fun SolplyPlaceCard(
                     shape = RoundedCornerShape(20.dp)
                 )
         ) {
-            Image(
-                painter = painterResource(id = imgRes),
-                contentDescription = "place_image",
-                modifier = Modifier.matchParentSize()
+            AdaptationImage(
+                imageUrl = imgRes,
+                modifier = Modifier
+                    .size(136.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .matchParentSize(),
+                contentScale = ContentScale.Crop
             )
             if (saved) {
                 SolplySavedMarker(
@@ -109,7 +113,10 @@ fun SolplyPlaceCard(
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = name,
-                style = SolplyTheme.typography.body14M
+                style = SolplyTheme.typography.body14M,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
             )
         }
     }
@@ -127,7 +134,7 @@ private fun SolplyPlaceCardPreview() {
             SolplyPlaceCard(
                 modifier = Modifier.size(158.dp),
                 name = "을지면옥",
-                imgRes = R.drawable.img_course_dummy,
+                imgRes = "",
                 placeType = PlaceType.SHOPPING,
                 saved = true,
                 selected = true

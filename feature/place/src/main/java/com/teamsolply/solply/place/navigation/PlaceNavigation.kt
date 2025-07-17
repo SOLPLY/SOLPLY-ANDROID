@@ -15,7 +15,7 @@ fun NavController.navigatePlace(navOptions: NavOptions) {
 
 fun NavGraphBuilder.placeNavGraph(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit
+    navigateToMaps: (String, Long, Long) -> Unit
 ) {
     composable<Place> {
         PlaceRoute(

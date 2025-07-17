@@ -24,7 +24,7 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun PlaceTypeFilterSheet(
     filterItems: List<PlaceTypeFilterItem>,
     selectedType: String,
-    onSelectType: (String) -> Unit,
+    onSelectType: (Int, String) -> Unit,
     onDismiss: () -> Unit
 ) {
     Column(
@@ -46,16 +46,17 @@ fun PlaceTypeFilterSheet(
             Icon(
                 painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_close),
                 contentDescription = "close",
-                modifier = Modifier.size(24.dp).customClickable { onDismiss() }
+                modifier = Modifier
+                    .size(24.dp)
+                    .customClickable { onDismiss() }
             )
         }
         filterItems.forEachIndexed { idx, item ->
             FilterSheetButton(
                 iconRes = item.iconRes,
                 label = item.label,
-                selected = selectedType == item.type,
                 showCheck = selectedType == item.type,
-                onClick = { onSelectType(item.type) }
+                onClick = { onSelectType(idx, item.type) }
             )
             if (idx < filterItems.size - 1) {
                 HorizontalDivider(thickness = 1.dp, color = SolplyTheme.colors.gray100)

@@ -75,18 +75,16 @@ fun CourseScreen(
         CourseHeader(
             townName = user.selectedTown.townName,
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(bottom = 8.dp),
             onClickTownName = { navigateToTownSelect() }
         )
-
-        Spacer(modifier = Modifier.height(24.dp))
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = gridState,
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -103,7 +101,7 @@ fun CourseScreen(
             items(courseList) { course ->
                 SolplyCourseCard(
                     title = course.courseName,
-                    imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+                    imgRes = course.imageUrl,
                     placeType = course.tagList,
                     backgroundColor = SolplyTheme.colors.red300,
                     iconColor = SolplyTheme.colors.red500,

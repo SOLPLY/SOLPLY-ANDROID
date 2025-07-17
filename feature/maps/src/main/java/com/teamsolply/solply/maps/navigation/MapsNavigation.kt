@@ -13,9 +13,11 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateMaps(
     mapsType: String,
+    townId: Long,
+    placeId: Long?,
     navOptions: NavOptions
 ) {
-    navigate(Maps(mapsType = mapsType), navOptions)
+    navigate(Maps(mapsType = mapsType, townId = townId, placeId = placeId), navOptions)
 }
 
 fun NavGraphBuilder.mapsNavGraph(
@@ -32,8 +34,13 @@ fun NavGraphBuilder.mapsNavGraph(
 ) {
     composable<Maps> { backStackEntry ->
         val mapsType = MapsType.valueOf(backStackEntry.toRoute<Maps>().mapsType)
+        val townId = backStackEntry.toRoute<Maps>().townId
+        val placeId = backStackEntry.toRoute<Maps>().placeId
+
         MapsRoute(
             mapsType = mapsType,
+            townId = townId,
+            placeId = placeId,
             showTextSnackBar = showTextSnackBar,
             showNotificationSnackBar = showNotificationSnackBar,
             showNavigateSnackBar = showNavigateSnackBar,
@@ -50,5 +57,7 @@ fun NavGraphBuilder.mapsNavGraph(
 
 @Serializable
 data class Maps(
-    val mapsType: String
+    val mapsType: String,
+    val townId: Long,
+    val placeId: Long?
 ) : Route

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -58,7 +59,7 @@ internal fun MainScreen(
             currentSnackbarState.value = SolplySnackBarData(type = SnackBarType.TEXT, action = null)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short
+                duration = SnackbarDuration.Short
             )
         }
     }
@@ -70,7 +71,7 @@ internal fun MainScreen(
                 SolplySnackBarData(type = SnackBarType.NOTIFICATION, action = null)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short
+                duration = SnackbarDuration.Short
             )
         }
     }
@@ -82,7 +83,7 @@ internal fun MainScreen(
                 SolplySnackBarData(type = SnackBarType.NAVIGATE, action = onAction)
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = androidx.compose.material3.SnackbarDuration.Short
+                duration = SnackbarDuration.Short
             )
         }
     }
@@ -157,16 +158,31 @@ internal fun MainScreen(
                     )
                     placeNavGraph(
                         paddingValues = innerPadding,
-                        navigateToMaps = { mapsType ->
+                        navigateToMaps = { mapsType, townId, placeId ->
                             val navOptions = navOptions {}
-                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = townId,
+                                placeId = placeId,
+                                navOptions = navOptions
+                            )
                         }
                     )
                     courseNavGraph(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
-                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                            // TODO. 타운 아이디
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = 0,
+                                navOptions = navOptions
+                            )
+                            navigator.navigateToMaps(
+                                mapsType = mapsType, navOptions = navOptions,
+                                townId = TODO(),
+                                placeId = TODO()
+                            )
                         },
                         navigateToTownSelect = {
                             navigator.navigateToFavoriteTown()
@@ -176,7 +192,12 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
-                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                            // TODO. 타운 아이디
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = 0,
+                                navOptions = navOptions
+                            )
                         },
                         navigateToBack = navigator::navigateToBack,
                         navigateToPlaceCollection = { townId, townName ->
@@ -227,15 +248,19 @@ internal fun MainScreen(
                         },
                         navigateToPlaceDetail = {
                             val navOptions = navOptions {}
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = MapsType.PLACE_DETAIL.name,
+                                townId = 0,
                                 navOptions = navOptions
                             )
                         },
                         navigateToEditCourse = {
                             val navOptions = navOptions {}
+                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = MapsType.EDIT_COURSE.name,
+                                townId = 0,
                                 navOptions = navOptions
                             )
                         },
@@ -269,7 +294,12 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
-                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                            // TODO. 타운 아이디
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = 0,
+                                navOptions = navOptions
+                            )
                         },
                         navigateToBack = navigator::navigateToBack
                     )
@@ -277,7 +307,12 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions { }
-                            navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                            // TODO. 타운 아이디
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = 0,
+                                navOptions = navOptions
+                            )
                         },
                         navigateToBack = navigator::navigateToBack
                     )

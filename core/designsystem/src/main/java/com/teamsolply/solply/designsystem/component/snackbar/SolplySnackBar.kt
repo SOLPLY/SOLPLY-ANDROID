@@ -27,7 +27,7 @@ fun SolplySnackBar(
 ) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(color = SolplyTheme.colors.black)
     ) {
         content()

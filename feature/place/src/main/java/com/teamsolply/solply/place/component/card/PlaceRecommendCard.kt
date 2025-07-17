@@ -28,12 +28,12 @@ fun PlaceRecommendCard(
     title: String,
     subtitle: String,
     type: PlaceType,
-    imgRes: Int,
+    imgRes: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     val painter = runCatching {
-        painterResource(id = imgRes)
+        painterResource(id = imgRes.toInt())
     }.getOrElse {
         painterResource(id = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
     }

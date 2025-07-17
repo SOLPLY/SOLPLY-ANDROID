@@ -1,6 +1,5 @@
 package com.teamsolply.solply.course.repository
 
-import android.util.Log
 import com.teamsolply.solply.course.model.CourseEntity
 import com.teamsolply.solply.course.model.TownEntity
 import com.teamsolply.solply.course.model.UserEntity

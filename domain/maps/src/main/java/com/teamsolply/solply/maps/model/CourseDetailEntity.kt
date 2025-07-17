@@ -16,8 +16,8 @@ data class Place(
     val address: String,
     val isBookmarked: Boolean,
     val placeOrder: Int,
-    val latitude: String,
-    val longitude: String,
+    val latitude: Double,
+    val longitude: Double,
     val placeTag: String,
     val placeDefaultId: Int
 )

@@ -1,6 +1,5 @@
 package com.teamsolply.solply.designsystem.component.card
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,22 +18,23 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 import com.teamsolply.solply.ui.preview.DefaultPreview
 import okhttp3.internal.immutableListOf
 
 @Composable
 fun SolplyCourseCard(
     title: String,
-    imgRes: Int,
+    imgRes: String,
     placeType: List<PlaceType>,
     backgroundColor: Color,
     iconColor: Color,
@@ -49,13 +49,12 @@ fun SolplyCourseCard(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .alpha(if (savedPlace) 1f else 0.3f)
+            .alpha(if (savedPlace) 0.3f else 1f)
             .customClickable(rippleEnabled = false) { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = imgRes),
-            contentDescription = "course_image",
+        AdaptationImage(
+            imageUrl = imgRes,
             modifier = Modifier
                 .matchParentSize()
                 .clip(
@@ -65,7 +64,7 @@ fun SolplyCourseCard(
         )
         Box(
             modifier = Modifier
-                .padding(top = 73.dp)
+                .padding(top = 70.dp)
                 .matchParentSize()
                 .background(
                     color = SolplyTheme.colors.black.copy(alpha = 0.3f),
@@ -78,7 +77,7 @@ fun SolplyCourseCard(
         )
         Box(
             modifier = Modifier
-                .padding(top = 77.dp)
+                .padding(top = 74.dp)
                 .background(
                     color = backgroundColor,
                     shape = RoundedCornerShape(
@@ -100,7 +99,9 @@ fun SolplyCourseCard(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 12.dp),
-                        style = SolplyTheme.typography.body14M,
+                        style = SolplyTheme.typography.body14M.copy(
+                            lineHeight = 18.sp
+                        ),
                         color = SolplyTheme.colors.black,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -144,10 +145,10 @@ private fun SolplytCourseCardPreveiw() {
     SolplyTheme {
         SolplyCourseCard(
             title = "오감으로 수집하는 하루",
-            imgRes = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy,
+            imgRes = "",
             placeType = immutableListOf(
                 PlaceType.CAFE,
-                PlaceType.BOOK
+                PlaceType.BOOKSTORE
             ),
             backgroundColor = SolplyTheme.colors.red300,
             iconColor = SolplyTheme.colors.red500,

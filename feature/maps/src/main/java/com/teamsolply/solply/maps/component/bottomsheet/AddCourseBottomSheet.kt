@@ -77,12 +77,13 @@ internal fun AddCourseBottomSheet(
                             style = SolplyTheme.typography.caption12M
                         )
                     }
+
                     Spacer(modifier = Modifier.width(14.dp))
                     CourseItem(
                         placeName = item.placeName,
                         placeTag = PlaceType.entries.firstOrNull {
-                            it.displayName == item.primaryTag
-                        } ?: PlaceType.EMPTY,
+                            it.name == item.primaryTag
+                        } ?: PlaceType.ALL,
                         placeAddress = item.address,
                         // TODO. 코스의 장소 이미지로
                         // placeImageRes = item.thumbnailUrl

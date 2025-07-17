@@ -1,6 +1,5 @@
 package com.teamsolply.solply.onboarding
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -39,8 +38,6 @@ fun OnBoardingRoute(
     viewModel: OnBoardingViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-    Log.d("asdasdasd", "${state.selectedTownId} ${state.selectedPersona} ${state.userNickname}")
 
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->

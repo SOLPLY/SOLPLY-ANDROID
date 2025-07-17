@@ -1,6 +1,7 @@
 package com.teamsolply.solply.onboarding.datasource
 
 import com.teamsolply.solply.onboarding.dto.request.PatchUserInfoRequestDto
+import com.teamsolply.solply.onboarding.dto.response.GetAllTownResponseDto
 import com.teamsolply.solply.onboarding.dto.response.GetPersonaQuestionsResponseDto
 import com.teamsolply.solply.onboarding.dto.response.NicknameDuplicateResponseDto
 import com.teamsolply.solply.onboarding.dto.response.PatchUserInfoResponseDto
@@ -13,6 +14,9 @@ class OnBoardingRemoteDataSourceImpl @Inject constructor(
 ) : OnBoardingRemoteDataSource {
     override suspend fun getPersonaQuestions(): GetPersonaQuestionsResponseDto =
         onBoardingService.getPersonaQuestions().data
+
+    override suspend fun getAllTowns(): GetAllTownResponseDto =
+        onBoardingService.getAllTowns().data
 
     override suspend fun checkNicknameDuplicate(nickname: String): NicknameDuplicateResponseDto =
         onBoardingService.checkNicknameDuplicate(nickname = nickname).data

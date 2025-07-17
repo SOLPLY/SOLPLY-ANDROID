@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
@@ -27,6 +26,7 @@ fun SolplyTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 4.dp)
             .background(SolplyTheme.colors.white),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
@@ -40,14 +40,13 @@ fun SolplyTopBar(
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
         Spacer(
-            modifier = Modifier
-                .width(Dp(12f))
+            modifier = Modifier.width(12.dp)
         )
         Text(
             text = barText,
-            style = SolplyTheme.typography.title18Sb,
+            style = SolplyTheme.typography.head16M,
             color = SolplyTheme.colors.black,
-            modifier = Modifier.padding(vertical = 18.dp)
+            modifier = Modifier.padding(vertical = 16.dp)
         )
     }
 }

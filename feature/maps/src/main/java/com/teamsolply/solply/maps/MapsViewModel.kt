@@ -49,19 +49,15 @@ internal class MapsViewModel @Inject constructor(
                     copy(placeDetailInfo = currentState.copy(isBookmarked = isBookmarked))
                 }
 
-                viewModelScope.launch {
-                    val result = if (isBookmarked) {
-                        mapsRepository.savePlaceBookMark(placeId)
-                    } else {
-                        mapsRepository.deletePlaceBookMark(placeId)
-                    }
-
-                    result.onSuccess {
+                togglePlaceBookmark(
+                    placeId = placeId,
+                    isBookmarked = isBookmarked,
+                    onSuccess = {
                         if (isBookmarked) {
                             postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
                         }
                     }
-                }
+                )
             }
 
             // Add Course
@@ -90,6 +86,9 @@ internal class MapsViewModel @Inject constructor(
                     copy(courseDetailInfo = courseDetailInfo.copy(places = updatedPlaces))
                 }
                 // TODO. 장소 개별 저장 API
+
+                viewModelScope.launch {
+                }
             }
 
             is MapsIntent.PlaceInfoClick -> {
@@ -236,6 +235,24 @@ internal class MapsViewModel @Inject constructor(
                         courseDetailInfo = it
                     )
                 }
+            }
+        }
+    }
+
+    fun togglePlaceBookmark(
+        placeId: Long,
+        isBookmarked: Boolean,
+        onSuccess: () -> Unit
+    ) {
+        viewModelScope.launch {
+            val result = if (isBookmarked) {
+                mapsRepository.savePlaceBookMark(placeId)
+            } else {
+                mapsRepository.deletePlaceBookMark(placeId)
+            }
+
+            result.onSuccess {
+                onSuccess()
             }
         }
     }

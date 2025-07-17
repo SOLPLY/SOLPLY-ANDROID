@@ -117,7 +117,7 @@ internal sealed interface MapsSideEffect : SideEffect {
 internal val defaultPlaceDetailEntity = PlaceDetailEntity(
     placeId = 0,
     placeName = "",
-    primaryTag = PlaceType.EMPTY,
+    primaryTag = PlaceType.ALL,
     address = "",
     latitude = 37.4979,
     longitude = 127.0276,
