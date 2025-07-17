@@ -31,7 +31,7 @@ internal class MapsViewModel @Inject constructor(
             is MapsIntent.SavePlaceInMyCourse -> {
                 val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
                 val selectedCourseName =
-                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.title
+                    currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.courseName
                         ?: ""
 
                 reduce {
@@ -250,7 +250,7 @@ internal class MapsViewModel @Inject constructor(
         viewModelScope.launch {
             mapsRepository.getAddMyCourse(
                 townId = townId,
-                placeId = placeId
+                candidatePlaceId = placeId
             ).onSuccess {
                 reduce {
                     copy(
@@ -328,7 +328,7 @@ internal class MapsViewModel @Inject constructor(
         }
     }
 
-    private fun filterSelectedCourseCount(courseId: Int) {
+    private fun filterSelectedCourseCount(courseId: Long) {
         reduce {
             val updatedList = if (addMyCourseSelectedCount.contains(courseId)) {
                 addMyCourseSelectedCount - courseId

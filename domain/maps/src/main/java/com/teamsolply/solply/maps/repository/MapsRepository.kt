@@ -14,7 +14,7 @@ interface MapsRepository {
 
     suspend fun getAddMyCourse(
         townId: Long,
-        placeId: Long
+        candidatePlaceId: Long
     ): Result<List<CourseInfoEntity>>
 
     // Add Course

@@ -18,7 +18,7 @@ internal data class MapsState(
     val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
     val startAddMyCourse: Boolean = false,
-    val addMyCourseSelectedCount: PersistentList<Int> = persistentListOf(),
+    val addMyCourseSelectedCount: PersistentList<Long> = persistentListOf(),
     // Add Course
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
     val selectedPlaceInfoId: Long? = null,
@@ -37,7 +37,7 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     data class SelectedCourseForPlace(
-        val courseId: Int
+        val courseId: Long
     ) : MapsIntent
 
     data object SavePlaceInMyCourse : MapsIntent

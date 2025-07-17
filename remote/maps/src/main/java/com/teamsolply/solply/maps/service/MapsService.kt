@@ -40,7 +40,7 @@ interface MapsService {
     @GET("api/courses/bookmarks")
     suspend fun getAddMyCourse(
         @Query("townId") townId: Long,
-        @Query("placeId") placeId: Long
+        @Query("candidatePlaceId") candidatePlaceId: Long
     ): BaseResponse<CoursesResponseDto>
 
     // 내 코스에 추가

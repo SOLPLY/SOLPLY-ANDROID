@@ -14,7 +14,7 @@ interface MapsRemoteDataSource {
     suspend fun deletePlaceBookMark(placeId: Long)
     suspend fun getAddMyCourse(
         townId: Long,
-        placeId: Long
+        candidatePlaceId: Long
     ): CoursesResponseDto
 
     // 코스 상세

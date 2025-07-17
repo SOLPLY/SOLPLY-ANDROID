@@ -23,8 +23,8 @@ class MapsRemoteDataSourceImpl @Inject constructor(
     override suspend fun deletePlaceBookMark(placeId: Long): Unit =
         mapsService.deletePlaceBookMark(placeId = placeId).data
 
-    override suspend fun getAddMyCourse(townId: Long, placeId: Long): CoursesResponseDto =
-        mapsService.getAddMyCourse(townId = townId, placeId = placeId).data
+    override suspend fun getAddMyCourse(townId: Long, candidatePlaceId: Long): CoursesResponseDto =
+        mapsService.getAddMyCourse(townId = townId, candidatePlaceId = candidatePlaceId).data
 
     override suspend fun getCourseDetail(courseId: Long): CourseDetailResponseDto =
         mapsService.getCourseDetail(courseId = courseId).data
