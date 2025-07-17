@@ -18,7 +18,7 @@ internal data class MapsState(
     val placeDetailInfo: PlaceDetailEntity = defaultPlaceDetailEntity,
     val courses: PersistentList<CourseInfoEntity> = persistentListOf(),
     val startAddMyCourse: Boolean = false,
-    val addMyCourseSelectedCount: PersistentList<Long> = persistentListOf(),
+    val isAddMyCourseSelected: Long? = null,
     // Add Course
     val courseDetailInfo: CourseDetailEntity = courseDetailEntity,
     val selectedPlaceInfoId: Long? = null,

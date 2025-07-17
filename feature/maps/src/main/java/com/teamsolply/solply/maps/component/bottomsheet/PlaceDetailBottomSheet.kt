@@ -57,7 +57,7 @@ fun PlaceDetailBottomSheet(
     placeOpeningHours: String,
     placeSnsLink: PersistentList<SnsLink>,
     courses: PersistentList<CourseInfoEntity>,
-    addMyCourseSelectedCount: PersistentList<Long>,
+    addMyCourseSelectedCount: Long?,
     addMyCourseBackClick: () -> Unit,
     selectedCourseForPlace: (Long) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
@@ -130,8 +130,9 @@ fun PlaceDetailBottomSheet(
                             iconColor = SolplyTheme.colors.green400,
                             iconBackGroundColor = SolplyTheme.colors.green200,
                             title = courseInfo.courseName,
-                            savedPlace = courseInfo.isPlaceCountLimited,
-                            selected = addMyCourseSelectedCount.contains(courseInfo.courseId),
+                            savedPlace = !courseInfo.isActive,
+                            selected = if (!courseInfo.isActive) false else
+                                addMyCourseSelectedCount == courseInfo.courseId,
                             onClick = {
                                 if (!courseInfo.isPlaceCountLimited) {
                                     selectedCourseForPlace(courseInfo.courseId)

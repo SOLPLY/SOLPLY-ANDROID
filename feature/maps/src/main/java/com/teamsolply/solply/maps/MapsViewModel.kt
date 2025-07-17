@@ -29,13 +29,13 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.SavePlaceInMyCourse -> {
-                val selectedCourseId = currentState.addMyCourseSelectedCount.firstOrNull()
+                val selectedCourseId = currentState.isAddMyCourseSelected
                 val selectedCourseName =
                     currentState.courses.firstOrNull { it.courseId == selectedCourseId }?.courseName
                         ?: ""
 
                 reduce {
-                    copy(addMyCourseSelectedCount = persistentListOf())
+                    copy(isAddMyCourseSelected = null)
                 }
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
                 // TODO 코스에 저장 api
@@ -330,13 +330,7 @@ internal class MapsViewModel @Inject constructor(
 
     private fun filterSelectedCourseCount(courseId: Long) {
         reduce {
-            val updatedList = if (addMyCourseSelectedCount.contains(courseId)) {
-                addMyCourseSelectedCount - courseId
-            } else {
-                addMyCourseSelectedCount + courseId
-            }
-
-            copy(addMyCourseSelectedCount = updatedList.toPersistentList())
+            copy(isAddMyCourseSelected = if (isAddMyCourseSelected == courseId) null else courseId)
         }
     }
 

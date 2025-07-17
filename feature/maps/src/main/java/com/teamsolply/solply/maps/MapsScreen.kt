@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -99,6 +100,7 @@ internal fun MapsRoute(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    Log.d("asdasdasd", uiState.isAddMyCourseSelected.toString())
     // TODO. 초기 로드 데이터
     LaunchedEffect(Unit) {
         when (mapsType) {
@@ -180,7 +182,7 @@ internal fun MapsRoute(
         placeDetailEntity = uiState.placeDetailInfo,
         startAddMyCourse = uiState.startAddMyCourse,
         courses = uiState.courses,
-        addMyCourseSelectedCount = uiState.addMyCourseSelectedCount,
+        addMyCourseSelectedCount = uiState.isAddMyCourseSelected,
         placeBookmarked = uiState.placeDetailInfo.isBookmarked,
         changeAddPlaceState = { addPlace ->
             viewModel.sendIntent(MapsIntent.AddPlaceClick(addPlace = addPlace))
@@ -279,7 +281,7 @@ private fun MapsScreen(
     placeDetailEntity: PlaceDetailEntity,
     startAddMyCourse: Boolean,
     courses: PersistentList<CourseInfoEntity>,
-    addMyCourseSelectedCount: PersistentList<Long>,
+    addMyCourseSelectedCount: Long?,
     placeBookmarked: Boolean,
     changeAddPlaceState: (Boolean) -> Unit,
     selectedCourseForPlace: (Long) -> Unit,
@@ -643,7 +645,7 @@ private fun MapsScreen(
             tint = Color.Unspecified
         )
 
-        if (mapsType == MapsType.PLACE_DETAIL && addMyCourseSelectedCount.isNotEmpty()) {
+        if (mapsType == MapsType.PLACE_DETAIL && addMyCourseSelectedCount != null) {
             SolplyBasicButton(
                 text = "이 코스에 추가할래요",
                 onClick = {
