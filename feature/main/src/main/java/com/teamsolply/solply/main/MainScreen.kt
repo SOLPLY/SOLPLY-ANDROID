@@ -216,13 +216,23 @@ internal fun MainScreen(
                             )
                         },
                         navigateToPlace = {
-                            val navOptions = navOptions { }
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                             navigator.navigateToPlace(
                                 navOptions = navOptions
                             )
                         },
                         navigateToCourse = {
-                            val navOptions = navOptions { }
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                             navigator.navigateToCourse(
                                 navOptions = navOptions
                             )
@@ -286,6 +296,17 @@ internal fun MainScreen(
                                 launchSingleTop = true
                             }
                             navigator.navigateToMypage(navOptions = navOptions)
+                        },
+                        navigateToMap = { mapsType, townId, placeId, courseId ->
+                            val navOptions = navOptions {
+                            }
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = townId,
+                                placeId = placeId,
+                                courseId = courseId,
+                                navOptions = navOptions
+                            )
                         },
                         navigateToBack = navigator::navigateToBack
                     )

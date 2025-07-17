@@ -99,13 +99,21 @@ internal sealed interface MapsIntent : UiIntent {
 internal sealed interface MapsSideEffect : SideEffect {
     // Add Place
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
-    data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
+    data class ShowSuccessSaveCourseSnackBar(
+        val selectedCourseName: String,
+        val courseId: Long
+    ) : MapsSideEffect
+
     data object ShowSuccessSavePlaceSnackBar : MapsSideEffect
     data object ShowDuplicateSnackBar : MapsSideEffect
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect
-    data object ShowSuccessSaveSingleCourseSnackBar : MapsSideEffect
+    data class ShowSuccessSaveSingleCourseSnackBar(
+        val selectedCourseName: String,
+        val courseId: Long
+    ) : MapsSideEffect
+
     data object ShowSuccessSaveNewCourseSnackBar : MapsSideEffect
 
     // Shared

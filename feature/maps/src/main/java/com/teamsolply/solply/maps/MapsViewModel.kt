@@ -79,7 +79,12 @@ internal class MapsViewModel @Inject constructor(
                     isBookmarked = isBookmarked,
                     onSuccess = {
                         if (isBookmarked) {
-                            postSideEffect(MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar)
+                            postSideEffect(
+                                MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar(
+                                    selectedCourseName = uiState.value.courseDetailInfo.courseName,
+                                    courseId = uiState.value.courseDetailInfo.courseId
+                                )
+                            )
                         }
                     }
                 )
@@ -248,7 +253,12 @@ internal class MapsViewModel @Inject constructor(
                 placeId = placeId
             ).onSuccess {
                 getAllCourseInfo(townId = townId, placeId = placeId)
-                postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
+                postSideEffect(
+                    MapsSideEffect.ShowSuccessSaveCourseSnackBar(
+                        selectedCourseName = selectedCourseName,
+                        courseId = courseId
+                    )
+                )
             }
         }
     }
@@ -287,11 +297,12 @@ internal class MapsViewModel @Inject constructor(
     }
 
     // TODO. 코스 상세 정보 조회 API
-    fun getCourseDetailInfo(courseId: Long) {
+    fun getCourseDetailInfo(townId: Long, courseId: Long) {
         viewModelScope.launch {
             mapsRepository.getCourseDetail(courseId = courseId).onSuccess {
                 reduce {
                     copy(
+                        townId = townId,
                         courseDetailInfo = it
                     )
                 }
@@ -347,8 +358,8 @@ internal class MapsViewModel @Inject constructor(
         viewModelScope.launch {
             mapsRepository.postSaveNewCourse(
                 courseSaveEntity = courseSaveEntity
-            ).onSuccess {
-                getCourseDetailInfo(it)
+            ).onSuccess { courseId ->
+                uiState.value.townId?.let { townId -> getCourseDetailInfo(townId, courseId) }
             }
         }
     }

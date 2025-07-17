@@ -92,6 +92,7 @@ internal fun MapsRoute(
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
+    navigateToMap: (String, Long, Long?, Long?) -> Unit,
     navigateToBack: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: MapsViewModel = hiltViewModel()
@@ -111,13 +112,13 @@ internal fun MapsRoute(
 
             MapsType.ADD_COURSE -> {
                 if (courseId != null) {
-                    viewModel.getCourseDetailInfo(courseId = courseId)
+                    viewModel.getCourseDetailInfo(townId = townId, courseId = courseId)
                 }
             }
 
             MapsType.EDIT_COURSE -> {
                 if (courseId != null) {
-                    viewModel.getCourseDetailInfo(courseId = courseId)
+                    viewModel.getCourseDetailInfo(townId = townId, courseId = courseId)
                 }
             }
         }
@@ -142,7 +143,14 @@ internal fun MapsRoute(
                     showNavigateSnackBar(
                         sideEffect.selectedCourseName
                     ) {
-                        navigateToEditCourse()
+                        uiState.townId?.let { townId ->
+                            navigateToMap(
+                                MapsType.EDIT_COURSE.name,
+                                townId,
+                                null,
+                                sideEffect.courseId
+                            )
+                        }
                     }
                 }
 
@@ -151,8 +159,17 @@ internal fun MapsRoute(
                 }
 
                 is MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar -> {
-                    showNavigateSnackBar("코스가 수집함에 저장되었어요.") {
-                        navigateToMypage()
+                    showNavigateSnackBar(
+                        sideEffect.selectedCourseName
+                    ) {
+                        uiState.townId?.let { townId ->
+                            navigateToMap(
+                                MapsType.EDIT_COURSE.name,
+                                townId,
+                                null,
+                                sideEffect.courseId
+                            )
+                        }
                     }
                 }
 

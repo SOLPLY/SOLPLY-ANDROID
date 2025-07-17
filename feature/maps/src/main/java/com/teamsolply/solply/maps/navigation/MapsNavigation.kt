@@ -34,6 +34,7 @@ fun NavGraphBuilder.mapsNavGraph(
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
+    navigateToMap: (String, Long, Long?, Long?) -> Unit,
     navigateToBack: () -> Unit
 ) {
     composable<Maps> { backStackEntry ->
@@ -56,6 +57,7 @@ fun NavGraphBuilder.mapsNavGraph(
             navigateToCourse = navigateToCourse,
             navigateToMypage = navigateToMypage,
             paddingValues = paddingValues,
+            navigateToMap = navigateToMap,
             navigateToBack = navigateToBack
         )
     }
