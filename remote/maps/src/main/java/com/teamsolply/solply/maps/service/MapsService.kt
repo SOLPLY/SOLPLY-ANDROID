@@ -1,12 +1,16 @@
 package com.teamsolply.solply.maps.service
 
+import com.teamsolply.solply.maps.dto.request.CourseSaveRequestDto
 import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
+import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -57,4 +61,11 @@ interface MapsService {
     suspend fun deleteCourseBookMark(
         @Path("courseId") courseId: Long
     ): BaseResponse<Unit>
+
+    // 코스 편집
+    @PUT("api/courses/{courseId}")
+    suspend fun putEditCourse(
+        @Path("courseId") courseId: Long,
+        @Body courseSaveRequestDto: CourseSaveRequestDto
+    ): BaseResponse<CourseSaveResponseDto>
 }

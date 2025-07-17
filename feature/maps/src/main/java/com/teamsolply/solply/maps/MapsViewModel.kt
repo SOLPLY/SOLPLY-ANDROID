@@ -1,6 +1,9 @@
 package com.teamsolply.solply.maps
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.maps.model.CoursePlace
+import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -62,7 +65,6 @@ internal class MapsViewModel @Inject constructor(
             // Add Course
             MapsIntent.SaveCourse -> {
                 val isBookmarked = !uiState.value.courseDetailInfo.isBookmarked
-                // TODO 코스 개별 저장 post
                 reduce {
                     copy(courseDetailInfo = courseDetailInfo.copy(isBookmarked = isBookmarked))
                 }
@@ -78,7 +80,6 @@ internal class MapsViewModel @Inject constructor(
                 )
             }
 
-            // TODO. 장소 개별 저장 API
             is MapsIntent.SingleCoursePlaceBookMarkClick -> {
                 val updatedPlaces = uiState.value.courseDetailInfo.places.map { place ->
                     if (place.placeId == intent.placeId) {
@@ -150,7 +151,20 @@ internal class MapsViewModel @Inject constructor(
 
             is MapsIntent.CourseSaveDialogClick -> {
                 if (intent.courseSaveType == CourseSaveType.SaveToExistingCourse) {
-                    // TODO. 지금 코스에 저장 API
+                    val courseInfo = uiState.value.courseDetailInfo
+                    saveCurrentCourse(
+                        courseId = courseInfo.courseId,
+                        courseSaveEntity = CourseSaveEntity(
+                            name = courseInfo.courseName,
+                            description = courseInfo.introduction,
+                            places = courseInfo.places.mapIndexed { index, it ->
+                                CoursePlace(
+                                    placeId = it.placeId,
+                                    order = index + 1
+                                )
+                            }
+                        )
+                    )
                 } else {
                     postSideEffect(MapsSideEffect.ShowSuccessSaveNewCourseSnackBar)
                     // TODO. 새 코스에 저장 API - 명세서 바뀌는거 보고
@@ -277,6 +291,20 @@ internal class MapsViewModel @Inject constructor(
                 mapsRepository.deleteCourseBookMark(courseId = courseId)
             }
             onSuccess()
+        }
+    }
+
+    private fun saveCurrentCourse(
+        courseId: Long,
+        courseSaveEntity: CourseSaveEntity
+    ) {
+        viewModelScope.launch {
+            mapsRepository.putEditCourse(
+                courseId = courseId,
+                courseSaveEntity = courseSaveEntity
+            ).onSuccess {
+                Log.d("asdasdsad", "good")
+            }
         }
     }
 

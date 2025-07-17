@@ -1,8 +1,11 @@
 package com.teamsolply.solply.maps.repository
 
+import com.teamsolply.solply.maps.mapper.toDto
 import com.teamsolply.solply.maps.mapper.toEntity
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.CourseSaveEntity
+import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import toEntity
@@ -48,5 +51,20 @@ class MapsRepositoryImpl @Inject constructor(
 
     override suspend fun deleteCourseBookMark(courseId: Long): Result<Unit> = runCatching {
         mapsRemoteDataSource.deleteCourseBookMark(courseId = courseId)
+    }
+
+    override suspend fun putEditCourse(
+        courseId: Long,
+        courseSaveEntity: CourseSaveEntity
+    ): Result<CourseSaveResultEntity> = runCatching {
+        mapsRemoteDataSource.putEditCourse(
+            courseId = courseId,
+            courseSaveRequestDto = courseSaveEntity.toDto()
+        )
+    }.mapCatching {
+        CourseSaveResultEntity(
+            courseId = it.courseId,
+            isNewCourse = it.isNewCourse
+        )
     }
 }
