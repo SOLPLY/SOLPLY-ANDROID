@@ -75,7 +75,7 @@ class PlaceViewModel @Inject constructor(
                                 }
                             }
                             copy(
-                                selectedOptionAFilter = updatedAList.toPersistentList(),
+                                selectedOptionAFilter = updatedAList.toPersistentList()
                             )
                         }
                     }
@@ -140,7 +140,6 @@ class PlaceViewModel @Inject constructor(
                     fetchMainTags()
                 }
         }
-
     }
 
     private fun fetchUserInfo() {

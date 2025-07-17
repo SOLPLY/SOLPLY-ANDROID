@@ -1,14 +1,11 @@
 package com.teamsolply.solply.place.datasource
 
-import android.util.Log
 import com.teamsolply.solply.place.dto.response.GetPlacesResponseDto
 import com.teamsolply.solply.place.dto.response.GetRecommendPlaceDto
 import com.teamsolply.solply.place.dto.response.GetTagResponseDto
 import com.teamsolply.solply.place.dto.response.GetUserInfoResponseDto
 import com.teamsolply.solply.place.service.PlaceService
 import com.teamsolply.solply.place.source.PlaceRemoteDataSource
-import kotlinx.serialization.json.Json
-import java.net.URLEncoder
 import javax.inject.Inject
 
 class PlaceRemoteDataSourceImpl @Inject constructor(
@@ -37,13 +34,20 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
             townId = townId,
             isBookmarkSearch = isBookmarkSearch,
             mainTagId = mainTagId,
-            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) null else subTagAIdList.joinToString(
-                separator = ","
-            ),
-            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) null else subTagBIdList.joinToString(
-                separator = ","
-            )
+            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) {
+                null
+            } else {
+                subTagAIdList.joinToString(
+                    separator = ","
+                )
+            },
+            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) {
+                null
+            } else {
+                subTagBIdList.joinToString(
+                    separator = ","
+                )
+            }
         ).data
     }
-
 }
