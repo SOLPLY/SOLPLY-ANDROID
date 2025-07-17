@@ -127,9 +127,6 @@ fun PlaceDetailBottomSheet(
                         SolplyCourseCard(
                             imgRes = courseInfo.thumbnailImage,
                             placeType = courseInfo.mainTags,
-                            backgroundColor = SolplyTheme.colors.green300,
-                            iconColor = SolplyTheme.colors.green400,
-                            iconBackGroundColor = SolplyTheme.colors.green200,
                             title = courseInfo.courseName,
                             savedPlace = !courseInfo.isActive,
                             selected = if (!courseInfo.isActive) {

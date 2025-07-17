@@ -61,7 +61,6 @@ private fun TownCardPreview() {
         Column {
             SolplyTownCard(
                 town = "연희동",
-//                onClickTown = {},
                 content = {
                     Image(
                         painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
@@ -71,15 +70,11 @@ private fun TownCardPreview() {
             )
             SolplyTownCard(
                 town = "연희동",
-//                onClickTown = {},
                 content = {
                     SolplyCourseCard(
                         title = "오감으로 수집하는 하루",
                         imgRes = "",
                         placeType = listOf(PlaceType.BOOKSTORE, PlaceType.SHOPPING),
-                        backgroundColor = SolplyTheme.colors.purple200,
-                        iconColor = SolplyTheme.colors.purple400,
-                        iconBackGroundColor = SolplyTheme.colors.purple100,
                         savedCourse = true
                     )
                 }

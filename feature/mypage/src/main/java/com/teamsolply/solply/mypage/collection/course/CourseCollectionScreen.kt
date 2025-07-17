@@ -103,9 +103,6 @@ fun CourseCollectionRoute(
                         placeType = it.placeTypeList,
                         imgRes = it.imageUrls.first(),
                         selected = it.isSelected,
-                        iconColor = iconColor,
-                        iconBackGroundColor = iconBackgroundColor,
-                        backgroundColor = backgroundColor,
                         onClick = {
                             viewModel.sendIntent(
                                 CourseCollectionIntent.CourseCardClick(
