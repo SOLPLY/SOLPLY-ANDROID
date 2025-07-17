@@ -90,6 +90,7 @@ internal sealed interface MapsIntent : UiIntent {
 
     data object EmptyCourseClick : MapsIntent
     data object ShowMaxSizeCourseSnackBar : MapsIntent
+    data object ShowDuplicateSnackBar : MapsIntent
     data object ReturnToHomeClick : MapsIntent
     data object BackButtonClick : MapsIntent
 }
@@ -99,6 +100,7 @@ internal sealed interface MapsSideEffect : SideEffect {
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
     data object ShowSuccessSavePlaceSnackBar : MapsSideEffect
+    data object ShowDuplicateSnackBar: MapsSideEffect
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect

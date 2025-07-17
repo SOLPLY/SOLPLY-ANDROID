@@ -61,6 +61,7 @@ fun PlaceDetailBottomSheet(
     addMyCourseBackClick: () -> Unit,
     selectedCourseForPlace: (Long) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
+    showDuplicateSnackBar: () -> Unit,
     emptyCourseClick: () -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
@@ -134,10 +135,12 @@ fun PlaceDetailBottomSheet(
                             selected = if (!courseInfo.isActive) false else
                                 addMyCourseSelectedCount == courseInfo.courseId,
                             onClick = {
-                                if (!courseInfo.isPlaceCountLimited) {
-                                    selectedCourseForPlace(courseInfo.courseId)
-                                } else {
+                                if (courseInfo.isDuplicated) {
+                                    showDuplicateSnackBar()
+                                } else if (courseInfo.isPlaceCountLimited) {
                                     showMaxSizeCourseSnackBar()
+                                } else {
+                                    selectedCourseForPlace(courseInfo.courseId)
                                 }
                             }
                         )

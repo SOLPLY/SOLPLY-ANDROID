@@ -136,6 +136,10 @@ internal fun MapsRoute(
                     "코스에 이미 6개의 장소가 꽉 차 있어요"
                 )
 
+                MapsSideEffect.ShowDuplicateSnackBar -> showNotificationSnackBar(
+                    "해당 장소가 코스에 이미 담겨있어요."
+                )
+
                 is MapsSideEffect.ShowSuccessSaveCourseSnackBar -> {
                     showNavigateSnackBar(
                         sideEffect.selectedCourseName
@@ -192,6 +196,10 @@ internal fun MapsRoute(
         },
         showMaxSizeCourseSnackBar = {
             viewModel.sendIntent(MapsIntent.ShowMaxSizeCourseSnackBar)
+        },
+        showDuplicateSnackBar = {
+            viewModel.sendIntent(MapsIntent.ShowDuplicateSnackBar)
+
         },
         saveMyCourse = {
             viewModel.sendIntent(MapsIntent.SavePlaceInMyCourse)
@@ -286,6 +294,7 @@ private fun MapsScreen(
     changeAddPlaceState: (Boolean) -> Unit,
     selectedCourseForPlace: (Long) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
+    showDuplicateSnackBar: () -> Unit,
     saveMyCourse: () -> Unit,
     placeBookMarkClick: () -> Unit,
     // Add Course
@@ -578,6 +587,7 @@ private fun MapsScreen(
                             addMyCourseBackClick = { changeAddPlaceState(!startAddMyCourse) },
                             selectedCourseForPlace = selectedCourseForPlace,
                             showMaxSizeCourseSnackBar = showMaxSizeCourseSnackBar,
+                            showDuplicateSnackBar = showDuplicateSnackBar,
                             emptyCourseClick = emptyCourseClick
                         )
                     }

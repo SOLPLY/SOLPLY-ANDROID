@@ -213,6 +213,7 @@ internal class MapsViewModel @Inject constructor(
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
+            is MapsIntent.ShowDuplicateSnackBar -> postSideEffect(MapsSideEffect.ShowDuplicateSnackBar)
             is MapsIntent.ReturnToHomeClick -> {
                 postSideEffect(MapsSideEffect.NavigateToReturnHome)
             }
