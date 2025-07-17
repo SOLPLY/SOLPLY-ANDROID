@@ -5,17 +5,22 @@ import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
+import com.teamsolply.solply.maps.model.SavePlaceToCourseEntity
 
 interface MapsRepository {
     // Add Place
     suspend fun getPlaceDetail(placeId: Long): Result<PlaceDetailEntity>
     suspend fun savePlaceBookMark(placeId: Long): Result<Unit>
     suspend fun deletePlaceBookMark(placeId: Long): Result<Unit>
-
     suspend fun getAddMyCourse(
         townId: Long,
-        placeId: Long
+        candidatePlaceId: Long
     ): Result<List<CourseInfoEntity>>
+
+    suspend fun postPlaceToCourse(
+        courseId: Long,
+        placeId: Long
+    ): Result<SavePlaceToCourseEntity>
 
     // Add Course
     suspend fun getCourseDetail(courseId: Long): Result<CourseDetailEntity>

@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place.dto.response
 
+import com.teamsolply.solply.model.PlaceType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,7 +19,7 @@ data class GetRecommendPlaceDto(
     @SerialName("thumbnailImageUrl")
     val thumbnailImageUrl: String,
     @SerialName("primaryTag")
-    val primaryTag: String,
+    val primaryTag: PlaceType,
     @SerialName("introduction")
     val introduction: String
 )

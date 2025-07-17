@@ -1,5 +1,7 @@
 package com.teamsolply.solply.maps.repository
 
+import com.teamsolply.solply.maps.dto.response.toEntity
+import com.teamsolply.solply.maps.mapper.toCourseInfoEntityList
 import com.teamsolply.solply.maps.mapper.toDto
 import com.teamsolply.solply.maps.mapper.toEntity
 import com.teamsolply.solply.maps.model.CourseDetailEntity
@@ -7,6 +9,7 @@ import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
+import com.teamsolply.solply.maps.model.SavePlaceToCourseEntity
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import toEntity
 import javax.inject.Inject
@@ -31,11 +34,23 @@ class MapsRepositoryImpl @Inject constructor(
 
     override suspend fun getAddMyCourse(
         townId: Long,
-        placeId: Long
+        candidatePlaceId: Long
     ): Result<List<CourseInfoEntity>> = runCatching {
-        mapsRemoteDataSource.getAddMyCourse(townId = townId, placeId = placeId)
+        mapsRemoteDataSource.getAddMyCourse(townId = townId, candidatePlaceId = candidatePlaceId)
     }.mapCatching { resultDto ->
-        resultDto.courses.map { it.toEntity() }
+        resultDto.courses.toCourseInfoEntityList()
+    }
+
+    override suspend fun postPlaceToCourse(
+        courseId: Long,
+        placeId: Long
+    ): Result<SavePlaceToCourseEntity> = runCatching {
+        mapsRemoteDataSource.postPlaceToCourse(
+            courseId = courseId,
+            placeId = placeId
+        )
+    }.mapCatching { resultDto ->
+        resultDto.toEntity()
     }
 
     // Add Course
