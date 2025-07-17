@@ -12,8 +12,6 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
 data class PlaceState(
-//    val townId: Long = 0,
-
     val userInfo: UserInfo = UserInfo(
         userId = 1,
         nickname = "숭이숭이숭이",

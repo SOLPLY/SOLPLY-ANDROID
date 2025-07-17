@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
-import com.teamsolply.solply.designsystem.component.header.PlaceHeader
+import com.teamsolply.solply.place.component.header.PlaceHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceSubType

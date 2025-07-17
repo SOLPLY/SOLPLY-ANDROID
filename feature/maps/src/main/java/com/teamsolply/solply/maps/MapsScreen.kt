@@ -55,8 +55,8 @@ import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
+import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
@@ -89,7 +89,6 @@ internal fun MapsRoute(
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
-    navigateToMypage: () -> Unit,
     navigateToMap: (String, Long, Long?, Long?) -> Unit,
     navigateToBack: () -> Unit,
     paddingValues: PaddingValues,
@@ -182,7 +181,7 @@ internal fun MapsRoute(
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
                     MapsType.PLACE_DETAIL -> navigateToPlace()
                     MapsType.ADD_COURSE -> navigateToCourse()
-                    MapsType.EDIT_COURSE -> navigateToMypage()
+                    MapsType.EDIT_COURSE -> navigateToPlace()
                 }
 
                 MapsSideEffect.NavigateToBack -> navigateToBack()
@@ -406,12 +405,20 @@ private fun MapsScreen(
                 MapsType.EDIT_COURSE -> "수집함"
                 else -> placeDetailEntity.placeName
             }
-            MapsTopBar(
-                mapsType = mapsType,
-                title = topBarTitle,
+            SolplyTopBar(
                 onBackButtonClick = { onBackButtonClick() },
-                onReturnToHomeButtonClick = { onReturnToHomeClick() }
-            )
+                barText = topBarTitle
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_home),
+                    contentDescription = "home",
+                    tint = Color.Unspecified,
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .customClickable(rippleEnabled = false) { onReturnToHomeClick() }
+                )
+            }
             NaverMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState

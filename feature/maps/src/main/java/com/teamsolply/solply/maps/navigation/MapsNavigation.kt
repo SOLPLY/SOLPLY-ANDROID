@@ -31,7 +31,6 @@ fun NavGraphBuilder.mapsNavGraph(
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
-    navigateToMypage: () -> Unit,
     navigateToMap: (String, Long, Long?, Long?) -> Unit,
     navigateToBack: () -> Unit
 ) {
@@ -51,7 +50,6 @@ fun NavGraphBuilder.mapsNavGraph(
             showNavigateSnackBar = showNavigateSnackBar,
             navigateToPlace = navigateToPlace,
             navigateToCourse = navigateToCourse,
-            navigateToMypage = navigateToMypage,
             paddingValues = paddingValues,
             navigateToMap = navigateToMap,
             navigateToBack = navigateToBack

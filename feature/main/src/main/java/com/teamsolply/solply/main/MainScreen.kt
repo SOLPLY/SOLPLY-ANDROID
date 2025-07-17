@@ -263,15 +263,6 @@ internal fun MainScreen(
                             }
                             navigator.navigateToCourse(navOptions = navOptions)
                         },
-                        navigateToMypage = {
-                            val navOptions = navOptions {
-                                popUpTo(Mypage) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
-                            }
-                            navigator.navigateToMypage(navOptions = navOptions)
-                        },
                         navigateToMap = { mapsType, townId, placeId, courseId ->
                             val navOptions = navOptions {
                             }

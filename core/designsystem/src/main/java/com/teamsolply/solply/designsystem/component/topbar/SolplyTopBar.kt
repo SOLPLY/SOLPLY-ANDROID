@@ -21,12 +21,12 @@ import com.teamsolply.solply.ui.extension.customClickable
 @Composable
 fun SolplyTopBar(
     barText: String,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    returnToHomeIcon: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp)
             .background(SolplyTheme.colors.white),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
@@ -48,5 +48,7 @@ fun SolplyTopBar(
             color = SolplyTheme.colors.black,
             modifier = Modifier.padding(vertical = 16.dp)
         )
+        Spacer(modifier = Modifier.weight(1f))
+        returnToHomeIcon?.invoke()
     }
 }
