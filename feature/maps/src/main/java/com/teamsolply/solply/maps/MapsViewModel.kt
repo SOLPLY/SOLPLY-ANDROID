@@ -250,7 +250,6 @@ internal class MapsViewModel @Inject constructor(
                 getAllCourseInfo(townId = townId, placeId = placeId)
                 postSideEffect(MapsSideEffect.ShowSuccessSaveCourseSnackBar(selectedCourseName = selectedCourseName))
             }
-
         }
     }
 

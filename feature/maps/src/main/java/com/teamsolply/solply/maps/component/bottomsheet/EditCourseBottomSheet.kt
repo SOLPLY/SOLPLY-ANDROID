@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -224,8 +225,8 @@ internal fun EditCourseBottomSheet(
                                     context = context,
                                     destName = item.placeName,
                                     destId = item.placeDefaultId.toString(),
-                                    destLongitude = item.longitude.toDouble(),
-                                    destLatitude = item.latitude.toDouble(),
+                                    destLongitude = item.longitude,
+                                    destLatitude = item.latitude,
                                     destType = item.placeTag
                                 )
                             },
@@ -234,6 +235,7 @@ internal fun EditCourseBottomSheet(
                             selectedPlaceItem = selectedPlaceItem == item.placeId,
                             isEditing = startEditCourse
                         )
+                        Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
             }

@@ -17,4 +17,3 @@ fun List<CourseDto>.toCourseInfoEntityList(): List<CourseInfoEntity> {
         )
     }
 }
-

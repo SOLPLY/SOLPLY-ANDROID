@@ -101,7 +101,7 @@ internal sealed interface MapsSideEffect : SideEffect {
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
     data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
     data object ShowSuccessSavePlaceSnackBar : MapsSideEffect
-    data object ShowDuplicateSnackBar: MapsSideEffect
+    data object ShowDuplicateSnackBar : MapsSideEffect
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect

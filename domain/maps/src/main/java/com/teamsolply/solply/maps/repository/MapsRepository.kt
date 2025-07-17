@@ -22,7 +22,6 @@ interface MapsRepository {
         placeId: Long
     ): Result<SavePlaceToCourseEntity>
 
-
     // Add Course
     suspend fun getCourseDetail(courseId: Long): Result<CourseDetailEntity>
     suspend fun postCourseBookMark(courseId: Long): Result<Unit>

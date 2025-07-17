@@ -132,8 +132,11 @@ fun PlaceDetailBottomSheet(
                             iconBackGroundColor = SolplyTheme.colors.green200,
                             title = courseInfo.courseName,
                             savedPlace = !courseInfo.isActive,
-                            selected = if (!courseInfo.isActive) false else
-                                addMyCourseSelectedCount == courseInfo.courseId,
+                            selected = if (!courseInfo.isActive) {
+                                false
+                            } else {
+                                addMyCourseSelectedCount == courseInfo.courseId
+                            },
                             onClick = {
                                 if (courseInfo.isDuplicated) {
                                     showDuplicateSnackBar()

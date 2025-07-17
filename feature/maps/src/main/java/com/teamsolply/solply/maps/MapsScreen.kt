@@ -197,7 +197,6 @@ internal fun MapsRoute(
         },
         showDuplicateSnackBar = {
             viewModel.sendIntent(MapsIntent.ShowDuplicateSnackBar)
-
         },
         saveMyCourse = {
             viewModel.sendIntent(MapsIntent.SavePlaceInMyCourse)
