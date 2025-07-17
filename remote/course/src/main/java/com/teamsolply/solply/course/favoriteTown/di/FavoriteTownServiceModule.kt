@@ -1,7 +1,6 @@
 package com.teamsolply.solply.course.favoriteTown.di
 
 import com.teamsolply.solply.course.favoriteTown.service.FavoriteTownService
-import com.teamsolply.solply.course.service.CourseService
 import com.teamsolply.solply.network.di.AccessToken
 import dagger.Module
 import dagger.Provides

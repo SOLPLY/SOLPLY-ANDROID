@@ -43,5 +43,4 @@ class FavoriteTownRepositoryImpl @Inject constructor(
             remoteDataSource.patchUserFavoriteTown(request)
         }
     }
-
 }

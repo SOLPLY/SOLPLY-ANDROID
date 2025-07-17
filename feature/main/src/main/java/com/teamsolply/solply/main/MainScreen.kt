@@ -320,7 +320,7 @@ internal fun MainScreen(
                     )
                     favoriteTownNavGraph(
                         paddingValues = innerPadding,
-                        navigateToBack = navigator::navigateToBack,
+                        navigateToBack = navigator::navigateToBack
                     )
                 }
                 MainBottomBar(

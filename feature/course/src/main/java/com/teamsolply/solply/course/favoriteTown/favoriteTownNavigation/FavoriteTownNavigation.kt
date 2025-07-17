@@ -23,7 +23,7 @@ fun NavGraphBuilder.favoriteTownNavGraph(
         FavoriteTownRoute(
             paddingValues = paddingValues,
             navigateToBack = navigateToBack,
-            onBoardingIntent = {  }
+            onBoardingIntent = { }
         )
     }
 }

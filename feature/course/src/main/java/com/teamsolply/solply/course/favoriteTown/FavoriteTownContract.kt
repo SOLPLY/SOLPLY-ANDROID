@@ -18,7 +18,6 @@ data class FavoriteTownState(
     val errorMessage: String? = null
 ) : UiState
 
-
 sealed interface FavoriteTownIntent : UiIntent {
     object LoadFavoriteTownList : FavoriteTownIntent
     data class SelectTown(val townId: Int) : FavoriteTownIntent
@@ -26,5 +25,4 @@ sealed interface FavoriteTownIntent : UiIntent {
     object ConfirmSelection : FavoriteTownIntent
 }
 
-sealed interface CourseSideEffect : SideEffect {
-}
+sealed interface CourseSideEffect : SideEffect

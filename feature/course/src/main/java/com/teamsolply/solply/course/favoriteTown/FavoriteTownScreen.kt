@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamsolply.solply.course.favoriteTown.model.CourseState
 import com.teamsolply.solply.course.component.FavoriteTownTopBar
+import com.teamsolply.solply.course.favoriteTown.model.CourseState
 import com.teamsolply.solply.course.favoriteTown.model.TownModel
 import com.teamsolply.solply.designsystem.component.button.AddLocalAreaButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
@@ -42,10 +42,9 @@ fun FavoriteTownRoute(
         onBoardingIntent = { intent -> viewModel.handleIntent(intent) },
         onNextClick = navigateToBack,
         onReturnToHomeClick = navigateToBack,
-        onBackButtonClick = navigateToBack,
+        onBackButtonClick = navigateToBack
     )
 }
-
 
 @Composable
 fun FavoriteTownScreen(

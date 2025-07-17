@@ -37,9 +37,11 @@ fun CourseHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clickable { onClickTownName() }) {
+                    .clickable { onClickTownName() }
+            ) {
                 Icon(
                     painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_home_location),
                     contentDescription = "town-icon",

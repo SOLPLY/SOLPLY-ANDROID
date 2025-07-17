@@ -40,7 +40,6 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-
     private fun getTownList() {
         viewModelScope.launch {
             favoriteRepository.getTownList().onSuccess {
