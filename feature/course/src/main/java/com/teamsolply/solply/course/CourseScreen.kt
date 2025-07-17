@@ -80,7 +80,7 @@ fun CourseScreen(
             state = gridState,
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {

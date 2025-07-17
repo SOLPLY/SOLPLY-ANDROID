@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
@@ -48,7 +49,7 @@ fun SolplyCourseCard(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .alpha(if (savedPlace) 1f else 0.3f)
+            .alpha(if (savedPlace) 0.3f else 1f)
             .customClickable(rippleEnabled = false) { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -63,7 +64,7 @@ fun SolplyCourseCard(
         )
         Box(
             modifier = Modifier
-                .padding(top = 73.dp)
+                .padding(top = 70.dp)
                 .matchParentSize()
                 .background(
                     color = SolplyTheme.colors.black.copy(alpha = 0.3f),
@@ -76,7 +77,7 @@ fun SolplyCourseCard(
         )
         Box(
             modifier = Modifier
-                .padding(top = 77.dp)
+                .padding(top = 74.dp)
                 .background(
                     color = backgroundColor,
                     shape = RoundedCornerShape(
@@ -98,7 +99,9 @@ fun SolplyCourseCard(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 12.dp),
-                        style = SolplyTheme.typography.body14M,
+                        style = SolplyTheme.typography.body14M.copy(
+                            lineHeight = 18.sp
+                        ),
                         color = SolplyTheme.colors.black,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis

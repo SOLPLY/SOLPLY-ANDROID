@@ -33,7 +33,7 @@ fun NamingScreen(
         modifier = Modifier
             .fillMaxSize()
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 20.dp)
             .addFocusCleaner(focusManager),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
