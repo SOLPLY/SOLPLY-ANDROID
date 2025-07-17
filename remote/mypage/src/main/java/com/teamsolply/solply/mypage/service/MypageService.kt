@@ -18,22 +18,22 @@ interface MypageService {
 
     @GET("api/places")
     suspend fun getPlaceList(
-        @Query("townId") townId: Int,
+        @Query("townId") townId: Long,
         @Query("isBookmarkSearch") isBookmarkedSearch: Boolean = true
     ): BaseResponse<PlaceListResponseDto>
 
     @GET("api/courses/bookmarks")
     suspend fun getCourseList(
-        @Query("townId") townId: Int
+        @Query("townId") townId: Long
     ): BaseResponse<CourseListResponseDto>
 
     @DELETE("api/places/bookmarks")
     suspend fun deletePlaces(
-        @Query(value = "placeIds") placeIds: List<Int>
+        @Query(value = "placeIds") placeIds: List<Long>
     )
 
     @DELETE("api/courses/bookmarks")
     suspend fun deleteCourses(
-        @Query(value = "courseIds") courseIds: List<Int>
+        @Query(value = "courseIds") courseIds: List<Long>
     )
 }

@@ -20,7 +20,7 @@ import com.teamsolply.solply.ui.extension.customClickable
 @Composable
 fun PlaceTownCollectionScreen(
     town: List<PlaceTownEntity>,
-    onClickTown: (Int, String) -> Unit,
+    onClickTown: (Long, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(

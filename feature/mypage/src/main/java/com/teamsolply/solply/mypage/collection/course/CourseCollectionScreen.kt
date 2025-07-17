@@ -25,14 +25,13 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun CourseCollectionRoute(
     paddingValues: PaddingValues,
-    townId: Int,
+    townId: Long,
     townName: String,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     navigateToBack: () -> Unit,
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     LaunchedEffect(Unit) {
         viewModel.sendIntent(CourseCollectionIntent.Init(townId, townName))
     }
@@ -41,7 +40,11 @@ fun CourseCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 CourseCollectionSideEffect.NavigateToBack -> navigateToBack()
-                CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.EDIT_COURSE.name)
+                is CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(
+                    MapsType.EDIT_COURSE.name,
+                    uiState.townId,
+                    sideEffect.courseId
+                )
             }
         }
     }
@@ -117,7 +120,6 @@ fun CourseCollectionRoute(
                         } else {
                             Modifier.padding(start = 5.dp)
                         },
-                        savedPlace = true,
                         savedCourse = true
                     )
                 }

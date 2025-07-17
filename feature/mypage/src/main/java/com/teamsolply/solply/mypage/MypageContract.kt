@@ -22,8 +22,8 @@ sealed interface MypageIntent : UiIntent {
     data object SelectCourseTab : MypageIntent
 
     //
-    data class SelectPlaceTown(val townId: Int, val townName: String) : MypageIntent
-    data class SelectCourseTown(val townId: Int, val townName: String) : MypageIntent
+    data class SelectPlaceTown(val townId: Long, val townName: String) : MypageIntent
+    data class SelectCourseTown(val townId: Long, val townName: String) : MypageIntent
 
     data class EmptyButtonClick(val mypageTab: MypageTab) : MypageIntent
 
@@ -35,6 +35,6 @@ sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
     data object NavigateToPLace : MypageSideEffect
     data object NavigateToCourse : MypageSideEffect
-    data class NavigateToPlaceCollection(val townId: Int, val townName: String) : MypageSideEffect
-    data class NavigateToCourseCollection(val townId: Int, val townName: String) : MypageSideEffect
+    data class NavigateToPlaceCollection(val townId: Long, val townName: String) : MypageSideEffect
+    data class NavigateToCourseCollection(val townId: Long, val townName: String) : MypageSideEffect
 }

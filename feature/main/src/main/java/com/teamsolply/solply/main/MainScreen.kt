@@ -168,12 +168,13 @@ internal fun MainScreen(
                     )
                     courseNavGraph(
                         paddingValues = innerPadding,
-                        navigateToMaps = { mapsType ->
+                        navigateToMaps = { mapsType, townId, courseId ->
                             val navOptions = navOptions {}
                             // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
-                                townId = 0,
+                                townId = townId,
+                                courseId = courseId,
                                 navOptions = navOptions
                             )
                         }
@@ -282,12 +283,12 @@ internal fun MainScreen(
                     )
                     placeCollectionNavGraph(
                         paddingValues = innerPadding,
-                        navigateToMaps = { mapsType ->
+                        navigateToMaps = { mapsType, townId, placeId ->
                             val navOptions = navOptions {}
-                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
-                                townId = 0,
+                                townId = townId,
+                                placeId = placeId,
                                 navOptions = navOptions
                             )
                         },
@@ -295,12 +296,12 @@ internal fun MainScreen(
                     )
                     courseCollectionNavGraph(
                         paddingValues = innerPadding,
-                        navigateToMaps = { mapsType ->
+                        navigateToMaps = { mapsType, townId, courseId ->
                             val navOptions = navOptions { }
-                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
-                                townId = 0,
+                                townId = townId,
+                                courseId = courseId,
                                 navOptions = navOptions
                             )
                         },

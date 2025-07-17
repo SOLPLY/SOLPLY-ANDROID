@@ -14,17 +14,17 @@ data class CourseListResponseDto(
 @Serializable
 data class CourseResponseDto(
     @SerialName("courseId")
-    val courseId: Int,
+    val courseId: Long,
 
     @SerialName("courseName")
-    val courseName: String,
+    val title: String,
 
-    @SerialName("thumbnailImageUrl")
+    @SerialName("thumbnailImage")
     val imageUrl: String,
 
     @SerialName("mainTags")
-    val tag: PlaceType,
+    val mainTags: List<PlaceType>,
 
     @SerialName("isBookmarked")
-    val isSaved: Boolean
+    val isBookmarked: Boolean
 )

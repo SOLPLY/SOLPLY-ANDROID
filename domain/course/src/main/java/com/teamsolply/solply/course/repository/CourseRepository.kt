@@ -5,5 +5,5 @@ import com.teamsolply.solply.course.model.UserEntity
 
 interface CourseRepository {
     suspend fun getUserInfo(): Result<UserEntity>
-    suspend fun getRecommendedCourse(townId: Int): Result<List<CourseEntity>>
+    suspend fun getRecommendedCourse(townId: Long): Result<List<CourseEntity>>
 }

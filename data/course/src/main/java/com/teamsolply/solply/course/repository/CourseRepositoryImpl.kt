@@ -23,14 +23,14 @@ class CourseRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getRecommendedCourse(townId: Int) = runCatching {
+    override suspend fun getRecommendedCourse(townId: Long) = runCatching {
         courseRemoteDataSource.getRecommendedCourse(townId).courseList
     }.mapCatching { courseList ->
         courseList.map { course ->
             CourseEntity(
                 courseId = course.courseId,
                 courseName = course.courseName,
-                imageUrl = course.imageUrl,
+                imageUrl = course.thumbnailImage,
                 tagList = course.tagList,
                 isSaved = course.isSaved
             )

@@ -9,9 +9,9 @@ interface MypageRepository {
     suspend fun getPlaceTownList(): Result<List<PlaceTownEntity>>
     suspend fun getCourseTownList(): Result<List<CourseTownEntity>>
 
-    suspend fun getPlaceList(townId: Int): Result<List<PlaceInfoEntity>>
-    suspend fun getCourseList(townId: Int): Result<List<CourseInfoEntity>>
+    suspend fun getPlaceList(townId: Long): Result<List<PlaceInfoEntity>>
+    suspend fun getCourseList(townId: Long): Result<List<CourseInfoEntity>>
 
-    suspend fun deletePlaces(placeIds: List<Int>): Result<Unit>
-    suspend fun deleteCourses(courseIds: List<Int>): Result<Unit>
+    suspend fun deletePlaces(placeIds: List<Long>): Result<Unit>
+    suspend fun deleteCourses(courseIds: List<Long>): Result<Unit>
 }

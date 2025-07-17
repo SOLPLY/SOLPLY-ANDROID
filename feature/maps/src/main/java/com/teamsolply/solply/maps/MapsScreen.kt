@@ -83,6 +83,7 @@ internal fun MapsRoute(
     mapsType: MapsType,
     townId: Long,
     placeId: Long?,
+    courseId: Long?,
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
@@ -109,11 +110,15 @@ internal fun MapsRoute(
             }
 
             MapsType.ADD_COURSE -> {
-                viewModel.getCourseDetailInfo()
+                if (courseId != null) {
+                    viewModel.getCourseDetailInfo(courseId = courseId)
+                }
             }
 
             MapsType.EDIT_COURSE -> {
-                viewModel.getCourseDetailInfo()
+                if (courseId != null) {
+                    viewModel.getCourseDetailInfo(courseId = courseId)
+                }
             }
         }
     }
@@ -230,7 +235,7 @@ internal fun MapsRoute(
             viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
         },
         onPlaceDetailClick = { placeId ->
-            viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId))
+            viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
         }
     )
 
@@ -239,7 +244,7 @@ internal fun MapsRoute(
             saveToCourseClick = {
                 viewModel.sendIntent(
                     MapsIntent.CourseSaveDialogClick(
-                        CourseSaveType.SaveToExistingCourse
+                        courseSaveType = CourseSaveType.SaveToExistingCourse
                     )
                 )
             },
@@ -539,7 +544,7 @@ private fun MapsScreen(
                             }
                         )
                     }
-                } else {
+                } else if (mapsType == MapsType.ADD_COURSE) {
                     AddCourseButton(
                         onClick = saveCourse,
                         selected = courseDetailInfo.isBookmarked,

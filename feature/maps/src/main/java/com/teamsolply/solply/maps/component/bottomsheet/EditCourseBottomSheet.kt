@@ -206,9 +206,7 @@ internal fun EditCourseBottomSheet(
                                 it.displayName == item.primaryTag
                             } ?: PlaceType.ALL,
                             placeAddress = item.address,
-                            // TODO. 서버 이미지 url로 변경하기
-                            // placeImageRes = item.thumbnailUrl,
-                            placeImageRes = R.drawable.img_course_dummy,
+                            placeImageRes = item.thumbnailUrl,
                             modifier = Modifier.then(
                                 if (startEditCourse) {
                                     Modifier

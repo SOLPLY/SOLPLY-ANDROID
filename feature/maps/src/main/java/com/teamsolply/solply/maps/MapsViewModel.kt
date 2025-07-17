@@ -1,7 +1,8 @@
 package com.teamsolply.solply.maps
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.maps.model.CoursePlace
+import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -62,32 +63,41 @@ internal class MapsViewModel @Inject constructor(
 
             // Add Course
             MapsIntent.SaveCourse -> {
-                val bookmark = !uiState.value.courseDetailInfo.isBookmarked
-                // TODO 코스 개별 저장 post
+                val isBookmarked = !uiState.value.courseDetailInfo.isBookmarked
                 reduce {
-                    copy(courseDetailInfo = courseDetailInfo.copy(isBookmarked = bookmark))
+                    copy(courseDetailInfo = courseDetailInfo.copy(isBookmarked = isBookmarked))
                 }
 
-                if (bookmark) {
-                    postSideEffect(MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar)
-                }
+                toggleCourseBookmark(
+                    courseId = uiState.value.courseDetailInfo.courseId,
+                    isBookmarked = isBookmarked,
+                    onSuccess = {
+                        if (isBookmarked) {
+                            postSideEffect(MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar)
+                        }
+                    }
+                )
             }
 
             is MapsIntent.SingleCoursePlaceBookMarkClick -> {
                 val updatedPlaces = uiState.value.courseDetailInfo.places.map { place ->
                     if (place.placeId == intent.placeId) {
+                        togglePlaceBookmark(
+                            placeId = place.placeId,
+                            isBookmarked = !place.isBookmarked,
+                            onSuccess = {
+                                if (!place.isBookmarked) {
+                                    postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
+                                }
+                            }
+                        )
                         place.copy(isBookmarked = !place.isBookmarked)
                     } else {
                         place
                     }
                 }
-
                 reduce {
                     copy(courseDetailInfo = courseDetailInfo.copy(places = updatedPlaces))
-                }
-                // TODO. 장소 개별 저장 API
-
-                viewModelScope.launch {
                 }
             }
 
@@ -139,11 +149,35 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.CourseSaveDialogClick -> {
+                val courseInfo = uiState.value.courseDetailInfo
                 if (intent.courseSaveType == CourseSaveType.SaveToExistingCourse) {
-                    // TODO. 지금 코스에 저장 API
+                    saveCurrentCourse(
+                        courseId = courseInfo.courseId,
+                        courseSaveEntity = CourseSaveEntity(
+                            name = courseInfo.courseName,
+                            description = courseInfo.introduction,
+                            places = courseInfo.places.mapIndexed { index, it ->
+                                CoursePlace(
+                                    placeId = it.placeId,
+                                    order = index + 1
+                                )
+                            }
+                        )
+                    )
                 } else {
+                    saveNewCourse(
+                        courseSaveEntity = CourseSaveEntity(
+                            name = courseInfo.courseName.substringBefore("(").trim(),
+                            description = courseInfo.introduction,
+                            places = courseInfo.places.mapIndexed { index, it ->
+                                CoursePlace(
+                                    placeId = it.placeId,
+                                    order = index + 1
+                                )
+                            }
+                        )
+                    )
                     postSideEffect(MapsSideEffect.ShowSuccessSaveNewCourseSnackBar)
-                    // TODO. 새 코스에 저장 API - 명세서 바뀌는거 보고
                 }
                 reduce {
                     copy(
@@ -168,6 +202,9 @@ internal class MapsViewModel @Inject constructor(
             MapsIntent.BeforeEditCourseDialogClick -> reduce {
                 copy(
                     startEditCourse = false,
+                    courseDetailInfo = courseDetailInfo.copy(
+                        places = uiState.value.coursesBeforeEdit
+                    ),
                     coursesBeforeEdit = persistentListOf(),
                     exitEditCourseDialogVisibility = false
                 )
@@ -220,16 +257,14 @@ internal class MapsViewModel @Inject constructor(
                         courses = it.toPersistentList()
                     )
                 }
-            }.onFailure {
-                Log.d("asdasdasd", it.toString())
             }
         }
     }
 
     // TODO. 코스 상세 정보 조회 API
-    fun getCourseDetailInfo() {
+    fun getCourseDetailInfo(courseId: Long) {
         viewModelScope.launch {
-            mapsRepository.getCourseDetail(courseId = 1).onSuccess {
+            mapsRepository.getCourseDetail(courseId = courseId).onSuccess {
                 reduce {
                     copy(
                         courseDetailInfo = it
@@ -239,20 +274,56 @@ internal class MapsViewModel @Inject constructor(
         }
     }
 
-    fun togglePlaceBookmark(
+    private fun togglePlaceBookmark(
         placeId: Long,
         isBookmarked: Boolean,
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
-            val result = if (isBookmarked) {
+            if (isBookmarked) {
                 mapsRepository.savePlaceBookMark(placeId)
             } else {
                 mapsRepository.deletePlaceBookMark(placeId)
             }
+            onSuccess()
+        }
+    }
 
-            result.onSuccess {
-                onSuccess()
+    private fun toggleCourseBookmark(
+        courseId: Long,
+        isBookmarked: Boolean,
+        onSuccess: () -> Unit
+    ) {
+        viewModelScope.launch {
+            if (isBookmarked) {
+                mapsRepository.postCourseBookMark(courseId = courseId)
+            } else {
+                mapsRepository.deleteCourseBookMark(courseId = courseId)
+            }
+            onSuccess()
+        }
+    }
+
+    private fun saveCurrentCourse(
+        courseId: Long,
+        courseSaveEntity: CourseSaveEntity
+    ) {
+        viewModelScope.launch {
+            mapsRepository.putEditCourse(
+                courseId = courseId,
+                courseSaveEntity = courseSaveEntity
+            )
+        }
+    }
+
+    private fun saveNewCourse(
+        courseSaveEntity: CourseSaveEntity
+    ) {
+        viewModelScope.launch {
+            mapsRepository.postSaveNewCourse(
+                courseSaveEntity = courseSaveEntity
+            ).onSuccess {
+                getCourseDetailInfo(it)
             }
         }
     }

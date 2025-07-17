@@ -13,7 +13,7 @@ data class CourseTownListResponseDto(
 @Serializable
 data class CourseTownResponseDto(
     @SerialName("townId")
-    val townId: Int,
+    val townId: Long,
     @SerialName("townName")
     val townName: String,
     @SerialName("courseName")
