@@ -123,8 +123,6 @@ fun PlaceRoute(
                             mainFilterName
                         )
                     )
-//                    TODO 필요없는지 확인하고 삭제
-//                    viewModel.sendIntent(PlaceIntent.ChangeMainFilterBottomSheetVisible)
                 },
                 onDismiss = {
                     viewModel.sendIntent(PlaceIntent.MainFilterBottomSheetDismiss)
@@ -136,8 +134,6 @@ fun PlaceRoute(
     if (state.isOptionFilterBottomSheetVisible) {
         ModalBottomSheet(
             onDismissRequest = {
-                // TODO 필요없으면 삭제
-//                viewModel.sendIntent(PlaceIntent.ChangeOptionFilterBottomSheetVisible)
                 viewModel.sendIntent(PlaceIntent.SubFilterBottomSheetDismiss)
             },
             sheetState = sheetState,

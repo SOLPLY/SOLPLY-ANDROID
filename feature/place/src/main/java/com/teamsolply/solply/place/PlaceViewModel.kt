@@ -111,7 +111,6 @@ class PlaceViewModel @Inject constructor(
                 }
             }
 
-            // 옵션 필터 초기화
             PlaceIntent.SubFilterBottomSheetDismiss -> reduce {
                 copy(
                     selectedOptionAFilter = persistentListOf(),
