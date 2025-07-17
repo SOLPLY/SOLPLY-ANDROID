@@ -118,6 +118,13 @@ class PlaceViewModel @Inject constructor(
                 }
             }
 
+            is PlaceIntent.SubFilterBottomSheetResetButtonClick -> reduce {
+                copy(
+                    selectedOptionAFilter = persistentListOf(),
+                    selectedOptionBFilter = persistentListOf()
+                )
+            }
+
             PlaceIntent.SubFilterBottomSheetDismiss -> reduce {
                 copy(
                     selectedOptionAFilter = persistentListOf(),

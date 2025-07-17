@@ -52,6 +52,7 @@ sealed interface PlaceIntent : UiIntent {
 
     data object SubFilterChipClick : PlaceIntent
     data object SubFilterBottomSheetCompleteButtonClick : PlaceIntent
+    data object SubFilterBottomSheetResetButtonClick : PlaceIntent
     data object SubFilterBottomSheetDismiss : PlaceIntent
     data class SubFilterClick(
         val optionFilterId: Int,
