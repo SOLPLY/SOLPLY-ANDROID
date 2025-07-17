@@ -67,4 +67,12 @@ class MapsRepositoryImpl @Inject constructor(
             isNewCourse = it.isNewCourse
         )
     }
+
+    override suspend fun postSaveNewCourse(
+        courseSaveEntity: CourseSaveEntity
+    ): Result<Long> = runCatching {
+        mapsRemoteDataSource.postSaveNewCourse(
+            courseSaveRequestDto = courseSaveEntity.toDto()
+        ).courseId
+    }
 }

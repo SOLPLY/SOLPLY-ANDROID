@@ -1,6 +1,5 @@
 package com.teamsolply.solply.maps
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
@@ -150,8 +149,8 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.CourseSaveDialogClick -> {
+                val courseInfo = uiState.value.courseDetailInfo
                 if (intent.courseSaveType == CourseSaveType.SaveToExistingCourse) {
-                    val courseInfo = uiState.value.courseDetailInfo
                     saveCurrentCourse(
                         courseId = courseInfo.courseId,
                         courseSaveEntity = CourseSaveEntity(
@@ -166,8 +165,19 @@ internal class MapsViewModel @Inject constructor(
                         )
                     )
                 } else {
+                    saveNewCourse(
+                        courseSaveEntity = CourseSaveEntity(
+                            name = courseInfo.courseName.substringBefore("(").trim(),
+                            description = courseInfo.introduction,
+                            places = courseInfo.places.mapIndexed { index, it ->
+                                CoursePlace(
+                                    placeId = it.placeId,
+                                    order = index + 1
+                                )
+                            }
+                        )
+                    )
                     postSideEffect(MapsSideEffect.ShowSuccessSaveNewCourseSnackBar)
-                    // TODO. 새 코스에 저장 API - 명세서 바뀌는거 보고
                 }
                 reduce {
                     copy(
@@ -302,8 +312,18 @@ internal class MapsViewModel @Inject constructor(
             mapsRepository.putEditCourse(
                 courseId = courseId,
                 courseSaveEntity = courseSaveEntity
+            )
+        }
+    }
+
+    private fun saveNewCourse(
+        courseSaveEntity: CourseSaveEntity
+    ) {
+        viewModelScope.launch {
+            mapsRepository.postSaveNewCourse(
+                courseSaveEntity = courseSaveEntity
             ).onSuccess {
-                Log.d("asdasdsad", "good")
+                getCourseDetailInfo(it)
             }
         }
     }

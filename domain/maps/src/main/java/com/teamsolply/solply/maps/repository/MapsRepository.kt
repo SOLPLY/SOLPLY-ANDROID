@@ -27,4 +27,8 @@ interface MapsRepository {
         courseId: Long,
         courseSaveEntity: CourseSaveEntity
     ): Result<CourseSaveResultEntity>
+
+    suspend fun postSaveNewCourse(
+        courseSaveEntity: CourseSaveEntity
+    ): Result<Long>
 }

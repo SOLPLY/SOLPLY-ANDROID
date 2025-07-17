@@ -5,6 +5,7 @@ import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
+import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
 
 interface MapsRemoteDataSource {
     // 장소 상세
@@ -22,5 +23,12 @@ interface MapsRemoteDataSource {
     suspend fun deleteCourseBookMark(courseId: Long)
 
     // 코스 편집
-    suspend fun putEditCourse(courseId: Long, courseSaveRequestDto: CourseSaveRequestDto): CourseSaveResponseDto
+    suspend fun putEditCourse(
+        courseId: Long,
+        courseSaveRequestDto: CourseSaveRequestDto
+    ): CourseSaveResponseDto
+
+    suspend fun postSaveNewCourse(
+        courseSaveRequestDto: CourseSaveRequestDto
+    ): NewCourseResponseDto
 }

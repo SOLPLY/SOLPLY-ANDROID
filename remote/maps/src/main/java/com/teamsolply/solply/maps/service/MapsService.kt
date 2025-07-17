@@ -5,6 +5,7 @@ import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
+import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -63,9 +64,15 @@ interface MapsService {
     ): BaseResponse<Unit>
 
     // 코스 편집
+
     @PUT("api/courses/{courseId}")
     suspend fun putEditCourse(
         @Path("courseId") courseId: Long,
         @Body courseSaveRequestDto: CourseSaveRequestDto
     ): BaseResponse<CourseSaveResponseDto>
+
+    @POST("api/courses")
+    suspend fun postSaveNewCourse(
+        @Body courseSaveRequestDto: CourseSaveRequestDto
+    ): BaseResponse<NewCourseResponseDto>
 }
