@@ -178,6 +178,9 @@ internal class MapsViewModel @Inject constructor(
             MapsIntent.BeforeEditCourseDialogClick -> reduce {
                 copy(
                     startEditCourse = false,
+                    courseDetailInfo = courseDetailInfo.copy(
+                        places = uiState.value.coursesBeforeEdit
+                    ),
                     coursesBeforeEdit = persistentListOf(),
                     exitEditCourseDialogVisibility = false
                 )

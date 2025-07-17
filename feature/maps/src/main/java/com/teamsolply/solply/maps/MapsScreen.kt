@@ -235,7 +235,7 @@ internal fun MapsRoute(
             viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
         },
         onPlaceDetailClick = { placeId ->
-            viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId))
+            viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
         }
     )
 
