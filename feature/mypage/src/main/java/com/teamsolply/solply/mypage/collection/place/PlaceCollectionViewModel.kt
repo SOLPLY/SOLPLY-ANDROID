@@ -112,7 +112,7 @@ class PlaceCollectionViewModel @Inject constructor(
 
     private fun deletePlaces(selectedPlaces: List<Long>) {
         viewModelScope.launch {
-            mypageRepository.deleteCourses(selectedPlaces).onSuccess {
+            mypageRepository.deletePlaces(selectedPlaces).onSuccess {
                 reduce {
                     copy(
                         selectedPlaces = emptySet(),
@@ -120,7 +120,7 @@ class PlaceCollectionViewModel @Inject constructor(
                         dialogState = false
                     )
                 }
-                getPlaceList(uiState.value.townId)
+                getPlaceList(townId = uiState.value.townId)
             }
         }
     }
