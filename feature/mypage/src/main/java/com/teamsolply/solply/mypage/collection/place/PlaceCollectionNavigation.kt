@@ -19,7 +19,7 @@ fun NavController.navigatePlaceCollection(
 
 fun NavGraphBuilder.placeCollectionNavGraph(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     navigateToBack: () -> Unit
 ) {
     composable<PlaceCollection> { backStackEntry ->

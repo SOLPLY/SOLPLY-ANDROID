@@ -82,7 +82,7 @@ class PlaceCollectionViewModel @Inject constructor(
                         }
                     }
                 } else {
-                    postSideEffect(PlaceCollectionSideEffect.NavigateToMap)
+                    postSideEffect(PlaceCollectionSideEffect.NavigateToMap(intent.placeId))
                 }
             }
 

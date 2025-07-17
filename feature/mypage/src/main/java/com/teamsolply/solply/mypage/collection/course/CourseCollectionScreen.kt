@@ -27,7 +27,7 @@ fun CourseCollectionRoute(
     paddingValues: PaddingValues,
     townId: Long,
     townName: String,
-    navigateToMaps: (String, Long) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     navigateToBack: () -> Unit,
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
@@ -40,7 +40,11 @@ fun CourseCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 CourseCollectionSideEffect.NavigateToBack -> navigateToBack()
-                is CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.EDIT_COURSE.name, sideEffect.courseId)
+                is CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(
+                    MapsType.EDIT_COURSE.name,
+                    uiState.townId,
+                    sideEffect.courseId
+                )
             }
         }
     }
@@ -111,11 +115,11 @@ fun CourseCollectionRoute(
                             )
                         },
                         modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        },
+                            if (index % 2 == 0) {
+                                Modifier.padding(end = 5.dp)
+                            } else {
+                                Modifier.padding(start = 5.dp)
+                            },
                         savedCourse = true
                     )
                 }

@@ -33,5 +33,7 @@ sealed interface PlaceCollectionIntent : UiIntent {
 sealed interface PlaceCollectionSideEffect : SideEffect {
 
     data object NavigateToBack : PlaceCollectionSideEffect
-    data object NavigateToMap : PlaceCollectionSideEffect
+    data class NavigateToMap(
+        val placeId: Long
+    ) : PlaceCollectionSideEffect
 }

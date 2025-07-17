@@ -25,7 +25,7 @@ fun PlaceCollectionRoute(
     paddingValues: PaddingValues,
     townId: Long,
     townName: String,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     navigateToBack: () -> Unit,
     viewModel: PlaceCollectionViewModel = hiltViewModel()
 ) {
@@ -39,7 +39,7 @@ fun PlaceCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is PlaceCollectionSideEffect.NavigateToBack -> navigateToBack()
-                is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.PLACE_DETAIL.name)
+                is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.PLACE_DETAIL.name, townId, sideEffect.placeId)
             }
         }
     }
