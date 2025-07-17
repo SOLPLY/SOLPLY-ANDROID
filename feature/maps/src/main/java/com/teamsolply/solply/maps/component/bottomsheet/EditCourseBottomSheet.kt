@@ -235,7 +235,6 @@ internal fun EditCourseBottomSheet(
                             selectedPlaceItem = selectedPlaceItem == item.placeId,
                             isEditing = startEditCourse
                         )
-                        Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
             }
