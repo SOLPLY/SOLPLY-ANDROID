@@ -28,8 +28,7 @@ internal fun FavoriteTownTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 24.dp),
+            .padding(start = 16.dp, end = 16.dp, top = 4.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

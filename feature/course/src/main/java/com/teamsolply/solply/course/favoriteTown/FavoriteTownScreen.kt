@@ -62,6 +62,7 @@ fun FavoriteTownScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 14.dp)
     ) {
         FavoriteTownTopBar(
             onBackButtonClick = { onBackButtonClick() },
@@ -77,7 +78,7 @@ fun FavoriteTownScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(18.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
             ) {
                 townList.forEach { town ->
                     AddLocalAreaButton(
