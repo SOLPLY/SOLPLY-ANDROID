@@ -89,7 +89,7 @@ class PlaceRepositoryImpl @Inject constructor(
                     primaryTag = PlaceType.fromApiName(it.primaryTag),
                     introduction = it.introduction
                 )
-            }
+            }.take(3)
         }
 
     override suspend fun getPlaces(
