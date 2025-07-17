@@ -26,7 +26,7 @@ fun PlaceHeader(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 11 .dp),
+            .padding(top = 11.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(

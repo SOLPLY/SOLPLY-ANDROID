@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
 @Composable
-fun  CourseHeader(
+fun CourseHeader(
     townName: String,
     modifier: Modifier = Modifier
 ) {
