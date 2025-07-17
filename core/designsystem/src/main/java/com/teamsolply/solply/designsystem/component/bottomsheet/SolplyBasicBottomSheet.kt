@@ -43,18 +43,16 @@ fun SolplyBasicBottomSheet(
     menuContent: @Composable RowScope.() -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    var currentState by remember { mutableStateOf(BottomSheetState.HALF_EXPANDED) }
+    var currentState by remember { mutableStateOf(BottomSheetState.EXPANDED) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
     val density = LocalDensity.current
     val collapsedHeight = with(density) { 0.dp.toPx() }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val halfExpandedHeight = with(density) { (screenHeight * 0.20f).toPx() }
-    val expandedHeight = with(density) { (screenHeight * 0.76f).toPx() }
+    val expandedHeight = with(density) { (screenHeight * 0.57f).toPx() }
     val currentHeight = when (currentState) {
-        BottomSheetState.COLLAPSED -> collapsedHeight
-        BottomSheetState.HALF_EXPANDED -> halfExpandedHeight
-        BottomSheetState.EXPANDED -> expandedHeight
+        BottomSheetState.EXPANDED -> collapsedHeight
+        BottomSheetState.COLLAPSED -> expandedHeight
     }
 
     val animatedOffset by animateFloatAsState(
@@ -71,20 +69,14 @@ fun SolplyBasicBottomSheet(
                     onDragEnd = {
                         val totalOffset = currentHeight + dragOffset
                         val collapsedDistance = abs(totalOffset - collapsedHeight)
-                        val halfExpandedDistance = abs(totalOffset - halfExpandedHeight)
                         val expandedDistance = abs(totalOffset - expandedHeight)
 
                         currentState = when {
-                            collapsedDistance <= halfExpandedDistance && collapsedDistance <= expandedDistance -> {
-                                BottomSheetState.COLLAPSED
-                            }
-
-                            halfExpandedDistance <= expandedDistance -> {
-                                BottomSheetState.HALF_EXPANDED
-                            }
-
-                            else -> {
+                            collapsedDistance <= expandedDistance -> {
                                 BottomSheetState.EXPANDED
+                            }
+                            else -> {
+                                BottomSheetState.COLLAPSED
                             }
                         }
                         dragOffset = 0f
