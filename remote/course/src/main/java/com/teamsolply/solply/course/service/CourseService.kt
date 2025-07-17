@@ -10,7 +10,7 @@ interface CourseService {
     @GET("api/users")
     suspend fun getUserInfo(): BaseResponse<UserInfoResponseDto>
 
-    @GET("api/courses/bookmarks")
+    @GET("api/recommend/courses")
     suspend fun getRecommendedCourseList(
         @Query("townId") townId: Int
     ): BaseResponse<RecommendedCourseListResponseDto>
