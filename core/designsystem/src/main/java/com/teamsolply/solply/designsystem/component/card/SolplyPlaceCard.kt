@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
@@ -112,7 +113,10 @@ fun SolplyPlaceCard(
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = name,
-                style = SolplyTheme.typography.body14M
+                style = SolplyTheme.typography.body14M,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
             )
         }
     }
