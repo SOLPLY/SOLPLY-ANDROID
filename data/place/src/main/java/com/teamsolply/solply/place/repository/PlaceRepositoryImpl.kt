@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place.repository
 
-import android.util.Log
 import com.teamsolply.solply.place.model.PlaceEntity
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.SaveAutoSignInEntity
