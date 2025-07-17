@@ -32,8 +32,8 @@ class FavoriteTownRepositoryImpl @Inject constructor(
     }
 
     override suspend fun patchUserFavoriteTown(
-        selectedTownId: Int,
-        favoriteTownList: List<Int>
+        selectedTownId: Long,
+        favoriteTownList: List<Long>
     ): Result<Unit> {
         return runCatching {
             val request = PatchUserFavTownRequestDto(

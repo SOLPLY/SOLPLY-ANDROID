@@ -20,7 +20,7 @@ data class FavoriteTownState(
 
 sealed interface FavoriteTownIntent : UiIntent {
     object LoadFavoriteTownList : FavoriteTownIntent
-    data class SelectTown(val townId: Int) : FavoriteTownIntent
+    data class SelectTown(val townId: Long) : FavoriteTownIntent
     object OnRetry : FavoriteTownIntent
     object ConfirmSelection : FavoriteTownIntent
 }

@@ -14,7 +14,7 @@ data class FavoriteTownUserInfoResponseDto(
 @Serializable
 data class SelectedTownDto(
     @SerialName("townId")
-    val townId: Int,
+    val townId: Long,
     @SerialName("townName")
     val townName: String
 )
@@ -22,7 +22,7 @@ data class SelectedTownDto(
 @Serializable
 data class GetFavoriteTownResponseDto(
     @SerialName("townId")
-    val townId: Int,
+    val townId: Long,
     @SerialName("townName")
     val townName: String
 )

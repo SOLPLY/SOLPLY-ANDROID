@@ -16,7 +16,6 @@ import com.teamsolply.solply.maps.navigation.navigateMaps
 import com.teamsolply.solply.mypage.collection.course.navigateCourseCollection
 import com.teamsolply.solply.mypage.collection.place.navigatePlaceCollection
 import com.teamsolply.solply.mypage.navigation.navigateMypage
-import com.teamsolply.solply.oauth.navigation.Oauth
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
