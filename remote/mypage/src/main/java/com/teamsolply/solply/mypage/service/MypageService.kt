@@ -5,6 +5,7 @@ import com.teamsolply.solply.mypage.dto.response.CourseTownListResponseDto
 import com.teamsolply.solply.mypage.dto.response.PlaceListResponseDto
 import com.teamsolply.solply.mypage.dto.response.PlaceTownListResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
+import com.teamsolply.solply.network.model.NullableBaseResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -30,10 +31,10 @@ interface MypageService {
     @DELETE("api/places/bookmarks")
     suspend fun deletePlaces(
         @Query(value = "placeIds") placeIds: List<Long>
-    )
+    ): NullableBaseResponse<Unit>
 
     @DELETE("api/courses/bookmarks")
     suspend fun deleteCourses(
         @Query(value = "courseIds") courseIds: List<Long>
-    )
+    ): NullableBaseResponse<Unit>
 }
