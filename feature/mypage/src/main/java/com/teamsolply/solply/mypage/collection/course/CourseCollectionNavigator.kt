@@ -19,7 +19,7 @@ fun NavController.navigateCourseCollection(
 
 fun NavGraphBuilder.courseCollectionNavGraph(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long) -> Unit,
     navigateToBack: () -> Unit
 ) {
     composable<CourseCollection> { backStackEntry ->

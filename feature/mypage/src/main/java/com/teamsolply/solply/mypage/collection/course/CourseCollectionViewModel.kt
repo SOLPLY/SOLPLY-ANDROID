@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage.collection.course
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -82,7 +81,7 @@ class CourseCollectionViewModel @Inject constructor(
                         }
                     }
                 } else {
-                    postSideEffect(CourseCollectionSideEffect.NavigateToMap)
+                    postSideEffect(CourseCollectionSideEffect.NavigateToMap(courseId = intent.courseId))
                 }
             }
 

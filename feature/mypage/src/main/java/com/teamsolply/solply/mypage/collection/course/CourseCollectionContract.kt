@@ -34,5 +34,7 @@ sealed interface CourseCollectionIntent : UiIntent {
 sealed interface CourseCollectionSideEffect : SideEffect {
 
     data object NavigateToBack : CourseCollectionSideEffect
-    data object NavigateToMap : CourseCollectionSideEffect
+    data class NavigateToMap(
+        val courseId: Long
+    ) : CourseCollectionSideEffect
 }

@@ -544,7 +544,7 @@ private fun MapsScreen(
                             }
                         )
                     }
-                } else {
+                } else if (mapsType == MapsType.ADD_COURSE) {
                     AddCourseButton(
                         onClick = saveCourse,
                         selected = courseDetailInfo.isBookmarked,

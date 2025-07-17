@@ -296,12 +296,13 @@ internal fun MainScreen(
                     )
                     courseCollectionNavGraph(
                         paddingValues = innerPadding,
-                        navigateToMaps = { mapsType ->
+                        navigateToMaps = { mapsType, courseId ->
                             val navOptions = navOptions { }
                             // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
                                 townId = 0,
+                                courseId = courseId,
                                 navOptions = navOptions
                             )
                         },

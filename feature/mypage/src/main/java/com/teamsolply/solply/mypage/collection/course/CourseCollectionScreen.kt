@@ -27,7 +27,7 @@ fun CourseCollectionRoute(
     paddingValues: PaddingValues,
     townId: Long,
     townName: String,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long) -> Unit,
     navigateToBack: () -> Unit,
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
@@ -40,7 +40,7 @@ fun CourseCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 CourseCollectionSideEffect.NavigateToBack -> navigateToBack()
-                CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.EDIT_COURSE.name)
+                is CourseCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.EDIT_COURSE.name, sideEffect.courseId)
             }
         }
     }
