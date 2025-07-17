@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun CourseRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String) -> Unit,
+    navigateToTownSelect: () -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -53,6 +54,7 @@ fun CourseRoute(
     CourseScreen(
         state = state,
         navigateToMaps = navigateToMaps,
+        navigateToTownSelect = navigateToTownSelect,
         modifier = Modifier.padding(paddingValues)
     )
 }
@@ -61,6 +63,7 @@ fun CourseRoute(
 fun CourseScreen(
     state: CourseState,
     navigateToMaps: (String) -> Unit,
+    navigateToTownSelect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val courseList = state.courseList
@@ -72,7 +75,8 @@ fun CourseScreen(
         CourseHeader(
             townName = user.selectedTown.townName,
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(start = 16.dp, end = 16.dp),
+            onClickTownName = { navigateToTownSelect() }
         )
 
         Spacer(modifier = Modifier.height(24.dp))

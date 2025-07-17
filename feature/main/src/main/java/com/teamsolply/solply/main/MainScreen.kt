@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.favoriteTownNavGraph
 import com.teamsolply.solply.course.navigation.courseNavGraph
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNavigateSnackBar
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNotificationSnackBar
@@ -166,6 +167,9 @@ internal fun MainScreen(
                         navigateToMaps = { mapsType ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
+                        },
+                        navigateToTownSelect = {
+                            navigator.navigateToFavoriteTown()
                         }
                     )
                     mypageNavGraph(
@@ -276,6 +280,10 @@ internal fun MainScreen(
                             navigator.navigateToMaps(mapsType = mapsType, navOptions = navOptions)
                         },
                         navigateToBack = navigator::navigateToBack
+                    )
+                    favoriteTownNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToBack = navigator::navigateToBack,
                     )
                 }
                 MainBottomBar(

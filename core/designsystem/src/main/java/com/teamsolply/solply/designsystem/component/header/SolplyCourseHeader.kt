@@ -1,5 +1,6 @@
 package com.teamsolply.solply.designsystem.component.header
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 @Composable
 fun CourseHeader(
     townName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickTownName: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -32,7 +34,9 @@ fun CourseHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clickable { onClickTownName() }) {
                 Icon(
                     painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_home_location),
                     contentDescription = "town-icon",
