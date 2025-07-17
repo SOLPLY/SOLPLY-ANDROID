@@ -13,13 +13,13 @@ data class RecommendedCourseListResponseDto(
 @Serializable
 data class RecommendedCourseResponseDto(
     @SerialName("courseId")
-    val courseId: Int,
+    val courseId: Long,
 
-    @SerialName("title")
+    @SerialName("courseName")
     val courseName: String,
 
     @SerialName("thumbnailImage")
-    val imageUrl: String,
+    val thumbnailImage: String,
 
     @SerialName("mainTags")
     val tagList: List<PlaceType>,

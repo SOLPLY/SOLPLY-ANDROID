@@ -2,6 +2,8 @@ package com.teamsolply.solply.maps.repository
 
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
+import com.teamsolply.solply.maps.model.CourseSaveEntity
+import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 
 interface MapsRepository {
@@ -17,4 +19,16 @@ interface MapsRepository {
 
     // Add Course
     suspend fun getCourseDetail(courseId: Long): Result<CourseDetailEntity>
+    suspend fun postCourseBookMark(courseId: Long): Result<Unit>
+    suspend fun deleteCourseBookMark(courseId: Long): Result<Unit>
+
+    // Edit Course
+    suspend fun putEditCourse(
+        courseId: Long,
+        courseSaveEntity: CourseSaveEntity
+    ): Result<CourseSaveResultEntity>
+
+    suspend fun postSaveNewCourse(
+        courseSaveEntity: CourseSaveEntity
+    ): Result<Long>
 }

@@ -81,7 +81,7 @@ class CourseCollectionViewModel @Inject constructor(
                         }
                     }
                 } else {
-                    postSideEffect(CourseCollectionSideEffect.NavigateToMap)
+                    postSideEffect(CourseCollectionSideEffect.NavigateToMap(courseId = intent.courseId))
                 }
             }
 
@@ -97,7 +97,7 @@ class CourseCollectionViewModel @Inject constructor(
         }
     }
 
-    private fun getCourseList(townId: Int) {
+    private fun getCourseList(townId: Long) {
         viewModelScope.launch {
             mypageRepository.getCourseList(townId).onSuccess {
                 reduce {
@@ -109,7 +109,7 @@ class CourseCollectionViewModel @Inject constructor(
         }
     }
 
-    private fun deleteCourses(selectedCourses: List<Int>) {
+    private fun deleteCourses(selectedCourses: List<Long>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedCourses).onSuccess {
                 reduce {

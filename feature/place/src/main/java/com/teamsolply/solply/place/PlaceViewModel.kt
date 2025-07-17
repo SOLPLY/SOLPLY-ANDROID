@@ -3,6 +3,7 @@ package com.teamsolply.solply.place
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
+import com.teamsolply.solply.place.model.SaveAutoSignInEntity
 import com.teamsolply.solply.place.repository.PlaceRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,12 @@ import javax.inject.Inject
 class PlaceViewModel @Inject constructor(
     private val repository: PlaceRepository
 ) : BaseViewModel<PlaceState, PlaceIntent, PlaceSideEffect>(PlaceState()) {
+
+    init {
+        viewModelScope.launch {
+            repository.saveAutoSignIn(autoSignIn = SaveAutoSignInEntity(autoSignIn = true))
+        }
+    }
 
     override fun handleIntent(intent: PlaceIntent) {
         when (intent) {

@@ -9,7 +9,7 @@ import com.teamsolply.solply.mypage.model.PlaceTownEntity
 @Composable
 fun TabScreen(
     onClickEmptyButton: (MypageTab) -> Unit,
-    onClickTown: (Int, String) -> Unit,
+    onClickTown: (Long, String) -> Unit,
     placeTown: List<PlaceTownEntity>,
     courseTown: List<CourseTownEntity>,
     mypageTab: MypageTab,

@@ -4,6 +4,6 @@ import com.teamsolply.solply.course.dto.response.RecommendedCourseListResponseDt
 import com.teamsolply.solply.course.dto.response.UserInfoResponseDto
 
 interface CourseRemoteDataSource {
-    suspend fun getRecommendedCourse(townId: Int): RecommendedCourseListResponseDto
+    suspend fun getRecommendedCourse(townId: Long): RecommendedCourseListResponseDto
     suspend fun getUserInfo(): UserInfoResponseDto
 }

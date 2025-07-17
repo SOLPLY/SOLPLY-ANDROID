@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.model.Place
@@ -85,9 +84,7 @@ internal fun AddCourseBottomSheet(
                             it.name == item.primaryTag
                         } ?: PlaceType.ALL,
                         placeAddress = item.address,
-                        // TODO. 코스의 장소 이미지로
-                        // placeImageRes = item.thumbnailUrl
-                        placeImageRes = R.drawable.img_course_dummy,
+                        placeImageRes = item.thumbnailUrl,
                         iconSelected = item.isBookmarked,
                         iconClick = { singleCoursePlaceBookMarkClick(item.placeId) },
                         modifier = Modifier.customClickable(rippleEnabled = false) {

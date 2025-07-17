@@ -12,6 +12,6 @@ interface CourseService {
 
     @GET("api/recommend/courses")
     suspend fun getRecommendedCourseList(
-        @Query("townId") townId: Int
+        @Query("townId") townId: Long
     ): BaseResponse<RecommendedCourseListResponseDto>
 }

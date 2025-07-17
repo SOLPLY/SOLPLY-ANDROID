@@ -17,7 +17,7 @@ fun NavController.navigateCourse(
 
 fun NavGraphBuilder.courseNavGraph(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     navigateToTownSelect: () -> Unit
 ) {
     composable<Course> {

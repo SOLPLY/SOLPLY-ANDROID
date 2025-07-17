@@ -82,7 +82,7 @@ class PlaceCollectionViewModel @Inject constructor(
                         }
                     }
                 } else {
-                    postSideEffect(PlaceCollectionSideEffect.NavigateToMap)
+                    postSideEffect(PlaceCollectionSideEffect.NavigateToMap(intent.placeId))
                 }
             }
 
@@ -98,7 +98,7 @@ class PlaceCollectionViewModel @Inject constructor(
         }
     }
 
-    private fun getPlaceList(townId: Int) {
+    private fun getPlaceList(townId: Long) {
         viewModelScope.launch {
             mypageRepository.getPlaceList(townId).onSuccess {
                 reduce {
@@ -110,7 +110,7 @@ class PlaceCollectionViewModel @Inject constructor(
         }
     }
 
-    private fun deletePlaces(selectedPlaces: List<Int>) {
+    private fun deletePlaces(selectedPlaces: List<Long>) {
         viewModelScope.launch {
             mypageRepository.deleteCourses(selectedPlaces).onSuccess {
                 reduce {

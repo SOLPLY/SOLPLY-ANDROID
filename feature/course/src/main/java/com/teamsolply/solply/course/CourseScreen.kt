@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun CourseRoute(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     navigateToTownSelect: () -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
@@ -45,7 +45,11 @@ fun CourseRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is CourseSideEffect.NavigateToCourseMap -> {
-                    navigateToMaps(MapsType.EDIT_COURSE.name)
+                    navigateToMaps(
+                        MapsType.ADD_COURSE.name,
+                        state.user.selectedTown.townId,
+                        sideEffect.courseId
+                    )
                 }
             }
         }
@@ -53,7 +57,9 @@ fun CourseRoute(
 
     CourseScreen(
         state = state,
-        navigateToMaps = navigateToMaps,
+        navigateToMaps = { courseId ->
+            viewModel.sendIntent(CourseIntent.CourseCardClick(courseId = courseId))
+        },
         navigateToTownSelect = navigateToTownSelect,
         modifier = Modifier.padding(paddingValues)
     )
@@ -62,7 +68,7 @@ fun CourseRoute(
 @Composable
 fun CourseScreen(
     state: CourseState,
-    navigateToMaps: (String) -> Unit,
+    navigateToMaps: (Long) -> Unit,
     navigateToTownSelect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -110,7 +116,7 @@ fun CourseScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        navigateToMaps(MapsType.ADD_COURSE.name)
+                        navigateToMaps(course.courseId)
                     }
                 )
             }

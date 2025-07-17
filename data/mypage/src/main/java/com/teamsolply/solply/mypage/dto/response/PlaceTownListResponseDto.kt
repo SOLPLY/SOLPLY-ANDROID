@@ -12,7 +12,7 @@ data class PlaceTownListResponseDto(
 @Serializable
 data class PlaceTownResponseDto(
     @SerialName("townId")
-    val townId: Int,
+    val townId: Long,
     @SerialName("townName")
     val townName: String,
     @SerialName("folderThumbnailUrl")

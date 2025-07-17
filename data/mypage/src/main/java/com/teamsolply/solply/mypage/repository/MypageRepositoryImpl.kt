@@ -38,7 +38,7 @@ class MypageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlaceList(townId: Int): Result<List<PlaceInfoEntity>> = runCatching {
+    override suspend fun getPlaceList(townId: Long): Result<List<PlaceInfoEntity>> = runCatching {
         mypageRemoteDataSource.getPlaceList(townId).placeList
     }.mapCatching { placeList ->
         placeList.map { place ->
@@ -51,24 +51,24 @@ class MypageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCourseList(townId: Int): Result<List<CourseInfoEntity>> = runCatching {
+    override suspend fun getCourseList(townId: Long): Result<List<CourseInfoEntity>> = runCatching {
         mypageRemoteDataSource.getCourseList(townId).courseList
     }.mapCatching { courseList ->
         courseList.map { course ->
             CourseInfoEntity(
                 courseId = course.courseId,
-                courseName = course.courseName,
-                placeTypeList = listOf(course.tag),
+                courseName = course.title,
+                placeTypeList = course.mainTags,
                 imageUrls = listOf(course.imageUrl)
             )
         }
     }
 
-    override suspend fun deletePlaces(placeIds: List<Int>): Result<Unit> = runCatching {
+    override suspend fun deletePlaces(placeIds: List<Long>): Result<Unit> = runCatching {
         mypageRemoteDataSource.deletePlaces(placeIds)
     }
 
-    override suspend fun deleteCourses(courseIds: List<Int>): Result<Unit> = runCatching {
+    override suspend fun deleteCourses(courseIds: List<Long>): Result<Unit> = runCatching {
         mypageRemoteDataSource.deleteCourses(courseIds)
     }
 }
