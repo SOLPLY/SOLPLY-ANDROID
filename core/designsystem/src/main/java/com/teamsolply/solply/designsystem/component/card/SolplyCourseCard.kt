@@ -91,7 +91,7 @@ fun SolplyCourseCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .padding(start = 12.dp, end =12.dp, top = 8.dp, bottom = 12.dp)
             ) {
                 Row {
                     Text(
