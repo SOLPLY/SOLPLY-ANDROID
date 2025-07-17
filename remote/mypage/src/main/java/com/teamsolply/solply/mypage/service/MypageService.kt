@@ -19,7 +19,7 @@ interface MypageService {
     @GET("api/places")
     suspend fun getPlaceList(
         @Query("townId") townId: Int,
-        @Query("isBookmarkedSearch") isBookmarkedSearch: Boolean = true
+        @Query("isBookmarkSearch") isBookmarkedSearch: Boolean = true
     ): BaseResponse<PlaceListResponseDto>
 
     @GET("api/courses/bookmarks")
