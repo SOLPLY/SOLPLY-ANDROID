@@ -1,5 +1,6 @@
 package com.teamsolply.solply.course.favoriteTown.repository
 
+import com.teamsolply.solply.course.favoriteTown.dto.PatchUserFavTownRequestDto
 import com.teamsolply.solply.course.favoriteTown.model.FavoriteTownInfoEntity
 import com.teamsolply.solply.course.favoriteTown.model.Town
 import com.teamsolply.solply.course.favoriteTown.source.FavoriteTownRemoteDataSource
@@ -29,4 +30,18 @@ class FavoriteTownRepositoryImpl @Inject constructor(
             favoriteTownList = favoriteTownList
         )
     }
+
+    override suspend fun patchUserFavoriteTown(
+        selectedTownId: Int,
+        favoriteTownList: List<Int>
+    ): Result<Unit> {
+        return runCatching {
+            val request = PatchUserFavTownRequestDto(
+                selectedTownId = selectedTownId,
+                favoriteTownIdList = favoriteTownList
+            )
+            remoteDataSource.patchUserFavoriteTown(request)
+        }
+    }
+
 }
