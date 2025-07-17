@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +41,7 @@ fun SolplyTextSnackBar(text: String) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(horizontal = 12.dp, vertical = 14.dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
@@ -58,7 +59,7 @@ fun SolplyNotificationSnackBar(text: String) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(horizontal = 12.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -84,13 +85,13 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(horizontal = 20.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = "${newText}에 추가되었어요.",
-                style = SolplyTheme.typography.body14R,
+                style = SolplyTheme.typography.body14M,
                 color = SolplyTheme.colors.white
             )
             Row(
@@ -99,7 +100,7 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
             ) {
                 Text(
                     text = "코스 수정하기",
-                    style = SolplyTheme.typography.body14R,
+                    style = SolplyTheme.typography.body14M,
                     color = SolplyTheme.colors.purple400
                 )
                 Icon(
