@@ -1,6 +1,5 @@
 package com.teamsolply.solply.maps
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.repository.MapsRepository

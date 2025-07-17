@@ -99,7 +99,7 @@ internal class MainNavigator(
             mapsType = mapsType,
             townId = townId,
             placeId = placeId,
-            courseId= courseId,
+            courseId = courseId,
             navOptions = navOptions
         )
     }
