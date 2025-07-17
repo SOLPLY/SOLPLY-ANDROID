@@ -87,8 +87,6 @@ internal fun MapsRoute(
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    navigateToPlaceDetail: () -> Unit,
-    navigateToEditCourse: () -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMypage: () -> Unit,
@@ -189,7 +187,16 @@ internal fun MapsRoute(
 
                 MapsSideEffect.NavigateToBack -> navigateToBack()
 
-                is MapsSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail()
+                is MapsSideEffect.NavigateToPlaceDetail -> {
+                    uiState.townId?.let { townId ->
+                        navigateToMap(
+                            MapsType.PLACE_DETAIL.name,
+                            townId,
+                            sideEffect.placeId,
+                            null
+                        )
+                    }
+                }
             }
         }
     }

@@ -30,10 +30,10 @@ import com.teamsolply.solply.main.component.MainBottomBar
 import com.teamsolply.solply.main.model.SolplySnackBarData
 import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
 import com.teamsolply.solply.mypage.collection.course.courseCollectionNavGraph
 import com.teamsolply.solply.mypage.collection.place.placeCollectionNavGraph
+import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
@@ -175,7 +175,6 @@ internal fun MainScreen(
                         paddingValues = innerPadding,
                         navigateToMaps = { mapsType, townId, courseId ->
                             val navOptions = navOptions {}
-                            // TODO. 타운 아이디
                             navigator.navigateToMaps(
                                 mapsType = mapsType,
                                 townId = townId,
@@ -189,15 +188,6 @@ internal fun MainScreen(
                     )
                     mypageNavGraph(
                         paddingValues = innerPadding,
-                        navigateToMaps = { mapsType ->
-                            val navOptions = navOptions {}
-                            // TODO. 타운 아이디
-                            navigator.navigateToMaps(
-                                mapsType = mapsType,
-                                townId = 0,
-                                navOptions = navOptions
-                            )
-                        },
                         navigateToBack = navigator::navigateToBack,
                         navigateToPlaceCollection = { townId, townName ->
                             val navOptions = navOptions { }
@@ -255,27 +245,9 @@ internal fun MainScreen(
                                 showNavigateSnackBar(message, action)
                             }
                         },
-                        navigateToPlaceDetail = {
-                            val navOptions = navOptions {}
-                            // TODO. 타운 아이디
-                            navigator.navigateToMaps(
-                                mapsType = MapsType.PLACE_DETAIL.name,
-                                townId = 0,
-                                navOptions = navOptions
-                            )
-                        },
-                        navigateToEditCourse = {
-                            val navOptions = navOptions {}
-                            // TODO. 타운 아이디
-                            navigator.navigateToMaps(
-                                mapsType = MapsType.EDIT_COURSE.name,
-                                townId = 0,
-                                navOptions = navOptions
-                            )
-                        },
                         navigateToPlace = {
                             val navOptions = navOptions {
-                                popUpTo(Place) {
+                                popUpTo(0) {
                                     inclusive = true
                                 }
                                 launchSingleTop = true
@@ -293,6 +265,9 @@ internal fun MainScreen(
                         },
                         navigateToMypage = {
                             val navOptions = navOptions {
+                                popUpTo(Mypage) {
+                                    inclusive = true
+                                }
                                 launchSingleTop = true
                             }
                             navigator.navigateToMypage(navOptions = navOptions)

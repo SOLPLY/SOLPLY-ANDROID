@@ -40,7 +40,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun MypageRoute(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
     navigateToPlaceCollection: (Long, String) -> Unit,
     navigateToCourseCollection: (Long, String) -> Unit,
@@ -88,7 +87,6 @@ fun MypageRoute(
     }
 
     MypageScreen(
-        navigateToMaps = navigateToMaps,
         onBackButtonClick = { viewModel.sendIntent(MypageIntent.BackButtonClick) },
         onEmptyButtonClick = { viewModel.sendIntent(MypageIntent.EmptyButtonClick(it)) },
         onClickPlaceTab = { viewModel.sendIntent(MypageIntent.SelectPlaceTab) },
@@ -118,7 +116,6 @@ fun MypageRoute(
 
 @Composable
 fun MypageScreen(
-    navigateToMaps: (String) -> Unit,
     onBackButtonClick: () -> Unit,
     onEmptyButtonClick: (MypageTab) -> Unit,
     onClickPlaceTab: () -> Unit,
@@ -208,9 +205,5 @@ fun MypageScreen(
                 )
             }
         }
-        Text(
-            text = "Mypage",
-            modifier = Modifier.customClickable { navigateToMaps(MapsType.EDIT_COURSE.name) }
-        )
     }
 }
