@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -33,11 +33,6 @@ fun PlaceRecommendCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    val painter = runCatching {
-        painterResource(id = imgRes.toInt())
-    }.getOrElse {
-        painterResource(id = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-    }
     Box(
         modifier
             .graphicsLayer { clip = true; shape = RoundedCornerShape(20.dp) }
@@ -46,7 +41,8 @@ fun PlaceRecommendCard(
         AdaptationImage(
             imageUrl = imgRes,
             contentDescription = title,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
         Box(
             Modifier
