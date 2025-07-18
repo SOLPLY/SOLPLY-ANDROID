@@ -120,6 +120,17 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.PlaceInfoClick -> {
+                val currentSelectedId = uiState.value.selectedPlaceInfoId
+                val newSelectedId = if (currentSelectedId == intent.placeId) null else intent.placeId
+                val selectedPlace = uiState.value.courseDetailInfo.places.find { it.placeId == newSelectedId }
+                if (selectedPlace != null) {
+                    postSideEffect(
+                        MapsSideEffect.MoveCameraToPlace(
+                            latitude = selectedPlace.latitude,
+                            longitude = selectedPlace.longitude
+                        )
+                    )
+                }
                 reduce {
                     copy(
                         selectedPlaceInfoId = if (selectedPlaceInfoId == intent.placeId) {

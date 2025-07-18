@@ -381,7 +381,7 @@ private fun MapsScreen(
         }
     }
 
-    LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places, selectedPlaceInfoId) {
+    LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places) {
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
                 cameraPositionState.animate(
@@ -399,30 +399,6 @@ private fun MapsScreen(
 
             MapsType.ADD_COURSE, MapsType.EDIT_COURSE -> {
                 if (courseDetailInfo.places.isNotEmpty()) {
-                    if (selectedPlaceInfoId != null) {
-                        val selectedPlace = courseDetailInfo.places.find { it.placeId == selectedPlaceInfoId }
-                        selectedPlace?.let { place ->
-                            cameraPositionState.animate(
-                                update = CameraUpdate.toCameraPosition(
-                                    CameraPosition(
-                                        LatLng(place.latitude - 0.009, place.longitude),
-                                        14.0,
-                                        0.0,
-                                        0.0
-                                    )
-                                ),
-                                durationMs = 500
-                            )
-                            lastCameraPosition = CameraPosition(
-                                LatLng(place.latitude, place.longitude),
-                                16.0,
-                                0.0,
-                                0.0
-                            )
-                            return@LaunchedEffect
-                        }
-                    }
-
                     val newCameraPosition = calculateCameraPosition(courseDetailInfo.places)
 
                     val shouldAnimate = lastCameraPosition?.let { lastPos ->
