@@ -643,6 +643,7 @@ private fun MapsScreen(
                 when (mapsType) {
                     MapsType.PLACE_DETAIL -> {
                         PlaceDetailBottomSheet(
+                            context = context,
                             addPlace = startAddMyCourse,
                             placeType = placeDetailEntity.primaryTag,
                             title = placeDetailEntity.placeName,

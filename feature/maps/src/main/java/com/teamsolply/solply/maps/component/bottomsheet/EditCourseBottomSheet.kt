@@ -203,7 +203,7 @@ internal fun EditCourseBottomSheet(
                         CourseItem(
                             placeName = item.placeName,
                             placeTag = PlaceType.entries.firstOrNull {
-                                it.displayName == item.primaryTag
+                                it.name == item.primaryTag
                             } ?: PlaceType.ALL,
                             placeAddress = item.address,
                             placeImageRes = item.thumbnailUrl,

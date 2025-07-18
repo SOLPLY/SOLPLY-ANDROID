@@ -33,6 +33,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
 import formatTextToPlaceItem
+import formatTextToPlaceItemTitle
 
 @Composable
 internal fun CourseItem(
@@ -53,6 +54,9 @@ internal fun CourseItem(
         animationSpec = tween(durationMillis = 50)
     )
 
+    val backGroundColor =
+        if (selectedPlaceItem) SolplyTheme.colors.gray100 else SolplyTheme.colors.white
+
     Row(
         modifier = modifier
             .animateContentSize(animationSpec = tween(durationMillis = 70))
@@ -63,11 +67,11 @@ internal fun CourseItem(
                 shape = RoundedCornerShape(20.dp)
             )
             .background(
-                color = SolplyTheme.colors.white,
+                color = backGroundColor,
                 shape = RoundedCornerShape(20.dp)
             ),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         AdaptationImage(
             imageUrl = placeImageRes,
@@ -80,13 +84,13 @@ internal fun CourseItem(
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column {
-                    Row(modifier = Modifier.padding(bottom = 6.dp)) {
+                    Row(modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)) {
                         PlaceTag(
                             type = placeTag,
                             modifier = Modifier.padding(end = 4.dp)
                         )
                         Text(
-                            text = placeName,
+                            text = placeName.formatTextToPlaceItemTitle(),
                             modifier = Modifier,
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.title15M
@@ -123,7 +127,8 @@ internal fun CourseItem(
             if (selectedPlaceItem) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Spacer(modifier = Modifier.padding(start = 8.dp))
                     Box(
@@ -169,6 +174,7 @@ internal fun CourseItem(
                             style = SolplyTheme.typography.button12M
                         )
                     }
+                    Spacer(modifier = Modifier.padding(end = 22.dp))
                 }
             }
         }
