@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
@@ -60,12 +59,5 @@ fun ProgressBar(
                 .clip(RoundedCornerShape(20.dp))
                 .animateContentSize()
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProgressBarPreview() {
-    SolplyTheme {
     }
 }

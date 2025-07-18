@@ -24,7 +24,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun SolplyConfirmDialog(
@@ -97,19 +96,5 @@ fun SolplyConfirmDialog(
                 }
             }
         }
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun SolplyConfirmDialogPreview() {
-    SolplyTheme {
-        SolplyConfirmDialog(
-            text = "선택한 장소를 삭제할까요?",
-            confirmButtonText = "삭제",
-            dismissButtonText = "취소",
-            onClickConfirm = {},
-            onClickDismiss = {}
-        )
     }
 }

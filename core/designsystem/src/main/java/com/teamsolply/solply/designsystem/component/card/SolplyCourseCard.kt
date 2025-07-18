@@ -106,7 +106,7 @@ fun SolplyCourseCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp)
+                    .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)
             ) {
                 Row {
                     Text(
@@ -132,7 +132,6 @@ fun SolplyCourseCard(
                 Spacer(modifier = Modifier.weight(1f))
                 Row(
                     modifier = Modifier
-                        .padding(bottom = 4.dp)
                 ) {
                     placeType.take(2).forEach { placeType ->
                         PlaceTag(

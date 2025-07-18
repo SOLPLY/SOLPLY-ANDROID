@@ -235,6 +235,11 @@ private fun ValidationMessageRow(
                 color = SolplyTheme.colors.red600
             )
 
+            NickNameValidateState.TooShort -> ValidationMessage(
+                text = "두 글자 이상이어야 해요.",
+                color = SolplyTheme.colors.red600
+            )
+
             NickNameValidateState.Valid -> ValidationMessage(
                 text = "사용 가능한 이름이에요.",
                 color = SolplyTheme.colors.green500

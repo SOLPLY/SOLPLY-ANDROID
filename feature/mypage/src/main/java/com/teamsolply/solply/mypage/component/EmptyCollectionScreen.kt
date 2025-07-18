@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.model.MypageTab
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun EmptyCollectionScreen(
@@ -51,17 +50,6 @@ fun EmptyCollectionScreen(
             textColor = textColor,
             enabledBackgroundColor = backgroundColor,
             modifier = Modifier.padding(horizontal = 64.dp)
-        )
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun EmptyCollectionScreenPreview() {
-    SolplyTheme {
-        EmptyCollectionScreen(
-            onClick = {},
-            mypageTab = MypageTab.COURSE
         )
     }
 }

@@ -45,20 +45,22 @@ fun SelectPersonaScreen(
                     .fillMaxWidth()
                     .padding(top = 28.dp)
             ) {
-                options.personaList.forEach { persona ->
-                    val isSelected = selectedPersona == persona.personaType
-                    MoodOptionBox(
-                        text = persona.description,
-                        selected = isSelected,
-                        onClick = {
-                            onBoardingIntent(OnBoardingIntent.OnPersonaSelected(persona.personaType))
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp)
-                            .height(52.dp)
-                    )
-                }
+                options.personaList
+                    .drop(1)
+                    .forEach { persona ->
+                        val isSelected = selectedPersona == persona.personaType
+                        MoodOptionBox(
+                            text = persona.description,
+                            selected = isSelected,
+                            onClick = {
+                                onBoardingIntent(OnBoardingIntent.OnPersonaSelected(persona.personaType))
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp)
+                                .height(52.dp)
+                        )
+                    }
             }
         }
 

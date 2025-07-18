@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place.component.card
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,15 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 
 @Composable
 fun PlaceRecommendCard(
@@ -30,22 +31,19 @@ fun PlaceRecommendCard(
     type: PlaceType,
     imgRes: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    scale: Float = 1f
 ) {
-    val painter = runCatching {
-        painterResource(id = imgRes.toInt())
-    }.getOrElse {
-        painterResource(id = com.teamsolply.solply.designsystem.R.drawable.img_course_dummy)
-    }
     Box(
         modifier
-            .graphicsLayer { clip = true; shape = RoundedCornerShape(20.dp) }
+            .graphicsLayer { clip = true; shape = RoundedCornerShape(20.dp * scale) }
             .customClickable(rippleEnabled = false) { onClick() }
     ) {
-        Image(
-            painter = painter,
+        AdaptationImage(
+            imageUrl = imgRes,
             contentDescription = title,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
         Box(
             Modifier
@@ -60,19 +58,29 @@ fun PlaceRecommendCard(
         Column(
             Modifier
                 .align(Alignment.BottomStart)
-                .padding(16.dp)
+                .padding(16.dp * scale)
         ) {
-            PlaceTag(type = type)
-            Spacer(Modifier.height(4.dp))
+            if (scale < 1f) {
+                Box(Modifier.scale(0.75f)) {
+                    PlaceTag(type = type)
+                }
+            } else {
+                PlaceTag(type = type)
+            }
+            Spacer(Modifier.height(4.dp * scale))
             Text(
                 text = title,
-                style = SolplyTheme.typography.display16Sb,
+                style = SolplyTheme.typography.display16Sb.copy(
+                    fontSize = SolplyTheme.typography.display16Sb.fontSize * scale
+                ),
                 color = SolplyTheme.colors.white
             )
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(4.dp * scale))
             Text(
                 subtitle,
-                style = SolplyTheme.typography.display12R,
+                style = SolplyTheme.typography.display12R.copy(
+                    fontSize = SolplyTheme.typography.display12R.fontSize * scale
+                ),
                 color = SolplyTheme.colors.white,
                 maxLines = 2
             )

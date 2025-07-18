@@ -90,7 +90,7 @@ fun CourseScreen(
             state = gridState,
             modifier = modifier
                 .fillMaxSize()
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                .padding(start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -100,7 +100,7 @@ fun CourseScreen(
                     style = SolplyTheme.typography.display20Sb,
                     color = SolplyTheme.colors.black,
                     modifier = Modifier
-                        .padding(start = 4.dp, bottom = 9.dp)
+                        .padding(start = 4.dp, top = 16.dp, bottom = 9.dp)
                 )
             }
 
