@@ -5,7 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.ImageLoader
-import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import coil.decode.GifDecoder
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -15,7 +17,8 @@ fun AdaptationImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
     contentScale: ContentScale = ContentScale.Fit,
-    contentDescription: String? = null
+    contentDescription: String? = null,
+    onLoadingStateChange: ((AsyncImagePainter.State) -> Unit)? = null
 ) {
     val context = LocalContext.current
 
@@ -36,13 +39,33 @@ fun AdaptationImage(
         .crossfade(true)
         .build()
 
-    AsyncImage(
+    SubcomposeAsyncImage(
         model = request,
         imageLoader = imageLoader,
         contentScale = contentScale,
         contentDescription = contentDescription,
-        modifier = modifier
-    )
+        modifier = modifier,
+        onState = { state ->
+            onLoadingStateChange?.invoke(state)
+        }
+    ) {
+        when (painter.state) {
+            is AsyncImagePainter.State.Loading -> {
+                onLoadingStateChange?.invoke(painter.state)
+            }
+
+            is AsyncImagePainter.State.Success -> {
+                SubcomposeAsyncImageContent()
+                onLoadingStateChange?.invoke(painter.state)
+            }
+
+            is AsyncImagePainter.State.Error -> {
+                onLoadingStateChange?.invoke(painter.state)
+            }
+
+            AsyncImagePainter.State.Empty -> {}
+        }
+    }
 }
 
 private fun containsExtension(url: String, extension: String): Boolean {
