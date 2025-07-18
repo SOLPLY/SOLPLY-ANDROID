@@ -295,7 +295,7 @@ fun PlaceDetailBottomSheet(
                                             style = SolplyTheme.typography.caption14R.copy(
                                                 lineHeight = 15.sp,
                                                 textDecoration = TextDecoration.Underline
-                                            ),
+                                            )
                                         )
                                     }
                                 }
