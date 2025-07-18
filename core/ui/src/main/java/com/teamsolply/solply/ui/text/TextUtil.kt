@@ -62,3 +62,9 @@ fun String.formatTextToPlaceItem(): String = if (this.length > 15) {
 } else {
     this
 }
+
+fun String.formatTextToPlaceItemTitle(): String = if (this.length > 8) {
+    this.take(8) + "..."
+} else {
+    this
+}
