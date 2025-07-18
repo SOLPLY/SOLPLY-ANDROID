@@ -1,5 +1,6 @@
 package com.teamsolply.solply.maps
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
@@ -98,6 +99,12 @@ internal class MapsViewModel @Inject constructor(
                             isBookmarked = !place.isBookmarked,
                             onSuccess = {
                                 if (!place.isBookmarked) {
+                                    postSideEffect(
+                                        MapsSideEffect.MoveCameraToPlace(
+                                            latitude = place.latitude,
+                                            longitude = place.longitude
+                                        )
+                                    )
                                     postSideEffect(MapsSideEffect.ShowSuccessSavePlaceSnackBar)
                                 }
                             }

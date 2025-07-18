@@ -69,8 +69,8 @@ internal sealed interface MapsIntent : UiIntent {
     data object BeforeEditCourseDialogInVisible : MapsIntent
     data object BeforeEditCourseDialogClick : MapsIntent
 
-    data object BeforeEditCourseTopBarBackHandler: MapsIntent
-    data object NavigateToBackDialogInVisible: MapsIntent
+    data object BeforeEditCourseTopBarBackHandler : MapsIntent
+    data object NavigateToBackDialogInVisible : MapsIntent
 
     // Item Drag and Remove
     data class StartCourseMove(
@@ -117,6 +117,10 @@ internal sealed interface MapsSideEffect : SideEffect {
     ) : MapsSideEffect
 
     data object ShowSuccessSaveNewCourseSnackBar : MapsSideEffect
+    data class MoveCameraToPlace(
+        val latitude: Double,
+        val longitude: Double
+    ) : MapsSideEffect
 
     // Shared
     data object NavigateToCourse : MapsSideEffect

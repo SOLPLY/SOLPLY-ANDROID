@@ -97,6 +97,7 @@ internal fun MapsRoute(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var moveCameraRequest by remember { mutableStateOf<Pair<Double, Double>?>(null) }
 
     // TODO. 초기 로드 데이터
     LaunchedEffect(Unit) {
@@ -197,6 +198,10 @@ internal fun MapsRoute(
                         )
                     }
                 }
+
+                is MapsSideEffect.MoveCameraToPlace -> {
+                    moveCameraRequest = sideEffect.latitude to sideEffect.longitude
+                }
             }
         }
     }
@@ -238,7 +243,9 @@ internal fun MapsRoute(
         placeInfoClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceInfoClick(placeId = placeId))
         },
-        // Edit Course
+        moveCameraRequest = moveCameraRequest,
+        onCameraMoved = { moveCameraRequest = null },
+                // Edit Course
         removeIconVisible = uiState.removeIconVisibility,
         startEditCourse = uiState.startEditCourse,
         startCourseMove = { iconVisibility ->
@@ -337,6 +344,8 @@ private fun MapsScreen(
     selectedPlaceInfoId: Long?,
     singleCoursePlaceBookMarkClick: (Long) -> Unit,
     placeInfoClick: (Long) -> Unit,
+    moveCameraRequest: Pair<Double, Double>?,
+    onCameraMoved: () -> Unit,
     // Edit Course
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
@@ -360,13 +369,25 @@ private fun MapsScreen(
     val cameraPositionState = rememberCameraPositionState()
     var lastCameraPosition by remember { mutableStateOf<CameraPosition?>(null) }
 
-    LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places) {
+    LaunchedEffect(moveCameraRequest) {
+        moveCameraRequest?.let { (lat, lng) ->
+            cameraPositionState.animate(
+                update = CameraUpdate.toCameraPosition(
+                    CameraPosition(LatLng(lat - 0.009, lng), 14.0, 0.0, 0.0)
+                ),
+                durationMs = 1000
+            )
+            onCameraMoved()
+        }
+    }
+
+    LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places, selectedPlaceInfoId) {
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
                 cameraPositionState.animate(
                     update = CameraUpdate.toCameraPosition(
                         CameraPosition(
-                            LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
+                            LatLng(placeDetailEntity.latitude - 0.009, placeDetailEntity.longitude),
                             14.0,
                             0.0,
                             0.0
@@ -378,6 +399,30 @@ private fun MapsScreen(
 
             MapsType.ADD_COURSE, MapsType.EDIT_COURSE -> {
                 if (courseDetailInfo.places.isNotEmpty()) {
+                    if (selectedPlaceInfoId != null) {
+                        val selectedPlace = courseDetailInfo.places.find { it.placeId == selectedPlaceInfoId }
+                        selectedPlace?.let { place ->
+                            cameraPositionState.animate(
+                                update = CameraUpdate.toCameraPosition(
+                                    CameraPosition(
+                                        LatLng(place.latitude - 0.009, place.longitude),
+                                        14.0,
+                                        0.0,
+                                        0.0
+                                    )
+                                ),
+                                durationMs = 500
+                            )
+                            lastCameraPosition = CameraPosition(
+                                LatLng(place.latitude, place.longitude),
+                                16.0,
+                                0.0,
+                                0.0
+                            )
+                            return@LaunchedEffect
+                        }
+                    }
+
                     val newCameraPosition = calculateCameraPosition(courseDetailInfo.places)
 
                     val shouldAnimate = lastCameraPosition?.let { lastPos ->
