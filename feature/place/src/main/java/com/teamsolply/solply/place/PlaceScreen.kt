@@ -400,10 +400,10 @@ fun CustomHorizontalPager(
             isCenter[page % recommendPlaces.size] = page == pagerState.currentPage
 
             val itemSize = when (page % recommendPlaces.size) {
-            0 -> page1ItemSize.value
-            1 -> page2ItemSize.value
-            else -> page3ItemSize.value
-        }
+                0 -> page1ItemSize.value
+                1 -> page2ItemSize.value
+                else -> page3ItemSize.value
+            }
             val scale = if (itemSize == 240.dp) 1f else 0.75f
 
             PlaceRecommendCard(

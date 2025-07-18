@@ -16,10 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.model.PlaceType
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun SolplyTownCard(
