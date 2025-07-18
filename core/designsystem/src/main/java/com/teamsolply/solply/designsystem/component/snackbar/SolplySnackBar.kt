@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -112,3 +111,38 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun SolplyNavigateSimpleSnackBar(navigateToRoute: () -> Unit) {
+    SolplySnackBar {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "'코스가 수집함에 저장되었어요.'",
+                style = SolplyTheme.typography.body14M,
+                color = SolplyTheme.colors.white
+            )
+            Row(
+                modifier = Modifier.customClickable { navigateToRoute() },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "코스 수정하기",
+                    style = SolplyTheme.typography.body14M,
+                    color = SolplyTheme.colors.purple400
+                )
+                Icon(
+                    painter = painterResource(R.drawable.ic_next_arrow),
+                    contentDescription = "next_arrow",
+                    tint = SolplyTheme.colors.purple200
+                )
+            }
+        }
+    }
+}
+

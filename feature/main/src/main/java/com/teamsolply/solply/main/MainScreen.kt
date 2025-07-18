@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.favoriteTownNavGraph
 import com.teamsolply.solply.course.navigation.courseNavGraph
+import com.teamsolply.solply.designsystem.component.snackbar.SolplyNavigateSimpleSnackBar
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNavigateSnackBar
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyNotificationSnackBar
 import com.teamsolply.solply.designsystem.component.snackbar.SolplyTextSnackBar
@@ -33,11 +34,9 @@ import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.SnackBarType
 import com.teamsolply.solply.mypage.collection.course.courseCollectionNavGraph
 import com.teamsolply.solply.mypage.collection.place.placeCollectionNavGraph
-import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
-import com.teamsolply.solply.place.navigation.Place
 import com.teamsolply.solply.place.navigation.placeNavGraph
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
@@ -77,6 +76,18 @@ internal fun MainScreen(
     }
 
     suspend fun showNavigateSnackBar(message: String, onAction: () -> Unit) {
+        currentSnackbarJob.value?.join()
+        currentSnackbarJob.value = coroutineScope.launch {
+            currentSnackbarState.value =
+                SolplySnackBarData(type = SnackBarType.NAVIGATE_SIMPLE, action = onAction)
+            snackbarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
+
+    suspend fun showNavigateSimpleSnackBar(message: String, onAction: () -> Unit) {
         currentSnackbarJob.value?.join()
         currentSnackbarJob.value = coroutineScope.launch {
             currentSnackbarState.value =
@@ -245,6 +256,11 @@ internal fun MainScreen(
                                 showNavigateSnackBar(message, action)
                             }
                         },
+                        showNavigateSimpleSnackBar = { message, action ->
+                            coroutineScope.launch {
+                                showNavigateSimpleSnackBar(message, action)
+                            }
+                        },
                         navigateToPlace = {
                             val navOptions = navOptions {
                                 popUpTo(0) {
@@ -336,6 +352,14 @@ internal fun MainScreen(
                         SnackBarType.NAVIGATE -> {
                             SolplyNavigateSnackBar(
                                 text = snackbarData.visuals.message,
+                                navigateToRoute = {
+                                    currentSnackbarState.value.action?.invoke()
+                                }
+                            )
+                        }
+
+                        SnackBarType.NAVIGATE_SIMPLE -> {
+                            SolplyNavigateSimpleSnackBar(
                                 navigateToRoute = {
                                     currentSnackbarState.value.action?.invoke()
                                 }

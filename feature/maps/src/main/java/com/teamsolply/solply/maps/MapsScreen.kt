@@ -87,6 +87,7 @@ internal fun MapsRoute(
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
+    showNavigateSimpleSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
     navigateToMap: (String, Long, Long?, Long?) -> Unit,
@@ -137,7 +138,7 @@ internal fun MapsRoute(
                 )
 
                 is MapsSideEffect.ShowSuccessSaveCourseSnackBar -> {
-                    showNavigateSnackBar(
+                    showNavigateSimpleSnackBar(
                         sideEffect.selectedCourseName
                     ) {
                         uiState.townId?.let { townId ->
