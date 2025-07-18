@@ -26,5 +26,5 @@ data class CourseResponseDto(
     val mainTags: List<PlaceType>,
 
     @SerialName("isBookmarked")
-    val isBookmarked: Boolean
+    val isSaved: Boolean
 )

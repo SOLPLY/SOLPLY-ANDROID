@@ -39,7 +39,11 @@ fun PlaceCollectionRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 is PlaceCollectionSideEffect.NavigateToBack -> navigateToBack()
-                is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps(MapsType.PLACE_DETAIL.name, townId, sideEffect.placeId)
+                is PlaceCollectionSideEffect.NavigateToMap -> navigateToMaps(
+                    MapsType.PLACE_DETAIL.name,
+                    townId,
+                    sideEffect.placeId
+                )
             }
         }
     }
@@ -79,13 +83,14 @@ fun PlaceCollectionRoute(
                         placeType = it.placeType,
                         imgRes = it.imageUrls,
                         selected = it.isSelected,
+                        saved = it.isSaved,
                         touchable = false,
                         modifier =
-                        if (index % 2 == 0) {
-                            Modifier.padding(end = 5.dp)
-                        } else {
-                            Modifier.padding(start = 5.dp)
-                        }
+                            if (index % 2 == 0) {
+                                Modifier.padding(end = 5.dp)
+                            } else {
+                                Modifier.padding(start = 5.dp)
+                            }
                     )
                 }
             }

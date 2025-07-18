@@ -7,5 +7,6 @@ data class PlaceInfoEntity(
     val placeName: String,
     val placeType: PlaceType,
     val imageUrls: String,
+    val isSaved: Boolean,
     val isSelected: Boolean = false
 )

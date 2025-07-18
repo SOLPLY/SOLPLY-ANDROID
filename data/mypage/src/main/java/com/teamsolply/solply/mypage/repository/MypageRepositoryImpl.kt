@@ -46,7 +46,8 @@ class MypageRepositoryImpl @Inject constructor(
                 placeId = place.placeId,
                 placeName = place.placeName,
                 placeType = place.tag,
-                imageUrls = place.imageUrl
+                imageUrls = place.imageUrl,
+                isSaved = place.isSaved
             )
         }
     }
@@ -59,7 +60,8 @@ class MypageRepositoryImpl @Inject constructor(
                 courseId = course.courseId,
                 courseName = course.title,
                 placeTypeList = course.mainTags,
-                imageUrls = listOf(course.imageUrl)
+                imageUrls = listOf(course.imageUrl),
+                isSaved = course.isSaved
             )
         }
     }
