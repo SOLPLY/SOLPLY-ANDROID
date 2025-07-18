@@ -7,5 +7,6 @@ data class CourseInfoEntity(
     val courseName: String,
     val placeTypeList: List<PlaceType>,
     val imageUrls: List<String>,
+    val isSaved: Boolean,
     val isSelected: Boolean = false
 )
