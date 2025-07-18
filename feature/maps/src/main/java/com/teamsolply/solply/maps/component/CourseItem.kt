@@ -33,6 +33,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
 import formatTextToPlaceItem
+import formatTextToPlaceItemTitle
 
 @Composable
 internal fun CourseItem(
@@ -67,7 +68,7 @@ internal fun CourseItem(
                 shape = RoundedCornerShape(20.dp)
             ),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         AdaptationImage(
             imageUrl = placeImageRes,
@@ -80,13 +81,13 @@ internal fun CourseItem(
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column {
-                    Row(modifier = Modifier.padding(bottom = 6.dp)) {
+                    Row(modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)) {
                         PlaceTag(
                             type = placeTag,
                             modifier = Modifier.padding(end = 4.dp)
                         )
                         Text(
-                            text = placeName,
+                            text = placeName.formatTextToPlaceItemTitle(),
                             modifier = Modifier,
                             color = SolplyTheme.colors.black,
                             style = SolplyTheme.typography.title15M
