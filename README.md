@@ -28,67 +28,18 @@
 1. 취향 기반 온보딩 : 선호하는 지역과 장소 유형, 활동 취향을 수집합니다. 사용자의 선호 지역과 취향 키워드가 반영된 추천 컨텐츠를 노출시킵니다!</br>
 2. 장소 & 코스 추천 : 사용자의 취향과 목적에 따른 혼놀 장소를 검색할 수 있습니다. 장소나 방문 목적, 기타 특징에 기반한 필터링 기능을 통해, 사용자 맞춤형 혼놀 코스를 추천합니다!</br>
 3. 장소 & 코스 수집 : 마음에 드는 장소나 코스를 저장할 수 있습니다. 저장한 코스에 새로운 장소를 추가하거나 기존의 장소를 삭제할 수 있으며 코스의 순서를 바꾸며 사용자가 커스터마이징할 수 있습니다!</br></br>
-<!--
+
 ## 📹 시연 영상
 
-<table>
-  <tr>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-  </tr>
-  <tr>
-    <td align="center"><b>스플래시</b></td>
-    <td align="center"><b>로그인</b></td>
-    <td align="center"><b>메인(장소)</b></td>
-    <td align="center"><b>메인(코스)</b></td>
-  </tr>
-</table>
-<table>
-  <tr>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-  </tr>
-  <tr>
-    <td align="center"><b>오늘의 추천 장소</b></td>
-    <td align="center"><b>장소 메인 필터링</b></td>
-    <td align="center"><b>추가 옵션 필터링</b></td>
-    <td align="center"><b>장소 상세</b></td>
-  </tr>
-</table>
-<table>
-  <tr>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-  </tr>
-  <tr>
-    <td salign="center"><b>장소 내 코스 추가</b></td>
-    <td align="center"><b>코스 상세보기</b></td>
-    <td align="center"><b>장소 리뷰</b></td>
-    <td align="center"><b>검색 기본</b></td>
-  </tr>
-</table>
-<table>
-  <tr>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-    <td width="25%"><img src="" width="100%" /></td>
-  </tr>
-  <tr>
-    <td align="center"><b>수집함(장소)</b></td>
-    <td align="center"><b>수집함(코스)</b></td>
-    <td align="center"><b>코스 순서 변경 및 삭제</b></td>
-    <td align="center"><b>새 코스 저장</b></td>
-  </tr>
-</table>
+| ![온보딩](https://github.com/user-attachments/assets/3a02a30d-179a-41e0-acab-566c99f1dc9f) | ![필터링](https://github.com/user-attachments/assets/f89acd3f-589b-4b05-931d-d04e1806086f) | ![장소 저장](https://github.com/user-attachments/assets/da4e4889-0a8b-4c05-a76e-c6d35ddfe094) |
+| :--: | :--: | :--: | 
+| 온보딩 | 필터링 | 장소 저장 |
+
+| ![코스 메인](https://github.com/user-attachments/assets/bbb1be2e-5044-4454-9afe-629520fad075) | ![코스 상세](https://github.com/user-attachments/assets/6bd99b4d-9853-4807-afd0-bbd5f7e8b22a) | ![코스 수정](https://github.com/user-attachments/assets/0e4a7528-3020-4e44-997d-5b552dd2e04f) | 
+| :--: | :--: | :--: |
+| 코스 메인 | 코스 상세 | 코스 수정 |
 </br>
--->
+
 ## ⚙️ 기술 및 아키텍쳐 선정
 + `IDE - Android Studio Meerkat`</br>
 + `UI - Jetpack Compose`</br>
