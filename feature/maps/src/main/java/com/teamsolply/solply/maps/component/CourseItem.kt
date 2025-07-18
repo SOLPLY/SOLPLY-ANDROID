@@ -103,7 +103,8 @@ internal fun CourseItem(
                 if (isEditing) {
                     Icon(
                         painter = painterResource(R.drawable.ic_course_item_edit),
-                        contentDescription = "item_edting"
+                        contentDescription = "item_edting",
+                        tint = SolplyTheme.colors.gray400
                     )
                 } else {
                     val iconColor =
