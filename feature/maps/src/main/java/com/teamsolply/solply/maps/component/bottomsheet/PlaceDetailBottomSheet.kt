@@ -1,6 +1,8 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
 import ClickableAnnotatedText
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +35,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
@@ -47,6 +50,7 @@ import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun PlaceDetailBottomSheet(
+    context: Context,
     addPlace: Boolean,
     placeType: PlaceType,
     title: String,
@@ -280,10 +284,18 @@ fun PlaceDetailBottomSheet(
                                     placeSnsLink.forEach {
                                         Text(
                                             text = it.snsPlatform,
+                                            modifier = Modifier.customClickable(rippleEnabled = false) {
+                                                val intent = Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    it.url.toUri()
+                                                )
+                                                context.startActivity(intent)
+                                            },
                                             color = SolplyTheme.colors.black,
                                             style = SolplyTheme.typography.caption14R.copy(
-                                                lineHeight = 15.sp
-                                            )
+                                                lineHeight = 15.sp,
+                                                textDecoration = TextDecoration.Underline
+                                            ),
                                         )
                                     }
                                 }
