@@ -1,15 +1,23 @@
 package com.teamsolply.solply.mypage.collection.course
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,7 +25,10 @@ import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.mypage.collection.component.CollectionScreen
+import com.teamsolply.solply.mypage.collection.component.SelectModeBar
+import com.teamsolply.solply.mypage.collection.place.PlaceCollectionIntent
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -32,6 +43,10 @@ fun CourseCollectionRoute(
     viewModel: CourseCollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val selectText =
+        if (uiState.selectMode) stringResource(R.string.mypage_delete) else stringResource(R.string.mypage_select)
+    val cancelText = if (uiState.selectMode) stringResource(R.string.mypage_cancel) else ""
+
     LaunchedEffect(Unit) {
         viewModel.sendIntent(CourseCollectionIntent.Init(townId, townName))
     }
@@ -52,33 +67,19 @@ fun CourseCollectionRoute(
     CollectionScreen(
         town = uiState.townName,
         onBackButtonClick = { viewModel.sendIntent(CourseCollectionIntent.BackButtonClick) },
-        onSelectButtonClick = { viewModel.sendIntent(CourseCollectionIntent.SelectButtonClick) },
-        onDeleteButtonClick = { viewModel.sendIntent(CourseCollectionIntent.DeleteButtonClick) },
-        onCancelButtonClick = { viewModel.sendIntent(CourseCollectionIntent.CancelButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(CourseCollectionIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(CourseCollectionIntent.DialogDismissClick) },
-        isSelectMode = uiState.selectMode,
         dialogState = uiState.dialogState,
         content = {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                SelectModeBar(
+                    selectMode = uiState.selectMode,
+                    onSelectButtonClick = { viewModel.sendIntent(CourseCollectionIntent.SelectButtonClick) },
+                    onDeleteButtonClick = { viewModel.sendIntent(CourseCollectionIntent.DeleteButtonClick) },
+                    onCancelButtonClick = { viewModel.sendIntent(CourseCollectionIntent.CancelButtonClick) }
+                )
+            }
             itemsIndexed(uiState.courses) { index, it ->
-                val iconColor = when (it.placeTypeList[0]) {
-                    PlaceType.BOOKSTORE, PlaceType.SHOPPING -> SolplyTheme.colors.purple400
-                    PlaceType.FOOD -> SolplyTheme.colors.yellow300
-                    PlaceType.CAFE -> SolplyTheme.colors.red500
-                    else -> SolplyTheme.colors.green400
-                }
-                val iconBackgroundColor = when (it.placeTypeList[0]) {
-                    PlaceType.BOOKSTORE, PlaceType.SHOPPING -> SolplyTheme.colors.purple100
-                    PlaceType.FOOD -> SolplyTheme.colors.yellow100
-                    PlaceType.CAFE -> SolplyTheme.colors.red200
-                    else -> SolplyTheme.colors.green200
-                }
-                val backgroundColor = when (it.placeTypeList[0]) {
-                    PlaceType.BOOKSTORE, PlaceType.SHOPPING -> SolplyTheme.colors.purple300
-                    PlaceType.FOOD -> SolplyTheme.colors.yellow200
-                    PlaceType.CAFE -> SolplyTheme.colors.red300
-                    else -> SolplyTheme.colors.green300
-                }
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -120,6 +121,9 @@ fun CourseCollectionRoute(
                         savedCourse = it.isSaved
                     )
                 }
+            }
+            item(span = { GridItemSpan(2) }) {
+                Spacer(modifier = Modifier.height(60.dp))
             }
         },
         modifier = Modifier.padding(paddingValues)
