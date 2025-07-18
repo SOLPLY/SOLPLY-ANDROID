@@ -21,7 +21,7 @@ fun PlaceTag(
         PlaceType.CAFE -> SolplyTheme.colors.red500
         PlaceType.FOOD -> SolplyTheme.colors.yellow500
         PlaceType.BOOKSTORE -> SolplyTheme.colors.purple600
-        PlaceType.WALKING -> SolplyTheme.colors.green500
+        PlaceType.WALKING -> SolplyTheme.colors.gray500
         PlaceType.SHOPPING -> SolplyTheme.colors.purple600
         PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green500
         PlaceType.ALL -> SolplyTheme.colors.white
