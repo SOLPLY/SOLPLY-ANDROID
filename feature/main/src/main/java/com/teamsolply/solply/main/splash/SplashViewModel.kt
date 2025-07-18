@@ -20,7 +20,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            delay(1000)
+            delay(2000)
             mainRepository.getAutoSignIn().onSuccess { autoSignIn ->
                 _sideEffect.emit(
                     if (autoSignIn) {
