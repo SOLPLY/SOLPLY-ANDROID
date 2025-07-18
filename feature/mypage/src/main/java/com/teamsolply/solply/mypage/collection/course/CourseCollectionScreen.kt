@@ -1,17 +1,13 @@
 package com.teamsolply.solply.mypage.collection.course
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,13 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.mypage.collection.component.CollectionScreen
 import com.teamsolply.solply.mypage.collection.component.SelectModeBar
-import com.teamsolply.solply.mypage.collection.place.PlaceCollectionIntent
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
@@ -113,11 +106,11 @@ fun CourseCollectionRoute(
                             )
                         },
                         modifier =
-                            if (index % 2 == 0) {
-                                Modifier.padding(end = 5.dp)
-                            } else {
-                                Modifier.padding(start = 5.dp)
-                            },
+                        if (index % 2 == 0) {
+                            Modifier.padding(end = 5.dp)
+                        } else {
+                            Modifier.padding(start = 5.dp)
+                        },
                         savedCourse = it.isSaved
                     )
                 }

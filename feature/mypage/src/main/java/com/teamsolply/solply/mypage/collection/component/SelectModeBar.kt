@@ -20,7 +20,7 @@ fun SelectModeBar(
     selectMode: Boolean,
     onSelectButtonClick: () -> Unit,
     onDeleteButtonClick: () -> Unit,
-    onCancelButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit
 ) {
     val selectText =
         if (selectMode) stringResource(R.string.mypage_delete) else stringResource(R.string.mypage_select)
