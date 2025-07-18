@@ -227,7 +227,7 @@ class PlaceViewModel @Inject constructor(
             ).onSuccess { placeEntities ->
                 reduce {
                     copy(
-                        placeList = placeEntities.map {
+                        placesLoadState = PlacesLoadState.Success(placeEntities.map {
                             PlaceData(
                                 placeId = it.placeId,
                                 placeName = it.placeName,
@@ -235,7 +235,9 @@ class PlaceViewModel @Inject constructor(
                                 primaryTag = PlaceType.valueOf(it.primaryTag),
                                 isBookmarked = it.isBookmarked
                             )
-                        }.toPersistentList()
+                        }.toPersistentList())
+
+
                     )
                 }
             }

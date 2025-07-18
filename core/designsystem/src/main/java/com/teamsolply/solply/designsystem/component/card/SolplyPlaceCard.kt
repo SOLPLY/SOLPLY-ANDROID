@@ -1,5 +1,6 @@
 package com.teamsolply.solply.designsystem.component.card
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,17 +11,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter
 import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
@@ -28,7 +33,6 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun SolplyPlaceCard(
@@ -41,6 +45,8 @@ fun SolplyPlaceCard(
     selected: Boolean = false,
     touchable: Boolean = true
 ) {
+    var isImageReady by remember { mutableStateOf(false) }
+
     val iconColor = when (placeType) {
         PlaceType.CAFE -> SolplyTheme.colors.red500
         PlaceType.FOOD -> SolplyTheme.colors.yellow300
@@ -55,11 +61,12 @@ fun SolplyPlaceCard(
         PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple100
         else -> SolplyTheme.colors.gray200
     }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .then(
-                if (touchable) {
+                if (touchable && isImageReady) {
                     Modifier.customClickable(rippleEnabled = false) { onClick() }
                 } else {
                     Modifier
@@ -72,20 +79,30 @@ fun SolplyPlaceCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(
-                    shape = RoundedCornerShape(20.dp)
-                )
+                .clip(RoundedCornerShape(20.dp))
         ) {
+            if (!isImageReady) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(SolplyTheme.colors.gray400.copy(alpha = 0.4f))
+                )
+            }
+
             AdaptationImage(
                 imageUrl = imgRes,
                 modifier = Modifier
-                    .size(136.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .matchParentSize(),
-                contentScale = ContentScale.Crop
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(20.dp)),
+                contentScale = ContentScale.Crop,
+                onLoadingStateChange = { state ->
+                    if (state is AsyncImagePainter.State.Success) {
+                        isImageReady = true
+                    }
+                }
             )
-            if (saved) {
+
+            if (saved && isImageReady) {
                 SolplySavedMarker(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
@@ -95,7 +112,7 @@ fun SolplyPlaceCard(
                     isButton = false
                 )
             }
-            if (selected) {
+            if (selected && isImageReady) {
                 CheckedBigCircle(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -103,7 +120,9 @@ fun SolplyPlaceCard(
                 )
             }
         }
+
         Spacer(modifier = Modifier.height(8.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -118,43 +137,6 @@ fun SolplyPlaceCard(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
             )
-        }
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun SolplyPlaceCardPreview() {
-    SolplyTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            SolplyPlaceCard(
-                modifier = Modifier.size(158.dp),
-                name = "을지면옥",
-                imgRes = "",
-                placeType = PlaceType.SHOPPING,
-                saved = true,
-                selected = true
-            )
-//            SolplyPlaceCard(
-//                modifier = Modifier.size(158.dp),
-//                name = "을지면옥",
-//                imgRes = R.drawable.img_course_dummy,
-//                placeType = PlaceType.CAFE,
-//                saved = true,
-//                selected = false
-//            )
-//            SolplyPlaceCard(
-//                modifier = Modifier.size(158.dp),
-//                name = "을지면옥",
-//                imgRes = R.drawable.img_course_dummy,
-//                placeType = PlaceType.WALK,
-//                saved = false,
-//                selected = false
-//            )
         }
     }
 }

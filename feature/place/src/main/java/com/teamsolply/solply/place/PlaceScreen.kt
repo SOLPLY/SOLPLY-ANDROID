@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
-import com.teamsolply.solply.place.component.header.PlaceHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceSubType
@@ -52,6 +51,7 @@ import com.teamsolply.solply.place.component.bottomsheet.PlaceOptionFilterSheet
 import com.teamsolply.solply.place.component.bottomsheet.PlaceTypeFilterSheet
 import com.teamsolply.solply.place.component.button.PlaceChipButton
 import com.teamsolply.solply.place.component.card.PlaceRecommendCard
+import com.teamsolply.solply.place.component.header.PlaceHeader
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.TagEntity
@@ -93,7 +93,7 @@ fun PlaceRoute(
     LocationPermissionRequest()
     PlaceScreen(
         modifier = Modifier.padding(paddingValues),
-        state = state,
+        uiState = state,
         onPlaceClick = { viewModel.sendIntent(PlaceIntent.PlaceClicked(it)) },
         snackbarHostState = snackbarHostState,
 
@@ -168,7 +168,7 @@ fun PlaceRoute(
 @Composable
 fun PlaceScreen(
     modifier: Modifier = Modifier,
-    state: PlaceState,
+    uiState: PlaceState,
     onPlaceClick: (Long) -> Unit,
     snackbarHostState: SnackbarHostState,
 
@@ -181,7 +181,7 @@ fun PlaceScreen(
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val centerItemSize = 240.dp
     val sideItemSize = 180.dp
-    val pagerSize = state.recommendPlaces.size.coerceAtLeast(1)
+    val pagerSize = uiState.recommendPlaces.size.coerceAtLeast(1)
     val pagerState = rememberPagerState(
         initialPage = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % pagerSize),
         pageCount = { Int.MAX_VALUE }
@@ -202,7 +202,7 @@ fun PlaceScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         PlaceHeader(
-            townName = state.userInfo.selectedTown.townName,
+            townName = uiState.userInfo.selectedTown.townName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
@@ -216,16 +216,16 @@ fun PlaceScreen(
         ) {
             item(span = { GridItemSpan(2) }) {
                 Text(
-                    text = getRecommendText(state.userInfo.persona, state.userInfo.nickname),
+                    text = getRecommendText(uiState.userInfo.persona, uiState.userInfo.nickname),
                     style = SolplyTheme.typography.display20Sb,
                     modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 28.dp)
                 )
             }
             item(span = { GridItemSpan(2) }) {
-                if (state.recommendPlaces.isNotEmpty()) {
+                if (uiState.recommendPlaces.isNotEmpty()) {
                     CustomHorizontalPager(
                         pagerState = pagerState,
-                        recommendPlaces = state.recommendPlaces,
+                        recommendPlaces = uiState.recommendPlaces,
                         centerItemSize = centerItemSize,
                         horizontalPadding = horizontalPadding,
                         isCenter = isCenter,
@@ -269,15 +269,15 @@ fun PlaceScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             PlaceChipButton(
-                                text = PlaceType.valueOf(state.selectedMainFilter).displayName,
+                                text = PlaceType.valueOf(uiState.selectedMainFilter).displayName,
                                 modifier = Modifier,
                                 onClick = { onClickMainFilterChip() }
                             )
 
-                            if (!state.subFilterItems.isNullOrEmpty() && state.selectedMainFilter != "ALL") {
+                            if (!uiState.subFilterItems.isNullOrEmpty() && uiState.selectedMainFilter != "ALL") {
                                 val optionFilterText = getOptionFilterText(
-                                    selectedIds = state.selectedOptionAFilter + state.selectedOptionBFilter,
-                                    optionTags = state.subFilterItems
+                                    selectedIds = uiState.selectedOptionAFilter + uiState.selectedOptionBFilter,
+                                    optionTags = uiState.subFilterItems
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 PlaceChipButton(
@@ -290,27 +290,51 @@ fun PlaceScreen(
                             }
                         }
                         Spacer(modifier = Modifier.height(14.dp))
-                        val chunkedList = state.placeList.chunked(2)
-                        chunkedList.forEach { rowItems ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(14.dp)
-                            ) {
-                                for (place in rowItems) {
-                                    Box(
-                                        modifier = Modifier.weight(1f)
-                                    ) {
-                                        PlaceGridItem(
-                                            place = place,
-                                            onClick = { onPlaceClick(place.placeId) }
-                                        )
+                        when (uiState.placesLoadState) {
+                            is PlacesLoadState.Loading -> {
+                                repeat(6) {
+                                    if (it % 2 == 0) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                                        ) {
+                                            repeat(2) {
+                                                Box(
+                                                    modifier = Modifier.weight(1f)
+                                                ) {
+                                                    PlaceSkeletonCard()
+                                                }
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(14.dp))
                                     }
                                 }
-                                repeat(2 - rowItems.size) {
-                                    Spacer(modifier = Modifier.weight(1f))
+                            }
+
+                            is PlacesLoadState.Success -> {
+                                val chunkedList = uiState.placesLoadState.placeList.chunked(2)
+                                chunkedList.forEach { rowItems ->
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(14.dp)
+                                    ) {
+                                        for (place in rowItems) {
+                                            Box(
+                                                modifier = Modifier.weight(1f)
+                                            ) {
+                                                PlaceGridItem(
+                                                    place = place,
+                                                    onClick = { onPlaceClick(place.placeId) }
+                                                )
+                                            }
+                                        }
+                                        repeat(2 - rowItems.size) {
+                                            Spacer(modifier = Modifier.weight(1f))
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(14.dp))
                                 }
                             }
-                            Spacer(modifier = Modifier.height(14.dp))
                         }
                     }
                 }
