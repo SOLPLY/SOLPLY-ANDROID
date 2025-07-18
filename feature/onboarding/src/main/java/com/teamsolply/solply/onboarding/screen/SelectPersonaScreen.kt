@@ -45,7 +45,9 @@ fun SelectPersonaScreen(
                     .fillMaxWidth()
                     .padding(top = 28.dp)
             ) {
-                options.personaList.forEach { persona ->
+                options.personaList
+                    .drop(1)
+                    .forEach { persona ->
                     val isSelected = selectedPersona == persona.personaType
                     MoodOptionBox(
                         text = persona.description,
