@@ -22,6 +22,7 @@ import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.image.AdaptationImage
 
 @Composable
 fun PlaceRecommendCard(
@@ -42,8 +43,8 @@ fun PlaceRecommendCard(
             .graphicsLayer { clip = true; shape = RoundedCornerShape(20.dp) }
             .customClickable(rippleEnabled = false) { onClick() }
     ) {
-        Image(
-            painter = painter,
+        AdaptationImage(
+            imageUrl = imgRes,
             contentDescription = title,
             modifier = Modifier.fillMaxSize()
         )
