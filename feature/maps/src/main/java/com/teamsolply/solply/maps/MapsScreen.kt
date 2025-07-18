@@ -139,7 +139,7 @@ internal fun MapsRoute(
                 )
 
                 is MapsSideEffect.ShowSuccessSaveCourseSnackBar -> {
-                    showNavigateSimpleSnackBar(
+                    showNavigateSnackBar(
                         sideEffect.selectedCourseName
                     ) {
                         uiState.townId?.let { townId ->
@@ -158,7 +158,7 @@ internal fun MapsRoute(
                 }
 
                 is MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar -> {
-                    showNavigateSnackBar(
+                    showNavigateSimpleSnackBar(
                         sideEffect.selectedCourseName
                     ) {
                         uiState.townId?.let { townId ->

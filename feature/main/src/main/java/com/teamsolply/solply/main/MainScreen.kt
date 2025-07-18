@@ -79,7 +79,7 @@ internal fun MainScreen(
         currentSnackbarJob.value?.join()
         currentSnackbarJob.value = coroutineScope.launch {
             currentSnackbarState.value =
-                SolplySnackBarData(type = SnackBarType.NAVIGATE_SIMPLE, action = onAction)
+                SolplySnackBarData(type = SnackBarType.NAVIGATE, action = onAction)
             snackbarHostState.showSnackbar(
                 message = message,
                 duration = SnackbarDuration.Short
@@ -91,7 +91,7 @@ internal fun MainScreen(
         currentSnackbarJob.value?.join()
         currentSnackbarJob.value = coroutineScope.launch {
             currentSnackbarState.value =
-                SolplySnackBarData(type = SnackBarType.NAVIGATE, action = onAction)
+                SolplySnackBarData(type = SnackBarType.NAVIGATE_SIMPLE, action = onAction)
             snackbarHostState.showSnackbar(
                 message = message,
                 duration = SnackbarDuration.Short
