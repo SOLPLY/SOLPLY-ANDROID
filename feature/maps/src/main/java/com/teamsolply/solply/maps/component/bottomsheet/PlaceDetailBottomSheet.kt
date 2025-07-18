@@ -133,6 +133,7 @@ fun PlaceDetailBottomSheet(
                             placeType = courseInfo.mainTags,
                             title = courseInfo.courseName,
                             savedPlace = !courseInfo.isActive,
+                            savedCourse = courseInfo.isBookmarked,
                             selected = if (!courseInfo.isActive) {
                                 false
                             } else {
