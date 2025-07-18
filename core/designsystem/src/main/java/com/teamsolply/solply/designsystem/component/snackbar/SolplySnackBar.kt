@@ -118,12 +118,12 @@ fun SolplyNavigateSimpleSnackBar(navigateToRoute: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 12.dp),
+                .padding(start = 20.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "'코스가 수집함에 저장되었어요.'",
+                text = "코스가 수집함에 저장되었어요.",
                 style = SolplyTheme.typography.body14M,
                 color = SolplyTheme.colors.white
             )
@@ -132,9 +132,9 @@ fun SolplyNavigateSimpleSnackBar(navigateToRoute: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "코스 수정하기",
+                    text = "수정하기",
                     style = SolplyTheme.typography.body14M,
-                    color = SolplyTheme.colors.purple400
+                    color = SolplyTheme.colors.purple300
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_next_arrow),
