@@ -145,4 +145,3 @@ fun SolplyNavigateSimpleSnackBar(navigateToRoute: () -> Unit) {
         }
     }
 }
-

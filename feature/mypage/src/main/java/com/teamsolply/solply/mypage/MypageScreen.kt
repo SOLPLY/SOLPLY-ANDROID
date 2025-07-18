@@ -27,7 +27,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.mypage.component.TabScreen
 import com.teamsolply.solply.mypage.model.CourseTownEntity
 import com.teamsolply.solply.mypage.model.MypageTab

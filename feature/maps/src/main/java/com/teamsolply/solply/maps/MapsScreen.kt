@@ -245,7 +245,7 @@ internal fun MapsRoute(
         },
         moveCameraRequest = moveCameraRequest,
         onCameraMoved = { moveCameraRequest = null },
-                // Edit Course
+        // Edit Course
         removeIconVisible = uiState.removeIconVisibility,
         startEditCourse = uiState.startEditCourse,
         startCourseMove = { iconVisibility ->
