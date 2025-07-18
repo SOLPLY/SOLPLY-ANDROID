@@ -55,8 +55,8 @@ import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
+import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.maps.component.MapsTopBar
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
@@ -87,17 +87,17 @@ internal fun MapsRoute(
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    navigateToPlaceDetail: () -> Unit,
-    navigateToEditCourse: () -> Unit,
+    showNavigateSimpleSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
-    navigateToMypage: () -> Unit,
+    navigateToMap: (String, Long, Long?, Long?) -> Unit,
     navigateToBack: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: MapsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var moveCameraRequest by remember { mutableStateOf<Pair<Double, Double>?>(null) }
 
     // TODO. 초기 로드 데이터
     LaunchedEffect(Unit) {
@@ -111,13 +111,13 @@ internal fun MapsRoute(
 
             MapsType.ADD_COURSE -> {
                 if (courseId != null) {
-                    viewModel.getCourseDetailInfo(courseId = courseId)
+                    viewModel.getCourseDetailInfo(townId = townId, courseId = courseId)
                 }
             }
 
             MapsType.EDIT_COURSE -> {
                 if (courseId != null) {
-                    viewModel.getCourseDetailInfo(courseId = courseId)
+                    viewModel.getCourseDetailInfo(townId = townId, courseId = courseId)
                 }
             }
         }
@@ -142,7 +142,14 @@ internal fun MapsRoute(
                     showNavigateSnackBar(
                         sideEffect.selectedCourseName
                     ) {
-                        navigateToEditCourse()
+                        uiState.townId?.let { townId ->
+                            navigateToMap(
+                                MapsType.EDIT_COURSE.name,
+                                townId,
+                                null,
+                                sideEffect.courseId
+                            )
+                        }
                     }
                 }
 
@@ -151,8 +158,17 @@ internal fun MapsRoute(
                 }
 
                 is MapsSideEffect.ShowSuccessSaveSingleCourseSnackBar -> {
-                    showNavigateSnackBar("코스가 수집함에 저장되었어요.") {
-                        navigateToMypage()
+                    showNavigateSimpleSnackBar(
+                        sideEffect.selectedCourseName
+                    ) {
+                        uiState.townId?.let { townId ->
+                            navigateToMap(
+                                MapsType.EDIT_COURSE.name,
+                                townId,
+                                null,
+                                sideEffect.courseId
+                            )
+                        }
                     }
                 }
 
@@ -167,12 +183,25 @@ internal fun MapsRoute(
                 MapsSideEffect.NavigateToReturnHome -> when (mapsType) {
                     MapsType.PLACE_DETAIL -> navigateToPlace()
                     MapsType.ADD_COURSE -> navigateToCourse()
-                    MapsType.EDIT_COURSE -> navigateToMypage()
+                    MapsType.EDIT_COURSE -> navigateToPlace()
                 }
 
                 MapsSideEffect.NavigateToBack -> navigateToBack()
 
-                is MapsSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail()
+                is MapsSideEffect.NavigateToPlaceDetail -> {
+                    uiState.townId?.let { townId ->
+                        navigateToMap(
+                            MapsType.PLACE_DETAIL.name,
+                            townId,
+                            sideEffect.placeId,
+                            null
+                        )
+                    }
+                }
+
+                is MapsSideEffect.MoveCameraToPlace -> {
+                    moveCameraRequest = sideEffect.latitude to sideEffect.longitude
+                }
             }
         }
     }
@@ -214,6 +243,8 @@ internal fun MapsRoute(
         placeInfoClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceInfoClick(placeId = placeId))
         },
+        moveCameraRequest = moveCameraRequest,
+        onCameraMoved = { moveCameraRequest = null },
         // Edit Course
         removeIconVisible = uiState.removeIconVisibility,
         startEditCourse = uiState.startEditCourse,
@@ -240,6 +271,9 @@ internal fun MapsRoute(
         },
         onCourseEditBackClick = {
             viewModel.sendIntent(MapsIntent.BeforeEditCourseBackHandler)
+        },
+        onCourseEditTopBarBackClick = {
+            viewModel.sendIntent(MapsIntent.BeforeEditCourseTopBarBackHandler)
         },
         onPlaceDetailClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
@@ -275,6 +309,16 @@ internal fun MapsRoute(
             onClickDismiss = { viewModel.sendIntent(MapsIntent.BeforeEditCourseDialogInVisible) }
         )
     }
+
+    if (uiState.navigateToBackDialogVisibility) {
+        SolplyConfirmDialog(
+            text = "변경 사항을 저장하지 않고\n나가시겠어요?",
+            confirmButtonText = "나가기",
+            dismissButtonText = "취소",
+            onClickConfirm = { viewModel.sendIntent(MapsIntent.BackButtonClick) },
+            onClickDismiss = { viewModel.sendIntent(MapsIntent.NavigateToBackDialogInVisible) }
+        )
+    }
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -300,6 +344,8 @@ private fun MapsScreen(
     selectedPlaceInfoId: Long?,
     singleCoursePlaceBookMarkClick: (Long) -> Unit,
     placeInfoClick: (Long) -> Unit,
+    moveCameraRequest: Pair<Double, Double>?,
+    onCameraMoved: () -> Unit,
     // Edit Course
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
@@ -311,6 +357,7 @@ private fun MapsScreen(
     onBackButtonClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
     onCourseEditBackClick: () -> Unit,
+    onCourseEditTopBarBackClick: () -> Unit,
     onPlaceDetailClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -322,13 +369,25 @@ private fun MapsScreen(
     val cameraPositionState = rememberCameraPositionState()
     var lastCameraPosition by remember { mutableStateOf<CameraPosition?>(null) }
 
+    LaunchedEffect(moveCameraRequest) {
+        moveCameraRequest?.let { (lat, lng) ->
+            cameraPositionState.animate(
+                update = CameraUpdate.toCameraPosition(
+                    CameraPosition(LatLng(lat - 0.009, lng), 14.0, 0.0, 0.0)
+                ),
+                durationMs = 1000
+            )
+            onCameraMoved()
+        }
+    }
+
     LaunchedEffect(mapsType, placeDetailEntity, courseDetailInfo.places) {
         when (mapsType) {
             MapsType.PLACE_DETAIL -> {
                 cameraPositionState.animate(
                     update = CameraUpdate.toCameraPosition(
                         CameraPosition(
-                            LatLng(placeDetailEntity.latitude - 0.008, placeDetailEntity.longitude),
+                            LatLng(placeDetailEntity.latitude - 0.009, placeDetailEntity.longitude),
                             14.0,
                             0.0,
                             0.0
@@ -382,12 +441,26 @@ private fun MapsScreen(
                 MapsType.EDIT_COURSE -> "수집함"
                 else -> placeDetailEntity.placeName
             }
-            MapsTopBar(
-                mapsType = mapsType,
-                title = topBarTitle,
-                onBackButtonClick = { onBackButtonClick() },
-                onReturnToHomeButtonClick = { onReturnToHomeClick() }
-            )
+            SolplyTopBar(
+                onBackButtonClick = {
+                    if (startEditCourse) {
+                        onCourseEditTopBarBackClick()
+                    } else {
+                        onBackButtonClick()
+                    }
+                },
+                barText = topBarTitle
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_home),
+                    contentDescription = "home",
+                    tint = Color.Unspecified,
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .customClickable(rippleEnabled = false) { onReturnToHomeClick() }
+                )
+            }
             NaverMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState

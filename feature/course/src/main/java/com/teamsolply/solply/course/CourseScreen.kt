@@ -109,9 +109,6 @@ fun CourseScreen(
                     title = course.courseName,
                     imgRes = course.imageUrl,
                     placeType = course.tagList,
-                    backgroundColor = SolplyTheme.colors.red300,
-                    iconColor = SolplyTheme.colors.red500,
-                    iconBackGroundColor = SolplyTheme.colors.red200,
                     savedCourse = course.isSaved,
                     modifier = Modifier
                         .fillMaxWidth(),

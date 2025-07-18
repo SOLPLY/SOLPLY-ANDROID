@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
 data class PlaceState(
-//    val townId: Long = 0,
+    val placesLoadState: PlacesLoadState = PlacesLoadState.Loading,
 
     val userInfo: UserInfo = UserInfo(
         userId = 1,
@@ -22,8 +22,6 @@ data class PlaceState(
     ),
 
     val recommendPlaces: PersistentList<RecommendPlaceInfo> = persistentListOf(),
-
-    val placeList: PersistentList<PlaceData> = persistentListOf(),
 
     val selectedMainFilterId: Int = 0,
     val selectedMainFilter: String = "ALL",
@@ -64,4 +62,9 @@ sealed interface PlaceSideEffect : SideEffect {
     data class NavigateToMap(
         val placeId: Long
     ) : PlaceSideEffect
+}
+
+sealed interface PlacesLoadState {
+    data object Loading : PlacesLoadState
+    data class Success(val placeList: PersistentList<PlaceData>) : PlacesLoadState
 }

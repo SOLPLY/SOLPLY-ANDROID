@@ -19,7 +19,6 @@ fun NavController.navigateMypage(
 
 fun NavGraphBuilder.mypageNavGraph(
     paddingValues: PaddingValues,
-    navigateToMaps: (String) -> Unit,
     navigateToBack: () -> Unit,
     navigateToPlaceCollection: (Long, String) -> Unit,
     navigateToCourseCollection: (Long, String) -> Unit,
@@ -30,7 +29,6 @@ fun NavGraphBuilder.mypageNavGraph(
         val viewModel: MypageViewModel = hiltViewModel(backStackEntry)
         MypageRoute(
             paddingValues = paddingValues,
-            navigateToMaps = navigateToMaps,
             navigateToBack = navigateToBack,
             navigateToPlaceCollection = navigateToPlaceCollection,
             navigateToCourseCollection = navigateToCourseCollection,

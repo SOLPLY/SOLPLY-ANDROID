@@ -37,18 +37,19 @@ private fun BaseButton(
     borderWidth: Float = 0f,
     content: @Composable () -> Unit
 ) {
-    val baseModifier = modifier
-        .background(color = backgroundColor, shape = shape)
-        .customClickable(rippleEnabled = false) { onClick() }
+    var finalModifier = modifier
+        .then(
+            Modifier
+                .background(color = backgroundColor, shape = shape)
+                .customClickable(rippleEnabled = false) { onClick() }
+        )
 
-    val finalModifier = if (borderColor != null) {
-        baseModifier.border(
+    if (borderColor != null) {
+        finalModifier = finalModifier.border(
             width = borderWidth.dp,
             color = borderColor,
             shape = shape
         )
-    } else {
-        baseModifier
     }
 
     Box(

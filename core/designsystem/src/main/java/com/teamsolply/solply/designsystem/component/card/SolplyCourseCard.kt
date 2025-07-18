@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,23 +26,40 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
-import com.teamsolply.solply.ui.preview.DefaultPreview
-import okhttp3.internal.immutableListOf
 
 @Composable
 fun SolplyCourseCard(
     title: String,
     imgRes: String,
     placeType: List<PlaceType>,
-    backgroundColor: Color,
-    iconColor: Color,
-    iconBackGroundColor: Color,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     savedCourse: Boolean = false,
     selected: Boolean = false,
     savedPlace: Boolean = false
 ) {
+    val backgroundColor = when (placeType.first()) {
+        PlaceType.CAFE -> SolplyTheme.colors.red300
+        PlaceType.FOOD -> SolplyTheme.colors.yellow200
+        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green300
+        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple300
+        else -> SolplyTheme.colors.gray300
+    }
+    val iconColor = when (placeType.first()) {
+        PlaceType.CAFE -> SolplyTheme.colors.red500
+        PlaceType.FOOD -> SolplyTheme.colors.yellow300
+        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green400
+        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple400
+        else -> SolplyTheme.colors.gray400
+    }
+    val iconBackGroundColor = when (placeType.first()) {
+        PlaceType.CAFE -> SolplyTheme.colors.red200
+        PlaceType.FOOD -> SolplyTheme.colors.yellow100
+        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green200
+        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple100
+        else -> SolplyTheme.colors.gray200
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -136,27 +151,5 @@ fun SolplyCourseCard(
                     .padding(end = 12.dp, top = 16.dp)
             )
         }
-    }
-}
-
-@DefaultPreview
-@Composable
-private fun SolplytCourseCardPreveiw() {
-    SolplyTheme {
-        SolplyCourseCard(
-            title = "오감으로 수집하는 하루",
-            imgRes = "",
-            placeType = immutableListOf(
-                PlaceType.CAFE,
-                PlaceType.BOOKSTORE
-            ),
-            backgroundColor = SolplyTheme.colors.red300,
-            iconColor = SolplyTheme.colors.red500,
-            iconBackGroundColor = SolplyTheme.colors.red200,
-            savedCourse = true,
-            savedPlace = true,
-            onClick = {},
-            modifier = Modifier.size(158.dp)
-        )
     }
 }

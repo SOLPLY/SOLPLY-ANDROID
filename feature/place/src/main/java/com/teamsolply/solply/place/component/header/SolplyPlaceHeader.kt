@@ -1,4 +1,4 @@
-package com.teamsolply.solply.designsystem.component.header
+package com.teamsolply.solply.place.component.header
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

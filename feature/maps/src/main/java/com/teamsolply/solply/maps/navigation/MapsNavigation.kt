@@ -29,11 +29,10 @@ fun NavGraphBuilder.mapsNavGraph(
     showTextSnackBar: (String) -> Unit,
     showNotificationSnackBar: (String) -> Unit,
     showNavigateSnackBar: (String, () -> Unit) -> Unit,
-    navigateToPlaceDetail: () -> Unit,
-    navigateToEditCourse: () -> Unit,
+    showNavigateSimpleSnackBar: (String, () -> Unit) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
-    navigateToMypage: () -> Unit,
+    navigateToMap: (String, Long, Long?, Long?) -> Unit,
     navigateToBack: () -> Unit
 ) {
     composable<Maps> { backStackEntry ->
@@ -50,12 +49,11 @@ fun NavGraphBuilder.mapsNavGraph(
             showTextSnackBar = showTextSnackBar,
             showNotificationSnackBar = showNotificationSnackBar,
             showNavigateSnackBar = showNavigateSnackBar,
-            navigateToPlaceDetail = navigateToPlaceDetail,
-            navigateToEditCourse = navigateToEditCourse,
+            showNavigateSimpleSnackBar = showNavigateSimpleSnackBar,
             navigateToPlace = navigateToPlace,
             navigateToCourse = navigateToCourse,
-            navigateToMypage = navigateToMypage,
             paddingValues = paddingValues,
+            navigateToMap = navigateToMap,
             navigateToBack = navigateToBack
         )
     }

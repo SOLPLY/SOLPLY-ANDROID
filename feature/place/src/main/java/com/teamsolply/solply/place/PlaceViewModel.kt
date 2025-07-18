@@ -227,15 +227,18 @@ class PlaceViewModel @Inject constructor(
             ).onSuccess { placeEntities ->
                 reduce {
                     copy(
-                        placeList = placeEntities.map {
-                            PlaceData(
-                                placeId = it.placeId,
-                                placeName = it.placeName,
-                                thumbnailUrl = it.thumbnailImageUrl,
-                                primaryTag = PlaceType.valueOf(it.primaryTag),
-                                isBookmarked = it.isBookmarked
-                            )
-                        }.toPersistentList()
+                        placesLoadState = PlacesLoadState.Success(
+                            placeEntities.map {
+                                PlaceData(
+                                    placeId = it.placeId,
+                                    placeName = it.placeName,
+                                    thumbnailUrl = it.thumbnailImageUrl,
+                                    primaryTag = PlaceType.valueOf(it.primaryTag),
+                                    isBookmarked = it.isBookmarked
+                                )
+                            }.toPersistentList()
+                        )
+
                     )
                 }
             }

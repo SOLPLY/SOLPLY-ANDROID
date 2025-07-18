@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.model.CourseTownEntity
 import com.teamsolply.solply.ui.extension.customClickable
 
@@ -59,9 +58,6 @@ fun CourseTownCollectionScreen(
                             title = it.courseName,
                             imgRes = it.imageUrl,
                             placeType = it.tagList,
-                            backgroundColor = SolplyTheme.colors.purple200,
-                            iconColor = SolplyTheme.colors.purple400,
-                            iconBackGroundColor = SolplyTheme.colors.purple100,
                             savedPlace = true,
                             savedCourse = true,
                             onClick = { onClickTown(it.townId, it.townName) }

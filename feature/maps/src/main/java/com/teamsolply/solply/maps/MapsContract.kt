@@ -28,7 +28,8 @@ internal data class MapsState(
     val startEditCourse: Boolean = false,
     val courseSaveDialogVisibility: Boolean = false,
     val coursesBeforeEdit: ImmutableList<Place> = persistentListOf(),
-    val exitEditCourseDialogVisibility: Boolean = false
+    val exitEditCourseDialogVisibility: Boolean = false,
+    val navigateToBackDialogVisibility: Boolean = false
 ) : UiState
 
 internal sealed interface MapsIntent : UiIntent {
@@ -65,10 +66,11 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     data object BeforeEditCourseBackHandler : MapsIntent
-
     data object BeforeEditCourseDialogInVisible : MapsIntent
-
     data object BeforeEditCourseDialogClick : MapsIntent
+
+    data object BeforeEditCourseTopBarBackHandler : MapsIntent
+    data object NavigateToBackDialogInVisible : MapsIntent
 
     // Item Drag and Remove
     data class StartCourseMove(
@@ -99,14 +101,26 @@ internal sealed interface MapsIntent : UiIntent {
 internal sealed interface MapsSideEffect : SideEffect {
     // Add Place
     data object ShowMaxSizeCourseSnackBar : MapsSideEffect
-    data class ShowSuccessSaveCourseSnackBar(val selectedCourseName: String) : MapsSideEffect
+    data class ShowSuccessSaveCourseSnackBar(
+        val selectedCourseName: String,
+        val courseId: Long
+    ) : MapsSideEffect
+
     data object ShowSuccessSavePlaceSnackBar : MapsSideEffect
     data object ShowDuplicateSnackBar : MapsSideEffect
 
     // Edit Course
     data object DisabledRemoveCourse : MapsSideEffect
-    data object ShowSuccessSaveSingleCourseSnackBar : MapsSideEffect
+    data class ShowSuccessSaveSingleCourseSnackBar(
+        val selectedCourseName: String,
+        val courseId: Long
+    ) : MapsSideEffect
+
     data object ShowSuccessSaveNewCourseSnackBar : MapsSideEffect
+    data class MoveCameraToPlace(
+        val latitude: Double,
+        val longitude: Double
+    ) : MapsSideEffect
 
     // Shared
     data object NavigateToCourse : MapsSideEffect
