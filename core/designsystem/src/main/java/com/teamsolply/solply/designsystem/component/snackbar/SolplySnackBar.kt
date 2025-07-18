@@ -84,7 +84,7 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 12.dp),
+                .padding(start = 20.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -98,7 +98,7 @@ fun SolplyNavigateSnackBar(text: String, navigateToRoute: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "코스 수정하기",
+                    text = "수정하기",
                     style = SolplyTheme.typography.body14M,
                     color = SolplyTheme.colors.purple400
                 )
