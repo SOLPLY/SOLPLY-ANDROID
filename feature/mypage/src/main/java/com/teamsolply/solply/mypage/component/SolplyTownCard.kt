@@ -53,32 +53,3 @@ fun SolplyTownCard(
         )
     }
 }
-
-@DefaultPreview
-@Composable
-private fun TownCardPreview() {
-    SolplyTheme {
-        Column {
-            SolplyTownCard(
-                town = "연희동",
-                content = {
-                    Image(
-                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.img_course_dummy),
-                        contentDescription = "동네 수집함"
-                    )
-                }
-            )
-            SolplyTownCard(
-                town = "연희동",
-                content = {
-                    SolplyCourseCard(
-                        title = "오감으로 수집하는 하루",
-                        imgRes = "",
-                        placeType = listOf(PlaceType.BOOKSTORE, PlaceType.SHOPPING),
-                        savedCourse = true
-                    )
-                }
-            )
-        }
-    }
-}

@@ -23,7 +23,6 @@ import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.ui.extension.customClickable
-import com.teamsolply.solply.ui.preview.DefaultPreview
 
 @Composable
 fun CollectionScreen(
@@ -113,44 +112,6 @@ fun CollectionScreen(
             horizontalArrangement = Arrangement.Center,
             contentPadding = PaddingValues(top = 16.dp, start = 17.dp, end = 17.dp),
             content = content
-        )
-    }
-}
-
-@DefaultPreview
-@Composable
-fun PlaceCollectionScreenPreview() {
-    SolplyTheme {
-        CollectionScreen(
-            town = "연희동",
-            onBackButtonClick = {},
-            onSelectButtonClick = {},
-            onDeleteButtonClick = {},
-            onCancelButtonClick = {},
-            onDialogConfirmClick = {},
-            onDialogDismissClick = {},
-            isSelectMode = false,
-            dialogState = false,
-            content = {}
-        )
-    }
-}
-
-@DefaultPreview
-@Composable
-fun CourseCollectionScreenPreview() {
-    SolplyTheme {
-        CollectionScreen(
-            town = "연희동",
-            onBackButtonClick = {},
-            onSelectButtonClick = {},
-            onDeleteButtonClick = {},
-            onCancelButtonClick = {},
-            onDialogConfirmClick = {},
-            onDialogDismissClick = {},
-            isSelectMode = false,
-            dialogState = false,
-            content = { }
         )
     }
 }
