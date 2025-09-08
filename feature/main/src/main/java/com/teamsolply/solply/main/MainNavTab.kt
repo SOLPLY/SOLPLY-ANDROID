@@ -21,6 +21,10 @@ internal enum class MainNavTab(
     MYPAGE(
         contentDescription = "마이페이지",
         route = Mypage
+    ),
+    USER(
+        contentDescription = "유저",
+        route = Mypage
     );
 
     companion object {

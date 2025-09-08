@@ -66,6 +66,10 @@ internal class MainNavigator(
                 }
                 navController.navigateMypage(navOptions)
             }
+
+            //TODO.임시 네비게이션 루트
+            MainNavTab.USER -> {
+            }
         }
     }
 
@@ -139,9 +143,7 @@ internal class MainNavigator(
 
     @Composable
     fun setBottomBarVisibility(): Boolean {
-        return MainNavTab.entries
-            .filterNot { it == MainNavTab.MYPAGE }
-            .any { currentDestination?.hasRoute(it.route::class) == true }
+        return currentTab == MainNavTab.PLACE || currentTab == MainNavTab.COURSE
     }
 }
 
