@@ -9,13 +9,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.teamsolply.solply.collection.collection.course.navigateCourseCollection
+import com.teamsolply.solply.collection.collection.place.navigatePlaceCollection
+import com.teamsolply.solply.collection.navigation.navigateCollection
 import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.navigateFavoriteTown
 import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.main.splash.Splash
 import com.teamsolply.solply.maps.navigation.navigateMaps
-import com.teamsolply.solply.mypage.collection.course.navigateCourseCollection
-import com.teamsolply.solply.mypage.collection.place.navigatePlaceCollection
-import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
@@ -60,15 +60,15 @@ internal class MainNavigator(
                 navController.navigateCourse(navOptions)
             }
 
-            MainNavTab.MYPAGE -> {
+            MainNavTab.COLLECTION -> {
                 val navOptions = navOptions {
                     launchSingleTop = true
                 }
-                navController.navigateMypage(navOptions)
+                navController.navigateCollection(navOptions)
             }
 
             //TODO.임시 네비게이션 루트
-            MainNavTab.USER -> {
+            MainNavTab.MYPAGE -> {
             }
         }
     }
@@ -90,7 +90,7 @@ internal class MainNavigator(
     }
 
     fun navigateToMypage(navOptions: NavOptions) {
-        navController.navigateMypage(navOptions)
+        navController.navigateCollection(navOptions)
     }
 
     fun navigateToMaps(

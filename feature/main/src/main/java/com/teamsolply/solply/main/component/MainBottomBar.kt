@@ -87,8 +87,8 @@ private fun TabItem(
     val iconResource = when (tab) {
         MainNavTab.PLACE -> if (isSelected) R.drawable.ic_bottom_bar_place_selected else R.drawable.ic_bottom_bar_place
         MainNavTab.COURSE -> if (isSelected) R.drawable.ic_bottom_bar_course_selected else R.drawable.ic_bottom_bar_course
-        MainNavTab.MYPAGE -> if (isSelected) R.drawable.ic_bottom_bar_mypage_selected else R.drawable.ic_bottom_bar_mypage
-        MainNavTab.USER -> if (isSelected) R.drawable.ic_bottom_bar_user_selected else R.drawable.ic_bottom_bar_user
+        MainNavTab.COLLECTION -> if (isSelected) R.drawable.ic_bottom_bar_mypage_selected else R.drawable.ic_bottom_bar_mypage
+        MainNavTab.MYPAGE -> if (isSelected) R.drawable.ic_bottom_bar_user_selected else R.drawable.ic_bottom_bar_user
     }
     Box(
         modifier = Modifier

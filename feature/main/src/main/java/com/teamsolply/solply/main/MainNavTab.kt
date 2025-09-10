@@ -2,7 +2,6 @@ package com.teamsolply.solply.main
 
 import androidx.compose.runtime.Composable
 import com.teamsolply.solply.course.navigation.Course
-import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.navigation.Route
 import com.teamsolply.solply.place.navigation.Place
 
@@ -18,11 +17,11 @@ internal enum class MainNavTab(
         contentDescription = "코스",
         route = Course
     ),
-    MYPAGE(
+    COLLECTION(
         contentDescription = "마이페이지",
-        route = Mypage
+        route = com.teamsolply.solply.collection.navigation.Collection
     ),
-    USER(
+    MYPAGE(
         contentDescription = "유저",
         route = Mypage
     );
