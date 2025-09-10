@@ -67,7 +67,7 @@ internal class MainNavigator(
                 navController.navigateCollection(navOptions)
             }
 
-            //TODO.임시 네비게이션 루트
+            // TODO.임시 네비게이션 루트
             MainNavTab.MYPAGE -> {
             }
         }
