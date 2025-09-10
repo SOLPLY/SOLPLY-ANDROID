@@ -13,7 +13,7 @@ dependencies {
     implementation(projects.feature.place)
     implementation(projects.feature.course)
     implementation(projects.feature.maps)
-    implementation(projects.feature.mypage)
+    implementation(projects.feature.collection)
     implementation(libs.androidx.splashscreen)
     implementation(libs.lottie)
     implementation(libs.lottie.compose)

@@ -61,7 +61,7 @@ internal fun MainBottomBar(
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                tabs.filter { it != MainNavTab.MYPAGE }.forEach { tab ->
+                tabs.filter { it != MainNavTab.Collection }.forEach { tab ->
                     TabItem(
                         tab = tab,
                         isSelected = tab == currentTab,
@@ -71,7 +71,7 @@ internal fun MainBottomBar(
             }
             MypageButton(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                onClick = { onTabSelected(MainNavTab.MYPAGE) }
+                onClick = { onTabSelected(MainNavTab.Collection) }
             )
         }
     }
