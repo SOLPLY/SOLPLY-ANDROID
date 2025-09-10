@@ -17,11 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.collection.R
 import com.teamsolply.solply.collection.collection.component.CollectionScreen
 import com.teamsolply.solply.collection.collection.component.SelectModeBar
+import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest

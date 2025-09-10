@@ -25,12 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
-import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.collection.component.TabScreen
 import com.teamsolply.solply.collection.model.CourseTownEntity
 import com.teamsolply.solply.collection.model.MypageTab
 import com.teamsolply.solply.collection.model.PlaceTownEntity
+import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
+import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest

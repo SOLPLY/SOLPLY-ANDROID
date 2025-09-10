@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.collection.model.CourseTownEntity
+import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
