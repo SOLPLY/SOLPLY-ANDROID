@@ -1,6 +1,7 @@
 package com.teamsolply.solply.main
 
 import androidx.compose.runtime.Composable
+import com.teamsolply.solply.collection.navigation.Collection
 import com.teamsolply.solply.course.navigation.Course
 import com.teamsolply.solply.navigation.Route
 import com.teamsolply.solply.place.navigation.Place
@@ -19,11 +20,11 @@ internal enum class MainNavTab(
     ),
     COLLECTION(
         contentDescription = "마이페이지",
-        route = com.teamsolply.solply.collection.navigation.Collection
+        route = Collection
     ),
     MYPAGE(
         contentDescription = "유저",
-        route = Mypage
+        route = Collection
     );
 
     companion object {

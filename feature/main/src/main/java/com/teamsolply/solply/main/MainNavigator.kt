@@ -89,10 +89,6 @@ internal class MainNavigator(
         navController.navigateCourse(navOptions)
     }
 
-    fun navigateToMypage(navOptions: NavOptions) {
-        navController.navigateCollection(navOptions)
-    }
-
     fun navigateToMaps(
         mapsType: String,
         townId: Long,
