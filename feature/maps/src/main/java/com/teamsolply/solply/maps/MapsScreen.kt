@@ -516,8 +516,7 @@ private fun MapsScreen(
         }
 
         SolplyBasicBottomSheet(
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
+            modifier = Modifier.align(Alignment.BottomCenter),
             menuContent = {
                 if (mapsType == MapsType.PLACE_DETAIL) {
                     Box(
