@@ -363,7 +363,6 @@ private fun MapsScreen(
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
-    var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
     val rootCoordinatesState = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val touchPositionState = remember { mutableStateOf(Offset.Zero) }
 
@@ -659,7 +658,9 @@ private fun MapsScreen(
                             selectedCourseForPlace = selectedCourseForPlace,
                             showMaxSizeCourseSnackBar = showMaxSizeCourseSnackBar,
                             showDuplicateSnackBar = showDuplicateSnackBar,
-                            emptyCourseClick = emptyCourseClick
+                            emptyCourseClick = emptyCourseClick,
+                            saveMyCourse = saveMyCourse,
+                            changeAddPlaceState = changeAddPlaceState
                         )
                     }
 
@@ -683,7 +684,6 @@ private fun MapsScreen(
                             courseName = courseDetailInfo.courseName,
                             introduction = courseDetailInfo.introduction,
                             selectedPlaceItem = selectedPlaceInfoId,
-                            removeIconBounds = removeIconBounds,
                             isInRemoveIconArea = isInRemoveIconArea,
                             rootCoordinatesState = rootCoordinatesState,
                             touchPositionState = touchPositionState,
@@ -695,51 +695,13 @@ private fun MapsScreen(
                             moveCourse = moveCourse,
                             removeCourse = removeCourse,
                             onCourseEditBackClick = onCourseEditBackClick,
-                            placeDetailClick = onPlaceDetailClick
+                            placeDetailClick = onPlaceDetailClick,
+                            removeIconVisible = removeIconVisible
                         )
                     }
                 }
             }
         )
-
-        Icon(
-            painter = painterResource(
-                if (isInRemoveIconArea.value) {
-                    R.drawable.ic_remove_floating_on
-                } else {
-                    R.drawable.ic_remove_floating
-                }
-            ),
-            contentDescription = "remove",
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 50.dp)
-                .alpha(if (removeIconVisible) 1f else 0f)
-                .onGloballyPositioned { coordinates ->
-                    val positionInRoot = coordinates.positionInRoot()
-                    val size = coordinates.size
-                    removeIconBounds = Rect(
-                        offset = positionInRoot,
-                        size = Size(size.width.toFloat(), size.height.toFloat())
-                    )
-                },
-            tint = Color.Unspecified
-        )
-
-        if (mapsType == MapsType.PLACE_DETAIL && addMyCourseSelectedCount != null) {
-            SolplyBasicButton(
-                text = "이 코스에 추가할래요",
-                onClick = {
-                    saveMyCourse()
-                    changeAddPlaceState(false)
-                },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
-                textPadding = PaddingValues(vertical = 21.dp),
-                enabledBackgroundColor = SolplyTheme.colors.gray900
-            )
-        }
     }
 }
 
