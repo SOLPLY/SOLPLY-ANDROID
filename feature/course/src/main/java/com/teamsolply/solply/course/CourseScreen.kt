@@ -77,7 +77,7 @@ fun CourseScreen(
     val recommendText = state.recommendText
     val gridState = rememberLazyGridState()
 
-    Column {
+    Column(modifier = modifier) {
         CourseHeader(
             townName = user.selectedTown.townName,
             modifier = Modifier
@@ -88,7 +88,7 @@ fun CourseScreen(
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = gridState,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),

@@ -199,7 +199,7 @@ fun PlaceScreen(
     )
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         PlaceHeader(
             townName = uiState.userInfo.selectedTown.townName,
@@ -211,7 +211,7 @@ fun PlaceScreen(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             item(span = { GridItemSpan(2) }) {

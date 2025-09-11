@@ -109,7 +109,8 @@ fun CollectionRoute(
         },
         pagerState = pagerState,
         placeTown = uiState.placeTowns,
-        courseTown = uiState.courseTowns
+        courseTown = uiState.courseTowns,
+        modifier = Modifier.padding(paddingValues)
     )
 }
 
@@ -120,11 +121,11 @@ fun CollectionMenuScreen(
     onClickPlaceTab: () -> Unit,
     onClickCourseTab: () -> Unit,
     selectTown: (Long, String) -> Unit,
+    placeTown: List<PlaceTownEntity>,
+    courseTown: List<CourseTownEntity>,
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
-    placeTown: List<PlaceTownEntity>,
-    courseTown: List<CourseTownEntity>
-) {
+    ) {
     val coroutineScope = rememberCoroutineScope()
     val selectedIndex = pagerState.currentPage
     val list = listOf("장소", "코스")
