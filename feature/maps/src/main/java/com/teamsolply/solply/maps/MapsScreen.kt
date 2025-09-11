@@ -277,7 +277,8 @@ internal fun MapsRoute(
         },
         onPlaceDetailClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
-        }
+        },
+        modifier = Modifier.padding(paddingValues)
     )
 
     if (uiState.courseSaveDialogVisibility) {
