@@ -198,7 +198,7 @@ fun AddCourseButton(
     BaseButton(
         onClick = onClick,
         modifier = modifier.size(48.dp),
-        backgroundColor = backgroundColor,
+        backgroundColor = backgroundColor
     ) {
         Icon(
             painter = painterResource(
