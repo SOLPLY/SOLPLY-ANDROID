@@ -28,12 +28,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
@@ -56,7 +59,6 @@ internal fun EditCourseBottomSheet(
     courseName: String,
     introduction: String,
     selectedPlaceItem: Long?,
-    removeIconBounds: Rect?,
     isInRemoveIconArea: MutableState<Boolean>,
     rootCoordinatesState: MutableState<LayoutCoordinates?>,
     touchPositionState: MutableState<Offset>,
@@ -68,7 +70,8 @@ internal fun EditCourseBottomSheet(
     moveCourse: (fromIndex: Int, toIndex: Int) -> Unit,
     removeCourse: (itemToRemove: Int) -> Unit,
     onCourseEditBackClick: () -> Unit,
-    placeDetailClick: (Long) -> Unit
+    placeDetailClick: (Long) -> Unit,
+    removeIconVisible: Boolean
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -87,6 +90,8 @@ internal fun EditCourseBottomSheet(
         onRemove = removeCourse,
         isInRemoveAreaProvider = { isInRemoveIconArea.value }
     )
+
+    var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
 
     if (startEditCourse) {
         BackHandler {
@@ -238,5 +243,29 @@ internal fun EditCourseBottomSheet(
                 }
             }
         }
+
+        Icon(
+            painter = painterResource(
+                if (isInRemoveIconArea.value) {
+                    R.drawable.ic_remove_floating_on
+                } else {
+                    R.drawable.ic_remove_floating
+                }
+            ),
+            contentDescription = "remove",
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 50.dp)
+                .alpha(if (removeIconVisible) 1f else 0f)
+                .onGloballyPositioned { coordinates ->
+                    val positionInRoot = coordinates.positionInRoot()
+                    val size = coordinates.size
+                    removeIconBounds = Rect(
+                        offset = positionInRoot,
+                        size = Size(size.width.toFloat(), size.height.toFloat())
+                    )
+                },
+            tint = Color.Unspecified
+        )
     }
 }

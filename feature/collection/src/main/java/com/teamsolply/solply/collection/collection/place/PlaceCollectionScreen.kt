@@ -111,6 +111,7 @@ fun PlaceCollectionRoute(
                 Spacer(modifier = Modifier.height(60.dp))
             }
         },
-        dialogState = uiState.dialogState
+        dialogState = uiState.dialogState,
+        modifier = Modifier.padding(paddingValues)
     )
 }

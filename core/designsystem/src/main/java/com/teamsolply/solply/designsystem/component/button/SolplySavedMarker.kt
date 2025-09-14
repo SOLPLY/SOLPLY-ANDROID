@@ -41,7 +41,7 @@ fun SolplySavedMarker(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_marker_default),
+            painter = painterResource(R.drawable.ic_bottom_bar_mypage),
             contentDescription = "course",
             modifier = Modifier
                 .padding(5.dp)

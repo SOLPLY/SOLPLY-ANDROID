@@ -94,6 +94,7 @@ process-pheonix = "3.0.0"
 preference = "1.2.1"
 collapsing-toolbar = "2.3.5"
 runtimeAndroid = "1.7.8"
+flexibleBottomSheet = "0.1.5"
 
 [plugins]
 # Gradle Plugins
@@ -255,6 +256,7 @@ kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process-pheonix" }
 collapsing-toolbar = { group = "me.onebone", name = "toolbar-compose", version.ref = "collapsing-toolbar" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
+flexible-bottomsheet = { group = "com.github.skydoves", name = "flexible-bottomsheet-material3", version.ref = "flexibleBottomSheet" }
 
 [bundles]
 coil = ["coil", "coil-svg", "coil-gif"]

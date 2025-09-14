@@ -60,11 +60,15 @@ internal class MainNavigator(
                 navController.navigateCourse(navOptions)
             }
 
-            MainNavTab.Collection -> {
+            MainNavTab.COLLECTION -> {
                 val navOptions = navOptions {
                     launchSingleTop = true
                 }
                 navController.navigateCollection(navOptions)
+            }
+
+            // TODO.임시 네비게이션 루트
+            MainNavTab.MYPAGE -> {
             }
         }
     }
@@ -83,10 +87,6 @@ internal class MainNavigator(
 
     fun navigateToCourse(navOptions: NavOptions) {
         navController.navigateCourse(navOptions)
-    }
-
-    fun navigateToMypage(navOptions: NavOptions) {
-        navController.navigateCollection(navOptions)
     }
 
     fun navigateToMaps(
@@ -139,9 +139,7 @@ internal class MainNavigator(
 
     @Composable
     fun setBottomBarVisibility(): Boolean {
-        return MainNavTab.entries
-            .filterNot { it == MainNavTab.Collection }
-            .any { currentDestination?.hasRoute(it.route::class) == true }
+        return currentTab == MainNavTab.PLACE || currentTab == MainNavTab.COURSE
     }
 }
 

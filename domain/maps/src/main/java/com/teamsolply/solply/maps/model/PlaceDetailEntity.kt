@@ -5,7 +5,7 @@ import com.teamsolply.solply.model.PlaceType
 data class PlaceDetailEntity(
     val placeId: Long,
     val placeName: String,
-    val primaryTag: PlaceType,
+    val mainTag: PlaceType,
     val introduction: String,
     val imageInfos: List<ImageInfo>,
     val address: String,

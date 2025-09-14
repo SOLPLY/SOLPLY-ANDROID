@@ -155,7 +155,11 @@ fun AddPlaceButton(
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (selected) { SolplyTheme.colors.purple200 } else { SolplyTheme.colors.white }
+    val backgroundColor = if (selected) {
+        SolplyTheme.colors.purple200
+    } else {
+        SolplyTheme.colors.white
+    }
     val textColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.purple600
 
     BaseButton(
@@ -188,46 +192,20 @@ fun AddCourseButton(
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val text = if (selected) "저장된 코스" else "코스 저장"
     val backgroundColor = if (selected) SolplyTheme.colors.red100 else SolplyTheme.colors.white
-    val textColor = if (selected) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
     val iconColor = if (selected) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
-    val paddingValues = if (selected) PaddingValues(end = 8.dp) else PaddingValues(end = 12.dp)
 
     BaseButton(
         onClick = onClick,
-        modifier =
-        if (selected) {
-            modifier
-                .width(128.dp)
-                .height(48.dp)
-        } else {
-            modifier
-                .width(116.dp)
-                .height(48.dp)
-        },
-        backgroundColor = backgroundColor,
-        shape = RoundedCornerShape(26.dp)
+        modifier = modifier.size(48.dp),
+        backgroundColor = backgroundColor
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp)
-        ) {
-            Text(
-                text = text,
-                modifier = Modifier.padding(paddingValues),
-                style = SolplyTheme.typography.button14M,
-                color = textColor
-            )
-            Icon(
-                painter = painterResource(R.drawable.ic_marker_default),
-                modifier = Modifier.padding(end = 12.dp),
-                contentDescription = "add_course",
-                tint = iconColor
-            )
-        }
+        Icon(
+            painter = painterResource(
+                if (selected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty
+            ),
+            contentDescription = "add_course",
+            tint = iconColor
+        )
     }
 }

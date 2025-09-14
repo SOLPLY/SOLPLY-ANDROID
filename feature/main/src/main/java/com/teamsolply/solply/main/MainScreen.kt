@@ -4,6 +4,9 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -17,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
@@ -102,6 +106,14 @@ internal fun MainScreen(
     Scaffold(
         modifier = modifier,
         content = { innerPadding ->
+            val layoutDirection = LocalLayoutDirection.current
+            val mapsPadding = PaddingValues(
+                start = innerPadding.calculateStartPadding(layoutDirection),
+                top = 0.dp,
+                end = innerPadding.calculateEndPadding(layoutDirection),
+                bottom = innerPadding.calculateBottomPadding()
+            )
+
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -240,7 +252,7 @@ internal fun MainScreen(
                         }
                     )
                     mapsNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = mapsPadding,
                         showTextSnackBar = { message ->
                             coroutineScope.launch {
                                 showTextSnackBar(message)
