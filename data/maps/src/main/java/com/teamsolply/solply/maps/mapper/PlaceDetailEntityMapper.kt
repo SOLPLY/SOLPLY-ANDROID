@@ -10,7 +10,7 @@ fun GetPlaceDetailResponseDto.toEntity(): PlaceDetailEntity {
     return PlaceDetailEntity(
         placeId = placeId,
         placeName = placeName,
-        primaryTag = PlaceType.valueOf(primaryTag),
+        mainTag = PlaceType.valueOf(mainTag),
         introduction = introduction,
         imageInfos = imageInfoDtos.map { it.toEntity() },
         address = address,

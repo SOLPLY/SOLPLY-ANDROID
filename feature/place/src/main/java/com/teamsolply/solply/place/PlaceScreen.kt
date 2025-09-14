@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -197,7 +198,6 @@ fun PlaceScreen(
     val page3ItemSize = animateDpAsState(
         targetValue = if (isCenter[2]) 240.dp else 180.dp
     )
-
     Column(
         modifier = modifier.fillMaxSize()
     ) {

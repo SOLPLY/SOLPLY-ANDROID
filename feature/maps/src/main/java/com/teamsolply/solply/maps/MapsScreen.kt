@@ -638,7 +638,7 @@ private fun MapsScreen(
                         PlaceDetailBottomSheet(
                             context = context,
                             addPlace = startAddMyCourse,
-                            placeType = placeDetailEntity.primaryTag,
+                            placeType = placeDetailEntity.mainTag,
                             title = placeDetailEntity.placeName,
                             description = placeDetailEntity.introduction,
                             placeImageUrls = placeDetailEntity.imageInfos.toPersistentList(),
