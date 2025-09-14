@@ -9,13 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -468,8 +466,9 @@ private fun MapsScreen(
 
                             PathOverlay(
                                 coords = persistentListOf(currentLatLng, nextLatLng),
-                                color = SolplyTheme.colors.purple900,
-                                width = 0.5.dp
+                                color = SolplyTheme.colors.purple800,
+                                outlineColor = SolplyTheme.colors.purple800,
+                                width = 0.3.dp
                             )
                         }
                     }
@@ -576,13 +575,10 @@ private fun MapsScreen(
                                 clip = false
                             )
                     )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
+                    Box(
                         modifier = Modifier
-                            .height(49.dp)
                             .padding(end = 16.dp)
+                            .size(48.dp)
                             .shadow(
                                 elevation = 8.dp,
                                 shape = CircleShape,
@@ -598,7 +594,7 @@ private fun MapsScreen(
                                         SolplyTheme.colors.white
                                     }
                                 },
-                                shape = RoundedCornerShape(26.dp)
+                                shape = CircleShape
                             )
                             .then(
                                 if (startAddMyCourse) {
@@ -608,27 +604,14 @@ private fun MapsScreen(
                                         placeBookMarkClick()
                                     }
                                 }
-                            )
+                            ),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = if (placeBookmarked) "저장된 장소" else "장소 저장",
-                            modifier = Modifier.padding(start = 16.dp),
-                            style = SolplyTheme.typography.body14M,
-                            color = if (startAddMyCourse) {
-                                SolplyTheme.colors.gray400
-                            } else {
-                                if (placeBookmarked) {
-                                    SolplyTheme.colors.red500
-                                } else {
-                                    SolplyTheme.colors.purple600
-                                }
-                            },
-                            maxLines = 1
-                        )
                         Icon(
-                            painter = painterResource(R.drawable.ic_marker_default),
+                            painter = painterResource(
+                                if (placeBookmarked) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty
+                            ),
                             contentDescription = "add_place",
-                            modifier = Modifier.padding(start = 8.dp, end = 15.dp),
                             tint = if (startAddMyCourse) {
                                 SolplyTheme.colors.gray400
                             } else {

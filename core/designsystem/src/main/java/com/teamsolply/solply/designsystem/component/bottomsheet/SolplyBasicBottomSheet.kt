@@ -73,7 +73,7 @@ fun SolplyBasicBottomSheet(
         derivedStateOf {
             val screenHeight = configuration.screenHeightDp.dp
             val offsetDp = with(density) { currentOffset.toDp() }
-            screenHeight - offsetDp - 80.dp
+            screenHeight - offsetDp - 40.dp
         }
     }
 

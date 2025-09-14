@@ -76,7 +76,7 @@ fun PlaceDetailBottomSheet(
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
 
-    Box() {
+    Box {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
@@ -159,7 +159,7 @@ fun PlaceDetailBottomSheet(
                 LazyColumn {
                     item {
                         Row(
-                            modifier = Modifier.padding(bottom = 6.dp, start = 20.dp, end = 20.dp),
+                            modifier = Modifier.padding(bottom = 8.dp, start = 20.dp, end = 20.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             PlaceTag(
