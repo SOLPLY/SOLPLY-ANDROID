@@ -43,7 +43,6 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.ImageInfo
 import com.teamsolply.solply.maps.model.SnsLink
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
@@ -69,7 +68,7 @@ fun PlaceDetailBottomSheet(
     showDuplicateSnackBar: () -> Unit,
     emptyCourseClick: () -> Unit,
     saveMyCourse: () -> Unit,
-    changeAddPlaceState: (Boolean) -> Unit,
+    changeAddPlaceState: (Boolean) -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
         placeImageUrls.size

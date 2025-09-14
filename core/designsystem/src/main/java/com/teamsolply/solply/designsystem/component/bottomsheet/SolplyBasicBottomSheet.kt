@@ -100,7 +100,7 @@ fun SolplyBasicBottomSheet(
             onDismissRequest = {},
             sheetState = sheetState,
             containerColor = SolplyTheme.colors.white,
-            windowInsets = WindowInsets(0),
+            windowInsets = WindowInsets(0)
         ) {
             content()
         }

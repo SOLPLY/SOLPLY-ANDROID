@@ -93,8 +93,6 @@ internal fun EditCourseBottomSheet(
 
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
 
-
-
     if (startEditCourse) {
         BackHandler {
             onCourseEditBackClick()

@@ -73,7 +73,7 @@ object NetworkModule {
     private fun createOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         errorInterceptor: Interceptor,
-        accessTokenInterceptor: AccessTokenInterceptor? = null,
+        accessTokenInterceptor: AccessTokenInterceptor? = null
     ): OkHttpClient =
         OkHttpClient.Builder()
             .retryOnConnectionFailure(true)
@@ -93,11 +93,11 @@ object NetworkModule {
     fun provideAuthOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         errorInterceptor: Interceptor,
-        accessTokenInterceptor: AccessTokenInterceptor,
+        accessTokenInterceptor: AccessTokenInterceptor
     ): OkHttpClient = createOkHttpClient(
         loggingInterceptor,
         errorInterceptor,
-        accessTokenInterceptor,
+        accessTokenInterceptor
     )
 
     @Provides

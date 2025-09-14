@@ -124,8 +124,8 @@ fun CollectionMenuScreen(
     placeTown: List<PlaceTownEntity>,
     courseTown: List<CourseTownEntity>,
     modifier: Modifier = Modifier,
-    pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
-    ) {
+    pagerState: PagerState = rememberPagerState(pageCount = { 2 })
+) {
     val coroutineScope = rememberCoroutineScope()
     val selectedIndex = pagerState.currentPage
     val list = listOf("장소", "코스")
