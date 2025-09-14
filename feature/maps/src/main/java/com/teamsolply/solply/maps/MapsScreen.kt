@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,15 +25,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -53,9 +48,7 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
 import com.teamsolply.solply.designsystem.component.button.AddCourseButton
 import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
-import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
-import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
@@ -432,85 +425,104 @@ private fun MapsScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        NaverMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState
         ) {
-            val topBarTitle = when (mapsType) {
-                MapsType.ADD_COURSE -> "코스 상세보기"
-                MapsType.EDIT_COURSE -> "수집함"
-                else -> placeDetailEntity.placeName
-            }
-            SolplyTopBar(
-                onBackButtonClick = {
-                    if (startEditCourse) {
-                        onCourseEditTopBarBackClick()
-                    } else {
-                        onBackButtonClick()
-                    }
-                },
-                barText = topBarTitle
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_home),
-                    contentDescription = "home",
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .size(24.dp)
-                        .customClickable(rippleEnabled = false) { onReturnToHomeClick() }
+            if (mapsType == MapsType.PLACE_DETAIL) {
+                Marker(
+                    state = MarkerState(
+                        position = LatLng(
+                            placeDetailEntity.latitude,
+                            placeDetailEntity.longitude
+                        )
+                    ),
+                    icon = OverlayImage.fromResource(R.drawable.ic_marker_default),
+                    anchor = Offset(0.5f, 0.5f)
                 )
-            }
-            NaverMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState
-            ) {
-                if (mapsType == MapsType.PLACE_DETAIL) {
-                    Marker(
-                        state = MarkerState(
-                            position = LatLng(
-                                placeDetailEntity.latitude,
-                                placeDetailEntity.longitude
-                            )
-                        ),
-                        icon = OverlayImage.fromResource(R.drawable.ic_marker_default),
-                        anchor = Offset(0.5f, 0.5f)
-                    )
-                } else {
-                    if (courseDetailInfo.places.isNotEmpty()) {
-                        courseDetailInfo.places.forEachIndexed { index, place ->
-                            val markerIconRes = getMarkerIcon(
-                                index = index,
-                                isSelected = selectedPlaceInfoId == place.placeId
-                            )
-                            val currentLatLng =
-                                LatLng(place.latitude, place.longitude)
-                            Marker(
-                                state = MarkerState(
-                                    position = LatLng(
-                                        place.latitude,
-                                        place.longitude
-                                    )
-                                ),
-                                icon = OverlayImage.fromResource(markerIconRes),
-                                anchor = Offset(0.5f, 0.5f)
-                            )
-                            if (index < courseDetailInfo.places.lastIndex) {
-                                val nextCourse = courseDetailInfo.places[index + 1]
-                                val nextLatLng = LatLng(
-                                    nextCourse.latitude,
-                                    nextCourse.longitude
+            } else {
+                if (courseDetailInfo.places.isNotEmpty()) {
+                    courseDetailInfo.places.forEachIndexed { index, place ->
+                        val markerIconRes = getMarkerIcon(
+                            index = index,
+                            isSelected = selectedPlaceInfoId == place.placeId
+                        )
+                        val currentLatLng =
+                            LatLng(place.latitude, place.longitude)
+                        Marker(
+                            state = MarkerState(
+                                position = LatLng(
+                                    place.latitude,
+                                    place.longitude
                                 )
+                            ),
+                            icon = OverlayImage.fromResource(markerIconRes),
+                            anchor = Offset(0.5f, 0.5f)
+                        )
+                        if (index < courseDetailInfo.places.lastIndex) {
+                            val nextCourse = courseDetailInfo.places[index + 1]
+                            val nextLatLng = LatLng(
+                                nextCourse.latitude,
+                                nextCourse.longitude
+                            )
 
-                                PathOverlay(
-                                    coords = persistentListOf(currentLatLng, nextLatLng),
-                                    color = SolplyTheme.colors.purple900,
-                                    width = 0.5.dp
-                                )
-                            }
+                            PathOverlay(
+                                coords = persistentListOf(currentLatLng, nextLatLng),
+                                color = SolplyTheme.colors.purple900,
+                                width = 0.5.dp
+                            )
                         }
                     }
                 }
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .padding(top = 48.dp, start = 20.dp, end = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        clip = false
+                    )
+                    .background(color = SolplyTheme.colors.white, shape = CircleShape)
+                    .customClickable(rippleEnabled = false) {
+                        if (startEditCourse) {
+                            onCourseEditTopBarBackClick()
+                        } else {
+                            onBackButtonClick()
+                        }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    contentDescription = "return back"
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        clip = false
+                    )
+                    .background(color = SolplyTheme.colors.white, shape = CircleShape)
+                    .customClickable(rippleEnabled = false) { onReturnToHomeClick() },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_home),
+                    contentDescription = "return home"
+                )
             }
         }
 

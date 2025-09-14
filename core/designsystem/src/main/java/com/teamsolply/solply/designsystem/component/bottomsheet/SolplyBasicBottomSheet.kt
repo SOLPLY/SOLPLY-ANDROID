@@ -40,12 +40,13 @@ fun SolplyBasicBottomSheet(
     val density = LocalDensity.current
 
     val sheetState = rememberFlexibleBottomSheetState(
+        allowNestedScroll = false,
         skipHiddenState = true,
         isModal = false,
         skipSlightlyExpanded = false,
         containSystemBars = false,
         flexibleSheetSize = FlexibleSheetSize(
-            fullyExpanded = 0.9f,
+            fullyExpanded = 0.93f,
             intermediatelyExpanded = 0.6f,
             slightlyExpanded = 0.13f
         )
