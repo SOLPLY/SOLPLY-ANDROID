@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
@@ -175,6 +176,7 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace(townId)
                 .onSuccess { placesList ->
+                    Log.d("asdasdasd", "asd")
                     reduce { copy(recommendPlaces = placesList.toPersistentList()) }
                 }
         }

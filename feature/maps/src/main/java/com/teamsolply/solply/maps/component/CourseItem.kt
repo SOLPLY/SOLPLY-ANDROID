@@ -22,11 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
-import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
@@ -111,15 +111,13 @@ internal fun CourseItem(
                         tint = SolplyTheme.colors.gray400
                     )
                 } else {
-                    val iconColor =
-                        if (iconSelected) SolplyTheme.colors.red500 else SolplyTheme.colors.gray400
-                    val iconBackGroundColor =
-                        if (iconSelected) SolplyTheme.colors.red300 else SolplyTheme.colors.gray200
-                    SolplySavedMarker(
-                        iconColor = iconColor,
-                        iconBackGroundColor = iconBackGroundColor,
-                        onClick = { iconClick() },
-                        isButton = true
+                    Icon(
+                        painter = painterResource(if (iconSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
+                        contentDescription = "saved marker",
+                        modifier = Modifier.customClickable(rippleEnabled = false) {
+                            iconClick()
+                        },
+                        tint = Color.Unspecified
                     )
                 }
                 Spacer(modifier = Modifier.padding(end = 22.dp))

@@ -109,7 +109,8 @@ fun CollectionRoute(
         },
         pagerState = pagerState,
         placeTown = uiState.placeTowns,
-        courseTown = uiState.courseTowns
+        courseTown = uiState.courseTowns,
+        modifier = Modifier.padding(paddingValues)
     )
 }
 
@@ -120,10 +121,10 @@ fun CollectionMenuScreen(
     onClickPlaceTab: () -> Unit,
     onClickCourseTab: () -> Unit,
     selectTown: (Long, String) -> Unit,
-    modifier: Modifier = Modifier,
-    pagerState: PagerState = rememberPagerState(pageCount = { 2 }),
     placeTown: List<PlaceTownEntity>,
-    courseTown: List<CourseTownEntity>
+    courseTown: List<CourseTownEntity>,
+    modifier: Modifier = Modifier,
+    pagerState: PagerState = rememberPagerState(pageCount = { 2 })
 ) {
     val coroutineScope = rememberCoroutineScope()
     val selectedIndex = pagerState.currentPage

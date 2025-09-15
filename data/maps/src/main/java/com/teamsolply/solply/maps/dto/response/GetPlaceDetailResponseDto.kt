@@ -12,8 +12,8 @@ data class GetPlaceDetailResponseDto(
     @SerialName("placeName")
     val placeName: String,
 
-    @SerialName("primaryTag")
-    val primaryTag: String,
+    @SerialName("mainTag")
+    val mainTag: String,
 
     @SerialName("introduction")
     val introduction: String,

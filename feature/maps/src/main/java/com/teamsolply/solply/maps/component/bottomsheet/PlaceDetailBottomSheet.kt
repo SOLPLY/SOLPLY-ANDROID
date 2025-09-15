@@ -3,6 +3,7 @@ package com.teamsolply.solply.maps.component.bottomsheet
 import ClickableAnnotatedText
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -66,7 +67,9 @@ fun PlaceDetailBottomSheet(
     selectedCourseForPlace: (Long) -> Unit,
     showMaxSizeCourseSnackBar: () -> Unit,
     showDuplicateSnackBar: () -> Unit,
-    emptyCourseClick: () -> Unit
+    emptyCourseClick: () -> Unit,
+    saveMyCourse: () -> Unit,
+    changeAddPlaceState: (Boolean) -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = {
         placeImageUrls.size
@@ -74,238 +77,259 @@ fun PlaceDetailBottomSheet(
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start
-    ) {
-        if (addPlace) {
-            Row(
-                modifier = Modifier.padding(bottom = 21.dp, start = 20.dp, end = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_long_arrow),
-                    contentDescription = "back_arrow",
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .customClickable(rippleEnabled = false) {
-                            addMyCourseBackClick()
-                        }
-                )
-                Text(
-                    text = "내 코스에 추가",
-                    color = SolplyTheme.colors.black,
-                    style = SolplyTheme.typography.head16M
-                )
-            }
-            if (courses.isEmpty()) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+    Box {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            if (addPlace) {
+                Row(
+                    modifier = Modifier.padding(bottom = 21.dp, start = 20.dp, end = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Icon(
+                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_long_arrow),
+                        contentDescription = "back_arrow",
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .customClickable(rippleEnabled = false) {
+                                addMyCourseBackClick()
+                            }
+                    )
                     Text(
-                        text = "저장한 코스가 없어요.",
-                        modifier = Modifier.padding(bottom = 28.dp, top = 100.dp),
-                        color = SolplyTheme.colors.gray800,
-                        style = SolplyTheme.typography.body16M
+                        text = "내 코스에 추가",
+                        color = SolplyTheme.colors.black,
+                        style = SolplyTheme.typography.head16M
                     )
-                    SolplyBasicButton(
-                        text = "나만의 코스 수집하러 가기",
-                        onClick = {
-                            emptyCourseClick()
-                        },
-                        modifier = Modifier.padding(horizontal = 64.dp),
-                        textColor = SolplyTheme.colors.gray800,
-                        textStyle = SolplyTheme.typography.button16M,
-                        enabledBackgroundColor = SolplyTheme.colors.green300
-                    )
+                }
+                if (courses.isEmpty()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "저장한 코스가 없어요.",
+                            modifier = Modifier.padding(bottom = 28.dp, top = 100.dp),
+                            color = SolplyTheme.colors.gray800,
+                            style = SolplyTheme.typography.body16M
+                        )
+                        SolplyBasicButton(
+                            text = "나만의 코스 수집하러 가기",
+                            onClick = {
+                                emptyCourseClick()
+                            },
+                            modifier = Modifier.padding(horizontal = 64.dp),
+                            textColor = SolplyTheme.colors.gray800,
+                            textStyle = SolplyTheme.typography.button16M,
+                            enabledBackgroundColor = SolplyTheme.colors.green300
+                        )
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        horizontalArrangement = Arrangement.spacedBy(11.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        contentPadding = PaddingValues(bottom = 200.dp)
+                    ) {
+                        items(courses) { courseInfo ->
+                            SolplyCourseCard(
+                                imgRes = courseInfo.thumbnailImage,
+                                placeType = courseInfo.mainTags,
+                                title = courseInfo.courseName,
+                                savedPlace = !courseInfo.isActive,
+                                savedCourse = courseInfo.isBookmarked,
+                                selected = if (!courseInfo.isActive) {
+                                    false
+                                } else {
+                                    addMyCourseSelectedCount == courseInfo.courseId
+                                },
+                                onClick = {
+                                    if (courseInfo.isDuplicated) {
+                                        showDuplicateSnackBar()
+                                    } else if (courseInfo.isPlaceCountLimited) {
+                                        showMaxSizeCourseSnackBar()
+                                    } else {
+                                        selectedCourseForPlace(courseInfo.courseId)
+                                    }
+                                }
+                            )
+                        }
+                    }
                 }
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.spacedBy(11.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    contentPadding = PaddingValues(bottom = 200.dp)
-                ) {
-                    items(courses) { courseInfo ->
-                        SolplyCourseCard(
-                            imgRes = courseInfo.thumbnailImage,
-                            placeType = courseInfo.mainTags,
-                            title = courseInfo.courseName,
-                            savedPlace = !courseInfo.isActive,
-                            savedCourse = courseInfo.isBookmarked,
-                            selected = if (!courseInfo.isActive) {
-                                false
-                            } else {
-                                addMyCourseSelectedCount == courseInfo.courseId
-                            },
-                            onClick = {
-                                if (courseInfo.isDuplicated) {
-                                    showDuplicateSnackBar()
-                                } else if (courseInfo.isPlaceCountLimited) {
-                                    showMaxSizeCourseSnackBar()
-                                } else {
-                                    selectedCourseForPlace(courseInfo.courseId)
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-        } else {
-            LazyColumn {
-                item {
-                    Row(
-                        modifier = Modifier.padding(bottom = 6.dp, start = 20.dp, end = 20.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        PlaceTag(
-                            type = placeType,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(
-                            text = title,
-                            color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.title18Sb
-                        )
-                    }
-                    Text(
-                        text = description,
-                        modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
-                        color = SolplyTheme.colors.gray900,
-                        maxLines = 2,
-                        style = SolplyTheme.typography.caption14R
-                    )
-                    HorizontalPager(
-                        state = pagerState,
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                            .align(Alignment.CenterHorizontally),
-                        contentPadding = PaddingValues(horizontal = 20.dp),
-                        pageSpacing = 10.dp
-                    ) { page ->
-                        AdaptationImage(
-                            imageUrl = placeImageUrls[page].url,
-                            modifier = Modifier
-                                .height(218.dp)
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(20.dp)),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp)
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(20.dp))
-                            .border(
-                                width = 1.dp,
-                                color = SolplyTheme.colors.gray200,
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+                LazyColumn {
+                    item {
+                        Row(
+                            modifier = Modifier.padding(bottom = 8.dp, start = 20.dp, end = 20.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                                Text(
-                                    text = "주소",
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .padding(end = 10.dp),
-                                    color = SolplyTheme.colors.black,
-                                    style = SolplyTheme.typography.caption14M
+                            PlaceTag(
+                                type = placeType,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = title,
+                                color = SolplyTheme.colors.black,
+                                style = SolplyTheme.typography.title18Sb
+                            )
+                        }
+                        Text(
+                            text = description,
+                            modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
+                            color = SolplyTheme.colors.gray900,
+                            maxLines = 2,
+                            style = SolplyTheme.typography.caption14R
+                        )
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .align(Alignment.CenterHorizontally),
+                            contentPadding = PaddingValues(horizontal = 20.dp),
+                            pageSpacing = 10.dp
+                        ) { page ->
+                            AdaptationImage(
+                                imageUrl = placeImageUrls[page].url,
+                                modifier = Modifier
+                                    .height(218.dp)
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(20.dp)),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp)
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(20.dp))
+                                .border(
+                                    width = 1.dp,
+                                    color = SolplyTheme.colors.gray200,
+                                    shape = RoundedCornerShape(20.dp)
                                 )
-                                if (placeAddress.isNotEmpty()) {
-                                    ClickableAnnotatedText(
-                                        originalText = "$placeAddress $copyText",
-                                        originalTextStyle = SolplyTheme.typography.caption14R.copy(
-                                            lineHeight = 15.sp
-                                        ),
-                                        targetText = copyText,
-                                        spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
-                                        onClick = {
-                                            clipboardManager.setText(AnnotatedString(placeAddress))
-                                        }
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+                            ) {
+                                Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                                    Text(
+                                        text = "주소",
+                                        modifier = Modifier
+                                            .width(80.dp)
+                                            .padding(end = 10.dp),
+                                        color = SolplyTheme.colors.black,
+                                        style = SolplyTheme.typography.caption14M
                                     )
-                                }
-                            }
-                            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                                Text(
-                                    text = "전화번호",
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .padding(end = 10.dp),
-                                    color = SolplyTheme.colors.black,
-                                    style = SolplyTheme.typography.caption14M
-                                )
-                                if (placeContactNumber.isNotEmpty()) {
-                                    ClickableAnnotatedText(
-                                        originalText = "$placeContactNumber $copyText",
-                                        originalTextStyle = SolplyTheme.typography.caption14R.copy(
-                                            lineHeight = 15.sp
-                                        ),
-                                        targetText = copyText,
-                                        spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
-                                        onClick = {
-                                            clipboardManager.setText(
-                                                AnnotatedString(
-                                                    placeContactNumber
+                                    if (placeAddress.isNotEmpty()) {
+                                        ClickableAnnotatedText(
+                                            originalText = "$placeAddress $copyText",
+                                            originalTextStyle = SolplyTheme.typography.caption14R.copy(
+                                                lineHeight = 15.sp
+                                            ),
+                                            targetText = copyText,
+                                            spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                                            onClick = {
+                                                clipboardManager.setText(
+                                                    AnnotatedString(
+                                                        placeAddress
+                                                    )
                                                 )
-                                            )
-                                        }
-                                    )
-                                }
-                            }
-                            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                                Text(
-                                    text = "운영시간",
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .padding(end = 10.dp),
-                                    color = SolplyTheme.colors.black,
-                                    style = SolplyTheme.typography.caption14M
-                                )
-                                Text(
-                                    text = placeOpeningHours.replace("\\n", "\n"),
-                                    color = SolplyTheme.colors.black,
-                                    style = SolplyTheme.typography.caption14R.copy(lineHeight = 15.sp)
-                                )
-                            }
-                            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                                Text(
-                                    text = "바로가기",
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .padding(end = 16.dp),
-                                    color = SolplyTheme.colors.black,
-                                    style = SolplyTheme.typography.caption14M
-                                )
-                                Column {
-                                    placeSnsLink.forEach {
-                                        Text(
-                                            text = it.snsPlatform,
-                                            modifier = Modifier.customClickable(rippleEnabled = false) {
-                                                val intent = Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    it.url.toUri()
-                                                )
-                                                context.startActivity(intent)
-                                            },
-                                            color = SolplyTheme.colors.black,
-                                            style = SolplyTheme.typography.caption14R.copy(
-                                                lineHeight = 15.sp,
-                                                textDecoration = TextDecoration.Underline
-                                            )
+                                            }
                                         )
+                                    }
+                                }
+                                Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                                    Text(
+                                        text = "전화번호",
+                                        modifier = Modifier
+                                            .width(80.dp)
+                                            .padding(end = 10.dp),
+                                        color = SolplyTheme.colors.black,
+                                        style = SolplyTheme.typography.caption14M
+                                    )
+                                    if (placeContactNumber.isNotEmpty()) {
+                                        ClickableAnnotatedText(
+                                            originalText = "$placeContactNumber $copyText",
+                                            originalTextStyle = SolplyTheme.typography.caption14R.copy(
+                                                lineHeight = 15.sp
+                                            ),
+                                            targetText = copyText,
+                                            spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                                            onClick = {
+                                                clipboardManager.setText(
+                                                    AnnotatedString(
+                                                        placeContactNumber
+                                                    )
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                                Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                                    Text(
+                                        text = "운영시간",
+                                        modifier = Modifier
+                                            .width(80.dp)
+                                            .padding(end = 10.dp),
+                                        color = SolplyTheme.colors.black,
+                                        style = SolplyTheme.typography.caption14M
+                                    )
+                                    Text(
+                                        text = placeOpeningHours.replace("\\n", "\n"),
+                                        color = SolplyTheme.colors.black,
+                                        style = SolplyTheme.typography.caption14R.copy(lineHeight = 15.sp)
+                                    )
+                                }
+                                Row(modifier = Modifier.padding(bottom = 8.dp)) {
+                                    Text(
+                                        text = "바로가기",
+                                        modifier = Modifier
+                                            .width(80.dp)
+                                            .padding(end = 16.dp),
+                                        color = SolplyTheme.colors.black,
+                                        style = SolplyTheme.typography.caption14M
+                                    )
+                                    Column {
+                                        placeSnsLink.forEach {
+                                            Text(
+                                                text = it.snsPlatform,
+                                                modifier = Modifier.customClickable(rippleEnabled = false) {
+                                                    val intent = Intent(
+                                                        Intent.ACTION_VIEW,
+                                                        it.url.toUri()
+                                                    )
+                                                    context.startActivity(intent)
+                                                },
+                                                color = SolplyTheme.colors.black,
+                                                style = SolplyTheme.typography.caption14R.copy(
+                                                    lineHeight = 15.sp,
+                                                    textDecoration = TextDecoration.Underline
+                                                )
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.height(40.dp))
                     }
-                    Spacer(modifier = Modifier.height(40.dp))
                 }
             }
+        }
+
+        if (addMyCourseSelectedCount != null) {
+            SolplyBasicButton(
+                text = "이 코스에 추가할래요",
+                onClick = {
+                    saveMyCourse()
+                    changeAddPlaceState(false)
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
+                textPadding = PaddingValues(vertical = 21.dp),
+                enabledBackgroundColor = SolplyTheme.colors.gray900
+            )
         }
     }
 }

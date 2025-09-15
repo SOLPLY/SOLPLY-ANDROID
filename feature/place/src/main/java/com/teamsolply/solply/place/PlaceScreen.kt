@@ -1,5 +1,6 @@
 package com.teamsolply.solply.place
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -197,9 +198,8 @@ fun PlaceScreen(
     val page3ItemSize = animateDpAsState(
         targetValue = if (isCenter[2]) 240.dp else 180.dp
     )
-
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         PlaceHeader(
             townName = uiState.userInfo.selectedTown.townName,
@@ -211,7 +211,7 @@ fun PlaceScreen(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             item(span = { GridItemSpan(2) }) {
