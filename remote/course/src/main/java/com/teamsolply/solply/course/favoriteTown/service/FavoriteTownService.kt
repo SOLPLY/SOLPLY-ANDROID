@@ -10,6 +10,7 @@ import retrofit2.http.PATCH
 interface FavoriteTownService {
     @GET("/api/towns")
     suspend fun getTownTree(): BaseResponse<TownTreeResponseDto>
+
     @PATCH("/api/users/towns")
     suspend fun patchUserFavoriteTown(
         @Body body: PatchUserFavTownRequestDto

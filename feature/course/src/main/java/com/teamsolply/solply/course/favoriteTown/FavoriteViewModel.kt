@@ -20,10 +20,10 @@ class FavoriteViewModel @Inject constructor(
     override fun handleIntent(intent: FavoriteTownIntent) {
         when (intent) {
             is FavoriteTownIntent.LoadFavoriteTownList -> loadTownTree()
-            is FavoriteTownIntent.SelectTown          -> reduce { copy(selectedTownId = intent.townId) }
-            is FavoriteTownIntent.SelectRegion        -> reduce { copy(selectedRegionId = intent.regionId) }
-            is FavoriteTownIntent.ConfirmSelection    -> patchUserFavoriteTown()
-            is FavoriteTownIntent.OnRetry             -> loadTownTree()
+            is FavoriteTownIntent.SelectTown -> reduce { copy(selectedTownId = intent.townId) }
+            is FavoriteTownIntent.SelectRegion -> reduce { copy(selectedRegionId = intent.regionId) }
+            is FavoriteTownIntent.ConfirmSelection -> patchUserFavoriteTown()
+            is FavoriteTownIntent.OnRetry -> loadTownTree()
         }
     }
 
