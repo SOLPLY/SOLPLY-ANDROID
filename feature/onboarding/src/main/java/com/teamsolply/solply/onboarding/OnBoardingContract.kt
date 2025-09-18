@@ -10,8 +10,7 @@ data class OnBoardingState(
     val currentPage: Int = 0,
     val totalPageCount: Int = 3,
     val townList: TownEntity = TownEntity(
-        selectedTown = null,
-        favoriteTownList = emptyList()
+        towns = emptyList()
     ),
     val selectedTownId: Long? = null,
     val personaList: PersonaEntity = PersonaEntity(personaList = emptyList()),

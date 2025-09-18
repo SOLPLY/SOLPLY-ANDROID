@@ -7,14 +7,14 @@ import com.teamsolply.solply.onboarding.model.TownEntity
 
 fun GetAllTownResponseDto.toEntity(): TownEntity {
     return TownEntity(
-        selectedTown = selectedTown?.toSubEntity(),
-        favoriteTownList = favoriteTownList.map { it.toSubEntity() }
+        towns = towns.map { it.toSubEntity() }
     )
 }
 
 fun TownDto.toSubEntity(): SubTownEntity {
     return SubTownEntity(
         townId = this.townId,
-        townName = this.townName
+        townName = this.townName,
+        subTowns = this.subTowns?.map { it.toSubEntity() }
     )
 }

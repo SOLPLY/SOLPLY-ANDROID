@@ -1,5 +1,6 @@
 package com.teamsolply.solply.onboarding.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,8 @@ fun SelectTownScreen(
     onBoardingIntent: (OnBoardingIntent) -> Unit
 ) {
     val townList = state.townList
+
+    Log.d("asdasdasd", townList.toString())
 
     val isButtonEnabled = state.selectedTownId != null
     Column(
@@ -53,7 +56,7 @@ fun SelectTownScreen(
                     alignment = Alignment.CenterHorizontally
                 )
             ) {
-                val towns = townList.favoriteTownList
+                val towns = townList.towns
                 if (towns.isEmpty()) {
                     Box {}
                 } else {
