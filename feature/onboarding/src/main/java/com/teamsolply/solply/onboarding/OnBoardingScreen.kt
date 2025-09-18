@@ -86,7 +86,7 @@ fun OnBoardingScreen(
     navController: NavController,
     changeInputNickname: (String) -> Unit,
     checkOnBoardingSuccess: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,

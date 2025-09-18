@@ -12,13 +12,13 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 fun OnBoardingTownBottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit = {},
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = SolplyTheme.colors.white,
-        dragHandle = null,
+        dragHandle = null
     ) {
         content()
     }

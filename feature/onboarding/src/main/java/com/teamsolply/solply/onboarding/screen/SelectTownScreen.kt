@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.teamsolply.solply.designsystem.component.button.AddLocalAreaButton
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -48,7 +47,7 @@ fun SelectTownScreen(
     val townList = state.townList
     val isButtonEnabled = state.selectedTownId != null
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+        skipPartiallyExpanded = true
     )
     val borderColor = SolplyTheme.colors.gray200
 
@@ -184,7 +183,6 @@ fun SelectTownScreen(
         )
     }
 }
-
 
 @Composable
 private fun LeftRegionPane(
