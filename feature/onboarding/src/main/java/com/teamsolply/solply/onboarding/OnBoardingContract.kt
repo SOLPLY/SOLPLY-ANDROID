@@ -12,7 +12,10 @@ data class OnBoardingState(
     val townList: TownEntity = TownEntity(
         towns = emptyList()
     ),
+
+    val selectedRegionId: Long? = 1,
     val selectedTownId: Long? = null,
+    val townBottomSheetShown: Boolean = false,
     val personaList: PersonaEntity = PersonaEntity(personaList = emptyList()),
     val selectedPersona: String? = null,
 
@@ -24,6 +27,8 @@ data class OnBoardingState(
 
 sealed interface OnBoardingIntent : UiIntent {
     data object OnBoardingButtonClick : OnBoardingIntent
+    data object ChangeTownBottomSheetShown : OnBoardingIntent
+    data class ChangeRegion(val regionId: Long) : OnBoardingIntent
     data class OnPageChanged(val newPage: Int) : OnBoardingIntent
     data class OnTownChanged(val newPage: Int) : OnBoardingIntent
     data class OnTownSelected(val townId: Long) : OnBoardingIntent

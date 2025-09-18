@@ -45,8 +45,16 @@ class OnBoardingViewModel @Inject constructor(
                 reduce { copy(currentPage = intent.newPage) }
             }
 
+            is OnBoardingIntent.ChangeTownBottomSheetShown -> {
+                reduce { copy(townBottomSheetShown = !townBottomSheetShown) }
+            }
+
+            is OnBoardingIntent.ChangeRegion -> {
+                reduce { copy(selectedRegionId = intent.regionId) }
+            }
+
             is OnBoardingIntent.OnTownSelected -> {
-                reduce { copy(selectedTownId = intent.townId) }
+                reduce { copy(selectedTownId = if (selectedTownId == intent.townId) null else intent.townId) }
             }
 
             is OnBoardingIntent.OnPersonaSelected -> {
