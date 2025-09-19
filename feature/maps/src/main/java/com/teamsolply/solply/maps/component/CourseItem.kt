@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,9 +13,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -57,7 +60,7 @@ internal fun CourseItem(
     val backGroundColor =
         if (selectedPlaceItem) SolplyTheme.colors.gray100 else SolplyTheme.colors.white
 
-    Row(
+    Column(
         modifier = modifier
             .animateContentSize(animationSpec = tween(durationMillis = 70))
             .fillMaxWidth()
@@ -70,110 +73,94 @@ internal fun CourseItem(
                 color = backGroundColor,
                 shape = RoundedCornerShape(20.dp)
             ),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.Top
     ) {
-        AdaptationImage(
-            imageUrl = placeImageRes,
-            modifier = Modifier
-                .padding(8.dp)
-                .size(imageSize)
-                .clip(RoundedCornerShape(12.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column {
-                    Row(modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)) {
-                        PlaceTag(
-                            type = placeTag,
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
+        Row {
+            AdaptationImage(
+                imageUrl = placeImageRes,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(imageSize)
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column {
+                        Row(modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)) {
+                            PlaceTag(
+                                type = placeTag,
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+                            Text(
+                                text = placeName.formatTextToPlaceItemTitle(),
+                                modifier = Modifier,
+                                color = SolplyTheme.colors.black,
+                                style = SolplyTheme.typography.title15M
+                            )
+                        }
                         Text(
-                            text = placeName.formatTextToPlaceItemTitle(),
+                            text = placeAddress.formatTextToPlaceItem(),
                             modifier = Modifier,
-                            color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.title15M
+                            color = SolplyTheme.colors.gray700,
+                            style = SolplyTheme.typography.caption12R
                         )
                     }
-                    Text(
-                        text = placeAddress.formatTextToPlaceItem(),
-                        modifier = Modifier,
-                        color = SolplyTheme.colors.gray700,
-                        style = SolplyTheme.typography.caption12R
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                if (isEditing) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_course_item_edit),
-                        contentDescription = "item_edting",
-                        tint = SolplyTheme.colors.gray400
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(if (iconSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
-                        contentDescription = "saved marker",
-                        modifier = Modifier.customClickable(rippleEnabled = false) {
-                            iconClick()
-                        },
-                        tint = Color.Unspecified
-                    )
-                }
-                Spacer(modifier = Modifier.padding(end = 22.dp))
-            }
-            if (selectedPlaceItem) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Spacer(modifier = Modifier.padding(start = 8.dp))
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                color = SolplyTheme.colors.gray300,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .background(
-                                color = SolplyTheme.colors.gray200,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .padding(horizontal = 15.dp, vertical = 8.dp)
-                            .customClickable(rippleEnabled = false) { placeDetailClick() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "장소상세",
-                            color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.button12M
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (isEditing) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_course_item_edit),
+                            contentDescription = "item_edting",
+                            tint = SolplyTheme.colors.gray400
                         )
-                    }
-                    Spacer(modifier = Modifier.padding(start = 8.dp))
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                color = SolplyTheme.colors.gray300,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .background(
-                                color = SolplyTheme.colors.gray200,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .padding(horizontal = 15.dp, vertical = 8.dp)
-                            .customClickable(rippleEnabled = false) { navigatePlaceClick() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "길찾기",
-                            color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.button12M
+                    } else {
+                        Icon(
+                            painter = painterResource(if (iconSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
+                            contentDescription = "saved marker",
+                            modifier = Modifier.customClickable(rippleEnabled = false) {
+                                iconClick()
+                            },
+                            tint = if (iconSelected) Color.Unspecified else SolplyTheme.colors.gray400
                         )
                     }
                     Spacer(modifier = Modifier.padding(end = 22.dp))
                 }
+            }
+        }
+        if (selectedPlaceItem) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = SolplyTheme.colors.gray300,
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "길찾기",
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .customClickable(rippleEnabled = false) { navigatePlaceClick() },
+                    color = SolplyTheme.colors.gray800,
+                    style = SolplyTheme.typography.button14M
+                )
+                VerticalDivider(
+                    modifier = Modifier
+                        .height(43.dp)
+                        .padding(vertical = 4.dp),
+                    thickness = 1.dp,
+                    color = SolplyTheme.colors.gray300,
+                )
+                Text(
+                    text = "상세보기",
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .customClickable(rippleEnabled = false) { placeDetailClick() },
+                    color = SolplyTheme.colors.gray800,
+                    style = SolplyTheme.typography.button14M
+                )
             }
         }
     }
