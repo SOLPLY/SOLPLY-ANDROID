@@ -1,6 +1,5 @@
 package com.teamsolply.solply.onboarding.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,8 +49,6 @@ fun SelectTownScreen(
         skipPartiallyExpanded = true
     )
     val borderColor = SolplyTheme.colors.gray200
-
-    Log.d("asdasdasd", state.selectedTownId.toString())
 
     Column(
         modifier = Modifier
