@@ -76,7 +76,7 @@ fun PlaceDetailBottomSheet(
     emptyCourseClick: () -> Unit,
     saveMyCourse: () -> Unit,
     changeAddPlaceState: (Boolean) -> Unit,
-    placeBookMarkClick: () -> Unit,
+    placeBookMarkClick: () -> Unit
 ) {
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
@@ -247,7 +247,7 @@ fun PlaceDetailBottomSheet(
                                     )
                                     .padding(
                                         horizontal = 16.dp,
-                                        vertical = 11.dp,
+                                        vertical = 11.dp
                                     )
                                     .customClickable(rippleEnabled = false) {
                                         changeAddPlaceState(true)

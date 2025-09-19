@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -72,7 +73,7 @@ internal fun CourseItem(
             .background(
                 color = backGroundColor,
                 shape = RoundedCornerShape(20.dp)
-            ),
+            )
     ) {
         Row {
             AdaptationImage(
@@ -84,9 +85,11 @@ internal fun CourseItem(
                 contentScale = ContentScale.Crop
             )
             Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Column {
-                        Row(modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)) {
+                        Row(modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)) {
                             PlaceTag(
                                 type = placeTag,
                                 modifier = Modifier.padding(end = 4.dp)
@@ -106,21 +109,24 @@ internal fun CourseItem(
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    if (isEditing) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_course_item_edit),
-                            contentDescription = "item_edting",
-                            tint = SolplyTheme.colors.gray400
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(if (iconSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
-                            contentDescription = "saved marker",
-                            modifier = Modifier.customClickable(rippleEnabled = false) {
-                                iconClick()
-                            },
-                            tint = if (iconSelected) Color.Unspecified else SolplyTheme.colors.gray400
-                        )
+                    Box(modifier = Modifier.padding(top = 10.dp)) {
+                        if (isEditing) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_course_item_edit),
+                                modifier = Modifier.size(28.dp),
+                                contentDescription = "item_edting",
+                                tint = SolplyTheme.colors.gray400
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(if (iconSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
+                                contentDescription = "saved marker",
+                                modifier = Modifier.customClickable(rippleEnabled = false) {
+                                    iconClick()
+                                },
+                                tint = if (iconSelected) Color.Unspecified else SolplyTheme.colors.gray400
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.padding(end = 22.dp))
                 }
@@ -129,7 +135,7 @@ internal fun CourseItem(
         if (selectedPlaceItem) {
             HorizontalDivider(
                 thickness = 1.dp,
-                color = SolplyTheme.colors.gray300,
+                color = SolplyTheme.colors.gray300
             )
             Row(
                 modifier = Modifier
@@ -151,7 +157,7 @@ internal fun CourseItem(
                         .height(43.dp)
                         .padding(vertical = 4.dp),
                     thickness = 1.dp,
-                    color = SolplyTheme.colors.gray300,
+                    color = SolplyTheme.colors.gray300
                 )
                 Text(
                     text = "상세보기",

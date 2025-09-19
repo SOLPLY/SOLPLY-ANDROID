@@ -120,8 +120,10 @@ internal class MapsViewModel @Inject constructor(
 
             is MapsIntent.PlaceInfoClick -> {
                 val currentSelectedId = uiState.value.selectedPlaceInfoId
-                val newSelectedId = if (currentSelectedId == intent.placeId) null else intent.placeId
-                val selectedPlace = uiState.value.courseDetailInfo.places.find { it.placeId == newSelectedId }
+                val newSelectedId =
+                    if (currentSelectedId == intent.placeId) null else intent.placeId
+                val selectedPlace =
+                    uiState.value.courseDetailInfo.places.find { it.placeId == newSelectedId }
                 if (selectedPlace != null) {
                     postSideEffect(
                         MapsSideEffect.MoveCameraToPlace(
@@ -182,8 +184,8 @@ internal class MapsViewModel @Inject constructor(
                     saveCurrentCourse(
                         courseId = courseInfo.courseId,
                         courseSaveEntity = CourseSaveEntity(
-                            name = courseInfo.courseName,
-                            description = courseInfo.introduction,
+                            name = uiState.value.newCourseName,
+                            description = uiState.value.newCourseIntroduction,
                             places = courseInfo.places.mapIndexed { index, it ->
                                 CoursePlace(
                                     placeId = it.placeId,
@@ -195,8 +197,8 @@ internal class MapsViewModel @Inject constructor(
                 } else {
                     saveNewCourse(
                         courseSaveEntity = CourseSaveEntity(
-                            name = courseInfo.courseName.substringBefore("(").trim(),
-                            description = courseInfo.introduction,
+                            name = uiState.value.newCourseName.substringBefore("(").trim(),
+                            description = uiState.value.newCourseIntroduction,
                             places = courseInfo.places.mapIndexed { index, it ->
                                 CoursePlace(
                                     placeId = it.placeId,
@@ -248,6 +250,20 @@ internal class MapsViewModel @Inject constructor(
                     coursesBeforeEdit = persistentListOf(),
                     exitEditCourseDialogVisibility = false
                 )
+            }
+
+            MapsIntent.ChangeRenameCourseBottomSheetVisibility -> reduce {
+                copy(
+                    renameCourseBottomSheetVisibility = !renameCourseBottomSheetVisibility
+                )
+            }
+
+            is MapsIntent.RenameCourseName -> reduce {
+                copy(newCourseName = intent.courseName)
+            }
+
+            is MapsIntent.RenameCourseIntroduction -> reduce {
+                copy(newCourseIntroduction = intent.courseIntroduction)
             }
 
             // Shared
@@ -332,7 +348,9 @@ internal class MapsViewModel @Inject constructor(
                 reduce {
                     copy(
                         townId = townId,
-                        courseDetailInfo = it
+                        courseDetailInfo = it,
+                        newCourseName = it.courseName,
+                        newCourseIntroduction = it.introduction
                     )
                 }
             }
@@ -377,7 +395,9 @@ internal class MapsViewModel @Inject constructor(
             mapsRepository.putEditCourse(
                 courseId = courseId,
                 courseSaveEntity = courseSaveEntity
-            )
+            ).onSuccess {
+                uiState.value.townId?.let { townId -> getCourseDetailInfo(townId, courseId) }
+            }
         }
     }
 

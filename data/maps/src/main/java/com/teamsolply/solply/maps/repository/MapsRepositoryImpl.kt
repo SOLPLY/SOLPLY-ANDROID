@@ -78,7 +78,8 @@ class MapsRepositoryImpl @Inject constructor(
         )
     }.mapCatching {
         CourseSaveResultEntity(
-            courseId = it.courseId,
+            updatedCourseId = it.updatedCourseId,
+            updatedCourseName = it.updatedCourseName,
             isNewCourse = it.isNewCourse
         )
     }

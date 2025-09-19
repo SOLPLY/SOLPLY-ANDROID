@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -43,20 +42,16 @@ import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.overlay.OverlayImage
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.bottomsheet.SolplyBasicBottomSheet
-import com.teamsolply.solply.designsystem.component.button.AddCourseButton
-import com.teamsolply.solply.designsystem.component.button.AddPlaceButton
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
-import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.util.calculateCameraPosition
-import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.extension.vibrate
@@ -236,6 +231,13 @@ internal fun MapsRoute(
         moveCameraRequest = moveCameraRequest,
         onCameraMoved = { moveCameraRequest = null },
         // Edit Course
+        changeCourseSaveDialogInVisibility = {
+            viewModel.sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility)
+        },
+        courseSaveDialogVisibility = uiState.courseSaveDialogVisibility,
+        courseSaveDialogClick = { type ->
+            viewModel.sendIntent(MapsIntent.CourseSaveDialogClick(type))
+        },
         removeIconVisible = uiState.removeIconVisibility,
         startEditCourse = uiState.startEditCourse,
         startCourseMove = { iconVisibility ->
@@ -268,28 +270,20 @@ internal fun MapsRoute(
         onPlaceDetailClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
         },
+        renameCourseBottomSheetVisibility = uiState.renameCourseBottomSheetVisibility,
+        onStartRenameCourseClick = {
+            viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility)
+        },
+        newCourseName = uiState.newCourseName,
+        newCourseIntroduction = uiState.newCourseIntroduction,
+        renameCourseName = { courseName ->
+            viewModel.sendIntent(MapsIntent.RenameCourseName(courseName = courseName))
+        },
+        renameCourseIntroduction = { courseIntroduction ->
+            viewModel.sendIntent(MapsIntent.RenameCourseIntroduction(courseIntroduction = courseIntroduction))
+        },
         modifier = Modifier.padding(paddingValues)
     )
-
-    if (uiState.courseSaveDialogVisibility) {
-        CourseSaveDialog(
-            saveToCourseClick = {
-                viewModel.sendIntent(
-                    MapsIntent.CourseSaveDialogClick(
-                        courseSaveType = CourseSaveType.SaveToExistingCourse
-                    )
-                )
-            },
-            saveToNewCourseClick = {
-                viewModel.sendIntent(
-                    MapsIntent.CourseSaveDialogClick(
-                        CourseSaveType.SaveAsNewCourse
-                    )
-                )
-            },
-            onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeCourseSaveDialogInVisibility) }
-        )
-    }
 
     if (uiState.exitEditCourseDialogVisibility) {
         SolplyConfirmDialog(
@@ -312,7 +306,7 @@ internal fun MapsRoute(
     }
 }
 
-@OptIn(ExperimentalNaverMapApi::class)
+@OptIn(ExperimentalNaverMapApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun MapsScreen(
     mapsType: MapsType,
@@ -338,6 +332,9 @@ private fun MapsScreen(
     moveCameraRequest: Pair<Double, Double>?,
     onCameraMoved: () -> Unit,
     // Edit Course
+    changeCourseSaveDialogInVisibility: () -> Unit,
+    courseSaveDialogVisibility: Boolean,
+    courseSaveDialogClick: (CourseSaveType) -> Unit,
     removeIconVisible: Boolean,
     startEditCourse: Boolean,
     startCourseMove: (Boolean) -> Unit,
@@ -350,6 +347,12 @@ private fun MapsScreen(
     onCourseEditBackClick: () -> Unit,
     onCourseEditTopBarBackClick: () -> Unit,
     onPlaceDetailClick: (Long) -> Unit,
+    renameCourseBottomSheetVisibility: Boolean,
+    onStartRenameCourseClick: () -> Unit,
+    newCourseName: String,
+    newCourseIntroduction: String,
+    renameCourseName: (String) -> Unit,
+    renameCourseIntroduction: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -421,7 +424,10 @@ private fun MapsScreen(
             }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
         NaverMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
@@ -551,7 +557,7 @@ private fun MapsScreen(
                             emptyCourseClick = emptyCourseClick,
                             saveMyCourse = saveMyCourse,
                             changeAddPlaceState = changeAddPlaceState,
-                            placeBookMarkClick = placeBookMarkClick,
+                            placeBookMarkClick = placeBookMarkClick
                         )
                     }
 
@@ -589,7 +595,16 @@ private fun MapsScreen(
                             removeCourse = removeCourse,
                             onCourseEditBackClick = onCourseEditBackClick,
                             placeDetailClick = onPlaceDetailClick,
-                            removeIconVisible = removeIconVisible
+                            removeIconVisible = removeIconVisible,
+                            onStartRenameCourseClick = onStartRenameCourseClick,
+                            renameCourseBottomSheetVisibility = renameCourseBottomSheetVisibility,
+                            newCourseName = newCourseName,
+                            newCourseIntroduction = newCourseIntroduction,
+                            renameCourseName = renameCourseName,
+                            renameCourseIntroduction = renameCourseIntroduction,
+                            courseSaveDialogVisibility = courseSaveDialogVisibility,
+                            courseSaveDialogClick = courseSaveDialogClick,
+                            changeCourseSaveDialogInVisibility = changeCourseSaveDialogInVisibility
                         )
                     }
                 }
