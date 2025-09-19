@@ -3,6 +3,7 @@ package com.teamsolply.solply.maps.component.bottomsheet
 import ClickableAnnotatedText
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,11 +16,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -36,13 +38,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.ImageInfo
+import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.model.SnsLink
+import com.teamsolply.solply.maps.util.navigateToNaverMapDirections
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
@@ -51,7 +56,9 @@ import kotlinx.collections.immutable.PersistentList
 @Composable
 fun PlaceDetailBottomSheet(
     context: Context,
+    placeBookmarked: Boolean,
     addPlace: Boolean,
+    placeDetailEntity: PlaceDetailEntity,
     placeType: PlaceType,
     title: String,
     description: String,
@@ -68,11 +75,9 @@ fun PlaceDetailBottomSheet(
     showDuplicateSnackBar: () -> Unit,
     emptyCourseClick: () -> Unit,
     saveMyCourse: () -> Unit,
-    changeAddPlaceState: (Boolean) -> Unit
+    changeAddPlaceState: (Boolean) -> Unit,
+    placeBookMarkClick: () -> Unit,
 ) {
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = {
-        placeImageUrls.size
-    })
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
 
@@ -83,11 +88,11 @@ fun PlaceDetailBottomSheet(
         ) {
             if (addPlace) {
                 Row(
-                    modifier = Modifier.padding(bottom = 21.dp, start = 20.dp, end = 20.dp),
+                    modifier = Modifier.padding(bottom = 22.dp, start = 20.dp, end = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_back_long_arrow),
+                        painter = painterResource(R.drawable.ic_back_long_arrow),
                         contentDescription = "back_arrow",
                         modifier = Modifier
                             .padding(end = 12.dp)
@@ -156,45 +161,123 @@ fun PlaceDetailBottomSheet(
                     }
                 }
             } else {
+                Row(
+                    modifier = Modifier.padding(bottom = 8.dp, start = 20.dp, end = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    PlaceTag(
+                        type = placeType,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                    Text(
+                        text = title,
+                        color = SolplyTheme.colors.black,
+                        style = SolplyTheme.typography.title18Sb
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        painter = painterResource(if (placeBookmarked) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
+                        contentDescription = "place_bookmarked",
+                        modifier = Modifier.customClickable(rippleEnabled = false) {
+                            placeBookMarkClick()
+                        },
+                        tint = SolplyTheme.colors.gray900
+                    )
+                }
+                Text(
+                    text = description,
+                    modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
+                    color = SolplyTheme.colors.gray900,
+                    maxLines = 2,
+                    style = SolplyTheme.typography.caption14R
+                )
                 LazyColumn {
                     item {
                         Row(
-                            modifier = Modifier.padding(bottom = 8.dp, start = 20.dp, end = 20.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp,
+                                bottom = 20.dp
+                            )
                         ) {
-                            PlaceTag(
-                                type = placeType,
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(
-                                text = title,
-                                color = SolplyTheme.colors.black,
-                                style = SolplyTheme.typography.title18Sb
-                            )
-                        }
-                        Text(
-                            text = description,
-                            modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
-                            color = SolplyTheme.colors.gray900,
-                            maxLines = 2,
-                            style = SolplyTheme.typography.caption14R
-                        )
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .padding(bottom = 16.dp)
-                                .align(Alignment.CenterHorizontally),
-                            contentPadding = PaddingValues(horizontal = 20.dp),
-                            pageSpacing = 10.dp
-                        ) { page ->
-                            AdaptationImage(
-                                imageUrl = placeImageUrls[page].url,
+                            Row(
                                 modifier = Modifier
-                                    .height(218.dp)
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(20.dp)),
-                                contentScale = ContentScale.Crop
-                            )
+                                    .padding(end = 8.dp)
+                                    .background(
+                                        color = SolplyTheme.colors.gray100,
+                                        shape = CircleShape
+                                    )
+                                    .border(
+                                        width = 1.dp,
+                                        shape = CircleShape,
+                                        color = SolplyTheme.colors.gray300
+                                    )
+                                    .padding(
+                                        start = 16.dp,
+                                        end = 12.dp,
+                                        top = 11.dp,
+                                        bottom = 11.dp
+                                    )
+                                    .customClickable(rippleEnabled = false) {
+                                        navigateToNaverMapDirections(
+                                            context = context,
+                                            destName = placeDetailEntity.placeName,
+                                            destId = placeDetailEntity.placeDefaultId.toString(),
+                                            destLongitude = placeDetailEntity.longitude,
+                                            destLatitude = placeDetailEntity.latitude,
+                                            destType = placeDetailEntity.placeType
+                                        )
+                                    }
+                            ) {
+                                Text(
+                                    text = "길찾기",
+                                    color = SolplyTheme.colors.gray900,
+                                    style = SolplyTheme.typography.button14M
+                                )
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_place_navigation),
+                                    contentDescription = "place_navigation"
+                                )
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .background(
+                                        color = SolplyTheme.colors.gray900,
+                                        shape = CircleShape
+                                    )
+                                    .padding(
+                                        horizontal = 16.dp,
+                                        vertical = 11.dp,
+                                    )
+                                    .customClickable(rippleEnabled = false) {
+                                        changeAddPlaceState(true)
+                                    }
+                            ) {
+                                Text(
+                                    text = "내 코스에 추가",
+                                    color = SolplyTheme.colors.white,
+                                    style = SolplyTheme.typography.button14M
+                                )
+                            }
+                        }
+                        LazyRow(
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                bottom = 16.dp
+                            ),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            contentPadding = PaddingValues(end = 16.dp)
+                        ) {
+                            items(items = placeImageUrls) { item ->
+                                AdaptationImage(
+                                    imageUrl = item.url,
+                                    modifier = Modifier
+                                        .height(196.dp)
+                                        .width(295.dp)
+                                        .clip(RoundedCornerShape(12.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
                         }
                         Box(
                             modifier = Modifier

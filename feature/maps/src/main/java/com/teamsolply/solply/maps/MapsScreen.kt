@@ -526,118 +526,14 @@ private fun MapsScreen(
 
         SolplyBasicBottomSheet(
             modifier = Modifier.align(Alignment.BottomCenter),
-            menuContent = {
-                if (mapsType == MapsType.PLACE_DETAIL) {
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .size(47.dp)
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = CircleShape,
-                                clip = false
-                            )
-                            .background(color = SolplyTheme.colors.white, shape = CircleShape)
-                            .then(
-                                if (startAddMyCourse) {
-                                    Modifier
-                                } else {
-                                    Modifier.customClickable(rippleEnabled = false) {
-                                        navigateToNaverMapDirections(
-                                            context = context,
-                                            destName = placeDetailEntity.placeName,
-                                            destId = placeDetailEntity.placeDefaultId.toString(),
-                                            destLongitude = placeDetailEntity.longitude,
-                                            destLatitude = placeDetailEntity.latitude,
-                                            destType = placeDetailEntity.placeType
-                                        )
-                                    }
-                                }
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_place_navigation),
-                            contentDescription = "place_navigation",
-                            tint = if (startAddMyCourse) SolplyTheme.colors.gray400 else Color.Unspecified
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    AddPlaceButton(
-                        onClick = { changeAddPlaceState(!startAddMyCourse) },
-                        selected = startAddMyCourse,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = CircleShape,
-                                clip = false
-                            )
-                    )
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .size(48.dp)
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = CircleShape,
-                                clip = false
-                            )
-                            .background(
-                                color = if (startAddMyCourse) {
-                                    SolplyTheme.colors.white
-                                } else {
-                                    if (placeBookmarked) {
-                                        SolplyTheme.colors.red100
-                                    } else {
-                                        SolplyTheme.colors.white
-                                    }
-                                },
-                                shape = CircleShape
-                            )
-                            .then(
-                                if (startAddMyCourse) {
-                                    Modifier
-                                } else {
-                                    Modifier.customClickable(rippleEnabled = false) {
-                                        placeBookMarkClick()
-                                    }
-                                }
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(
-                                if (placeBookmarked) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty
-                            ),
-                            contentDescription = "add_place",
-                            tint = if (startAddMyCourse) {
-                                SolplyTheme.colors.gray400
-                            } else {
-                                if (placeBookmarked) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
-                            }
-                        )
-                    }
-                } else if (mapsType == MapsType.ADD_COURSE) {
-                    AddCourseButton(
-                        onClick = saveCourse,
-                        selected = courseDetailInfo.isBookmarked,
-                        modifier = Modifier
-                            .padding(end = 15.dp)
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = CircleShape,
-                                clip = false
-                            )
-                    )
-                }
-            },
             content = {
                 when (mapsType) {
                     MapsType.PLACE_DETAIL -> {
                         PlaceDetailBottomSheet(
                             context = context,
+                            placeBookmarked = placeBookmarked,
                             addPlace = startAddMyCourse,
+                            placeDetailEntity = placeDetailEntity,
                             placeType = placeDetailEntity.mainTag,
                             title = placeDetailEntity.placeName,
                             description = placeDetailEntity.introduction,
@@ -654,7 +550,8 @@ private fun MapsScreen(
                             showDuplicateSnackBar = showDuplicateSnackBar,
                             emptyCourseClick = emptyCourseClick,
                             saveMyCourse = saveMyCourse,
-                            changeAddPlaceState = changeAddPlaceState
+                            changeAddPlaceState = changeAddPlaceState,
+                            placeBookMarkClick = placeBookMarkClick,
                         )
                     }
 
@@ -667,7 +564,9 @@ private fun MapsScreen(
                             selectedPlaceItem = selectedPlaceInfoId,
                             singleCoursePlaceBookMarkClick = singleCoursePlaceBookMarkClick,
                             placeInfoClick = placeInfoClick,
-                            placeDetailClick = onPlaceDetailClick
+                            placeDetailClick = onPlaceDetailClick,
+                            saveCourse = saveCourse,
+                            courseSelected = courseDetailInfo.isBookmarked
                         )
                     }
 
