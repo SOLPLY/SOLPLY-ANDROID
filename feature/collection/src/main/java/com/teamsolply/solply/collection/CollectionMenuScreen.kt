@@ -44,7 +44,7 @@ fun CollectionRoute(
     navigateToCourseCollection: (Long, String) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
-    viewModel: MypageViewModel = hiltViewModel()
+    viewModel: CollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { 2 })

@@ -5,14 +5,14 @@ import com.teamsolply.solply.collection.model.CourseInfoEntity
 import com.teamsolply.solply.collection.model.CourseTownEntity
 import com.teamsolply.solply.collection.model.PlaceInfoEntity
 import com.teamsolply.solply.collection.model.PlaceTownEntity
-import com.teamsolply.solply.collection.source.MypageRemoteDataSource
+import com.teamsolply.solply.collection.source.CollectionRemoteDataSource
 import javax.inject.Inject
 
-class MypageRepositoryImpl @Inject constructor(
-    private val mypageRemoteDataSource: MypageRemoteDataSource
-) : MypageRepository {
+class CollectionRepositoryImpl @Inject constructor(
+    private val collectionRemoteDataSource: CollectionRemoteDataSource
+) : CollectionRepository {
     override suspend fun getPlaceTownList(): Result<List<PlaceTownEntity>> = runCatching {
-        mypageRemoteDataSource.getPlaceTownList().townList
+        collectionRemoteDataSource.getPlaceTownList().townList
     }.mapCatching { townList ->
         townList.map { town ->
             PlaceTownEntity(
@@ -25,7 +25,7 @@ class MypageRepositoryImpl @Inject constructor(
 
     override suspend fun getCourseTownList(): Result<List<CourseTownEntity>> = runCatching {
         Log.d("course town", "repository impl1 start")
-        mypageRemoteDataSource.getCourseTownList().townList
+        collectionRemoteDataSource.getCourseTownList().townList
     }.mapCatching { townList ->
         townList.map { town ->
             CourseTownEntity(
@@ -39,7 +39,7 @@ class MypageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPlaceList(townId: Long): Result<List<PlaceInfoEntity>> = runCatching {
-        mypageRemoteDataSource.getPlaceList(townId).placeList
+        collectionRemoteDataSource.getPlaceList(townId).placeList
     }.mapCatching { placeList ->
         placeList.map { place ->
             PlaceInfoEntity(
@@ -53,7 +53,7 @@ class MypageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCourseList(townId: Long): Result<List<CourseInfoEntity>> = runCatching {
-        mypageRemoteDataSource.getCourseList(townId).courseList
+        collectionRemoteDataSource.getCourseList(townId).courseList
     }.mapCatching { courseList ->
         courseList.map { course ->
             CourseInfoEntity(
@@ -67,10 +67,10 @@ class MypageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deletePlaces(placeIds: List<Long>): Result<Unit> = runCatching {
-        mypageRemoteDataSource.deletePlaces(placeIds)
+        collectionRemoteDataSource.deletePlaces(placeIds)
     }
 
     override suspend fun deleteCourses(courseIds: List<Long>): Result<Unit> = runCatching {
-        mypageRemoteDataSource.deleteCourses(courseIds)
+        collectionRemoteDataSource.deleteCourses(courseIds)
     }
 }

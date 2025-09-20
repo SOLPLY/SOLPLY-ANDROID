@@ -5,7 +5,7 @@ import com.teamsolply.solply.collection.model.CourseTownEntity
 import com.teamsolply.solply.collection.model.PlaceInfoEntity
 import com.teamsolply.solply.collection.model.PlaceTownEntity
 
-interface MypageRepository {
+interface CollectionRepository {
     suspend fun getPlaceTownList(): Result<List<PlaceTownEntity>>
     suspend fun getCourseTownList(): Result<List<CourseTownEntity>>
 
