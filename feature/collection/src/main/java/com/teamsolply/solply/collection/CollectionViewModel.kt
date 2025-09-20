@@ -13,12 +13,12 @@ import javax.inject.Inject
 class CollectionViewModel @Inject constructor(
     private val collectionRepository: CollectionRepository
 ) :
-    BaseViewModel<CollectionMenuState, CollectionMenuIntent, MypageSideEffect>(CollectionMenuState()) {
+    BaseViewModel<CollectionMenuState, CollectionMenuIntent, CollectionSideEffect>(CollectionMenuState()) {
     override fun handleIntent(intent: CollectionMenuIntent) {
         when (intent) {
             is CollectionMenuIntent.SelectPlaceTown -> {
                 postSideEffect(
-                    MypageSideEffect.NavigateToPlaceCollection(
+                    CollectionSideEffect.NavigateToPlaceCollection(
                         townId = intent.townId,
                         townName = intent.townName
                     )
@@ -27,7 +27,7 @@ class CollectionViewModel @Inject constructor(
 
             is CollectionMenuIntent.SelectCourseTown -> {
                 postSideEffect(
-                    MypageSideEffect.NavigateToCourseCollection(
+                    CollectionSideEffect.NavigateToCourseCollection(
                         townId = intent.townId,
                         townName = intent.townName
                     )
@@ -35,7 +35,7 @@ class CollectionViewModel @Inject constructor(
             }
 
             is CollectionMenuIntent.BackButtonClick -> {
-                postSideEffect(MypageSideEffect.NavigateToBack)
+                postSideEffect(CollectionSideEffect.NavigateToBack)
             }
 
             is CollectionMenuIntent.SelectPlaceTab -> {
@@ -53,11 +53,11 @@ class CollectionViewModel @Inject constructor(
             is CollectionMenuIntent.EmptyButtonClick -> {
                 when (intent.mypageTab) {
                     MypageTab.PLACE -> {
-                        postSideEffect(MypageSideEffect.NavigateToPLace)
+                        postSideEffect(CollectionSideEffect.NavigateToPLace)
                     }
 
                     MypageTab.COURSE -> {
-                        postSideEffect(MypageSideEffect.NavigateToCourse)
+                        postSideEffect(CollectionSideEffect.NavigateToCourse)
                     }
                 }
             }

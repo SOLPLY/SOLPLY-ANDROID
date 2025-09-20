@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class CollectionDataModule {
     @Binds
     @Singleton
-    abstract fun bindsMypageRepository(mypageRepositoryImpl: CollectionRepositoryImpl): CollectionRepository
+    abstract fun bindsCollectionRepository(collectionRepositoryImpl: CollectionRepositoryImpl): CollectionRepository
 }

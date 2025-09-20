@@ -1,3 +1,5 @@
+import com.teamsolply.solply.convention.extension.implementation
+
 plugins {
     alias(libs.plugins.solply.android.application)
     alias(libs.plugins.kotlin.android)
@@ -44,6 +46,7 @@ dependencies {
     implementation(projects.domain.course)
     implementation(projects.domain.collection)
     implementation(projects.domain.maps)
+    implementation(projects.domain.mypage)
     implementation(projects.data.main)
     implementation(projects.data.oauth)
     implementation(projects.data.onboarding)
@@ -51,6 +54,7 @@ dependencies {
     implementation(projects.data.course)
     implementation(projects.data.collection)
     implementation(projects.data.maps)
+    implementation(projects.data.mypage)
     implementation(projects.local.main)
     implementation(projects.local.oauth)
     implementation(projects.local.place)
@@ -60,6 +64,7 @@ dependencies {
     implementation(projects.remote.course)
     implementation(projects.remote.collection)
     implementation(projects.remote.maps)
+    implementation(projects.remote.mypage)
     implementation(projects.feature.main)
     implementation(projects.feature.oauth)
     implementation(projects.feature.onboarding)

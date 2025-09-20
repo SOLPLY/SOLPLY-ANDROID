@@ -1,6 +1,7 @@
 plugins {
-    alias(libs.plugins.solply.feature)
+    alias(libs.plugins.solply.data)
 }
+
 android {
     namespace = "com.teamsolply.solply.mypage"
 }
