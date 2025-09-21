@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -103,15 +102,6 @@ fun OauthScreen(
                 .height(173.dp)
                 .padding(8.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_login_graphic),
-                contentDescription = "loginGraphic",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 8.dp),
-                contentScale = ContentScale.Crop
-            )
-
             Text(
                 text = "혼자만의 시간을\n더 쉽게, 더 즐겁게!",
                 color = SolplyTheme.colors.gray800,
@@ -151,7 +141,8 @@ fun OauthScreen(
                 color = SolplyTheme.colors.gray900
             )
         }
-        Spacer(modifier = Modifier.height(102.dp))
+
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }
 

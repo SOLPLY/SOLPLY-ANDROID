@@ -1,6 +1,7 @@
 package com.teamsolply.solply.maps.model
 
 data class CourseSaveResultEntity(
-    val courseId: Long,
+    val updatedCourseId: Long,
+    val updatedCourseName: String,
     val isNewCourse: Boolean
 )

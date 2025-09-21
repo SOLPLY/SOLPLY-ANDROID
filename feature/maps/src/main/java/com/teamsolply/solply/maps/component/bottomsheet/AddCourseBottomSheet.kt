@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.model.Place
@@ -35,19 +38,34 @@ internal fun AddCourseBottomSheet(
     selectedPlaceItem: Long?,
     singleCoursePlaceBookMarkClick: (Long) -> Unit,
     placeInfoClick: (Long) -> Unit,
-    placeDetailClick: (Long) -> Unit
+    placeDetailClick: (Long) -> Unit,
+    saveCourse: () -> Unit,
+    courseSelected: Boolean
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        Text(
-            text = courseName,
-            modifier = Modifier.padding(bottom = 8.dp),
-            color = SolplyTheme.colors.black,
-            style = SolplyTheme.typography.title18Sb
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = courseName,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = SolplyTheme.colors.black,
+                style = SolplyTheme.typography.display20Sb
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(if (courseSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
+                contentDescription = "place_bookmarked",
+                modifier = Modifier.customClickable(rippleEnabled = false) {
+                    saveCourse()
+                },
+                tint = SolplyTheme.colors.gray900
+            )
+        }
         Text(
             text = introduction,
             modifier = Modifier.padding(bottom = 20.dp),

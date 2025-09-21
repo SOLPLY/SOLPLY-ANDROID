@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

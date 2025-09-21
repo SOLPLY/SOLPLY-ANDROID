@@ -5,10 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetAllTownResponseDto(
-    @SerialName("selectedTown")
-    val selectedTown: TownDto?,
-    @SerialName("favoriteTownList")
-    val favoriteTownList: List<TownDto>
+    @SerialName("towns")
+    val towns: List<TownDto>
 )
 
 @Serializable
@@ -16,5 +14,7 @@ data class TownDto(
     @SerialName("townId")
     val townId: Long,
     @SerialName("townName")
-    val townName: String
+    val townName: String,
+    @SerialName("subTowns")
+    val subTowns: List<TownDto>? = null
 )

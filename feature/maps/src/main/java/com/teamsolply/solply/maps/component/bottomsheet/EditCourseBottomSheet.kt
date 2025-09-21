@@ -6,18 +6,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -40,9 +46,13 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
+import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
+import com.teamsolply.solply.designsystem.component.textfield.SolplyRenameCourseTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
+import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
 import com.teamsolply.solply.maps.courseDetailEntity
+import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.util.dragContainer
 import com.teamsolply.solply.maps.util.draggableItems
@@ -52,6 +62,7 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.PersistentList
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditCourseBottomSheet(
     context: Context,
@@ -71,7 +82,16 @@ internal fun EditCourseBottomSheet(
     removeCourse: (itemToRemove: Int) -> Unit,
     onCourseEditBackClick: () -> Unit,
     placeDetailClick: (Long) -> Unit,
-    removeIconVisible: Boolean
+    removeIconVisible: Boolean,
+    onStartRenameCourseClick: () -> Unit,
+    renameCourseBottomSheetVisibility: Boolean,
+    newCourseName: String,
+    newCourseIntroduction: String,
+    renameCourseName: (String) -> Unit,
+    renameCourseIntroduction: (String) -> Unit,
+    courseSaveDialogVisibility: Boolean,
+    courseSaveDialogClick: (CourseSaveType) -> Unit,
+    changeCourseSaveDialogInVisibility: () -> Unit
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -92,6 +112,13 @@ internal fun EditCourseBottomSheet(
     )
 
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    LaunchedEffect(Unit) {
+        sheetState.expand()
+    }
 
     if (startEditCourse) {
         BackHandler {
@@ -142,24 +169,13 @@ internal fun EditCourseBottomSheet(
                     color = SolplyTheme.colors.black,
                     style = SolplyTheme.typography.title18Sb
                 )
-                Box(
-                    modifier = Modifier.customClickable(rippleEnabled = false) {
-                        onStartEditCourseClick()
-                    }
-                ) {
-                    if (startEditCourse) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_small_check),
-                            contentDescription = "start_course_edit",
-                            tint = SolplyTheme.colors.black
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_course_edit),
-                            contentDescription = "start_course_edit",
-                            tint = Color.Unspecified
-                        )
-                    }
+                if (startEditCourse) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_course_edit),
+                        modifier = Modifier.size(24.dp),
+                        contentDescription = "start_course_edit",
+                        tint = SolplyTheme.colors.gray500
+                    )
                 }
             }
             Text(
@@ -244,6 +260,29 @@ internal fun EditCourseBottomSheet(
             }
         }
 
+        if (!startEditCourse) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 24.dp)
+                    .size(64.dp)
+                    .background(
+                        color = SolplyTheme.colors.gray900,
+                        shape = CircleShape
+                    )
+                    .customClickable(rippleEnabled = false) {
+                        onStartEditCourseClick()
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_course_edit),
+                    contentDescription = "start_course_edit",
+                    tint = Color.Unspecified
+                )
+            }
+        }
+
         Icon(
             painter = painterResource(
                 if (isInRemoveIconArea.value) {
@@ -255,7 +294,7 @@ internal fun EditCourseBottomSheet(
             contentDescription = "remove",
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 50.dp)
+                .padding(bottom = 120.dp)
                 .alpha(if (removeIconVisible) 1f else 0f)
                 .onGloballyPositioned { coordinates ->
                     val positionInRoot = coordinates.positionInRoot()
@@ -267,5 +306,101 @@ internal fun EditCourseBottomSheet(
                 },
             tint = Color.Unspecified
         )
+
+        if (startEditCourse && !courseSaveDialogVisibility) {
+            SolplyBasicButton(
+                text = "완료",
+                onClick = { onStartRenameCourseClick() },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 20.dp, end = 20.dp, bottom = 36.dp),
+                textPadding = PaddingValues(vertical = 21.dp),
+                enabledBackgroundColor = SolplyTheme.colors.gray900
+            )
+        }
+
+        if (renameCourseBottomSheetVisibility) {
+            RenameCourseBottomSheet(
+                sheetState = sheetState,
+                onDismissRequest = { onStartRenameCourseClick() }
+            ) {
+                Column(
+                    modifier = Modifier
+                        .height(670.dp)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 17.dp, bottom = 37.dp)
+                    ) {
+                        Text(
+                            text = "코스 정보 수정",
+                            color = SolplyTheme.colors.black,
+                            style = SolplyTheme.typography.head16M,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                        Icon(
+                            painter = painterResource(R.drawable.ic_close),
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .minimumInteractiveComponentSize()
+                                .customClickable(rippleEnabled = false) {
+                                    onStartRenameCourseClick()
+                                },
+                            contentDescription = "close_rename_bottomsheet"
+                        )
+                    }
+                    Text(
+                        text = "코스 이름",
+                        modifier = Modifier
+                            .padding(bottom = 12.dp),
+                        color = SolplyTheme.colors.gray900,
+                        style = SolplyTheme.typography.title14M
+                    )
+                    SolplyRenameCourseTextField(
+                        value = newCourseName,
+                        onValueChange = { renameCourseName(it) },
+                        modifier = Modifier.padding(bottom = 32.dp)
+                    )
+
+                    Text(
+                        text = "코스 한 줄 소개",
+                        modifier = Modifier
+                            .padding(bottom = 12.dp),
+                        color = SolplyTheme.colors.gray900,
+                        style = SolplyTheme.typography.title14M
+                    )
+                    SolplyRenameCourseTextField(
+                        value = newCourseIntroduction,
+                        onValueChange = { renameCourseIntroduction(it) }
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    SolplyBasicButton(
+                        text = "완료",
+                        onClick = {
+                            onStartRenameCourseClick()
+                            onStartEditCourseClick()
+                        },
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 20.dp, bottom = 36.dp),
+                        textPadding = PaddingValues(vertical = 21.dp),
+                        enabledBackgroundColor = SolplyTheme.colors.gray900
+                    )
+                }
+            }
+        }
+
+        if (courseSaveDialogVisibility) {
+            CourseSaveDialog(
+                saveToCourseClick = {
+                    courseSaveDialogClick(CourseSaveType.SaveToExistingCourse)
+                },
+                saveToNewCourseClick = {
+                    courseSaveDialogClick(CourseSaveType.SaveAsNewCourse)
+                },
+                onDismissRequest = { changeCourseSaveDialogInVisibility() }
+            )
+        }
     }
 }

@@ -5,8 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CourseSaveResponseDto(
-    @SerialName("courseId")
-    val courseId: Long,
+    @SerialName("updatedCourseId")
+    val updatedCourseId: Long,
+    @SerialName("updatedCourseName")
+    val updatedCourseName: String,
     @SerialName("isNewCourse")
     val isNewCourse: Boolean
 )

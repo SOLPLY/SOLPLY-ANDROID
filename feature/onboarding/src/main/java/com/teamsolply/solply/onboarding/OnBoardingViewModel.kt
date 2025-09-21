@@ -45,8 +45,16 @@ class OnBoardingViewModel @Inject constructor(
                 reduce { copy(currentPage = intent.newPage) }
             }
 
+            is OnBoardingIntent.ChangeTownBottomSheetShown -> {
+                reduce { copy(townBottomSheetShown = !townBottomSheetShown) }
+            }
+
+            is OnBoardingIntent.ChangeRegion -> {
+                reduce { copy(selectedRegionId = intent.regionId) }
+            }
+
             is OnBoardingIntent.OnTownSelected -> {
-                reduce { copy(selectedTownId = intent.townId) }
+                reduce { copy(selectedTownId = if (selectedTownId == intent.townId) null else intent.townId) }
             }
 
             is OnBoardingIntent.OnPersonaSelected -> {
@@ -112,7 +120,7 @@ class OnBoardingViewModel @Inject constructor(
                 uiState.value.selectedPersona?.let { selectedPersona ->
                     onBoardingRepository.patchUserInfo(
                         selectedTownId = selectedTownId,
-                        favoriteTownIdList = uiState.value.townList.favoriteTownList.map { it.townId },
+                        favoriteTownIdList = uiState.value.townList.towns.map { it.townId },
                         persona = selectedPersona,
                         nickname = uiState.value.userNickname
                     ).onSuccess {
