@@ -37,6 +37,7 @@ fun MypageRoute(
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     MypageScreen(
+        modifier = Modifier.padding(paddingValues),
         onBackButtonClick = navigateToBack
     )
 }

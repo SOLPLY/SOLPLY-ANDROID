@@ -48,7 +48,7 @@ fun SolplyTopBar(
             color = SolplyTheme.colors.black,
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Spacer(modifier = Modifier.weight(1f))
+//        Spacer(modifier = Modifier.weight(1f))
         returnToHomeIcon?.invoke()
     }
 }
