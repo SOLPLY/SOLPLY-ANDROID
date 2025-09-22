@@ -29,7 +29,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Collection
+    val startDestination = Splash
 
     val currentTab: MainNavTab?
         @Composable get() = MainNavTab.find { tab ->

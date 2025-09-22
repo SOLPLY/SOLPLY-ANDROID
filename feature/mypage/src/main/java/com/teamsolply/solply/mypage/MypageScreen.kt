@@ -55,8 +55,7 @@ fun MypageScreen(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 11.dp, bottom = 16.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -65,11 +64,8 @@ fun MypageScreen(
                 contentDescription = "back",
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .padding(start = 16.dp)
+                    .padding(start = 16.dp, bottom = 16.dp, top = 11.dp)
                     .customClickable(rippleEnabled = false) { onBackButtonClick() }
-            )
-            Spacer(
-                modifier = Modifier.width(12.dp)
             )
         }
         Image(
@@ -88,7 +84,7 @@ fun MypageScreen(
             style = SolplyTheme.typography.display20Sb
         )
         Row(
-            modifier = Modifier.padding(top = 12.dp, bottom = 44.dp)
+            modifier = Modifier.padding(top = 12.dp)
         ) {
             Text(
                 text = "프로필 수정",
@@ -96,6 +92,7 @@ fun MypageScreen(
                 style = SolplyTheme.typography.button14M
             )
         }
+        Spacer(modifier = Modifier.height(44.dp))
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -170,6 +167,9 @@ fun MypageScreen(
                 onClick = { /* TODO */ },
             )
         }
+        Spacer(
+            modifier = Modifier.weight(36f)
+        )
     }
 }
 
