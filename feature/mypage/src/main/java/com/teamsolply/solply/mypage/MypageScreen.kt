@@ -3,6 +3,7 @@ package com.teamsolply.solply.mypage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,16 +13,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.mypage.component.MypageSettingItem
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
@@ -49,7 +55,8 @@ fun MypageScreen(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(top = 11.dp, bottom = 16.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -71,7 +78,98 @@ fun MypageScreen(
             modifier = Modifier
                 .width(80.dp)
                 .height(80.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Fit
         )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = "닉네임",
+            color = SolplyTheme.colors.black,
+            style = SolplyTheme.typography.display20Sb
+        )
+        Row(
+            modifier = Modifier.padding(top = 12.dp, bottom = 44.dp)
+        ) {
+            Text(
+                text = "프로필 수정",
+                color = SolplyTheme.colors.gray600,
+                style = SolplyTheme.typography.button14M
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = SolplyTheme.colors.white),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
+            ) {
+                Text(
+                    text = "내가 등록한 장소",
+                    color = SolplyTheme.colors.black,
+                    style = SolplyTheme.typography.body16M
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .height(40.dp)
+                    .fillMaxWidth(), // 가로도 채우고 싶으면 추가
+                contentAlignment = Alignment.Center // 수직 + 수평 중앙
+            ) {
+                Text(
+                    text = "등록한 장소가 없어요.",
+                    color = SolplyTheme.colors.gray600,
+                    style = SolplyTheme.typography.body16R
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = SolplyTheme.colors.white),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 20.dp, end = 16.dp, bottom = 12.dp)
+            ) {
+                Text(
+                    text = "계정 설정",
+                    color = SolplyTheme.colors.black,
+                    style = SolplyTheme.typography.body16M
+                )
+            }
+            MypageSettingItem(
+                text = "고객센터",
+                onClick = { /* TODO */ }
+            )
+            MypageSettingItem(
+                text = "로그인 정보",
+                onClick = { /* TODO */ },
+                info = "카카오 로그인"
+            )
+            MypageSettingItem(
+                text = "앱 버전",
+                onClick = { /* TODO */ },
+                info = "v 1.0.0"
+            )
+            MypageSettingItem(
+                text = "로그아웃",
+                onClick = { /* TODO */ },
+            )
+            MypageSettingItem(
+                text = "탈퇴하기",
+                onClick = { /* TODO */ },
+            )
+        }
     }
 }
 

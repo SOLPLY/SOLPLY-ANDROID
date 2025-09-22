@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.teamsolply.solply.collection.collection.course.navigateCourseCollection
 import com.teamsolply.solply.collection.collection.place.navigatePlaceCollection
+import com.teamsolply.solply.collection.navigation.Collection
 import com.teamsolply.solply.collection.navigation.navigateCollection
 import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.navigateFavoriteTown
 import com.teamsolply.solply.course.navigation.navigateCourse
@@ -28,7 +29,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Splash
+    val startDestination = Collection
 
     val currentTab: MainNavTab?
         @Composable get() = MainNavTab.find { tab ->
