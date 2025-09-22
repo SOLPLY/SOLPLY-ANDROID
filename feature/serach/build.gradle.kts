@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.solply.android.library)
-
+    alias(libs.plugins.solply.feature)
 }
 
 android {
