@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -147,25 +149,30 @@ fun MypageScreen(
             }
             MypageSettingItem(
                 text = "고객센터",
-                onClick = { /* TODO */ }
+                onClick = { /* TODO */ },
+                isBorderEnabled = true
             )
             MypageSettingItem(
                 text = "로그인 정보",
                 onClick = { /* TODO */ },
-                info = "카카오 로그인"
+                info = "카카오 로그인",
+                isBorderEnabled = true
             )
             MypageSettingItem(
                 text = "앱 버전",
                 onClick = { /* TODO */ },
-                info = "v 1.0.0"
+                info = "v 1.0.0",
+                isBorderEnabled = true
             )
             MypageSettingItem(
                 text = "로그아웃",
                 onClick = { /* TODO */ },
+                isBorderEnabled = true
             )
             MypageSettingItem(
                 text = "탈퇴하기",
                 onClick = { /* TODO */ },
+                isBorderEnabled = false
             )
         }
         Spacer(

@@ -8,6 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
@@ -16,12 +18,30 @@ fun MypageSettingItem(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isBorderEnabled: Boolean = true,
     info: String = ""
 ) {
+    val borderColor = SolplyTheme.colors.gray200
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 16.dp),
+            .padding(start = 20.dp, end = 16.dp)
+            .then(
+                if (isBorderEnabled) {
+                    Modifier.drawBehind {
+                        val strokeWidth = 1.dp.toPx()
+                        val y = size.height - strokeWidth / 2
+                        drawLine(
+                            color = borderColor,
+                            start = Offset(0f, y),
+                            end = Offset(size.width, y),
+                            strokeWidth = strokeWidth
+                        )
+                    }
+                } else {
+                    Modifier
+                }
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (info.isNotEmpty()) {
             Arrangement.SpaceBetween
