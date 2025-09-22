@@ -39,6 +39,7 @@ private fun BaseTextField(
     isCorrect: Boolean,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isNickname: Boolean = false,
     backgroundColor: Color = SolplyTheme.colors.white,
     shape: Shape = RoundedCornerShape(20.dp),
     borderColor: Color? = null,
@@ -94,15 +95,20 @@ private fun BaseTextField(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            if (value.isNotEmpty() && value.length <= maxLength) {
-                val iconRes =
-                    if (isCorrect) R.drawable.ic_textfield_correct else R.drawable.ic_textfield_wrong
-                val contentDescription = if (isCorrect) "textfield_correct" else "textfield_wrong"
-                Icon(
-                    painter = painterResource(iconRes),
-                    contentDescription = contentDescription,
-                    tint = Color.Unspecified
-                )
+            if (isNickname) {
+                if (value.isNotEmpty() && value.length <= maxLength) {
+                    val iconRes =
+                        if (isCorrect) R.drawable.ic_textfield_correct else R.drawable.ic_textfield_wrong
+                    val contentDescription =
+                        if (isCorrect) "textfield_correct" else "textfield_wrong"
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = contentDescription,
+                        tint = Color.Unspecified
+                    )
+                } else {
+                    Box(modifier = Modifier.size(24.dp))
+                }
             } else {
                 Box(modifier = Modifier.size(24.dp))
             }
@@ -196,6 +202,7 @@ fun SolplyNicknameTextField(
                 }
             },
             modifier = Modifier.padding(bottom = 8.dp),
+            isNickname = true,
             backgroundColor = backgroundColor,
             borderColor = borderColor,
             borderWidth = 1f,
@@ -278,4 +285,25 @@ sealed class NickNameValidateState {
     data object Valid : NickNameValidateState()
     data object Typing : NickNameValidateState()
     data object TooShort : NickNameValidateState()
+}
+
+@Composable
+fun SolplyRenameCourseTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: String? = null,
+    maxLength: Int = 8,
+    minLength: Int = 2
+) {
+    BaseTextField(
+        value = value,
+        onValueChange = onValueChange,
+        isCorrect = false,
+        modifier = modifier,
+        placeholder = placeholder,
+        maxLines = maxLength,
+        borderColor = SolplyTheme.colors.gray300,
+        borderWidth = 1f
+    )
 }

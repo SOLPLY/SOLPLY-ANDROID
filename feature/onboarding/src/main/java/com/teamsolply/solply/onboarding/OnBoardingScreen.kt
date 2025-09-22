@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -70,7 +71,8 @@ fun OnBoardingRoute(
             },
             checkOnBoardingSuccess = { isOnBoardingSuccess ->
                 viewModel.sendIntent(OnBoardingIntent.ChangeOnBoardingSuccess(isOnBoardingSuccess))
-            }
+            },
+            modifier = Modifier.padding(paddingValues)
         )
     }
 }
@@ -81,10 +83,10 @@ fun OnBoardingScreen(
     onBoardingButtonClick: () -> Unit,
     onPageChanged: (Int) -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit,
-    modifier: Modifier = Modifier,
     navController: NavController,
     changeInputNickname: (String) -> Unit,
-    checkOnBoardingSuccess: (Boolean) -> Unit
+    checkOnBoardingSuccess: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,

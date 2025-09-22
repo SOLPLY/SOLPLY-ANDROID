@@ -90,39 +90,38 @@ fun SolplyBasicButton(
 
 @Composable
 fun AddLocalAreaButton(
-    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isShowMore: Boolean = false,
+    text: String? = null,
     selected: Boolean = false
 ) {
     val backgroundColor = when {
-        isShowMore -> SolplyTheme.colors.gray200
         selected -> SolplyTheme.colors.red100
-        else -> SolplyTheme.colors.gray100
+        else -> SolplyTheme.colors.gray200
     }
     val borderColor = when {
-        isShowMore -> Color.Transparent
         selected -> SolplyTheme.colors.red300
-        else -> SolplyTheme.colors.gray300
+        else -> Color.Unspecified
     }
 
     BaseButton(
         onClick = onClick,
-        modifier = modifier.size(95.dp),
+        modifier = modifier.fillMaxWidth(),
         backgroundColor = backgroundColor,
         borderColor = borderColor,
         borderWidth = 1f
     ) {
-        if (isShowMore) {
+        if (text.isNullOrEmpty()) {
             Icon(
                 painter = painterResource(R.drawable.ic_cross),
                 contentDescription = "show_more",
+                modifier = modifier.padding(vertical = 14.dp),
                 tint = Color.Unspecified
             )
         } else {
             Text(
                 text = text,
+                modifier = modifier.padding(vertical = 14.dp),
                 style = SolplyTheme.typography.body16R,
                 color = SolplyTheme.colors.gray900
             )

@@ -16,7 +16,7 @@ interface OnBoardingService {
     @GET("api/onboarding/questions/persona")
     suspend fun getPersonaQuestions(): BaseResponse<GetPersonaQuestionsResponseDto>
 
-    @GET("api/users/towns")
+    @GET("api/towns")
     suspend fun getAllTowns(): BaseResponse<GetAllTownResponseDto>
 
     @GET("api/users/check-nickname")

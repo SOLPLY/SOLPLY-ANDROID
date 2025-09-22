@@ -63,7 +63,7 @@ fun Modifier.customClickable(
 fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
     return this.pointerInput(Unit) {
         detectTapGestures(onTap = {
-            focusManager.clearFocus()
+            focusManager.clearFocus(force = true)
         })
     }
 }

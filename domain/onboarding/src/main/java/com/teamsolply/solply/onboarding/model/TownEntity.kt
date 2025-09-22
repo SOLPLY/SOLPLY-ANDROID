@@ -1,11 +1,11 @@
 package com.teamsolply.solply.onboarding.model
 
 data class TownEntity(
-    val selectedTown: SubTownEntity?,
-    val favoriteTownList: List<SubTownEntity>
+    val towns: List<SubTownEntity>
 )
 
 data class SubTownEntity(
     val townId: Long,
-    val townName: String
+    val townName: String,
+    val subTowns: List<SubTownEntity>? = null
 )

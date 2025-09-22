@@ -1,10 +1,10 @@
 package com.teamsolply.solply.course.favoriteTown.source
 
-import com.teamsolply.solply.course.favoriteTown.dto.FavoriteTownUserInfoResponseDto
 import com.teamsolply.solply.course.favoriteTown.dto.PatchUserFavTownRequestDto
+import com.teamsolply.solply.course.favoriteTown.dto.TownTreeResponseDto
 
 interface FavoriteTownRemoteDataSource {
-    suspend fun getTownList(): FavoriteTownUserInfoResponseDto
+    suspend fun getTownTree(): TownTreeResponseDto
     suspend fun patchUserFavoriteTown(
         patchUserFavoriteTownDto: PatchUserFavTownRequestDto
     )
