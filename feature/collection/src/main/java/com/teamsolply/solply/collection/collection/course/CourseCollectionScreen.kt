@@ -62,16 +62,12 @@ fun CourseCollectionRoute(
         onBackButtonClick = { viewModel.sendIntent(CourseCollectionIntent.BackButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(CourseCollectionIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(CourseCollectionIntent.DialogDismissClick) },
+        selectMode = uiState.selectMode,
+        onSelectButtonClick = { viewModel.sendIntent(CourseCollectionIntent.SelectButtonClick) },
+        onDeleteButtonClick = { viewModel.sendIntent(CourseCollectionIntent.DeleteButtonClick) },
+        onCancelButtonClick = { viewModel.sendIntent(CourseCollectionIntent.CancelButtonClick) },
         dialogState = uiState.dialogState,
         content = {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                SelectModeBar(
-                    selectMode = uiState.selectMode,
-                    onSelectButtonClick = { viewModel.sendIntent(CourseCollectionIntent.SelectButtonClick) },
-                    onDeleteButtonClick = { viewModel.sendIntent(CourseCollectionIntent.DeleteButtonClick) },
-                    onCancelButtonClick = { viewModel.sendIntent(CourseCollectionIntent.CancelButtonClick) }
-                )
-            }
             itemsIndexed(uiState.courses) { index, it ->
                 Box(
                     modifier = Modifier

@@ -62,15 +62,12 @@ fun PlaceCollectionRoute(
         onBackButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.BackButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(PlaceCollectionIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(PlaceCollectionIntent.DialogDismissClick) },
+        selectMode = uiState.selectMode,
+        onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectButtonClick) },
+        onDeleteButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.DeleteButtonClick) },
+        onCancelButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.CancelButtonClick) },
+        dialogState = uiState.dialogState,
         content = {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                SelectModeBar(
-                    selectMode = uiState.selectMode,
-                    onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectButtonClick) },
-                    onDeleteButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.DeleteButtonClick) },
-                    onCancelButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.CancelButtonClick) }
-                )
-            }
             itemsIndexed(uiState.places) { index, it ->
                 Box(
                     modifier = Modifier
@@ -111,7 +108,6 @@ fun PlaceCollectionRoute(
                 Spacer(modifier = Modifier.height(60.dp))
             }
         },
-        dialogState = uiState.dialogState,
         modifier = Modifier.padding(paddingValues)
     )
 }
