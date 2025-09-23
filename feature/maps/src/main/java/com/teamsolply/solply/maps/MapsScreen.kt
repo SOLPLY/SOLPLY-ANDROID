@@ -47,6 +47,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.component.dialog.ReportPlaceDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
@@ -282,6 +283,7 @@ internal fun MapsRoute(
         renameCourseIntroduction = { courseIntroduction ->
             viewModel.sendIntent(MapsIntent.RenameCourseIntroduction(courseIntroduction = courseIntroduction))
         },
+        changeReportPlaceDialogVisibility = { viewModel.sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility) },
         modifier = Modifier.padding(paddingValues)
     )
 
@@ -302,6 +304,20 @@ internal fun MapsRoute(
             dismissButtonText = "취소",
             onClickConfirm = { viewModel.sendIntent(MapsIntent.BackButtonClick) },
             onClickDismiss = { viewModel.sendIntent(MapsIntent.NavigateToBackDialogInVisible) }
+        )
+    }
+
+    if (uiState.reportPlaceDialogVisibility) {
+        ReportPlaceDialog(
+            onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility) },
+            selectedReportType = uiState.selectedReportType,
+            reportContent = uiState.reportContent,
+            onReportTypeClick = { reportType ->
+                viewModel.sendIntent(MapsIntent.ChangeSelectedReportType(reportType = reportType))
+            },
+            inputReportContent = { content ->
+                viewModel.sendIntent(MapsIntent.InputReportContent(content = content))
+            }
         )
     }
 }
@@ -353,6 +369,7 @@ private fun MapsScreen(
     newCourseIntroduction: String,
     renameCourseName: (String) -> Unit,
     renameCourseIntroduction: (String) -> Unit,
+    changeReportPlaceDialogVisibility: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -557,7 +574,8 @@ private fun MapsScreen(
                             emptyCourseClick = emptyCourseClick,
                             saveMyCourse = saveMyCourse,
                             changeAddPlaceState = changeAddPlaceState,
-                            placeBookMarkClick = placeBookMarkClick
+                            placeBookMarkClick = placeBookMarkClick,
+                            changeReportPlaceDialogVisibility = changeReportPlaceDialogVisibility
                         )
                     }
 

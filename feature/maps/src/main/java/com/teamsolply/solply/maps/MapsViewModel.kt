@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
+import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -264,6 +265,25 @@ internal class MapsViewModel @Inject constructor(
 
             is MapsIntent.RenameCourseIntroduction -> reduce {
                 copy(newCourseIntroduction = intent.courseIntroduction)
+            }
+
+            // Report Place
+            is MapsIntent.ChangeReportPlaceDialogVisibility -> reduce {
+                copy(reportPlaceDialogVisibility = !reportPlaceDialogVisibility)
+            }
+
+            is MapsIntent.ChangeSelectedReportType -> reduce {
+                copy(
+                    selectedReportType = if (selectedReportType == intent.reportType) {
+                        ReportType.EMPTY
+                    } else {
+                        intent.reportType
+                    }
+                )
+            }
+
+            is MapsIntent.InputReportContent -> reduce {
+                copy(reportContent = intent.content)
             }
 
             // Shared
