@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.mypage.component.EmptyPlaceContainer
 import com.teamsolply.solply.mypage.component.MypageSettingItem
 import com.teamsolply.solply.ui.extension.customClickable
 
@@ -114,19 +115,7 @@ fun MypageScreen(
                     style = SolplyTheme.typography.body16M
                 )
             }
-            Box(
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .height(40.dp)
-                    .fillMaxWidth(), // 가로도 채우고 싶으면 추가
-                contentAlignment = Alignment.Center // 수직 + 수평 중앙
-            ) {
-                Text(
-                    text = "등록한 장소가 없어요.",
-                    color = SolplyTheme.colors.gray600,
-                    style = SolplyTheme.typography.body16R
-                )
-            }
+            EmptyPlaceContainer()
         }
         Spacer(modifier = Modifier.height(16.dp))
         Column(
