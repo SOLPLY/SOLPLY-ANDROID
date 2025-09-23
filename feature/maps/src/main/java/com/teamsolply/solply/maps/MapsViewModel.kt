@@ -269,7 +269,16 @@ internal class MapsViewModel @Inject constructor(
 
             // Report Place
             is MapsIntent.ChangeReportPlaceDialogVisibility -> reduce {
-                copy(reportPlaceDialogVisibility = !reportPlaceDialogVisibility)
+                if (intent.visible) {
+                    copy(reportPlaceDialogVisibility = true)
+                } else {
+                    copy(
+                        reportPlaceDialogVisibility = false,
+                        selectedReportType = ReportType.EMPTY,
+                        reportContent = "",
+                        selectedReportUris = persistentListOf()
+                    )
+                }
             }
 
             is MapsIntent.ChangeSelectedReportType -> reduce {
@@ -284,6 +293,13 @@ internal class MapsViewModel @Inject constructor(
 
             is MapsIntent.InputReportContent -> reduce {
                 copy(reportContent = intent.content)
+            }
+
+            is MapsIntent.SelectedReportUris -> reduce {
+                val current = selectedReportUris
+                val remain = (3 - current.size).coerceAtLeast(0)
+                val income = intent.uris.take(remain)
+                copy(selectedReportUris = (current + income))
             }
 
             // Shared

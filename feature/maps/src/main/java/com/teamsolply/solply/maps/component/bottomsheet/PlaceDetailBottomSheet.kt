@@ -77,7 +77,7 @@ fun PlaceDetailBottomSheet(
     saveMyCourse: () -> Unit,
     changeAddPlaceState: (Boolean) -> Unit,
     placeBookMarkClick: () -> Unit,
-    changeReportPlaceDialogVisibility: () -> Unit
+    changeReportPlaceDialogVisibility: (Boolean) -> Unit
 ) {
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
@@ -424,7 +424,7 @@ fun PlaceDetailBottomSheet(
                             Row(
                                 modifier = Modifier
                                     .customClickable(rippleEnabled = false) {
-                                        changeReportPlaceDialogVisibility()
+                                        changeReportPlaceDialogVisibility(true)
                                     },
                                 verticalAlignment = Alignment.CenterVertically
                             ) {

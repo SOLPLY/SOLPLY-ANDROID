@@ -275,7 +275,13 @@ internal fun MapsRoute(
         onStartRenameCourseClick = {
             viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility)
         },
-        changeReportPlaceDialogVisibility = { viewModel.sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility) },
+        changeReportPlaceDialogVisibility = {
+            viewModel.sendIntent(
+                MapsIntent.ChangeReportPlaceDialogVisibility(
+                    visible = it
+                )
+            )
+        },
         modifier = Modifier.padding(paddingValues)
     )
 
@@ -301,7 +307,13 @@ internal fun MapsRoute(
 
     if (uiState.reportPlaceDialogVisibility) {
         ReportPlaceDialog(
-            onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility) },
+            onDismissRequest = {
+                viewModel.sendIntent(
+                    MapsIntent.ChangeReportPlaceDialogVisibility(
+                        visible = it
+                    )
+                )
+            },
             selectedReportType = uiState.selectedReportType,
             reportContent = uiState.reportContent,
             onReportTypeClick = { reportType ->
@@ -309,6 +321,10 @@ internal fun MapsRoute(
             },
             inputReportContent = { content ->
                 viewModel.sendIntent(MapsIntent.InputReportContent(content = content))
+            },
+            selectedUris = uiState.selectedReportUris,
+            onSelectUris = { uris ->
+                viewModel.sendIntent(MapsIntent.SelectedReportUris(uris = uris))
             }
         )
     }
@@ -375,7 +391,7 @@ private fun MapsScreen(
     onPlaceDetailClick: (Long) -> Unit,
     onStartRenameCourseClick: () -> Unit,
 
-    changeReportPlaceDialogVisibility: () -> Unit,
+    changeReportPlaceDialogVisibility: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }

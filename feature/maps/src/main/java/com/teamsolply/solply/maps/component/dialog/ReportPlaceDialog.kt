@@ -1,5 +1,10 @@
 package com.teamsolply.solply.maps.component.dialog
 
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -16,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,9 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -49,24 +60,27 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ReportPlaceDialog(
-    onDismissRequest: () -> Unit,
+    onDismissRequest: (Boolean) -> Unit,
     selectedReportType: ReportType,
     reportContent: String,
     onReportTypeClick: (ReportType) -> Unit,
     inputReportContent: (String) -> Unit,
+    selectedUris: List<Uri>,
+    onSelectUris: (List<Uri>) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
     val focusManager = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
     val blankFocus = remember { FocusRequester() }
+    val context = LocalContext.current
 
     Dialog(
         onDismissRequest = {
             focusManager.clearFocus(force = true)
             keyboard?.hide()
-            onDismissRequest()
-                           },
+            onDismissRequest(false)
+        },
         properties = DialogProperties(
             dismissOnBackPress = true,
             dismissOnClickOutside = false,
@@ -104,7 +118,7 @@ fun ReportPlaceDialog(
                         .customClickable(rippleEnabled = false) {
                             //TODO. 백 클릭
                             when (pagerState.currentPage) {
-                                0 -> onDismissRequest()
+                                0 -> onDismissRequest(false)
                             }
                         },
                     verticalAlignment = Alignment.CenterVertically
@@ -137,8 +151,11 @@ fun ReportPlaceDialog(
 
                         1 -> {
                             ReportContentScreen(
+                                context = context,
+                                selectedUris = selectedUris,
                                 reportContent = reportContent,
-                                inputReportContent = inputReportContent
+                                inputReportContent = inputReportContent,
+                                onSelectUris = onSelectUris
                             )
                         }
 
@@ -221,9 +238,28 @@ fun ReportTypesScreen(
 
 @Composable
 fun ReportContentScreen(
+    context: Context,
+    selectedUris: List<Uri>,
     reportContent: String,
     inputReportContent: (String) -> Unit,
+    onSelectUris: (List<Uri>) -> Unit,
 ) {
+    val remainSelectedUris = (3 - selectedUris.size).coerceAtLeast(0)
+    val singlePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) onSelectUris(listOf(uri))
+    }
+    val multiPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(
+            maxItems = remainSelectedUris.coerceAtLeast(
+                2
+            )
+        )
+    ) { uris ->
+        if (uris.isNotEmpty()) onSelectUris(uris.take(remainSelectedUris))
+    }
+
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp)
@@ -254,22 +290,103 @@ fun ReportContentScreen(
                 style = SolplyTheme.typography.body16M
             )
         }
-        Row {
-            Box(
-                modifier = Modifier
-                    .size(72.dp)
-                    .background(color = SolplyTheme.colors.red200),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_cross),
-                    contentDescription = "add_picture",
-                    tint = SolplyTheme.colors.red600
-                )
+
+        ReportPlaceImage(
+            selectedUris = selectedUris,
+            onAddClick = {
+                when {
+                    remainSelectedUris >= 2 -> {
+                        multiPicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+
+                    remainSelectedUris == 1 -> {
+                        singlePicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+
+                    else -> Unit
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun ReportPlaceImage(
+    selectedUris: List<Uri>,
+    onAddClick: () -> Unit,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        repeat(3) { index ->
+            when {
+                // 이미 선택된 슬롯
+                index < selectedUris.size -> {
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .background(
+                                color = SolplyTheme.colors.red200,
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "가득참", color = SolplyTheme.colors.red600)
+                    }
+                }
+
+                // 다음에 추가할 수 있는 슬롯(첫 번째 빈 자리)
+                index == selectedUris.size && selectedUris.size < 3 -> {
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .background(
+                                color = SolplyTheme.colors.red200,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .customClickable(rippleEnabled = false) {
+                                onAddClick()
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_cross),
+                            contentDescription = "add_picture",
+                            tint = SolplyTheme.colors.red600
+                        )
+                    }
+                }
+
+                // 나머지 빈 슬롯
+                else -> {
+                    val borderColor = SolplyTheme.colors.gray500
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .drawBehind {
+                                val strokeWidth = 2.dp.toPx()
+                                val corner = 16.dp.toPx()
+                                val dash = floatArrayOf(8.dp.toPx(), 4.dp.toPx())
+                                val inset = strokeWidth / 2f
+                                drawRoundRect(
+                                    color = borderColor,
+                                    topLeft = Offset(inset, inset),
+                                    size = Size(
+                                        size.width - strokeWidth,
+                                        size.height - strokeWidth
+                                    ),
+                                    cornerRadius = CornerRadius(corner, corner),
+                                    style = Stroke(
+                                        width = strokeWidth,
+                                        pathEffect = PathEffect.dashPathEffect(dash)
+                                    )
+                                )
+                            },
+                    )
+                }
             }
         }
-
-        //TODO. 텍스트필드 높이 확인. 포커스 확인
-        // 사진 피커 완성하기
     }
 }
