@@ -122,6 +122,9 @@ fun ReportPlaceDialog(
                             //TODO. 백 클릭
                             when (pagerState.currentPage) {
                                 0 -> onDismissRequest(false)
+                                1 -> coroutineScope.launch {
+                                    pagerState.animateScrollToPage(0)
+                                }
                             }
                         },
                     verticalAlignment = Alignment.CenterVertically
