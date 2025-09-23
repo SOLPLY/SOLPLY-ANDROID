@@ -57,7 +57,9 @@ fun FavoriteTownRoute(
         onNextClick = navigateToBack,
         onReturnToHomeClick = navigateToBack,
         onBackButtonClick = navigateToBack,
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier
+            .background(SolplyTheme.colors.white)
+            .padding(paddingValues)
     )
 }
 
@@ -78,7 +80,6 @@ fun FavoriteTownScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(top = 14.dp)
-            .background(SolplyTheme.colors.white)
     ) {
         FavoriteTownTopBar(
             onBackButtonClick = onBackButtonClick,
