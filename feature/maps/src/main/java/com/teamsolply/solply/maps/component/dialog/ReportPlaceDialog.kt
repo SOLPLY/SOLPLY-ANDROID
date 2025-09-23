@@ -1,7 +1,11 @@
 package com.teamsolply.solply.maps.component.dialog
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
+import android.util.Log
+import android.webkit.MimeTypeMap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -178,6 +182,15 @@ fun ReportPlaceDialog(
                                 0 -> if (selectedReportType != ReportType.EMPTY) {
                                     coroutineScope.launch {
                                         pagerState.animateScrollToPage(1)
+                                    }
+                                }
+
+                                1 -> {
+                                    selectedUris.map {
+                                        Log.d(
+                                            "asdasd",
+                                            context.contentResolver.getFileName(uri = it)
+                                        )
                                     }
                                 }
                             }
@@ -398,4 +411,19 @@ fun ReportPlaceImage(
             }
         }
     }
+}
+
+fun ContentResolver.getFileName(uri: Uri): String {
+    query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+        val idx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        if (idx >= 0 && cursor.moveToFirst()) {
+            val name = cursor.getString(idx)
+            if (!name.isNullOrBlank()) return name
+        }
+    }
+    uri.path?.substringAfterLast('/')?.takeIf { it.isNotBlank() && it.contains('.') }
+        ?.let { return it }
+    val mime = getType(uri)
+    val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime) ?: "jpg"
+    return "image_${System.currentTimeMillis()}.$ext"
 }

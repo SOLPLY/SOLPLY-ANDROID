@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
+import com.teamsolply.solply.maps.model.File
+import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
 import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -476,6 +478,21 @@ internal class MapsViewModel @Inject constructor(
             copy(
                 courseDetailInfo = courseDetailInfo.copy(places = newList.toPersistentList())
             )
+        }
+    }
+
+    // 제보하기
+    private fun presignedUrl(
+        selectedFiles: List<String>
+    ) {
+        viewModelScope.launch {
+            val filesEntity = selectedFiles.map { fileName -> File(fileName) }
+
+            mapsRepository.postPresignedUrl(
+                presignedUrlsRequestEntity = PresignedUrlsRequestEntity(
+                    files = filesEntity
+                )
+            ).onSuccess { }
         }
     }
 }

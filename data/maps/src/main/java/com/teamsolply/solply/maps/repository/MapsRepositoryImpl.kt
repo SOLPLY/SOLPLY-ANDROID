@@ -1,5 +1,7 @@
 package com.teamsolply.solply.maps.repository
 
+import com.teamsolply.solply.maps.dto.request.FileDto
+import com.teamsolply.solply.maps.dto.request.PresignedUrlsRequestDto
 import com.teamsolply.solply.maps.dto.response.toEntity
 import com.teamsolply.solply.maps.mapper.toCourseInfoEntityList
 import com.teamsolply.solply.maps.mapper.toDto
@@ -9,6 +11,8 @@ import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
+import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
+import com.teamsolply.solply.maps.model.PresignedUrlsResponseEntity
 import com.teamsolply.solply.maps.model.SavePlaceToCourseEntity
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import toEntity
@@ -91,4 +95,24 @@ class MapsRepositoryImpl @Inject constructor(
             courseSaveRequestDto = courseSaveEntity.toDto()
         ).courseId
     }
+
+    override suspend fun postPresignedUrl(presignedUrlsRequestEntity: PresignedUrlsRequestEntity): Result<PresignedUrlsResponseEntity> =
+        runCatching {
+            mapsRemoteDataSource.postPresignedUrl(
+                presignedUrlsRequestDto = PresignedUrlsRequestDto(
+                    files = presignedUrlsRequestEntity.files.map { FileDto(it.fileName) }
+                )
+            )
+        }.mapCatching { responseDto ->
+            PresignedUrlsResponseEntity(
+                presignedUrlInfos = responseDto.presignedUrlInfos.map { dto ->
+                    com.teamsolply.solply.maps.model.PresignedUrlInfo(
+                        originalFileName = dto.originalFileName,
+                        tempFileKey = dto.tempFileKey,
+                        presignedUrl = dto.presignedUrl,
+                        expirationSeconds = dto.expirationSeconds
+                    )
+                }
+            )
+        }
 }
