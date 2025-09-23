@@ -1,5 +1,9 @@
 package com.teamsolply.solply.maps.component.bottomsheet
 
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,14 +19,22 @@ import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.textfield.SolplyRenameCourseTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.ui.extension.clearFocusOnTapOutside
 import com.teamsolply.solply.ui.extension.customClickable
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +47,7 @@ fun RenameCourseBottomSheet(
     renameCourseIntroduction: (String) -> Unit,
     onStartRenameCourseClick: () -> Unit,
     onStartEditCourseClick: () -> Unit,
-    ) {
+) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -44,8 +56,16 @@ fun RenameCourseBottomSheet(
         sheetState.expand()
     }
 
+    val focusManager = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    val blankFocus = remember { FocusRequester() }
+
     ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            focusManager.clearFocus(force = true)
+            keyboard?.hide()
+            onDismissRequest()
+                           },
         sheetState = sheetState,
         containerColor = SolplyTheme.colors.white,
         dragHandle = null
@@ -54,7 +74,20 @@ fun RenameCourseBottomSheet(
             modifier = Modifier
                 .height(670.dp)
                 .padding(horizontal = 16.dp)
-        ) {
+                .focusRequester(blankFocus)
+                .focusable()
+                .clearFocusOnTapOutside(
+                    focusManager = focusManager,
+                    keyboard = keyboard
+                )
+                .pointerInput(Unit) {
+                    awaitEachGesture {
+                        awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Final)
+                        blankFocus.requestFocus()
+                        keyboard?.hide()
+                        waitForUpOrCancellation()
+                    }
+                }) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

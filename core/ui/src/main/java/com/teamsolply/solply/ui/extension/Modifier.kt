@@ -9,7 +9,10 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.remember
@@ -20,7 +23,10 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.SoftwareKeyboardController
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 @OptIn(ExperimentalFoundationApi::class)
@@ -65,6 +71,18 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
         detectTapGestures(onTap = {
             focusManager.clearFocus(force = true)
         })
+    }
+}
+
+fun Modifier.clearFocusOnTapOutside(
+    focusManager: FocusManager,
+    keyboard: SoftwareKeyboardController?
+) = pointerInput(Unit) {
+    awaitEachGesture {
+        awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Final)
+        focusManager.clearFocus(force = true)
+        keyboard?.hide()
+        waitForUpOrCancellation()
     }
 }
 

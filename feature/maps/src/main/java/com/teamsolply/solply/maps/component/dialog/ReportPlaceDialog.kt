@@ -1,7 +1,10 @@
 package com.teamsolply.solply.maps.component.dialog
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +21,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -36,6 +43,7 @@ import com.teamsolply.solply.designsystem.component.chip.CheckedCircle
 import com.teamsolply.solply.designsystem.component.textfield.SolplyFixedReportTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.model.ReportType
+import com.teamsolply.solply.ui.extension.clearFocusOnTapOutside
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.coroutines.launch
 
@@ -49,9 +57,16 @@ fun ReportPlaceDialog(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
+    val focusManager = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    val blankFocus = remember { FocusRequester() }
 
     Dialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            focusManager.clearFocus(force = true)
+            keyboard?.hide()
+            onDismissRequest()
+                           },
         properties = DialogProperties(
             dismissOnBackPress = true,
             dismissOnClickOutside = false,
@@ -67,6 +82,20 @@ fun ReportPlaceDialog(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .focusRequester(blankFocus)
+                    .focusable()
+                    .clearFocusOnTapOutside(
+                        focusManager = focusManager,
+                        keyboard = keyboard
+                    )
+                    .pointerInput(Unit) {
+                        awaitEachGesture {
+                            awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Final)
+                            blankFocus.requestFocus()
+                            keyboard?.hide()
+                            waitForUpOrCancellation()
+                        }
+                    }
             ) {
                 Row(
                     modifier = Modifier
@@ -195,19 +224,10 @@ fun ReportContentScreen(
     reportContent: String,
     inputReportContent: (String) -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp)
             .fillMaxWidth()
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    focusManager.clearFocus()
-                    keyboardController?.hide()
-                })
-            }
     ) {
         Text(
             text = "잘못된 정보에 대한 설명을 입력해주세요",
