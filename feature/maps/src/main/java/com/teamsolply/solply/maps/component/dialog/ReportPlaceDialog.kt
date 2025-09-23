@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -35,10 +34,8 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.chip.CheckedCircle
 import com.teamsolply.solply.designsystem.component.textfield.SolplyFixedReportTextField
-import com.teamsolply.solply.designsystem.component.textfield.SolplyRenameCourseTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.model.ReportType
-import com.teamsolply.solply.ui.extension.addFocusCleaner
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.coroutines.launch
 
