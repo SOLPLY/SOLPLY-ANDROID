@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -142,7 +143,39 @@ fun OauthScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp)
+                .padding(start = 20.dp, end = 20.dp)
+                .background(
+                    color = SolplyTheme.colors.black,
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .customClickable(
+                    rippleEnabled = false
+                ) {
+                    kakaoLoginClick()
+                },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_apple_logo),
+                contentDescription = "kakao_logo",
+                tint = Color.Unspecified,
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
+            )
+            Text(
+                text = stringResource(com.teamsolply.solply.oauth.R.string.apple_login),
+                style = SolplyTheme.typography.button16M,
+                color = SolplyTheme.colors.white
+            )
+        }
+        Spacer(modifier = Modifier.height(48.dp))
     }
 }
 
