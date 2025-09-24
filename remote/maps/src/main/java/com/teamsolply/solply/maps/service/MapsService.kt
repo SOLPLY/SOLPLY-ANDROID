@@ -2,12 +2,14 @@ package com.teamsolply.solply.maps.service
 
 import com.teamsolply.solply.maps.dto.request.CourseSaveRequestDto
 import com.teamsolply.solply.maps.dto.request.PresignedUrlsRequestDto
+import com.teamsolply.solply.maps.dto.request.ReportWrongPlaceRequestDto
 import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
 import com.teamsolply.solply.maps.dto.response.PresignedUrlsResponseDto
+import com.teamsolply.solply.maps.dto.response.ReportWrongPlaceResponseDto
 import com.teamsolply.solply.maps.dto.response.SavePlaceToCourseResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
 import retrofit2.http.Body
@@ -91,4 +93,10 @@ interface MapsService {
     suspend fun presignedUrls(
         @Body presignedUrlsRequestDto: PresignedUrlsRequestDto
     ): BaseResponse<PresignedUrlsResponseDto>
+
+    @POST("api/places/{placeId}/reports")
+    suspend fun reportWrongPlace(
+        @Path("placeId") placeId: Long,
+        @Body reportWrongPlaceRequestDto: ReportWrongPlaceRequestDto
+    ): BaseResponse<ReportWrongPlaceResponseDto>
 }

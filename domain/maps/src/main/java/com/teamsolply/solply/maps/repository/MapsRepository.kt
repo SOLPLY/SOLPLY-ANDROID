@@ -7,6 +7,8 @@ import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
 import com.teamsolply.solply.maps.model.PresignedUrlsResponseEntity
+import com.teamsolply.solply.maps.model.ReportRequestEntity
+import com.teamsolply.solply.maps.model.ReportResponseEntity
 import com.teamsolply.solply.maps.model.SavePlaceToCourseEntity
 
 interface MapsRepository {
@@ -43,4 +45,9 @@ interface MapsRepository {
     suspend fun postPresignedUrl(
         presignedUrlsRequestEntity: PresignedUrlsRequestEntity
     ): Result<PresignedUrlsResponseEntity>
+
+    suspend fun postReportWrongPlace(
+        placeId: Long,
+        reportRequestEntity: ReportRequestEntity
+    ): Result<ReportResponseEntity>
 }

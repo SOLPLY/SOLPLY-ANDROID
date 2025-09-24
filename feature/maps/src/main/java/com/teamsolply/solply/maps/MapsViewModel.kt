@@ -9,6 +9,7 @@ import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.File
 import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
+import com.teamsolply.solply.maps.model.ReportRequestEntity
 import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.maps.repository.MapsRepository
 import com.teamsolply.solply.maps.util.uploadToPresignedUrl
@@ -531,6 +532,14 @@ internal class MapsViewModel @Inject constructor(
                     }
                 }
                 result.onSuccess { tempKeys ->
+                    mapsRepository.postReportWrongPlace(
+                        placeId = uiState.value.placeDetailInfo.placeId,
+                        reportRequestEntity = ReportRequestEntity(
+                            content = uiState.value.reportContent,
+                            reportType = uiState.value.selectedReportType.name,
+                            imageKeys = tempKeys
+                        )
+                    )
                     // 업로드 전부 성공 → 최종 저장 API 호출 등
                 }.onFailure { e ->
                     //TODO. 업로드 실패

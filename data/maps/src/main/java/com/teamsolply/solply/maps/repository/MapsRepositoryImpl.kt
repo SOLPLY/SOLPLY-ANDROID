@@ -2,6 +2,7 @@ package com.teamsolply.solply.maps.repository
 
 import com.teamsolply.solply.maps.dto.request.FileDto
 import com.teamsolply.solply.maps.dto.request.PresignedUrlsRequestDto
+import com.teamsolply.solply.maps.dto.request.ReportWrongPlaceRequestDto
 import com.teamsolply.solply.maps.dto.response.toEntity
 import com.teamsolply.solply.maps.mapper.toCourseInfoEntityList
 import com.teamsolply.solply.maps.mapper.toDto
@@ -13,6 +14,8 @@ import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
 import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
 import com.teamsolply.solply.maps.model.PresignedUrlsResponseEntity
+import com.teamsolply.solply.maps.model.ReportRequestEntity
+import com.teamsolply.solply.maps.model.ReportResponseEntity
 import com.teamsolply.solply.maps.model.SavePlaceToCourseEntity
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
 import toEntity
@@ -113,6 +116,25 @@ class MapsRepositoryImpl @Inject constructor(
                         expirationSeconds = dto.expirationSeconds
                     )
                 }
+            )
+        }
+
+    override suspend fun postReportWrongPlace(
+        placeId: Long,
+        reportRequestEntity: ReportRequestEntity
+    ): Result<ReportResponseEntity> =
+        runCatching {
+            mapsRemoteDataSource.postReportWrongPlace(
+                placeId = placeId, reportWrongPlaceRequestDto = ReportWrongPlaceRequestDto(
+                    reportType = reportRequestEntity.reportType,
+                    content = reportRequestEntity.content,
+                    imageKeys = reportRequestEntity.imageKeys
+                )
+            )
+        }.mapCatching {
+            ReportResponseEntity(
+                reportId = it.reportId,
+                status = it.status
             )
         }
 }
