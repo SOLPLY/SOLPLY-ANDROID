@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -513,11 +514,12 @@ internal class MapsViewModel @Inject constructor(
                         imageKeys = emptyList()
                     )
                 ).onSuccess {
-                    reduce {
-                        copy(reportLottieVisibility = false)
-                    }
+                    delay(2500)
+                    sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
                 }.onFailure {
                     // TODO. 신고 실패 처리
+                    delay(5000)
+                    sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
                 }
                 return@launch
             }
@@ -557,13 +559,12 @@ internal class MapsViewModel @Inject constructor(
                             imageKeys = tempKeys
                         )
                     ).onSuccess {
-                        reduce {
-                            copy(reportLottieVisibility = false)
-                        }
+                        delay(2500)
+                        sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
+                    }.onFailure {
+                        delay(5000)
+                        sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
                     }
-                    // 업로드 전부 성공 → 최종 저장 API 호출 등
-                }.onFailure { e ->
-                    // TODO. 업로드 실패
                 }
             }.onFailure {
                 // TODO. presigned url 발급 실패

@@ -30,7 +30,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -58,6 +57,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.teamsolply.solply.designsystem.R
@@ -69,7 +69,6 @@ import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.ui.extension.clearFocusOnTapOutside
 import com.teamsolply.solply.ui.extension.customClickable
 import com.teamsolply.solply.ui.image.AdaptationImage
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -111,9 +110,7 @@ fun ReportPlaceDialog(
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 if (reportLottieVisibility) {
-                    ReportSubmittingScreen(
-                        onFinished = { onDismissRequest(false) }
-                    )
+                    ReportSubmittingScreen()
                 } else {
                     Column(
                         modifier = Modifier
@@ -431,16 +428,13 @@ fun ReportPlaceImage(
 }
 
 @Composable
-private fun ReportSubmittingScreen(
-    onFinished: () -> Unit
-) {
-    LaunchedEffect(Unit) {
-        delay(2500)
-        onFinished()
-    }
-
+private fun ReportSubmittingScreen() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.finish_onboarding))
-    val progress by animateLottieCompositionAsState(composition)
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true
+    )
     val targetAlpha = remember(progress) {
         1f - ((progress - 0.6f) / 0.4f).coerceIn(0f, 1f)
     }
