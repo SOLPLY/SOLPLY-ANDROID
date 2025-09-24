@@ -328,7 +328,8 @@ internal fun MapsRoute(
             },
             reportWrongPlace = { selectedFilesName ->
                 viewModel.sendIntent(MapsIntent.ReportWrongPlace(selectedFilesName = selectedFilesName))
-            }
+            },
+            reportLottieVisibility = uiState.reportLottieVisibility
         )
     }
 

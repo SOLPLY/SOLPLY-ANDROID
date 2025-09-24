@@ -1,7 +1,6 @@
 package com.teamsolply.solply.maps
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.maps.component.dialog.getFileName
 import com.teamsolply.solply.maps.model.CoursePlace
@@ -289,7 +288,8 @@ internal class MapsViewModel @Inject constructor(
                         reportPlaceDialogVisibility = false,
                         selectedReportType = ReportType.EMPTY,
                         reportContent = "",
-                        selectedReportUris = persistentListOf()
+                        selectedReportUris = persistentListOf(),
+                        reportLottieVisibility = false
                     )
                 }
             }
@@ -316,11 +316,10 @@ internal class MapsViewModel @Inject constructor(
             }
 
             is MapsIntent.ReportWrongPlace -> {
-                if (uiState.value.selectedReportUris.isEmpty()) {
-                    Log.d("asdasdasd", "url empty")
-                } else {
-                    presignedUrl(selectedFilesName = intent.selectedFilesName)
+                reduce {
+                    copy(reportLottieVisibility = true)
                 }
+                presignedUrl(selectedFilesName = intent.selectedFilesName)
             }
 
             // Shared
@@ -505,6 +504,24 @@ internal class MapsViewModel @Inject constructor(
         selectedFilesName: List<String>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
+            if (uiState.value.selectedReportUris.isEmpty()) {
+                mapsRepository.postReportWrongPlace(
+                    placeId = uiState.value.placeDetailInfo.placeId,
+                    reportRequestEntity = ReportRequestEntity(
+                        content = uiState.value.reportContent,
+                        reportType = uiState.value.selectedReportType.name,
+                        imageKeys = emptyList()
+                    )
+                ).onSuccess {
+                    reduce {
+                        copy(reportLottieVisibility = false)
+                    }
+                }.onFailure {
+                    //TODO. 신고 실패 처리
+                }
+                return@launch
+            }
+
             mapsRepository.postPresignedUrl(
                 presignedUrlsRequestEntity = PresignedUrlsRequestEntity(
                     files = selectedFilesName.map { File(it) }
@@ -539,7 +556,11 @@ internal class MapsViewModel @Inject constructor(
                             reportType = uiState.value.selectedReportType.name,
                             imageKeys = tempKeys
                         )
-                    )
+                    ).onSuccess {
+                        reduce {
+                            copy(reportLottieVisibility = false)
+                        }
+                    }
                     // 업로드 전부 성공 → 최종 저장 API 호출 등
                 }.onFailure { e ->
                     //TODO. 업로드 실패

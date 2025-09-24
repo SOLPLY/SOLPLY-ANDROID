@@ -40,6 +40,7 @@ internal data class MapsState(
     val selectedReportType: ReportType = ReportType.EMPTY,
     val reportContent: String = "",
     val selectedReportUris: List<Uri> = persistentListOf(),
+    val reportLottieVisibility: Boolean = false
 ) : UiState
 
 internal sealed interface MapsIntent : UiIntent {
