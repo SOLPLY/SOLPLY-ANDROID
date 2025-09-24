@@ -187,7 +187,10 @@ fun ReportPlaceDialog(
                         Spacer(modifier = Modifier.weight(1f))
 
                         SolplyBasicButton(
-                            text = "다음",
+                            text = when (pagerState.currentPage) {
+                                0 -> "다음"
+                                else -> "완료"
+                            },
                             onClick = {
                                 when (pagerState.currentPage) {
                                     0 -> if (selectedReportType != ReportType.EMPTY) {
@@ -212,8 +215,7 @@ fun ReportPlaceDialog(
                             modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 72.dp),
                             selected = when (pagerState.currentPage) {
                                 0 -> selectedReportType != ReportType.EMPTY
-                                1 -> reportContent.isNotEmpty()
-                                else -> false
+                                else -> reportContent.isNotEmpty()
                             },
                             enabledBackgroundColor = SolplyTheme.colors.gray900,
                             disabledBackgroundColor = SolplyTheme.colors.gray300
@@ -380,7 +382,7 @@ fun ReportPlaceImage(
                         modifier = Modifier
                             .size(72.dp)
                             .background(
-                                color = SolplyTheme.colors.red200,
+                                color = SolplyTheme.colors.gray200,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .customClickable(rippleEnabled = false) {
@@ -391,20 +393,20 @@ fun ReportPlaceImage(
                         Icon(
                             painter = painterResource(R.drawable.ic_cross),
                             contentDescription = "add_picture",
-                            tint = SolplyTheme.colors.red600
+                            tint = SolplyTheme.colors.gray400
                         )
                     }
                 }
 
                 else -> {
-                    val borderColor = SolplyTheme.colors.gray500
+                    val borderColor = SolplyTheme.colors.gray400
                     Box(
                         modifier = Modifier
                             .size(72.dp)
                             .drawBehind {
-                                val strokeWidth = 2.dp.toPx()
+                                val strokeWidth = 1.dp.toPx()
                                 val corner = 16.dp.toPx()
-                                val dash = floatArrayOf(8.dp.toPx(), 4.dp.toPx())
+                                val dash = floatArrayOf(4.dp.toPx(), 4.dp.toPx())
                                 val inset = strokeWidth / 2f
                                 drawRoundRect(
                                     color = borderColor,
