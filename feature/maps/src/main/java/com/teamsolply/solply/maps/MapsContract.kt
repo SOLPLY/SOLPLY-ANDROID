@@ -102,8 +102,8 @@ internal sealed interface MapsIntent : UiIntent {
 
     // Report Place
     data class ChangeReportPlaceDialogVisibility(
-        val visible: Boolean,
-    ): MapsIntent
+        val visible: Boolean
+    ) : MapsIntent
 
     data class ChangeSelectedReportType(
         val reportType: ReportType
@@ -118,7 +118,7 @@ internal sealed interface MapsIntent : UiIntent {
     ) : MapsIntent
 
     data class ReportWrongPlace(
-        val selectedFilesName: List<String>,
+        val selectedFilesName: List<String>
     ) : MapsIntent
 
     // Navigate

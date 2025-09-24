@@ -46,7 +46,7 @@ fun RenameCourseBottomSheet(
     renameCourseName: (String) -> Unit,
     renameCourseIntroduction: (String) -> Unit,
     onStartRenameCourseClick: () -> Unit,
-    onStartEditCourseClick: () -> Unit,
+    onStartEditCourseClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -65,7 +65,7 @@ fun RenameCourseBottomSheet(
             focusManager.clearFocus(force = true)
             keyboard?.hide()
             onDismissRequest()
-                           },
+        },
         sheetState = sheetState,
         containerColor = SolplyTheme.colors.white,
         dragHandle = null
@@ -87,7 +87,8 @@ fun RenameCourseBottomSheet(
                         keyboard?.hide()
                         waitForUpOrCancellation()
                     }
-                }) {
+                }
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

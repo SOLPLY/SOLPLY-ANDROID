@@ -22,8 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -47,7 +45,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
-import com.teamsolply.solply.designsystem.component.textfield.SolplyRenameCourseTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
@@ -306,8 +303,6 @@ internal fun EditCourseBottomSheet(
                 enabledBackgroundColor = SolplyTheme.colors.gray900
             )
         }
-
-
 
         if (courseSaveDialogVisibility) {
             CourseSaveDialog(

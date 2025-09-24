@@ -82,7 +82,7 @@ fun ReportPlaceDialog(
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
     reportWrongPlace: (List<String>) -> Unit,
-    reportLottieVisibility: Boolean,
+    reportLottieVisibility: Boolean
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
@@ -141,7 +141,7 @@ fun ReportPlaceDialog(
                                 .padding(start = 16.dp, top = 56.dp, bottom = 24.dp)
                                 .minimumInteractiveComponentSize()
                                 .customClickable(rippleEnabled = false) {
-                                    //TODO. 백 클릭
+                                    // TODO. 백 클릭
                                     when (pagerState.currentPage) {
                                         0 -> onDismissRequest(false)
                                         1 -> coroutineScope.launch {
@@ -201,11 +201,13 @@ fun ReportPlaceDialog(
 
                                     1 -> {
                                         if (reportContent.isNotEmpty()) {
-                                            reportWrongPlace(selectedUris.map {
-                                                context.contentResolver.getFileName(
-                                                    uri = it
-                                                )
-                                            })
+                                            reportWrongPlace(
+                                                selectedUris.map {
+                                                    context.contentResolver.getFileName(
+                                                        uri = it
+                                                    )
+                                                }
+                                            )
                                         }
                                     }
                                 }
@@ -217,9 +219,8 @@ fun ReportPlaceDialog(
                                 else -> false
                             },
                             enabledBackgroundColor = SolplyTheme.colors.gray900,
-                            disabledBackgroundColor = SolplyTheme.colors.gray300,
+                            disabledBackgroundColor = SolplyTheme.colors.gray300
                         )
-
                     }
                 }
             }
@@ -227,11 +228,10 @@ fun ReportPlaceDialog(
     }
 }
 
-
 @Composable
 fun ReportTypesScreen(
     selectedReportType: ReportType,
-    onReportTypeClick: (ReportType) -> Unit,
+    onReportTypeClick: (ReportType) -> Unit
 ) {
     val borderColor = SolplyTheme.colors.gray200
 
@@ -281,7 +281,7 @@ fun ReportContentScreen(
     selectedUris: List<Uri>,
     reportContent: String,
     inputReportContent: (String) -> Unit,
-    onSelectUris: (List<Uri>) -> Unit,
+    onSelectUris: (List<Uri>) -> Unit
 ) {
     val remainSelectedUris = (3 - selectedUris.size).coerceAtLeast(0)
     val singlePicker = rememberLauncherForActivityResult(
@@ -312,7 +312,7 @@ fun ReportContentScreen(
         )
         SolplyFixedReportTextField(
             value = reportContent,
-            onValueChange = { inputReportContent(it) },
+            onValueChange = { inputReportContent(it) }
         )
         Row(
             modifier = Modifier.padding(top = 28.dp, bottom = 12.dp)
@@ -356,7 +356,7 @@ fun ReportContentScreen(
 @Composable
 fun ReportPlaceImage(
     selectedUris: List<Uri>,
-    onAddClick: () -> Unit,
+    onAddClick: () -> Unit
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         repeat(3) { index ->
@@ -373,7 +373,7 @@ fun ReportPlaceImage(
                             imageUrl = selectedUris[index].toString(),
                             contentDescription = "selected image",
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }
@@ -422,7 +422,7 @@ fun ReportPlaceImage(
                                         pathEffect = PathEffect.dashPathEffect(dash)
                                     )
                                 )
-                            },
+                            }
                     )
                 }
             }
@@ -462,7 +462,7 @@ private fun ReportSubmittingScreen(
             text = "소중한 제보 감사합니다!",
             modifier = Modifier.graphicsLayer { alpha = textAlpha },
             color = SolplyTheme.colors.black,
-            style = SolplyTheme.typography.display20Sb,
+            style = SolplyTheme.typography.display20Sb
         )
     }
 }

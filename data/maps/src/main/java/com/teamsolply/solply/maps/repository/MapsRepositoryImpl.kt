@@ -125,7 +125,8 @@ class MapsRepositoryImpl @Inject constructor(
     ): Result<ReportResponseEntity> =
         runCatching {
             mapsRemoteDataSource.postReportWrongPlace(
-                placeId = placeId, reportWrongPlaceRequestDto = ReportWrongPlaceRequestDto(
+                placeId = placeId,
+                reportWrongPlaceRequestDto = ReportWrongPlaceRequestDto(
                     reportType = reportRequestEntity.reportType,
                     content = reportRequestEntity.content,
                     imageKeys = reportRequestEntity.imageKeys
