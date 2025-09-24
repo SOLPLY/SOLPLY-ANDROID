@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -74,6 +73,8 @@ fun ReportPlaceDialog(
     inputReportContent: (String) -> Unit,
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
+
+    reportWrongPlace: (List<String>) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
@@ -186,17 +187,18 @@ fun ReportPlaceDialog(
                                 }
 
                                 1 -> {
-                                    selectedUris.map {
-                                        Log.d(
-                                            "asdasd",
-                                            context.contentResolver.getFileName(uri = it)
-                                        )
+                                    if (reportContent.isNotEmpty()) {
+                                        reportWrongPlace(selectedUris.map { context.contentResolver.getFileName(uri = it) })
                                     }
                                 }
                             }
                         },
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 72.dp),
-                        selected = selectedReportType != ReportType.EMPTY,
+                        selected = when (pagerState.currentPage) {
+                            0 -> selectedReportType != ReportType.EMPTY
+                            1 -> reportContent.isNotEmpty()
+                            else -> false
+                        },
                         enabledBackgroundColor = SolplyTheme.colors.gray900,
                         disabledBackgroundColor = SolplyTheme.colors.gray300,
                     )

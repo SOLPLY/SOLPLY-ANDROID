@@ -325,6 +325,9 @@ internal fun MapsRoute(
             selectedUris = uiState.selectedReportUris,
             onSelectUris = { uris ->
                 viewModel.sendIntent(MapsIntent.SelectedReportUris(uris = uris))
+            },
+            reportWrongPlace = { selectedFilesName ->
+                viewModel.sendIntent(MapsIntent.ReportWrongPlace(selectedFilesName = selectedFilesName))
             }
         )
     }

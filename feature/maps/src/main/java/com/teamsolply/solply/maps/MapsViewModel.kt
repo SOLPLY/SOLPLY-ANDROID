@@ -1,6 +1,9 @@
 package com.teamsolply.solply.maps
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.maps.component.dialog.getFileName
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
@@ -8,17 +11,24 @@ import com.teamsolply.solply.maps.model.File
 import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
 import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.maps.repository.MapsRepository
+import com.teamsolply.solply.maps.util.uploadToPresignedUrl
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class MapsViewModel @Inject constructor(
-    private val mapsRepository: MapsRepository
+    private val mapsRepository: MapsRepository,
+    @ApplicationContext private val context: Context
 ) :
     BaseViewModel<MapsState, MapsIntent, MapsSideEffect>(MapsState()) {
 
@@ -304,6 +314,14 @@ internal class MapsViewModel @Inject constructor(
                 copy(selectedReportUris = (current + income))
             }
 
+            is MapsIntent.ReportWrongPlace -> {
+                if (uiState.value.selectedReportUris.isEmpty()) {
+                    Log.d("asdasdasd", "url empty")
+                } else {
+                    presignedUrl(selectedFilesName = intent.selectedFilesName)
+                }
+            }
+
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
@@ -483,16 +501,43 @@ internal class MapsViewModel @Inject constructor(
 
     // 제보하기
     private fun presignedUrl(
-        selectedFiles: List<String>
+        selectedFilesName: List<String>
     ) {
-        viewModelScope.launch {
-            val filesEntity = selectedFiles.map { fileName -> File(fileName) }
-
+        viewModelScope.launch(Dispatchers.IO) {
             mapsRepository.postPresignedUrl(
                 presignedUrlsRequestEntity = PresignedUrlsRequestEntity(
-                    files = filesEntity
+                    files = selectedFilesName.map { File(it) }
                 )
-            ).onSuccess { }
+            ).onSuccess { response ->
+                val infos = response.presignedUrlInfos
+                val resolver = context.contentResolver
+                val uris = uiState.value.selectedReportUris
+                val byName = uris.associateBy { resolver.getFileName(it) }
+
+                val result = runCatching {
+                    coroutineScope {
+                        infos.map { info ->
+                            val uri = byName[info.originalFileName]
+                                ?: error("URI for ${info.originalFileName} not found")
+                            async {
+                                uploadToPresignedUrl(
+                                    context = context,
+                                    uri = uri,
+                                    presignedUrl = info.presignedUrl
+                                )
+                                info.tempFileKey
+                            }
+                        }.awaitAll()
+                    }
+                }
+                result.onSuccess { tempKeys ->
+                    // 업로드 전부 성공 → 최종 저장 API 호출 등
+                }.onFailure { e ->
+                    //TODO. 업로드 실패
+                }
+            }.onFailure {
+                //TODO. presigned url 발급 실패
+            }
         }
     }
 }

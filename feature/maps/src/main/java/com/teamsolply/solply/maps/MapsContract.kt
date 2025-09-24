@@ -116,6 +116,10 @@ internal sealed interface MapsIntent : UiIntent {
         val uris: List<Uri>
     ) : MapsIntent
 
+    data class ReportWrongPlace(
+        val selectedFilesName: List<String>,
+    ) : MapsIntent
+
     // Navigate
     data class PlaceDetailClick(
         val placeId: Long
