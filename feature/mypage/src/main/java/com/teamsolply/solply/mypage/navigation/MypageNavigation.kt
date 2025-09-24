@@ -19,7 +19,7 @@ fun NavController.navigateMypage(
 
 fun NavGraphBuilder.mypageNavGraph(
     paddingValues: PaddingValues,
-    navigateToBack: () -> Unit,
+    navigateToBack: () -> Unit
 ) {
     composable<Mypage> { backStackEntry ->
         val viewModel: MypageViewModel = hiltViewModel(backStackEntry)

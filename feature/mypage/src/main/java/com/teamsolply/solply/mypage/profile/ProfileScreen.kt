@@ -31,7 +31,7 @@ import com.teamsolply.solply.mypage.R
 @Composable
 fun ProfileScreen(
     onBackButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -42,7 +42,7 @@ fun ProfileScreen(
     ) {
         SolplyTopBar(
             barText = stringResource(R.string.profile_edit),
-            onBackButtonClick = onBackButtonClick,
+            onBackButtonClick = onBackButtonClick
         )
         Spacer(
             modifier = Modifier.weight(1f)
@@ -122,6 +122,5 @@ fun ProfileScreen(
 private fun ProfileScreenPreview() {
     SolplyTheme {
         ProfileScreen(onBackButtonClick = {})
-
     }
 }

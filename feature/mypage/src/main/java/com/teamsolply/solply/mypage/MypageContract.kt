@@ -5,11 +5,9 @@ import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 
 data class MypageState(
-    val town: String = "연희동",
+    val town: String = "연희동"
 ) : UiState
 
-sealed interface MypageIntent : UiIntent {
-}
+sealed interface MypageIntent : UiIntent
 
-sealed interface MypageSideEffect : SideEffect {
-}
+sealed interface MypageSideEffect : SideEffect

@@ -45,7 +45,7 @@ fun MypageRoute(
 @Composable
 fun MypageScreen(
     onBackButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier

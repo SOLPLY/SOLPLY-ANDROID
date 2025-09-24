@@ -5,5 +5,4 @@ import javax.inject.Inject
 
 class MypageRemoteDataSourceImpl @Inject constructor(
     private val mypageService: MypageService
-) : MypageRemoteDataSource {
-}
+) : MypageRemoteDataSource
