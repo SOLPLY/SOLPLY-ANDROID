@@ -1,7 +1,6 @@
 package com.teamsolply.solply.course.favoriteTown
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -22,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +33,8 @@ import com.teamsolply.solply.course.favoriteTown.model.Region
 import com.teamsolply.solply.course.favoriteTown.model.TownLite
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.ui.extension.customClickable
+
 @Composable
 fun FavoriteTownRoute(
     paddingValues: PaddingValues,
@@ -55,7 +57,9 @@ fun FavoriteTownRoute(
         onNextClick = navigateToBack,
         onReturnToHomeClick = navigateToBack,
         onBackButtonClick = navigateToBack,
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier
+            .background(SolplyTheme.colors.white)
+            .padding(paddingValues)
     )
 }
 
@@ -86,6 +90,7 @@ fun FavoriteTownScreen(
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 16.dp)
+                .background(SolplyTheme.colors.white)
         ) {
             LeftRegionPane(
                 regions = regions,
@@ -95,7 +100,7 @@ fun FavoriteTownScreen(
 
             VerticalDivider(
                 modifier = Modifier.fillMaxHeight(),
-                color = SolplyTheme.colors.gray200,
+                color = SolplyTheme.colors.gray100,
                 thickness = 1.dp
             )
 
@@ -131,26 +136,49 @@ private fun LeftRegionPane(
     selectedRegionId: Long?,
     onSelect: (Long) -> Unit
 ) {
+    val borderColor = SolplyTheme.colors.gray200
+
     LazyColumn(
         modifier = Modifier
             .width(124.dp)
             .fillMaxHeight()
-            .background(SolplyTheme.colors.gray200)
+            .background(SolplyTheme.colors.gray100)
     ) {
         items(regions, key = { it.id }) { region ->
             val selected = region.id == selectedRegionId
-            val bg = if (selected) Color.White else Color.Transparent
+            val bg = if (selected) SolplyTheme.colors.white else SolplyTheme.colors.gray100
             val textColor = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
             val fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
+                    .height(46.dp)
                     .background(bg)
-                    .clickable { onSelect(region.id) }
-                    .padding(horizontal = 16.dp),
-                contentAlignment = Alignment.CenterStart
+                    .customClickable(rippleEnabled = false) {
+                        onSelect(region.id)
+                    }
+                    .drawBehind {
+                        val strokeWidth = 1.dp.toPx()
+                        val w = size.width
+                        val h = size.height
+
+                        if (region == regions.firstOrNull()) {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(0f, strokeWidth / 2),
+                                end = Offset(w, strokeWidth / 2),
+                                strokeWidth = strokeWidth
+                            )
+                        }
+                        drawLine(
+                            color = borderColor,
+                            start = Offset(0f, h - strokeWidth / 2),
+                            end = Offset(w, h - strokeWidth / 2),
+                            strokeWidth = strokeWidth
+                        )
+                    },
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = region.name,
@@ -158,12 +186,6 @@ private fun LeftRegionPane(
                     color = textColor
                 )
             }
-
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth(),
-                thickness = 1.dp,
-                color = SolplyTheme.colors.gray200
-            )
         }
     }
 }
@@ -174,10 +196,12 @@ private fun RightTownPane(
     selectedTownId: Long?,
     onSelect: (Long) -> Unit
 ) {
+    val borderColor = SolplyTheme.colors.gray200
+
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp)
+            .fillMaxWidth()
+            .background(SolplyTheme.colors.white)
     ) {
         items(towns, key = { it.id }) { town ->
             val selected = town.id == selectedTownId
@@ -188,21 +212,45 @@ private fun RightTownPane(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(46.dp)
-                    .clickable { onSelect(town.id) }
-                    .padding(horizontal = 16.dp),
+                    .customClickable(rippleEnabled = false) { onSelect(town.id) }
+                    .drawBehind {
+                        val strokeWidth = 1.dp.toPx()
+                        val w = size.width
+                        val h = size.height
+
+                        if (town == towns.firstOrNull()) {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(0f, strokeWidth / 2),
+                                end = Offset(w, strokeWidth / 2),
+                                strokeWidth = strokeWidth
+                            )
+                        }
+                        drawLine(
+                            color = borderColor,
+                            start = Offset(0f, h - strokeWidth / 2),
+                            end = Offset(w, h - strokeWidth / 2),
+                            strokeWidth = strokeWidth
+                        )
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = town.name,
                     style = SolplyTheme.typography.body16M.copy(fontWeight = fontWeight),
                     color = textColor,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 16.dp)
                 )
 
                 if (selected) {
                     Icon(
-                        painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_select_icon),
+                        painter = painterResource(
+                            id = com.teamsolply.solply.designsystem.R.drawable.ic_select_icon
+                        ),
                         contentDescription = "selected",
+                        modifier = Modifier.padding(end = 16.dp),
                         tint = Color.Unspecified
                     )
                 }
