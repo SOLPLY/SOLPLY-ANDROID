@@ -33,12 +33,18 @@ data class PlaceState(
 
     val isOptionFilterBottomSheetVisible: Boolean = false,
     val selectedOptionAFilter: PersistentList<Int> = persistentListOf(),
-    val selectedOptionBFilter: PersistentList<Int> = persistentListOf()
+    val selectedOptionBFilter: PersistentList<Int> = persistentListOf(),
 
+    // search
+    val isSearchDialogVisible: Boolean = false
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {
-    data class PlaceClicked(val placeId: Long) : PlaceIntent
+    data class PlaceClicked(
+        val placeId: Long,
+        val townId: Long
+    ) : PlaceIntent
+
     data object Retry : PlaceIntent
 
     data object MainFilterChipClick : PlaceIntent
@@ -56,11 +62,17 @@ sealed interface PlaceIntent : UiIntent {
         val optionFilterId: Int,
         val selectedTagType: String
     ) : PlaceIntent
+
+    // search
+    data class ChangeSearchDialogVisibility(
+        val visible: Boolean
+    ) : PlaceIntent
 }
 
 sealed interface PlaceSideEffect : SideEffect {
     data class NavigateToMap(
-        val placeId: Long
+        val placeId: Long,
+        val townId: Long
     ) : PlaceSideEffect
 }
 
