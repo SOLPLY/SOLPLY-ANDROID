@@ -1,11 +1,15 @@
 package com.teamsolply.solply.maps.source
 
 import com.teamsolply.solply.maps.dto.request.CourseSaveRequestDto
+import com.teamsolply.solply.maps.dto.request.PresignedUrlsRequestDto
+import com.teamsolply.solply.maps.dto.request.ReportWrongPlaceRequestDto
 import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
+import com.teamsolply.solply.maps.dto.response.PresignedUrlsResponseDto
+import com.teamsolply.solply.maps.dto.response.ReportWrongPlaceResponseDto
 import com.teamsolply.solply.maps.dto.response.SavePlaceToCourseResponseDto
 
 interface MapsRemoteDataSource {
@@ -17,6 +21,7 @@ interface MapsRemoteDataSource {
         townId: Long,
         candidatePlaceId: Long
     ): CoursesResponseDto
+
     suspend fun postPlaceToCourse(
         courseId: Long,
         placeId: Long
@@ -36,4 +41,14 @@ interface MapsRemoteDataSource {
     suspend fun postSaveNewCourse(
         courseSaveRequestDto: CourseSaveRequestDto
     ): NewCourseResponseDto
+
+    // 제보하기
+    suspend fun postPresignedUrl(
+        presignedUrlsRequestDto: PresignedUrlsRequestDto
+    ): PresignedUrlsResponseDto
+
+    suspend fun postReportWrongPlace(
+        placeId: Long,
+        reportWrongPlaceRequestDto: ReportWrongPlaceRequestDto
+    ): ReportWrongPlaceResponseDto
 }

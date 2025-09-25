@@ -76,7 +76,8 @@ fun PlaceDetailBottomSheet(
     emptyCourseClick: () -> Unit,
     saveMyCourse: () -> Unit,
     changeAddPlaceState: (Boolean) -> Unit,
-    placeBookMarkClick: () -> Unit
+    placeBookMarkClick: () -> Unit,
+    changeReportPlaceDialogVisibility: (Boolean) -> Unit
 ) {
     val copyText = "복사"
     val clipboardManager = LocalClipboardManager.current
@@ -186,7 +187,7 @@ fun PlaceDetailBottomSheet(
                 }
                 Text(
                     text = description,
-                    modifier = Modifier.padding(bottom = 16.dp, start = 20.dp, end = 20.dp),
+                    modifier = Modifier.padding(bottom = 6.dp, start = 20.dp, end = 20.dp),
                     color = SolplyTheme.colors.gray900,
                     maxLines = 2,
                     style = SolplyTheme.typography.caption14R
@@ -197,6 +198,7 @@ fun PlaceDetailBottomSheet(
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
+                                top = 10.dp,
                                 bottom = 20.dp
                             )
                         ) {
@@ -281,7 +283,7 @@ fun PlaceDetailBottomSheet(
                         }
                         Box(
                             modifier = Modifier
-                                .padding(horizontal = 20.dp)
+                                .padding(horizontal = 16.dp)
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(20.dp))
                                 .border(
@@ -393,6 +395,53 @@ fun PlaceDetailBottomSheet(
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .border(
+                                    width = 1.dp,
+                                    color = SolplyTheme.colors.gray200,
+                                    shape = RoundedCornerShape(20.dp)
+                                )
+                                .padding(vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_snackbar_notification),
+                                contentDescription = "notice",
+                                tint = SolplyTheme.colors.gray800,
+                                modifier = Modifier.padding(start = 20.dp, end = 4.dp)
+                            )
+                            Text(
+                                text = "잘못된 정보가 있어요.",
+                                color = SolplyTheme.colors.gray800,
+                                style = SolplyTheme.typography.body14R
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            Row(
+                                modifier = Modifier
+                                    .customClickable(rippleEnabled = false) {
+                                        changeReportPlaceDialogVisibility(true)
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "오류 제보하기",
+                                    color = SolplyTheme.colors.red600,
+                                    style = SolplyTheme.typography.button14M
+                                )
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_next_arrow),
+                                    contentDescription = "notice",
+                                    modifier = Modifier.padding(end = 20.dp),
+                                    tint = SolplyTheme.colors.red600
+                                )
+                            }
+                        }
+
                         Spacer(modifier = Modifier.height(40.dp))
                     }
                 }

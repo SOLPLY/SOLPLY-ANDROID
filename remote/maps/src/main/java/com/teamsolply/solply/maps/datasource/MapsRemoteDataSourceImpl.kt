@@ -1,11 +1,15 @@
 package com.teamsolply.solply.maps.datasource
 
 import com.teamsolply.solply.maps.dto.request.CourseSaveRequestDto
+import com.teamsolply.solply.maps.dto.request.PresignedUrlsRequestDto
+import com.teamsolply.solply.maps.dto.request.ReportWrongPlaceRequestDto
 import com.teamsolply.solply.maps.dto.response.CourseDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.CourseSaveResponseDto
 import com.teamsolply.solply.maps.dto.response.CoursesResponseDto
 import com.teamsolply.solply.maps.dto.response.GetPlaceDetailResponseDto
 import com.teamsolply.solply.maps.dto.response.NewCourseResponseDto
+import com.teamsolply.solply.maps.dto.response.PresignedUrlsResponseDto
+import com.teamsolply.solply.maps.dto.response.ReportWrongPlaceResponseDto
 import com.teamsolply.solply.maps.dto.response.SavePlaceToCourseResponseDto
 import com.teamsolply.solply.maps.service.MapsService
 import com.teamsolply.solply.maps.source.MapsRemoteDataSource
@@ -56,5 +60,17 @@ class MapsRemoteDataSourceImpl @Inject constructor(
     ): NewCourseResponseDto =
         mapsService.postSaveNewCourse(
             courseSaveRequestDto = courseSaveRequestDto
+        ).data
+
+    override suspend fun postPresignedUrl(presignedUrlsRequestDto: PresignedUrlsRequestDto): PresignedUrlsResponseDto =
+        mapsService.presignedUrls(presignedUrlsRequestDto = presignedUrlsRequestDto).data
+
+    override suspend fun postReportWrongPlace(
+        placeId: Long,
+        reportWrongPlaceRequestDto: ReportWrongPlaceRequestDto
+    ): ReportWrongPlaceResponseDto =
+        mapsService.reportWrongPlace(
+            placeId = placeId,
+            reportWrongPlaceRequestDto = reportWrongPlaceRequestDto
         ).data
 }

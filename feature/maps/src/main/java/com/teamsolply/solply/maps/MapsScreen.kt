@@ -47,6 +47,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.bottomsheet.AddCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.EditCourseBottomSheet
 import com.teamsolply.solply.maps.component.bottomsheet.PlaceDetailBottomSheet
+import com.teamsolply.solply.maps.component.bottomsheet.RenameCourseBottomSheet
+import com.teamsolply.solply.maps.component.dialog.ReportPlaceDialog
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
@@ -270,17 +272,15 @@ internal fun MapsRoute(
         onPlaceDetailClick = { placeId ->
             viewModel.sendIntent(MapsIntent.PlaceDetailClick(placeId = placeId))
         },
-        renameCourseBottomSheetVisibility = uiState.renameCourseBottomSheetVisibility,
         onStartRenameCourseClick = {
             viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility)
         },
-        newCourseName = uiState.newCourseName,
-        newCourseIntroduction = uiState.newCourseIntroduction,
-        renameCourseName = { courseName ->
-            viewModel.sendIntent(MapsIntent.RenameCourseName(courseName = courseName))
-        },
-        renameCourseIntroduction = { courseIntroduction ->
-            viewModel.sendIntent(MapsIntent.RenameCourseIntroduction(courseIntroduction = courseIntroduction))
+        changeReportPlaceDialogVisibility = {
+            viewModel.sendIntent(
+                MapsIntent.ChangeReportPlaceDialogVisibility(
+                    visible = it
+                )
+            )
         },
         modifier = Modifier.padding(paddingValues)
     )
@@ -302,6 +302,52 @@ internal fun MapsRoute(
             dismissButtonText = "취소",
             onClickConfirm = { viewModel.sendIntent(MapsIntent.BackButtonClick) },
             onClickDismiss = { viewModel.sendIntent(MapsIntent.NavigateToBackDialogInVisible) }
+        )
+    }
+
+    if (uiState.reportPlaceDialogVisibility) {
+        ReportPlaceDialog(
+            onDismissRequest = {
+                viewModel.sendIntent(
+                    MapsIntent.ChangeReportPlaceDialogVisibility(
+                        visible = it
+                    )
+                )
+            },
+            selectedReportType = uiState.selectedReportType,
+            reportContent = uiState.reportContent,
+            onReportTypeClick = { reportType ->
+                viewModel.sendIntent(MapsIntent.ChangeSelectedReportType(reportType = reportType))
+            },
+            inputReportContent = { content ->
+                viewModel.sendIntent(MapsIntent.InputReportContent(content = content))
+            },
+            selectedUris = uiState.selectedReportUris,
+            onSelectUris = { uris ->
+                viewModel.sendIntent(MapsIntent.SelectedReportUris(uris = uris))
+            },
+            reportWrongPlace = { selectedFilesName ->
+                viewModel.sendIntent(MapsIntent.ReportWrongPlace(selectedFilesName = selectedFilesName))
+            },
+            reportLottieVisibility = uiState.reportLottieVisibility
+        )
+    }
+
+    if (uiState.renameCourseBottomSheetVisibility) {
+        RenameCourseBottomSheet(
+            onDismissRequest = { viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility) },
+            newCourseName = uiState.newCourseName,
+            newCourseIntroduction = uiState.newCourseIntroduction,
+            renameCourseName = { viewModel.sendIntent(MapsIntent.RenameCourseName(courseName = it)) },
+            renameCourseIntroduction = {
+                viewModel.sendIntent(
+                    MapsIntent.RenameCourseIntroduction(
+                        courseIntroduction = it
+                    )
+                )
+            },
+            onStartEditCourseClick = { viewModel.sendIntent(MapsIntent.StartEditCourseIconClick) },
+            onStartRenameCourseClick = { viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility) }
         )
     }
 }
@@ -347,12 +393,9 @@ private fun MapsScreen(
     onCourseEditBackClick: () -> Unit,
     onCourseEditTopBarBackClick: () -> Unit,
     onPlaceDetailClick: (Long) -> Unit,
-    renameCourseBottomSheetVisibility: Boolean,
     onStartRenameCourseClick: () -> Unit,
-    newCourseName: String,
-    newCourseIntroduction: String,
-    renameCourseName: (String) -> Unit,
-    renameCourseIntroduction: (String) -> Unit,
+
+    changeReportPlaceDialogVisibility: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isInRemoveIconArea = remember { mutableStateOf(false) }
@@ -557,7 +600,8 @@ private fun MapsScreen(
                             emptyCourseClick = emptyCourseClick,
                             saveMyCourse = saveMyCourse,
                             changeAddPlaceState = changeAddPlaceState,
-                            placeBookMarkClick = placeBookMarkClick
+                            placeBookMarkClick = placeBookMarkClick,
+                            changeReportPlaceDialogVisibility = changeReportPlaceDialogVisibility
                         )
                     }
 
@@ -597,11 +641,6 @@ private fun MapsScreen(
                             placeDetailClick = onPlaceDetailClick,
                             removeIconVisible = removeIconVisible,
                             onStartRenameCourseClick = onStartRenameCourseClick,
-                            renameCourseBottomSheetVisibility = renameCourseBottomSheetVisibility,
-                            newCourseName = newCourseName,
-                            newCourseIntroduction = newCourseIntroduction,
-                            renameCourseName = renameCourseName,
-                            renameCourseIntroduction = renameCourseIntroduction,
                             courseSaveDialogVisibility = courseSaveDialogVisibility,
                             courseSaveDialogClick = courseSaveDialogClick,
                             changeCourseSaveDialogInVisibility = changeCourseSaveDialogInVisibility

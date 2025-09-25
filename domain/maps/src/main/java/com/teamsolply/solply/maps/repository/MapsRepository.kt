@@ -5,6 +5,10 @@ import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveResultEntity
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
+import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
+import com.teamsolply.solply.maps.model.PresignedUrlsResponseEntity
+import com.teamsolply.solply.maps.model.ReportRequestEntity
+import com.teamsolply.solply.maps.model.ReportResponseEntity
 import com.teamsolply.solply.maps.model.SavePlaceToCourseEntity
 
 interface MapsRepository {
@@ -36,4 +40,14 @@ interface MapsRepository {
     suspend fun postSaveNewCourse(
         courseSaveEntity: CourseSaveEntity
     ): Result<Long>
+
+    // 제보하기
+    suspend fun postPresignedUrl(
+        presignedUrlsRequestEntity: PresignedUrlsRequestEntity
+    ): Result<PresignedUrlsResponseEntity>
+
+    suspend fun postReportWrongPlace(
+        placeId: Long,
+        reportRequestEntity: ReportRequestEntity
+    ): Result<ReportResponseEntity>
 }

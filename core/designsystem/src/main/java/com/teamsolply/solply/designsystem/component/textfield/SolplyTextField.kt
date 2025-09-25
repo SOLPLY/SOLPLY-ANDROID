@@ -7,31 +7,40 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import kotlinx.coroutines.launch
 
 @Composable
 private fun BaseTextField(
@@ -53,7 +62,8 @@ private fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     singleLine: Boolean = true,
     maxLength: Int = 8,
-    maxLines: Int = 1
+    maxLines: Int = 1,
+    textAlignment: Alignment = Alignment.CenterStart
 ) {
     Box(
         modifier = modifier
@@ -63,7 +73,7 @@ private fun BaseTextField(
                 color = borderColor ?: Color.Transparent,
                 shape = shape
             ),
-        contentAlignment = Alignment.CenterStart
+        contentAlignment = textAlignment
     ) {
         Row(
             modifier = Modifier
@@ -73,7 +83,7 @@ private fun BaseTextField(
         ) {
             Box(
                 modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.CenterStart
+                contentAlignment = textAlignment
             ) {
                 if (value.isEmpty() && placeholder != null) {
                     Text(
@@ -92,7 +102,9 @@ private fun BaseTextField(
                     visualTransformation = visualTransformation,
                     singleLine = singleLine,
                     maxLines = maxLines,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(if (!singleLine) Modifier.fillMaxHeight() else Modifier)
                 )
             }
             if (isNickname) {
@@ -294,7 +306,9 @@ fun SolplyRenameCourseTextField(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     maxLength: Int = 8,
-    minLength: Int = 2
+    minLength: Int = 2,
+    textAlignment: Alignment = Alignment.TopStart,
+    singleLine: Boolean = true
 ) {
     BaseTextField(
         value = value,
@@ -304,6 +318,73 @@ fun SolplyRenameCourseTextField(
         placeholder = placeholder,
         maxLines = maxLength,
         borderColor = SolplyTheme.colors.gray300,
-        borderWidth = 1f
+        borderWidth = 1f,
+        textAlignment = textAlignment,
+        singleLine = singleLine
     )
+}
+
+@Composable
+fun SolplyFixedReportTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val scrollState = rememberScrollState()
+    var viewportHeightPx by remember { mutableIntStateOf(0) }
+    val coroutineScope = rememberCoroutineScope()
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(156.dp)
+            .background(color = SolplyTheme.colors.white)
+            .border(width = 1.dp, color = SolplyTheme.colors.gray300, shape = RoundedCornerShape(20.dp)),
+        contentAlignment = Alignment.TopStart
+    ) {
+        BasicTextField(
+            value = value,
+            onValueChange = { onValueChange(it.take(200)) },
+            textStyle = SolplyTheme.typography.caption12M.copy(color = SolplyTheme.colors.black),
+            cursorBrush = SolidColor(SolplyTheme.colors.black),
+            singleLine = false,
+            maxLines = Int.MAX_VALUE,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 21.dp, top = 17.dp, end = 21.dp, bottom = 17.dp)
+                .verticalScroll(scrollState)
+                .onGloballyPositioned {
+                    viewportHeightPx = it.size.height
+                },
+            onTextLayout = { layout ->
+                if (viewportHeightPx == 0) return@BasicTextField
+                val caret = layout.getCursorRect(value.length)
+                val extraPadding = 16f
+
+                val currentTop = scrollState.value.toFloat()
+                val currentBottom = currentTop + viewportHeightPx
+
+                when {
+                    caret.top < currentTop -> {
+                        val target = (caret.top - extraPadding).coerceAtLeast(0f).toInt()
+                        coroutineScope.launch { scrollState.animateScrollTo(target) }
+                    }
+                    caret.bottom > currentBottom -> {
+                        val target = (caret.bottom - viewportHeightPx + extraPadding).coerceAtLeast(0f).toInt()
+                        coroutineScope.launch { scrollState.animateScrollTo(target) }
+                    }
+                }
+            },
+            decorationBox = { inner ->
+                if (value.isEmpty()) {
+                    Text(
+                        text = "(최대 200자 입력 가능)",
+                        color = SolplyTheme.colors.gray500,
+                        style = SolplyTheme.typography.caption12M
+                    )
+                }
+                inner()
+            }
+        )
+    }
 }

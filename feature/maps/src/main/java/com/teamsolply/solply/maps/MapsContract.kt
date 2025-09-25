@@ -1,10 +1,12 @@
 package com.teamsolply.solply.maps
 
+import android.net.Uri
 import com.teamsolply.solply.maps.model.CourseDetailEntity
 import com.teamsolply.solply.maps.model.CourseInfoEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
 import com.teamsolply.solply.maps.model.Place
 import com.teamsolply.solply.maps.model.PlaceDetailEntity
+import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.base.SideEffect
 import com.teamsolply.solply.ui.base.UiIntent
@@ -32,7 +34,13 @@ internal data class MapsState(
     val navigateToBackDialogVisibility: Boolean = false,
     val renameCourseBottomSheetVisibility: Boolean = false,
     val newCourseName: String = "",
-    val newCourseIntroduction: String = ""
+    val newCourseIntroduction: String = "",
+    // Report Place
+    val reportPlaceDialogVisibility: Boolean = false,
+    val selectedReportType: ReportType = ReportType.EMPTY,
+    val reportContent: String = "",
+    val selectedReportUris: List<Uri> = persistentListOf(),
+    val reportLottieVisibility: Boolean = false
 ) : UiState
 
 internal sealed interface MapsIntent : UiIntent {
@@ -90,6 +98,27 @@ internal sealed interface MapsIntent : UiIntent {
 
     data class RemoveCourseItem(
         val itemToRemove: Int
+    ) : MapsIntent
+
+    // Report Place
+    data class ChangeReportPlaceDialogVisibility(
+        val visible: Boolean
+    ) : MapsIntent
+
+    data class ChangeSelectedReportType(
+        val reportType: ReportType
+    ) : MapsIntent
+
+    data class InputReportContent(
+        val content: String
+    ) : MapsIntent
+
+    data class SelectedReportUris(
+        val uris: List<Uri>
+    ) : MapsIntent
+
+    data class ReportWrongPlace(
+        val selectedFilesName: List<String>
     ) : MapsIntent
 
     // Navigate
