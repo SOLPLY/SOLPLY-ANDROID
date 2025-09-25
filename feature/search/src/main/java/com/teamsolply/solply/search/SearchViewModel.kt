@@ -30,6 +30,8 @@ class SearchViewModel @Inject constructor(
                     delay(500)
                     if (intent.searchText.isNotBlank()) {
                         performSearch(intent.searchText)
+                    } else {
+                        reduce { copy(searchResult = persistentListOf()) }
                     }
                 }
             }
