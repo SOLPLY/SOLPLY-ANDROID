@@ -1,7 +1,7 @@
 package com.teamsolply.solply.collection.collection.course
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.collection.repository.MypageRepository
+import com.teamsolply.solply.collection.repository.CollectionRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CourseCollectionViewModel @Inject constructor(
-    private val mypageRepository: MypageRepository
+    private val collectionRepository: CollectionRepository
 ) :
     BaseViewModel<CourseCollectionState, CourseCollectionIntent, CourseCollectionSideEffect>(
         CourseCollectionState()
@@ -99,7 +99,7 @@ class CourseCollectionViewModel @Inject constructor(
 
     private fun getCourseList(townId: Long) {
         viewModelScope.launch {
-            mypageRepository.getCourseList(townId).onSuccess {
+            collectionRepository.getCourseList(townId).onSuccess {
                 reduce {
                     copy(
                         courses = it.toPersistentList()
@@ -111,7 +111,7 @@ class CourseCollectionViewModel @Inject constructor(
 
     private fun deleteCourses(selectedCourses: List<Long>) {
         viewModelScope.launch {
-            mypageRepository.deleteCourses(selectedCourses).onSuccess {
+            collectionRepository.deleteCourses(selectedCourses).onSuccess {
                 reduce {
                     copy(
                         selectedCourses = emptySet(),

@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.collection.CollectionRoute
-import com.teamsolply.solply.collection.MypageViewModel
+import com.teamsolply.solply.collection.CollectionViewModel
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 
@@ -26,7 +26,7 @@ fun NavGraphBuilder.collectionNavGraph(
     navigateToCourse: () -> Unit
 ) {
     composable<Collection> { backStackEntry ->
-        val viewModel: MypageViewModel = hiltViewModel(backStackEntry)
+        val viewModel: CollectionViewModel = hiltViewModel(backStackEntry)
         CollectionRoute(
             paddingValues = paddingValues,
             navigateToBack = navigateToBack,
