@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,10 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -51,13 +53,6 @@ fun SolplyCourseCard(
         PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green400
         PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple400
         else -> SolplyTheme.colors.gray400
-    }
-    val iconBackGroundColor = when (placeType.first()) {
-        PlaceType.CAFE -> SolplyTheme.colors.red200
-        PlaceType.FOOD -> SolplyTheme.colors.yellow100
-        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green200
-        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple100
-        else -> SolplyTheme.colors.gray200
     }
 
     Box(
@@ -106,14 +101,14 @@ fun SolplyCourseCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)
+                    .padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
             ) {
                 Row {
                     Text(
                         text = title,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 12.dp),
+                            .padding(top = 8.dp, end = 12.dp),
                         style = SolplyTheme.typography.body14M.copy(
                             lineHeight = 18.sp
                         ),
@@ -122,10 +117,10 @@ fun SolplyCourseCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     if (savedCourse) {
-                        SolplySavedMarker(
-                            iconColor = iconColor,
-                            iconBackGroundColor = iconBackGroundColor,
-                            isButton = false
+                        Icon(
+                            painter = painterResource(R.drawable.ic_saved_no_space),
+                            contentDescription = "course",
+                            tint = iconColor
                         )
                     }
                 }
