@@ -55,8 +55,17 @@ sealed interface CourseIntent : UiIntent {
     data class ChangeSearchDialogVisibility(
         val visible: Boolean
     ) : CourseIntent
+
+    data class PlaceClicked(
+        val placeId: Long,
+        val townId: Long
+    ) : CourseIntent
 }
 
 sealed interface CourseSideEffect : SideEffect {
     data class NavigateToCourseMap(val courseId: Long) : CourseSideEffect
+    data class NavigateToPlaceDetail(
+        val placeId: Long,
+        val townId: Long
+    ) : CourseSideEffect
 }

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.solply.feature)
+    alias(libs.plugins.solply.data)
 }
 
 android {
@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.datastore)
     implementation(projects.domain.search)
 }

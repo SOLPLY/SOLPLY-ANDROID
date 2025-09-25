@@ -40,7 +40,11 @@ data class PlaceState(
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {
-    data class PlaceClicked(val placeId: Long) : PlaceIntent
+    data class PlaceClicked(
+        val placeId: Long,
+        val townId: Long
+    ) : PlaceIntent
+
     data object Retry : PlaceIntent
 
     data object MainFilterChipClick : PlaceIntent
@@ -67,7 +71,8 @@ sealed interface PlaceIntent : UiIntent {
 
 sealed interface PlaceSideEffect : SideEffect {
     data class NavigateToMap(
-        val placeId: Long
+        val placeId: Long,
+        val townId: Long
     ) : PlaceSideEffect
 }
 

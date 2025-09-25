@@ -63,7 +63,7 @@ fun SolplyHomeHeader(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
-                    painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_arrow_right_icon),
+                    painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_next_arrow),
                     contentDescription = "arrow-right-icon",
                     modifier = Modifier
                         .padding(vertical = 7.dp)

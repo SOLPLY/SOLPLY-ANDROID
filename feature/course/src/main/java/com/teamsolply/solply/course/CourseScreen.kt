@@ -52,6 +52,14 @@ fun CourseRoute(
                         sideEffect.courseId
                     )
                 }
+
+                is CourseSideEffect.NavigateToPlaceDetail -> {
+                    navigateToMaps(
+                        MapsType.PLACE_DETAIL.name,
+                        sideEffect.townId,
+                        sideEffect.placeId
+                    )
+                }
             }
         }
     }
@@ -73,7 +81,12 @@ fun CourseRoute(
             onDismissRequest = {
                 viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = false))
             },
-            navigateToPlaceDetail = {},
+            navigateToPlaceDetail = { placeId, townId ->
+                //viewModel.sendIntent(CourseIntent.PlaceClicked(placeId = placeId, townId = townId))
+            },
+            navigateToRegisterPlace = {
+                //TODO. 장소 등록하기
+            }
         )
     }
 }

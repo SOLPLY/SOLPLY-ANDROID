@@ -22,6 +22,16 @@ enum class PlaceType(val displayName: String) {
             "이색공간" -> UNIQUE_SPACE
             else -> ALL
         }
+
+        fun fromApiCode(code: String): PlaceType = when (code) {
+            "CAFE" -> CAFE
+            "FOOD" -> FOOD
+            "BOOKSTORE" -> BOOKSTORE
+            "WALKING" -> WALKING
+            "SHOPPING" -> SHOPPING
+            "UNIQUE_SPACE" -> UNIQUE_SPACE
+            else -> ALL
+        }
     }
 }
 

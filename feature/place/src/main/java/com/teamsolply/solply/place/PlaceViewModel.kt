@@ -62,7 +62,7 @@ class PlaceViewModel @Inject constructor(
                 }
             }
 
-            is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId))
+            is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId, intent.townId))
 
             // 서브 필터 인텐트
             PlaceIntent.SubFilterChipClick -> reduce {

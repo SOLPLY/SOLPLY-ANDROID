@@ -2,7 +2,7 @@ package com.teamsolply.solply.search.model
 
 import com.teamsolply.solply.model.PlaceType
 
-data class SearchItemUi(
+data class SearchResultEntity(
     val placeId: Long,
     val placeName: String,
     val thumbnailImageUrl: String,
