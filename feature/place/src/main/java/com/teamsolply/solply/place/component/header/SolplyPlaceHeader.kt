@@ -70,7 +70,7 @@ fun PlaceHeader(
                 )
             }
             Icon(
-                painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_setting_icon),
+                painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_search),
                 contentDescription = "setting-icon",
                 modifier = Modifier
                     .padding(1.dp)
