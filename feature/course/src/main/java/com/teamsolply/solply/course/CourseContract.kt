@@ -25,7 +25,7 @@ data class CourseState(
     val courseList: PersistentList<CourseEntity> = persistentListOf(),
     val errorMessage: String? = null,
     // search
-    val isSearchDialogVisible: Boolean = false
+    val isSearchDialogVisible: Boolean = false,
 ) : UiState {
     val recommendText: String
         get() = when (user.persona) {

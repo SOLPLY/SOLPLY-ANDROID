@@ -25,7 +25,7 @@ import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.search.component.SearchDialog
+import com.teamsolply.solply.search.SearchDialog
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 
@@ -74,7 +74,6 @@ fun CourseRoute(
                 viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = false))
             },
             navigateToPlaceDetail = {},
-            navigateToBack = {}
         )
     }
 }

@@ -45,10 +45,8 @@ import kotlinx.coroutines.launch
 @Composable
 private fun BaseTextField(
     value: String,
-    isCorrect: Boolean,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isNickname: Boolean = false,
     backgroundColor: Color = SolplyTheme.colors.white,
     shape: Shape = RoundedCornerShape(20.dp),
     borderColor: Color? = null,
@@ -63,7 +61,8 @@ private fun BaseTextField(
     singleLine: Boolean = true,
     maxLength: Int = 8,
     maxLines: Int = 1,
-    textAlignment: Alignment = Alignment.CenterStart
+    textAlignment: Alignment = Alignment.CenterStart,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
@@ -107,22 +106,8 @@ private fun BaseTextField(
                         .then(if (!singleLine) Modifier.fillMaxHeight() else Modifier)
                 )
             }
-            if (isNickname) {
-                if (value.isNotEmpty() && value.length <= maxLength) {
-                    val iconRes =
-                        if (isCorrect) R.drawable.ic_textfield_correct else R.drawable.ic_textfield_wrong
-                    val contentDescription =
-                        if (isCorrect) "textfield_correct" else "textfield_wrong"
-                    Icon(
-                        painter = painterResource(iconRes),
-                        contentDescription = contentDescription,
-                        tint = Color.Unspecified
-                    )
-                } else {
-                    Box(modifier = Modifier.size(24.dp))
-                }
-            } else {
-                Box(modifier = Modifier.size(24.dp))
+            if (trailingIcon != null) {
+                trailingIcon()
             }
         }
     }
@@ -148,7 +133,7 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value, isNicknameDuplicate) {
         if (value.isNotEmpty()) {
@@ -207,18 +192,31 @@ fun SolplyNicknameTextField(
     Column(modifier = modifier) {
         BaseTextField(
             value = value,
-            isCorrect = isCorrect,
             onValueChange = { newValue ->
                 if (newValue.length <= maxLength) {
                     onValueChange(newValue)
                 }
             },
             modifier = Modifier.padding(bottom = 8.dp),
-            isNickname = true,
             backgroundColor = backgroundColor,
             borderColor = borderColor,
             borderWidth = 1f,
-            placeholder = placeholder
+            placeholder = placeholder,
+            trailingIcon = {
+                if (value.isNotEmpty() && value.length <= maxLength) {
+                    val iconRes =
+                        if (isCorrect) R.drawable.ic_textfield_correct else R.drawable.ic_textfield_wrong
+                    val contentDescription =
+                        if (isCorrect) "textfield_correct" else "textfield_wrong"
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = contentDescription,
+                        tint = Color.Unspecified
+                    )
+                } else {
+                    Box(modifier = Modifier.size(24.dp))
+                }
+            }
         )
 
         ValidationMessageRow(
@@ -308,19 +306,20 @@ fun SolplyRenameCourseTextField(
     maxLength: Int = 8,
     minLength: Int = 2,
     textAlignment: Alignment = Alignment.TopStart,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     BaseTextField(
         value = value,
         onValueChange = onValueChange,
-        isCorrect = false,
         modifier = modifier,
         placeholder = placeholder,
         maxLines = maxLength,
         borderColor = SolplyTheme.colors.gray300,
         borderWidth = 1f,
         textAlignment = textAlignment,
-        singleLine = singleLine
+        singleLine = singleLine,
+        trailingIcon = trailingIcon
     )
 }
 
@@ -339,7 +338,11 @@ fun SolplyFixedReportTextField(
             .fillMaxWidth()
             .height(156.dp)
             .background(color = SolplyTheme.colors.white)
-            .border(width = 1.dp, color = SolplyTheme.colors.gray300, shape = RoundedCornerShape(20.dp)),
+            .border(
+                width = 1.dp,
+                color = SolplyTheme.colors.gray300,
+                shape = RoundedCornerShape(20.dp)
+            ),
         contentAlignment = Alignment.TopStart
     ) {
         BasicTextField(
@@ -369,8 +372,11 @@ fun SolplyFixedReportTextField(
                         val target = (caret.top - extraPadding).coerceAtLeast(0f).toInt()
                         coroutineScope.launch { scrollState.animateScrollTo(target) }
                     }
+
                     caret.bottom > currentBottom -> {
-                        val target = (caret.bottom - viewportHeightPx + extraPadding).coerceAtLeast(0f).toInt()
+                        val target =
+                            (caret.bottom - viewportHeightPx + extraPadding).coerceAtLeast(0f)
+                                .toInt()
                         coroutineScope.launch { scrollState.animateScrollTo(target) }
                     }
                 }

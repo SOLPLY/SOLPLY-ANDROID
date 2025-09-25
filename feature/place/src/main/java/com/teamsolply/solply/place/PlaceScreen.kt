@@ -56,7 +56,7 @@ import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.place.util.LocationPermissionRequest
-import com.teamsolply.solply.search.component.SearchDialog
+import com.teamsolply.solply.search.SearchDialog
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import toPlaceType
@@ -174,7 +174,6 @@ fun PlaceRoute(
                 viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = false))
             },
             navigateToPlaceDetail = {},
-            navigateToBack = {}
         )
     }
 }

@@ -138,7 +138,6 @@ fun ReportPlaceDialog(
                                 .padding(start = 16.dp, top = 56.dp, bottom = 24.dp)
                                 .minimumInteractiveComponentSize()
                                 .customClickable(rippleEnabled = false) {
-                                    // TODO. 백 클릭
                                     when (pagerState.currentPage) {
                                         0 -> onDismissRequest(false)
                                         1 -> coroutineScope.launch {
