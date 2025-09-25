@@ -27,6 +27,8 @@ import com.teamsolply.solply.designsystem.component.textfield.SolplyNicknameText
 import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.R
+import com.teamsolply.solply.mypage.component.SolplyPersonaDropDown
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ProfileScreen(
@@ -94,17 +96,17 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
-                    text = stringResource(R.string.profile_nickname),
+                    text = stringResource(R.string.profile_solply_style),
                     color = SolplyTheme.colors.black,
                     style = SolplyTheme.typography.body16M
                 )
             }
-            SolplyNicknameTextField(
-                value = "",
-                isNicknameDuplicate = false,
-                onValueChange = {},
-                checkNicknameValidate = { true },
-                changeNicknameValidate = {},
+            SolplyPersonaDropDown(
+                placeholder = "선택해주세요.",
+                onClickItem = {},
+                onClickDropIcon = {},
+                dropDownContents = persistentListOf(),
+                selectedIndex = -1,
                 modifier = Modifier.padding(vertical = 12.dp)
             )
         }

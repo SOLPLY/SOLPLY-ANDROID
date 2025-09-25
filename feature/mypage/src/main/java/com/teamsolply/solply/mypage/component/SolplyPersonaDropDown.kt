@@ -31,6 +31,7 @@ fun SolplyPersonaDropDown(
     onClickDropIcon: () -> Unit,
     dropDownContents: List<DropDownPersonaItem>,
     selectedIndex: Int,
+    modifier: Modifier = Modifier,
     isDropped: Boolean = false,
     isSelected: Boolean = false
 ) {
@@ -38,6 +39,7 @@ fun SolplyPersonaDropDown(
         defaultLabel = if (isSelected) dropDownContents.get(selectedIndex).label else placeholder,
         onClickDropIcon = onClickDropIcon,
         isDropped = isDropped,
+        modifier = modifier
     ) {
         dropDownContents.forEachIndexed { index, item ->
             if (index != selectedIndex) {

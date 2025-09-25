@@ -32,11 +32,12 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun SolplyBasicDropDown(
     defaultLabel: String,
     onClickDropIcon: () -> Unit,
+    modifier: Modifier = Modifier,
     isDropped: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(
                 RoundedCornerShape(20.dp)
             )
