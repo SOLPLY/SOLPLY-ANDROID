@@ -6,7 +6,7 @@ import com.teamsolply.solply.collection.dto.response.PlaceListResponseDto
 import com.teamsolply.solply.collection.dto.response.PlaceTownListResponseDto
 import com.teamsolply.solply.network.model.NullableBaseResponse
 
-interface MypageRemoteDataSource {
+interface CollectionRemoteDataSource {
     suspend fun getPlaceTownList(): PlaceTownListResponseDto
     suspend fun getCourseTownList(): CourseTownListResponseDto
     suspend fun getPlaceList(townId: Long): PlaceListResponseDto

@@ -1,7 +1,7 @@
 package com.teamsolply.solply.collection.collection.place
 
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.collection.repository.MypageRepository
+import com.teamsolply.solply.collection.repository.CollectionRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlaceCollectionViewModel @Inject constructor(
-    private val mypageRepository: MypageRepository
+    private val collectionRepository: CollectionRepository
 ) :
     BaseViewModel<PlaceCollectionState, PlaceCollectionIntent, PlaceCollectionSideEffect>(
         PlaceCollectionState()
@@ -100,7 +100,7 @@ class PlaceCollectionViewModel @Inject constructor(
 
     private fun getPlaceList(townId: Long) {
         viewModelScope.launch {
-            mypageRepository.getPlaceList(townId).onSuccess {
+            collectionRepository.getPlaceList(townId).onSuccess {
                 reduce {
                     copy(
                         places = it.toPersistentList()
@@ -112,7 +112,7 @@ class PlaceCollectionViewModel @Inject constructor(
 
     private fun deletePlaces(selectedPlaces: List<Long>) {
         viewModelScope.launch {
-            mypageRepository.deletePlaces(selectedPlaces).onSuccess {
+            collectionRepository.deletePlaces(selectedPlaces).onSuccess {
                 reduce {
                     copy(
                         selectedPlaces = emptySet(),

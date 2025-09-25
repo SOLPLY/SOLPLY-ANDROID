@@ -39,6 +39,7 @@ import com.teamsolply.solply.main.model.SolplySnackBarData
 import com.teamsolply.solply.main.splash.splashNavGraph
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.SnackBarType
+import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
 import com.teamsolply.solply.place.navigation.placeNavGraph
@@ -328,6 +329,10 @@ internal fun MainScreen(
                                 navOptions = navOptions
                             )
                         },
+                        navigateToBack = navigator::navigateToBack
+                    )
+                    mypageNavGraph(
+                        paddingValues = innerPadding,
                         navigateToBack = navigator::navigateToBack
                     )
                     favoriteTownNavGraph(

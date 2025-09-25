@@ -16,6 +16,7 @@ import com.teamsolply.solply.course.favoriteTown.favoriteTownNavigation.navigate
 import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.main.splash.Splash
 import com.teamsolply.solply.maps.navigation.navigateMaps
+import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
@@ -67,8 +68,11 @@ internal class MainNavigator(
                 navController.navigateCollection(navOptions)
             }
 
-            // TODO.임시 네비게이션 루트
             MainNavTab.MYPAGE -> {
+                val navOptions = navOptions {
+                    launchSingleTop = true
+                }
+                navController.navigateMypage(navOptions)
             }
         }
     }

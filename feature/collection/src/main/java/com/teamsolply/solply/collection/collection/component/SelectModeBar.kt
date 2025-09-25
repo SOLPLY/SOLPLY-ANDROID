@@ -37,7 +37,7 @@ fun SelectModeBar(
             style = SolplyTheme.typography.button14R,
             color = SolplyTheme.colors.black,
             modifier = Modifier
-                .padding(start = 12.dp)
+                .padding(start = 16.dp)
                 .then(
                     if (selectMode) {
                         Modifier.customClickable(
@@ -55,7 +55,7 @@ fun SelectModeBar(
             style = SolplyTheme.typography.button14R,
             color = SolplyTheme.colors.black,
             modifier = Modifier
-                .padding(end = 12.dp)
+                .padding(end = 16.dp)
                 .then(
                     Modifier.customClickable(rippleEnabled = false) {
                         if (selectMode) {

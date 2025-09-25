@@ -1,7 +1,7 @@
-package com.teamsolply.solply.collection.di
+package com.teamsolply.solply.mypage.di
 
-import com.teamsolply.solply.collection.repository.MypageRepository
-import com.teamsolply.solply.collection.repository.MypageRepositoryImpl
+import com.teamsolply.solply.mypage.repository.MypageRepository
+import com.teamsolply.solply.mypage.repository.MypageRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

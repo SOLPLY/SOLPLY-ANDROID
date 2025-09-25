@@ -10,7 +10,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MypageService {
+interface CollectionService {
     @GET("api/places/bookmarks/folders/preview")
     suspend fun getPlaceTownList(): BaseResponse<PlaceTownListResponseDto>
 
