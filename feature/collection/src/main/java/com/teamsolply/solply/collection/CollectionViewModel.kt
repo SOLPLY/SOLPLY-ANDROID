@@ -2,7 +2,7 @@ package com.teamsolply.solply.collection
 
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.collection.model.MypageTab
-import com.teamsolply.solply.collection.repository.MypageRepository
+import com.teamsolply.solply.collection.repository.CollectionRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -10,15 +10,15 @@ import okhttp3.internal.toImmutableList
 import javax.inject.Inject
 
 @HiltViewModel
-class MypageViewModel @Inject constructor(
-    private val mypageRepository: MypageRepository
+class CollectionViewModel @Inject constructor(
+    private val collectionRepository: CollectionRepository
 ) :
-    BaseViewModel<CollectionMenuState, CollectionMenuIntent, MypageSideEffect>(CollectionMenuState()) {
+    BaseViewModel<CollectionMenuState, CollectionMenuIntent, CollectionSideEffect>(CollectionMenuState()) {
     override fun handleIntent(intent: CollectionMenuIntent) {
         when (intent) {
             is CollectionMenuIntent.SelectPlaceTown -> {
                 postSideEffect(
-                    MypageSideEffect.NavigateToPlaceCollection(
+                    CollectionSideEffect.NavigateToPlaceCollection(
                         townId = intent.townId,
                         townName = intent.townName
                     )
@@ -27,7 +27,7 @@ class MypageViewModel @Inject constructor(
 
             is CollectionMenuIntent.SelectCourseTown -> {
                 postSideEffect(
-                    MypageSideEffect.NavigateToCourseCollection(
+                    CollectionSideEffect.NavigateToCourseCollection(
                         townId = intent.townId,
                         townName = intent.townName
                     )
@@ -35,7 +35,7 @@ class MypageViewModel @Inject constructor(
             }
 
             is CollectionMenuIntent.BackButtonClick -> {
-                postSideEffect(MypageSideEffect.NavigateToBack)
+                postSideEffect(CollectionSideEffect.NavigateToBack)
             }
 
             is CollectionMenuIntent.SelectPlaceTab -> {
@@ -53,11 +53,11 @@ class MypageViewModel @Inject constructor(
             is CollectionMenuIntent.EmptyButtonClick -> {
                 when (intent.mypageTab) {
                     MypageTab.PLACE -> {
-                        postSideEffect(MypageSideEffect.NavigateToPLace)
+                        postSideEffect(CollectionSideEffect.NavigateToPLace)
                     }
 
                     MypageTab.COURSE -> {
-                        postSideEffect(MypageSideEffect.NavigateToCourse)
+                        postSideEffect(CollectionSideEffect.NavigateToCourse)
                     }
                 }
             }
@@ -66,7 +66,7 @@ class MypageViewModel @Inject constructor(
 
     fun getPlaceTownList() {
         viewModelScope.launch {
-            mypageRepository.getPlaceTownList().onSuccess {
+            collectionRepository.getPlaceTownList().onSuccess {
                 reduce {
                     copy(
                         placeTowns = it.toImmutableList()
@@ -78,7 +78,7 @@ class MypageViewModel @Inject constructor(
 
     fun getCourseTownList() {
         viewModelScope.launch {
-            mypageRepository.getCourseTownList().onSuccess {
+            collectionRepository.getCourseTownList().onSuccess {
                 reduce {
                     copy(
                         courseTowns = it.toImmutableList()

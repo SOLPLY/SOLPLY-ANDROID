@@ -24,6 +24,10 @@ fun CollectionScreen(
     onBackButtonClick: () -> Unit,
     onDialogConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
+    selectMode: Boolean,
+    onSelectButtonClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit,
     dialogState: Boolean,
     content: LazyGridScope.() -> Unit,
     modifier: Modifier = Modifier
@@ -38,7 +42,8 @@ fun CollectionScreen(
         )
     }
     Column(
-        modifier.fillMaxSize()
+        modifier
+            .fillMaxSize()
             .background(color = SolplyTheme.colors.white),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -46,6 +51,12 @@ fun CollectionScreen(
         SolplyTopBar(
             barText = town,
             onBackButtonClick = { onBackButtonClick() }
+        )
+        SelectModeBar(
+            selectMode = selectMode,
+            onSelectButtonClick = onSelectButtonClick,
+            onDeleteButtonClick = onDeleteButtonClick,
+            onCancelButtonClick = onCancelButtonClick
         )
         LazyVerticalGrid(
             modifier = modifier

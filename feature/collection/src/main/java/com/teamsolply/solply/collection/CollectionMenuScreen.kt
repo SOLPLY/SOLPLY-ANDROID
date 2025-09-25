@@ -44,7 +44,7 @@ fun CollectionRoute(
     navigateToCourseCollection: (Long, String) -> Unit,
     navigateToPlace: () -> Unit,
     navigateToCourse: () -> Unit,
-    viewModel: MypageViewModel = hiltViewModel()
+    viewModel: CollectionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { 2 })
@@ -65,20 +65,20 @@ fun CollectionRoute(
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
-                is MypageSideEffect.NavigateToBack -> navigateToBack()
-                is MypageSideEffect.NavigateToPlaceCollection -> {
+                is CollectionSideEffect.NavigateToBack -> navigateToBack()
+                is CollectionSideEffect.NavigateToPlaceCollection -> {
                     navigateToPlaceCollection(sideEffect.townId, sideEffect.townName)
                 }
 
-                is MypageSideEffect.NavigateToCourseCollection -> {
+                is CollectionSideEffect.NavigateToCourseCollection -> {
                     navigateToCourseCollection(sideEffect.townId, sideEffect.townName)
                 }
 
-                is MypageSideEffect.NavigateToPLace -> {
+                is CollectionSideEffect.NavigateToPLace -> {
                     navigateToPlace()
                 }
 
-                is MypageSideEffect.NavigateToCourse -> {
+                is CollectionSideEffect.NavigateToCourse -> {
                     navigateToCourse()
                 }
             }

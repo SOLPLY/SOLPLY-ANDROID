@@ -31,10 +31,10 @@ sealed interface CollectionMenuIntent : UiIntent {
     data object BackButtonClick : CollectionMenuIntent
 }
 
-sealed interface MypageSideEffect : SideEffect {
-    data object NavigateToBack : MypageSideEffect
-    data object NavigateToPLace : MypageSideEffect
-    data object NavigateToCourse : MypageSideEffect
-    data class NavigateToPlaceCollection(val townId: Long, val townName: String) : MypageSideEffect
-    data class NavigateToCourseCollection(val townId: Long, val townName: String) : MypageSideEffect
+sealed interface CollectionSideEffect : SideEffect {
+    data object NavigateToBack : CollectionSideEffect
+    data object NavigateToPLace : CollectionSideEffect
+    data object NavigateToCourse : CollectionSideEffect
+    data class NavigateToPlaceCollection(val townId: Long, val townName: String) : CollectionSideEffect
+    data class NavigateToCourseCollection(val townId: Long, val townName: String) : CollectionSideEffect
 }

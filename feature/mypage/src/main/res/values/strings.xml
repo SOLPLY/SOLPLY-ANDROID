@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_edit">프로필 수정</string>
+    <string name="profile_img">기본 프로필</string>
+    <string name="profile_nickname">닉네임</string>
+</resources>

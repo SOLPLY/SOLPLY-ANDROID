@@ -1,7 +1,7 @@
-package com.teamsolply.solply.collection.di
+package com.teamsolply.solply.mypage.di
 
-import com.teamsolply.solply.collection.datasource.MypageRemoteDataSourceImpl
-import com.teamsolply.solply.collection.source.MypageRemoteDataSource
+import com.teamsolply.solply.mypage.datasource.MypageRemoteDataSource
+import com.teamsolply.solply.mypage.datasource.MypageRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
