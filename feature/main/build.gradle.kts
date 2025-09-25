@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.feature.oauth)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.place)
+    implementation(projects.feature.serach)
     implementation(projects.feature.course)
     implementation(projects.feature.maps)
     implementation(projects.feature.collection)

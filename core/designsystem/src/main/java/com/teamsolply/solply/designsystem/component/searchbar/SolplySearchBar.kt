@@ -29,7 +29,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
 
 @Composable
-fun SearchBox(
+fun SolplySearchbar(
     modifier: Modifier,
     query: String,
     onQueryChange: (String) -> Unit,
@@ -93,7 +93,7 @@ fun SearchBox(
 @Composable
 fun SearchBoxPreview() {
     SolplyTheme {
-        SearchBox(
+        SolplySearchbar(
             modifier = Modifier.fillMaxWidth(),
             query = "",
             onQueryChange = {},

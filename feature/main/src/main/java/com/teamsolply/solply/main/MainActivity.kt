@@ -21,7 +21,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             SolplyTheme {
                 MainScreen(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    isFreshLaunch = savedInstanceState == null
                 )
             }
         }

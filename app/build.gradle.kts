@@ -67,5 +67,6 @@ dependencies {
     implementation(projects.feature.course)
     implementation(projects.feature.collection)
     implementation(projects.feature.maps)
+    implementation(projects.feature.serach)
     implementation(libs.kakao.login)
 }

@@ -15,15 +15,18 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import androidx.navigation.NavDestination.Companion.hasRoute
 import com.teamsolply.solply.collection.collection.course.courseCollectionNavGraph
 import com.teamsolply.solply.collection.collection.place.placeCollectionNavGraph
 import com.teamsolply.solply.collection.navigation.collectionNavGraph
@@ -37,24 +40,51 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
 import com.teamsolply.solply.main.model.SolplySnackBarData
 import com.teamsolply.solply.main.splash.splashNavGraph
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.SnackBarType
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
 import com.teamsolply.solply.place.navigation.placeNavGraph
+import com.teamsolply.solply.search.navigation.Search
+import com.teamsolply.solply.search.navigation.searchNavGraph
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 
 @Composable
 internal fun MainScreen(
     modifier: Modifier = Modifier,
-    navigator: MainNavigator = rememberMainNavigator()
+    navigator: MainNavigator = rememberMainNavigator(),
+    isFreshLaunch: Boolean = false
 ) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val currentSnackbarJob = remember { mutableStateOf<Job?>(null) }
     val currentSnackbarState = remember { mutableStateOf(SolplySnackBarData()) }
+
+    val navController = navigator.navController
+
+    if (isFreshLaunch) {
+        LaunchedEffect(navController) {
+            val initialDestination = snapshotFlow { navController.currentBackStackEntry }
+                .filterNotNull()
+                .first()
+                .destination
+
+            if (!initialDestination.hasRoute(Search::class)) {
+                val initialNavOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+                navigator.navigateToSearch(initialNavOptions)
+            }
+        }
+    }
 
     suspend fun showTextSnackBar(message: String) {
         currentSnackbarJob.value?.join()
@@ -128,6 +158,29 @@ internal fun MainScreen(
                         .background(color = SolplyTheme.colors.gray100)
                         .fillMaxSize()
                 ) {
+                    searchNavGraph(
+                        paddingValues = innerPadding,
+                        onBack = navigator::navigateToBack,
+                        navigateToPlaceDetail = { townId, placeId ->
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(
+                                mapsType = MapsType.PLACE_DETAIL.name,
+                                townId = townId,
+                                placeId = placeId,
+                                courseId = null,
+                                navOptions = navOptions
+                            )
+                        },
+                        onNoPlaceClick = {
+                            val navOptions = navOptions {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                            navigator.navigateToPlace(navOptions = navOptions)
+                        }
+                    )
                     splashNavGraph(
                         navigateToOauth = {
                             val navOptions = navOptions {
