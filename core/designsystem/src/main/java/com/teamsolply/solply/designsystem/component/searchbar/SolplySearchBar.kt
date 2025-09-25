@@ -15,11 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,13 +24,12 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 
-
 @Composable
 fun SolplySearchbar(
     modifier: Modifier,
     query: String,
     onQueryChange: (String) -> Unit,
-    onImageClick: () -> Unit,
+    onImageClick: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
@@ -53,9 +49,8 @@ fun SolplySearchbar(
                 keyboardController?.show()
             },
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-
         BasicTextField(
             value = query,
             onValueChange = onQueryChange,
@@ -69,13 +64,13 @@ fun SolplySearchbar(
                     Text(
                         text = "찾는 공간을 입력하세요",
                         style = SolplyTheme.typography.body16R,
-                        color = SolplyTheme.colors.gray500,
+                        color = SolplyTheme.colors.gray500
                     )
                 }
                 innerTextField()
             },
             maxLines = 1,
-            singleLine = true,
+            singleLine = true
         )
         Image(
             painter = painterResource(id = R.drawable.ic_setting), // ic_search 134 브랜치 들어오고 바꿔야함
@@ -84,7 +79,7 @@ fun SolplySearchbar(
                 .clickable {
                     onImageClick()
                     keyboardController?.hide()
-                },
+                }
         )
     }
 }
@@ -97,7 +92,7 @@ fun SearchBoxPreview() {
             modifier = Modifier.fillMaxWidth(),
             query = "",
             onQueryChange = {},
-            onImageClick = {},
+            onImageClick = {}
         )
     }
 }

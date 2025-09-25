@@ -33,7 +33,7 @@ internal fun SearchItem(
     placeAddress: String,
     placeImageUrl: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier

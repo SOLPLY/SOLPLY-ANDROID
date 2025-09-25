@@ -24,9 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
-import androidx.navigation.NavDestination.Companion.hasRoute
 import com.teamsolply.solply.collection.collection.course.courseCollectionNavGraph
 import com.teamsolply.solply.collection.collection.place.placeCollectionNavGraph
 import com.teamsolply.solply.collection.navigation.collectionNavGraph
@@ -40,8 +40,8 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.main.component.MainBottomBar
 import com.teamsolply.solply.main.model.SolplySnackBarData
 import com.teamsolply.solply.main.splash.splashNavGraph
-import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.maps.navigation.mapsNavGraph
+import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.SnackBarType
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
@@ -50,9 +50,9 @@ import com.teamsolply.solply.search.navigation.Search
 import com.teamsolply.solply.search.navigation.searchNavGraph
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun MainScreen(

@@ -3,7 +3,6 @@ package com.teamsolply.solply.maps.component.bottomsheet
 import ClickableAnnotatedText
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
