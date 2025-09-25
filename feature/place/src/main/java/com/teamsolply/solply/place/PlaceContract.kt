@@ -33,8 +33,10 @@ data class PlaceState(
 
     val isOptionFilterBottomSheetVisible: Boolean = false,
     val selectedOptionAFilter: PersistentList<Int> = persistentListOf(),
-    val selectedOptionBFilter: PersistentList<Int> = persistentListOf()
+    val selectedOptionBFilter: PersistentList<Int> = persistentListOf(),
 
+    // search
+    val isSearchDialogVisible: Boolean = false
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {
@@ -55,6 +57,11 @@ sealed interface PlaceIntent : UiIntent {
     data class SubFilterClick(
         val optionFilterId: Int,
         val selectedTagType: String
+    ) : PlaceIntent
+
+    // search
+    data class ChangeSearchDialogVisibility(
+        val visible: Boolean
     ) : PlaceIntent
 }
 

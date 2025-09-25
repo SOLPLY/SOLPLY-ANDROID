@@ -39,6 +39,10 @@ class CourseViewModel @Inject constructor(
                     )
                 }
             }
+
+            is CourseIntent.ChangeSearchDialogVisibility -> reduce {
+                copy(isSearchDialogVisible = intent.visible)
+            }
         }
     }
 

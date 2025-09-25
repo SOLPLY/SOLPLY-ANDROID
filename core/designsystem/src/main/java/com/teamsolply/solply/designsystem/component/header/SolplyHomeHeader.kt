@@ -20,10 +20,11 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun CourseHeader(
+fun SolplyHomeHeader(
     townName: String,
     modifier: Modifier = Modifier,
-    onClickTownName: () -> Unit
+    onClickTownName: () -> Unit,
+    changeSearchDialogVisibility: (Boolean) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -32,7 +33,8 @@ fun CourseHeader(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -74,6 +76,7 @@ fun CourseHeader(
                 modifier = Modifier
                     .padding(1.dp)
                     .size(24.dp)
+                    .customClickable(rippleEnabled = false) { changeSearchDialogVisibility(true) }
             )
         }
     }

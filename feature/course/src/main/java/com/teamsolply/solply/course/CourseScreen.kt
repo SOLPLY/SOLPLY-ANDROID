@@ -22,9 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
-import com.teamsolply.solply.designsystem.component.header.CourseHeader
+import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.search.component.SearchDialog
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 
@@ -61,8 +62,21 @@ fun CourseRoute(
             viewModel.sendIntent(CourseIntent.CourseCardClick(courseId = courseId))
         },
         navigateToTownSelect = navigateToTownSelect,
+        changeSearchDialogVisibility = { visible ->
+            viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = visible))
+        },
         modifier = Modifier.padding(paddingValues)
     )
+
+    if (state.isSearchDialogVisible) {
+        SearchDialog(
+            onDismissRequest = {
+                viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = false))
+            },
+            navigateToPlaceDetail = {},
+            navigateToBack = {}
+        )
+    }
 }
 
 @Composable
@@ -70,6 +84,7 @@ fun CourseScreen(
     state: CourseState,
     navigateToMaps: (Long) -> Unit,
     navigateToTownSelect: () -> Unit,
+    changeSearchDialogVisibility: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val courseList = state.courseList
@@ -78,11 +93,12 @@ fun CourseScreen(
     val gridState = rememberLazyGridState()
 
     Column(modifier = modifier) {
-        CourseHeader(
+        SolplyHomeHeader(
             townName = user.selectedTown.townName,
             modifier = Modifier
                 .padding(bottom = 8.dp),
-            onClickTownName = { navigateToTownSelect() }
+            onClickTownName = { navigateToTownSelect() },
+            changeSearchDialogVisibility = changeSearchDialogVisibility
         )
 
         LazyVerticalGrid(

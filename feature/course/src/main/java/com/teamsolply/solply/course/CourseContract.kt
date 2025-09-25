@@ -23,7 +23,9 @@ data class CourseState(
     ),
 
     val courseList: PersistentList<CourseEntity> = persistentListOf(),
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    // search
+    val isSearchDialogVisible: Boolean = false
 ) : UiState {
     val recommendText: String
         get() = when (user.persona) {
@@ -47,6 +49,11 @@ sealed interface CourseIntent : UiIntent {
 
     data class LoadFailed(
         val message: String
+    ) : CourseIntent
+
+    // search
+    data class ChangeSearchDialogVisibility(
+        val visible: Boolean
     ) : CourseIntent
 }
 

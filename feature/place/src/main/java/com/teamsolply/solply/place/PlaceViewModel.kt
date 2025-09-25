@@ -133,6 +133,10 @@ class PlaceViewModel @Inject constructor(
                     isOptionFilterBottomSheetVisible = false
                 )
             }
+
+            is PlaceIntent.ChangeSearchDialogVisibility -> reduce {
+                copy(isSearchDialogVisible = intent.visible)
+            }
         }
     }
 

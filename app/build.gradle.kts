@@ -73,5 +73,6 @@ dependencies {
     implementation(projects.feature.collection)
     implementation(projects.feature.maps)
     implementation(projects.feature.mypage)
+    implementation(projects.feature.search)
     implementation(libs.kakao.login)
 }

@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.domain.course)
+    implementation(projects.feature.search)
 }
