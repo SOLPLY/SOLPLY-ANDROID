@@ -55,11 +55,11 @@ fun SolplyPlaceCard(
         else -> SolplyTheme.colors.gray400
     }
     val iconBackGroundColor = when (placeType) {
-        PlaceType.CAFE -> SolplyTheme.colors.red200
-        PlaceType.FOOD -> SolplyTheme.colors.yellow100
-        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green200
-        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple100
-        else -> SolplyTheme.colors.gray200
+        PlaceType.CAFE -> SolplyTheme.colors.red500
+        PlaceType.FOOD -> SolplyTheme.colors.yellow400
+        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green500
+        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple200
+        else -> SolplyTheme.colors.purple500
     }
 
     Column(

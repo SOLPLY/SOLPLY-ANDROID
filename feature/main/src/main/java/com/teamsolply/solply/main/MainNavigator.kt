@@ -19,6 +19,8 @@ import com.teamsolply.solply.maps.navigation.navigateMaps
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
+import com.teamsolply.solply.search.navigation.Search
+import com.teamsolply.solply.search.navigation.navigateSearch
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -83,6 +85,10 @@ internal class MainNavigator(
 
     fun navigateToPlace(navOptions: NavOptions) {
         navController.navigatePlace(navOptions)
+    }
+
+    fun navigateToSearch(navOptions: NavOptions) {
+        navController.navigateSearch(navOptions)
     }
 
     fun navigateToCourse(navOptions: NavOptions) {
