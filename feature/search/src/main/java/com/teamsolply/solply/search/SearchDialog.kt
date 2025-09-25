@@ -41,7 +41,6 @@ import com.teamsolply.solply.ui.extension.clearFocusOnTapOutside
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.toImmutableList
 
-
 @Composable
 fun SearchDialog(
     onDismissRequest: () -> Unit,
@@ -93,7 +92,8 @@ fun SearchDialog(
                             keyboard?.hide()
                             waitForUpOrCancellation()
                         }
-                    }) {
+                    }
+            ) {
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, top = 56.dp, bottom = 32.dp)
@@ -122,7 +122,7 @@ fun SearchDialog(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_search),
-                            contentDescription = "search",
+                            contentDescription = "search"
                         )
                     }
                 }
@@ -148,8 +148,8 @@ fun SearchDialog(
                                     placeAddress = item.address,
                                     placeImageUrl = item.thumbnailImageUrl,
                                     onClick = {
-                                        //TODO. 타운 아이디도 같이
-                                        //navigateToPlaceDetail(item.placeId, item.townId)
+                                        // TODO. 타운 아이디도 같이
+                                        // navigateToPlaceDetail(item.placeId, item.townId)
                                     }
                                 )
                             }
@@ -175,12 +175,12 @@ fun SearchDialog(
                                 Text(
                                     text = "찾는 장소가 없어요",
                                     style = SolplyTheme.typography.button14M,
-                                    color = SolplyTheme.colors.gray700,
+                                    color = SolplyTheme.colors.gray700
                                 )
                                 Icon(
                                     painter = painterResource(R.drawable.ic_next_arrow),
                                     contentDescription = "search",
-                                    tint = SolplyTheme.colors.gray700,
+                                    tint = SolplyTheme.colors.gray700
                                 )
                             }
                         }
@@ -188,7 +188,7 @@ fun SearchDialog(
                 } else if (uiState.hasQuery) {
                     Text(
                         text = "검색 결과가 없어요.\n" +
-                                "직접 장소 등록을 솔플리에 요청해보세요.",
+                            "직접 장소 등록을 솔플리에 요청해보세요.",
                         style = SolplyTheme.typography.body16R,
                         color = SolplyTheme.colors.black,
                         modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 17.dp)
@@ -204,12 +204,12 @@ fun SearchDialog(
                         Text(
                             text = "장소 등록하러 가기",
                             style = SolplyTheme.typography.button14M,
-                            color = SolplyTheme.colors.purple600,
+                            color = SolplyTheme.colors.purple600
                         )
                         Icon(
                             painter = painterResource(R.drawable.ic_next_arrow),
                             contentDescription = "search",
-                            tint = SolplyTheme.colors.purple600,
+                            tint = SolplyTheme.colors.purple600
                         )
                     }
                 }

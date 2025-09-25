@@ -9,7 +9,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class SearchState(
     val searchText: String = "",
-    val searchResult: PersistentList<SearchResultEntity> = persistentListOf(),
+    val searchResult: PersistentList<SearchResultEntity> = persistentListOf()
 ) : UiState {
     val resultCount: Int get() = searchResult.size
     val hasQuery: Boolean get() = searchText.isNotBlank()

@@ -133,7 +133,7 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value, isNicknameDuplicate) {
         if (value.isNotEmpty()) {

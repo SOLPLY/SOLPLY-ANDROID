@@ -24,7 +24,7 @@ fun SolplyHomeHeader(
     townName: String,
     modifier: Modifier = Modifier,
     onClickTownName: () -> Unit,
-    changeSearchDialogVisibility: (Boolean) -> Unit,
+    changeSearchDialogVisibility: (Boolean) -> Unit
 ) {
     Column(
         modifier = modifier

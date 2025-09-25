@@ -23,5 +23,4 @@ class SearchRepositoryImpl @Inject constructor(
                 )
             }
         }
-
 }

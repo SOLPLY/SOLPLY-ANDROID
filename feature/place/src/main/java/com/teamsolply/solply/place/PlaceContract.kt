@@ -36,7 +36,7 @@ data class PlaceState(
     val selectedOptionBFilter: PersistentList<Int> = persistentListOf(),
 
     // search
-    val isSearchDialogVisible: Boolean = false,
+    val isSearchDialogVisible: Boolean = false
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {

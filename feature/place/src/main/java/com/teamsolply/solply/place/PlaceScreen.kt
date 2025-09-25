@@ -109,7 +109,7 @@ fun PlaceRoute(
         changeSearchDialogVisibility = { visible ->
             viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = visible))
         },
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier.padding(paddingValues)
     )
 
     if (state.isMainFilterBottomSheetVisible) {
@@ -176,10 +176,10 @@ fun PlaceRoute(
                 viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = false))
             },
             navigateToPlaceDetail = { placeId, townId ->
-                //viewModel.sendIntent(PlaceIntent.PlaceClicked(placeId = placeId, townId = townId))
+                viewModel.sendIntent(PlaceIntent.PlaceClicked(placeId = placeId, townId = townId))
             },
             navigateToRegisterPlace = {
-                //TODO. 장소 등록하기
+                // TODO. 장소 등록하기
             }
         )
     }
@@ -194,7 +194,7 @@ fun PlaceScreen(
     onClickSubFilterChip: () -> Unit,
     navigateToTownSelect: () -> Unit,
     changeSearchDialogVisibility: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val centerItemSize = 240.dp

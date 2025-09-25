@@ -82,10 +82,10 @@ fun CourseRoute(
                 viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = false))
             },
             navigateToPlaceDetail = { placeId, townId ->
-                //viewModel.sendIntent(CourseIntent.PlaceClicked(placeId = placeId, townId = townId))
+                viewModel.sendIntent(CourseIntent.PlaceClicked(placeId = placeId, townId = townId))
             },
             navigateToRegisterPlace = {
-                //TODO. 장소 등록하기
+                // TODO. 장소 등록하기
             }
         )
     }
