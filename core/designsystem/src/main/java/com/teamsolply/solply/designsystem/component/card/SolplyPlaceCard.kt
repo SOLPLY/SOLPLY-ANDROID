@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,10 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import com.teamsolply.solply.designsystem.component.button.SolplySavedMarker
+import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.chip.CheckedBigCircle
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -54,13 +56,6 @@ fun SolplyPlaceCard(
         PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple400
         else -> SolplyTheme.colors.gray400
     }
-    val iconBackGroundColor = when (placeType) {
-        PlaceType.CAFE -> SolplyTheme.colors.red200
-        PlaceType.FOOD -> SolplyTheme.colors.yellow100
-        PlaceType.WALKING, PlaceType.UNIQUE_SPACE -> SolplyTheme.colors.green200
-        PlaceType.SHOPPING, PlaceType.BOOKSTORE -> SolplyTheme.colors.purple100
-        else -> SolplyTheme.colors.gray200
-    }
 
     Column(
         modifier = modifier
@@ -79,7 +74,7 @@ fun SolplyPlaceCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(16.dp))
         ) {
             if (!isImageReady) {
                 Box(
@@ -93,7 +88,7 @@ fun SolplyPlaceCard(
                 imageUrl = imgRes,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(20.dp)),
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop,
                 onLoadingStateChange = { state ->
                     if (state is AsyncImagePainter.State.Success) {
@@ -103,13 +98,13 @@ fun SolplyPlaceCard(
             )
 
             if (saved && isImageReady) {
-                SolplySavedMarker(
+                Icon(
+                    painter = painterResource(R.drawable.ic_saved_no_space),
+                    contentDescription = "course",
                     modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(12.dp),
-                    iconColor = iconColor,
-                    iconBackGroundColor = iconBackGroundColor,
-                    isButton = false
+                        .align(Alignment.TopEnd)
+                        .padding(end = 16.dp),
+                    tint = iconColor
                 )
             }
             if (selected && isImageReady) {

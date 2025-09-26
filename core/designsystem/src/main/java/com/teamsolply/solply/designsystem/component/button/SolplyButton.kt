@@ -2,17 +2,12 @@ package com.teamsolply.solply.designsystem.component.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -126,85 +121,5 @@ fun AddLocalAreaButton(
                 color = SolplyTheme.colors.gray900
             )
         }
-    }
-}
-
-@Composable
-fun OnBoardingSkipButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    BaseButton(
-        onClick = onClick,
-        modifier = modifier,
-        backgroundColor = Color.Transparent
-    ) {
-        Text(
-            text = "건너뛰기",
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 22.dp),
-            style = SolplyTheme.typography.button16M,
-            color = SolplyTheme.colors.gray900
-        )
-    }
-}
-
-@Composable
-fun AddPlaceButton(
-    onClick: () -> Unit,
-    selected: Boolean,
-    modifier: Modifier = Modifier
-) {
-    val backgroundColor = if (selected) {
-        SolplyTheme.colors.purple200
-    } else {
-        SolplyTheme.colors.white
-    }
-    val textColor = if (selected) SolplyTheme.colors.purple700 else SolplyTheme.colors.purple600
-
-    BaseButton(
-        onClick = onClick,
-        modifier = modifier
-            .width(116.dp)
-            .height(48.dp),
-        backgroundColor = backgroundColor,
-        shape = RoundedCornerShape(26.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-        ) {
-            Text(
-                text = "내 코스에 추가",
-                style = SolplyTheme.typography.body14M,
-                color = textColor,
-                maxLines = 1
-            )
-        }
-    }
-}
-
-@Composable
-fun AddCourseButton(
-    onClick: () -> Unit,
-    selected: Boolean,
-    modifier: Modifier = Modifier
-) {
-    val backgroundColor = if (selected) SolplyTheme.colors.red100 else SolplyTheme.colors.white
-    val iconColor = if (selected) SolplyTheme.colors.red500 else SolplyTheme.colors.purple600
-
-    BaseButton(
-        onClick = onClick,
-        modifier = modifier.size(48.dp),
-        backgroundColor = backgroundColor
-    ) {
-        Icon(
-            painter = painterResource(
-                if (selected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty
-            ),
-            contentDescription = "add_course",
-            tint = iconColor
-        )
     }
 }

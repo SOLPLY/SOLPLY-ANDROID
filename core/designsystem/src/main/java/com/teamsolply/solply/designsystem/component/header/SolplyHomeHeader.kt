@@ -1,4 +1,4 @@
-package com.teamsolply.solply.place.component.header
+package com.teamsolply.solply.designsystem.component.header
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,10 +20,11 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun PlaceHeader(
+fun SolplyHomeHeader(
     townName: String,
     modifier: Modifier = Modifier,
-    onClickTownName: () -> Unit
+    onClickTownName: () -> Unit,
+    changeSearchDialogVisibility: (Boolean) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -34,7 +35,7 @@ fun PlaceHeader(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -62,7 +63,7 @@ fun PlaceHeader(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
-                    painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_arrow_right_icon),
+                    painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_next_arrow),
                     contentDescription = "arrow-right-icon",
                     modifier = Modifier
                         .padding(vertical = 7.dp)
@@ -70,11 +71,12 @@ fun PlaceHeader(
                 )
             }
             Icon(
-                painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_setting_icon),
+                painter = painterResource(id = com.teamsolply.solply.designsystem.R.drawable.ic_search),
                 contentDescription = "setting-icon",
                 modifier = Modifier
                     .padding(1.dp)
                     .size(24.dp)
+                    .customClickable(rippleEnabled = false) { changeSearchDialogVisibility(true) }
             )
         }
     }

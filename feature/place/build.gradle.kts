@@ -8,5 +8,6 @@ android {
 
 dependencies {
     implementation(projects.domain.place)
+    implementation(projects.feature.search)
     implementation(libs.accompanist.permissions)
 }

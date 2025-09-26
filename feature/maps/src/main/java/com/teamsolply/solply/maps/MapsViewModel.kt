@@ -1,21 +1,35 @@
 package com.teamsolply.solply.maps
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.maps.component.dialog.getFileName
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType
+import com.teamsolply.solply.maps.model.File
+import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
+import com.teamsolply.solply.maps.model.ReportRequestEntity
+import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.maps.repository.MapsRepository
+import com.teamsolply.solply.maps.util.uploadToPresignedUrl
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class MapsViewModel @Inject constructor(
-    private val mapsRepository: MapsRepository
+    private val mapsRepository: MapsRepository,
+    @ApplicationContext private val context: Context
 ) :
     BaseViewModel<MapsState, MapsIntent, MapsSideEffect>(MapsState()) {
 
@@ -266,6 +280,49 @@ internal class MapsViewModel @Inject constructor(
                 copy(newCourseIntroduction = intent.courseIntroduction)
             }
 
+            // Report Place
+            is MapsIntent.ChangeReportPlaceDialogVisibility -> reduce {
+                if (intent.visible) {
+                    copy(reportPlaceDialogVisibility = true)
+                } else {
+                    copy(
+                        reportPlaceDialogVisibility = false,
+                        selectedReportType = ReportType.EMPTY,
+                        reportContent = "",
+                        selectedReportUris = persistentListOf(),
+                        reportLottieVisibility = false
+                    )
+                }
+            }
+
+            is MapsIntent.ChangeSelectedReportType -> reduce {
+                copy(
+                    selectedReportType = if (selectedReportType == intent.reportType) {
+                        ReportType.EMPTY
+                    } else {
+                        intent.reportType
+                    }
+                )
+            }
+
+            is MapsIntent.InputReportContent -> reduce {
+                copy(reportContent = intent.content)
+            }
+
+            is MapsIntent.SelectedReportUris -> reduce {
+                val current = selectedReportUris
+                val remain = (3 - current.size).coerceAtLeast(0)
+                val income = intent.uris.take(remain)
+                copy(selectedReportUris = (current + income))
+            }
+
+            is MapsIntent.ReportWrongPlace -> {
+                reduce {
+                    copy(reportLottieVisibility = true)
+                }
+                presignedUrl(selectedFilesName = intent.selectedFilesName)
+            }
+
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)
@@ -440,6 +497,78 @@ internal class MapsViewModel @Inject constructor(
             copy(
                 courseDetailInfo = courseDetailInfo.copy(places = newList.toPersistentList())
             )
+        }
+    }
+
+    // 제보하기
+    private fun presignedUrl(
+        selectedFilesName: List<String>
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (uiState.value.selectedReportUris.isEmpty()) {
+                mapsRepository.postReportWrongPlace(
+                    placeId = uiState.value.placeDetailInfo.placeId,
+                    reportRequestEntity = ReportRequestEntity(
+                        content = uiState.value.reportContent,
+                        reportType = uiState.value.selectedReportType.name,
+                        imageKeys = emptyList()
+                    )
+                ).onSuccess {
+                    delay(2500)
+                    sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
+                }.onFailure {
+                    // TODO. 신고 실패 처리
+                    delay(5000)
+                    sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
+                }
+                return@launch
+            }
+
+            mapsRepository.postPresignedUrl(
+                presignedUrlsRequestEntity = PresignedUrlsRequestEntity(
+                    files = selectedFilesName.map { File(it) }
+                )
+            ).onSuccess { response ->
+                val infos = response.presignedUrlInfos
+                val resolver = context.contentResolver
+                val uris = uiState.value.selectedReportUris
+                val byName = uris.associateBy { resolver.getFileName(it) }
+
+                val result = runCatching {
+                    coroutineScope {
+                        infos.map { info ->
+                            val uri = byName[info.originalFileName]
+                                ?: error("URI for ${info.originalFileName} not found")
+                            async {
+                                uploadToPresignedUrl(
+                                    context = context,
+                                    uri = uri,
+                                    presignedUrl = info.presignedUrl
+                                )
+                                info.tempFileKey
+                            }
+                        }.awaitAll()
+                    }
+                }
+                result.onSuccess { tempKeys ->
+                    mapsRepository.postReportWrongPlace(
+                        placeId = uiState.value.placeDetailInfo.placeId,
+                        reportRequestEntity = ReportRequestEntity(
+                            content = uiState.value.reportContent,
+                            reportType = uiState.value.selectedReportType.name,
+                            imageKeys = tempKeys
+                        )
+                    ).onSuccess {
+                        delay(2500)
+                        sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
+                    }.onFailure {
+                        delay(5000)
+                        sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
+                    }
+                }
+            }.onFailure {
+                // TODO. presigned url 발급 실패
+            }
         }
     }
 }

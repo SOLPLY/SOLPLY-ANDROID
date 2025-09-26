@@ -39,6 +39,19 @@ class CourseViewModel @Inject constructor(
                     )
                 }
             }
+
+            is CourseIntent.ChangeSearchDialogVisibility -> reduce {
+                copy(isSearchDialogVisible = intent.visible)
+            }
+
+            is CourseIntent.PlaceClicked -> {
+                postSideEffect(
+                    CourseSideEffect.NavigateToPlaceDetail(
+                        placeId = intent.placeId,
+                        townId = intent.townId
+                    )
+                )
+            }
         }
     }
 

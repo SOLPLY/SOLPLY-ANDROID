@@ -22,8 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -47,7 +45,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
-import com.teamsolply.solply.designsystem.component.textfield.SolplyRenameCourseTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.component.CourseItem
 import com.teamsolply.solply.maps.component.dialog.CourseSaveDialog
@@ -84,11 +81,6 @@ internal fun EditCourseBottomSheet(
     placeDetailClick: (Long) -> Unit,
     removeIconVisible: Boolean,
     onStartRenameCourseClick: () -> Unit,
-    renameCourseBottomSheetVisibility: Boolean,
-    newCourseName: String,
-    newCourseIntroduction: String,
-    renameCourseName: (String) -> Unit,
-    renameCourseIntroduction: (String) -> Unit,
     courseSaveDialogVisibility: Boolean,
     courseSaveDialogClick: (CourseSaveType) -> Unit,
     changeCourseSaveDialogInVisibility: () -> Unit
@@ -112,13 +104,6 @@ internal fun EditCourseBottomSheet(
     )
 
     var removeIconBounds by remember { mutableStateOf<Rect?>(null) }
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
-
-    LaunchedEffect(Unit) {
-        sheetState.expand()
-    }
 
     if (startEditCourse) {
         BackHandler {
@@ -317,78 +302,6 @@ internal fun EditCourseBottomSheet(
                 textPadding = PaddingValues(vertical = 21.dp),
                 enabledBackgroundColor = SolplyTheme.colors.gray900
             )
-        }
-
-        if (renameCourseBottomSheetVisibility) {
-            RenameCourseBottomSheet(
-                sheetState = sheetState,
-                onDismissRequest = { onStartRenameCourseClick() }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .height(670.dp)
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 17.dp, bottom = 37.dp)
-                    ) {
-                        Text(
-                            text = "코스 정보 수정",
-                            color = SolplyTheme.colors.black,
-                            style = SolplyTheme.typography.head16M,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.ic_close),
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .minimumInteractiveComponentSize()
-                                .customClickable(rippleEnabled = false) {
-                                    onStartRenameCourseClick()
-                                },
-                            contentDescription = "close_rename_bottomsheet"
-                        )
-                    }
-                    Text(
-                        text = "코스 이름",
-                        modifier = Modifier
-                            .padding(bottom = 12.dp),
-                        color = SolplyTheme.colors.gray900,
-                        style = SolplyTheme.typography.title14M
-                    )
-                    SolplyRenameCourseTextField(
-                        value = newCourseName,
-                        onValueChange = { renameCourseName(it) },
-                        modifier = Modifier.padding(bottom = 32.dp)
-                    )
-
-                    Text(
-                        text = "코스 한 줄 소개",
-                        modifier = Modifier
-                            .padding(bottom = 12.dp),
-                        color = SolplyTheme.colors.gray900,
-                        style = SolplyTheme.typography.title14M
-                    )
-                    SolplyRenameCourseTextField(
-                        value = newCourseIntroduction,
-                        onValueChange = { renameCourseIntroduction(it) }
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    SolplyBasicButton(
-                        text = "완료",
-                        onClick = {
-                            onStartRenameCourseClick()
-                            onStartEditCourseClick()
-                        },
-                        modifier = Modifier
-                            .padding(start = 20.dp, end = 20.dp, bottom = 36.dp),
-                        textPadding = PaddingValues(vertical = 21.dp),
-                        enabledBackgroundColor = SolplyTheme.colors.gray900
-                    )
-                }
-            }
         }
 
         if (courseSaveDialogVisibility) {

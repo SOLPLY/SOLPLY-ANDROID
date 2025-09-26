@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
+import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.model.PlaceSubType
@@ -51,11 +52,11 @@ import com.teamsolply.solply.place.component.bottomsheet.PlaceOptionFilterSheet
 import com.teamsolply.solply.place.component.bottomsheet.PlaceTypeFilterSheet
 import com.teamsolply.solply.place.component.button.PlaceChipButton
 import com.teamsolply.solply.place.component.card.PlaceRecommendCard
-import com.teamsolply.solply.place.component.header.PlaceHeader
 import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.place.util.LocationPermissionRequest
+import com.teamsolply.solply.search.SearchDialog
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import toPlaceType
@@ -79,7 +80,7 @@ fun PlaceRoute(
                 is PlaceSideEffect.NavigateToMap -> {
                     navigateToMaps(
                         MapsType.PLACE_DETAIL.name,
-                        state.userInfo.selectedTown.townId,
+                        sideEffect.townId,
                         sideEffect.placeId
                     )
                 }
@@ -92,9 +93,10 @@ fun PlaceRoute(
 
     LocationPermissionRequest()
     PlaceScreen(
-        modifier = Modifier.padding(paddingValues),
         uiState = state,
-        onPlaceClick = { viewModel.sendIntent(PlaceIntent.PlaceClicked(it)) },
+        onPlaceClick = { placeId, townId ->
+            viewModel.sendIntent(PlaceIntent.PlaceClicked(placeId = placeId, townId = townId))
+        },
         snackbarHostState = snackbarHostState,
 
         onClickMainFilterChip = {
@@ -103,7 +105,11 @@ fun PlaceRoute(
         onClickSubFilterChip = {
             viewModel.sendIntent(PlaceIntent.SubFilterChipClick)
         },
-        navigateToTownSelect = navigateToTownSelect
+        navigateToTownSelect = navigateToTownSelect,
+        changeSearchDialogVisibility = { visible ->
+            viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = visible))
+        },
+        modifier = Modifier.padding(paddingValues)
     )
 
     if (state.isMainFilterBottomSheetVisible) {
@@ -163,20 +169,32 @@ fun PlaceRoute(
             )
         }
     }
+
+    if (state.isSearchDialogVisible) {
+        SearchDialog(
+            onDismissRequest = {
+                viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = false))
+            },
+            navigateToPlaceDetail = { placeId, townId ->
+                viewModel.sendIntent(PlaceIntent.PlaceClicked(placeId = placeId, townId = townId))
+            },
+            navigateToRegisterPlace = {
+                // TODO. 장소 등록하기
+            }
+        )
+    }
 }
 
 @Composable
 fun PlaceScreen(
-    modifier: Modifier = Modifier,
     uiState: PlaceState,
-    onPlaceClick: (Long) -> Unit,
+    onPlaceClick: (Long, Long) -> Unit,
     snackbarHostState: SnackbarHostState,
-
     onClickMainFilterChip: () -> Unit,
     onClickSubFilterChip: () -> Unit,
-
-    navigateToTownSelect: () -> Unit
-
+    navigateToTownSelect: () -> Unit,
+    changeSearchDialogVisibility: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val centerItemSize = 240.dp
@@ -200,12 +218,13 @@ fun PlaceScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        PlaceHeader(
+        SolplyHomeHeader(
             townName = uiState.userInfo.selectedTown.townName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            onClickTownName = { navigateToTownSelect() }
+            onClickTownName = { navigateToTownSelect() },
+            changeSearchDialogVisibility = changeSearchDialogVisibility
         )
 
         LazyVerticalGrid(
@@ -231,7 +250,9 @@ fun PlaceScreen(
                         page1ItemSize = page1ItemSize,
                         page2ItemSize = page2ItemSize,
                         page3ItemSize = page3ItemSize,
-                        onPlaceClick = onPlaceClick
+                        onPlaceClick = { placeId ->
+                            onPlaceClick(placeId, uiState.userInfo.selectedTown.townId)
+                        }
                     )
                 } else {
                     Box(
@@ -323,7 +344,12 @@ fun PlaceScreen(
                                             ) {
                                                 PlaceGridItem(
                                                     place = place,
-                                                    onClick = { onPlaceClick(place.placeId) }
+                                                    onClick = {
+                                                        onPlaceClick(
+                                                            place.placeId,
+                                                            uiState.userInfo.selectedTown.townId
+                                                        )
+                                                    }
                                                 )
                                             }
                                         }
