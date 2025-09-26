@@ -34,17 +34,20 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun MypageRoute(
     paddingValues: PaddingValues,
     navigateToBack: () -> Unit,
+    navigateToProfile: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     MypageScreen(
+        onBackButtonClick = navigateToBack,
+        onProfileEditClick = navigateToProfile,
         modifier = Modifier.padding(paddingValues),
-        onBackButtonClick = navigateToBack
     )
 }
 
 @Composable
 fun MypageScreen(
     onBackButtonClick: () -> Unit,
+    onProfileEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -85,7 +88,12 @@ fun MypageScreen(
             style = SolplyTheme.typography.display20Sb
         )
         Row(
-            modifier = Modifier.padding(top = 12.dp)
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .customClickable(
+                    rippleEnabled = false,
+                    onClick = onProfileEditClick
+                )
         ) {
             Text(
                 text = "프로필 수정",
@@ -172,7 +180,8 @@ fun MypageScreen(
 private fun MypageScreenPreview() {
     SolplyTheme {
         MypageScreen(
-            onBackButtonClick = {}
+            onBackButtonClick = {},
+            onProfileEditClick = {}
         )
     }
 }

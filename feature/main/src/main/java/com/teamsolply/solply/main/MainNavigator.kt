@@ -17,6 +17,7 @@ import com.teamsolply.solply.course.navigation.navigateCourse
 import com.teamsolply.solply.main.splash.Splash
 import com.teamsolply.solply.maps.navigation.navigateMaps
 import com.teamsolply.solply.mypage.navigation.navigateMypage
+import com.teamsolply.solply.mypage.profile.navigation.navigateProfile
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
@@ -134,6 +135,22 @@ internal class MainNavigator(
             townId = townId,
             townName = townName,
             navOptions
+        )
+    }
+
+    fun navigateToMypage(
+        navOptions: NavOptions
+    ) {
+        navController.navigateMypage(
+            navOptions = navOptions
+        )
+    }
+
+    fun navigateToProfile(
+        navOptions: NavOptions
+    ) {
+        navController.navigateProfile(
+            navOptions = navOptions
         )
     }
 
