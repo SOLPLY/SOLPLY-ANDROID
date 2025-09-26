@@ -1,4 +1,4 @@
-package com.teamsolply.solply.mypage.navigation
+package com.teamsolply.solply.mypage.profile.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -8,30 +8,31 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.mypage.MypageRoute
 import com.teamsolply.solply.mypage.MypageViewModel
+import com.teamsolply.solply.mypage.profile.ProfileRoute
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateMypage(
+fun NavController.navigateProfile(
     navOptions: NavOptions
 ) {
-    navigate(Mypage, navOptions)
+    navigate(Profile, navOptions)
 }
 
-fun NavGraphBuilder.mypageNavGraph(
-    navigateToBack: () -> Unit,
-    navigateToProfile: () -> Unit,
+fun NavGraphBuilder.profileNavGraph(
     paddingValues: PaddingValues,
+    navigateToBack: () -> Unit,
+    navigateToMypage: () -> Unit,
 ) {
-    composable<Mypage> { backStackEntry ->
+    composable<Profile> { backStackEntry ->
         val viewModel: MypageViewModel = hiltViewModel(backStackEntry)
-        MypageRoute(
+        ProfileRoute(
             paddingValues = paddingValues,
             navigateToBack = navigateToBack,
-            navigateToProfile = navigateToProfile,
+            navigateToMypage = navigateToMypage,
             viewModel = viewModel
         )
     }
 }
 
 @Serializable
-data object Mypage : Route
+data object Profile : Route

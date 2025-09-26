@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,17 +23,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.textfield.SolplyNicknameTextField
 import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.mypage.MypageViewModel
 import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.mypage.component.SolplyPersonaDropDown
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
+fun ProfileRoute(
+    paddingValues: PaddingValues,
+    navigateToBack: () -> Unit,
+    navigateToMypage: () -> Unit,
+    viewModel: MypageViewModel = hiltViewModel()
+) {
+    ProfileScreen(
+        onBackButtonClick = navigateToBack,
+        onCompleteButtonClick = navigateToMypage,
+        modifier = Modifier.padding(paddingValues),
+    )
+}
+
+@Composable
 fun ProfileScreen(
     onBackButtonClick: () -> Unit,
+    onCompleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -123,6 +141,9 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreenPreview() {
     SolplyTheme {
-        ProfileScreen(onBackButtonClick = {})
+        ProfileScreen(
+            onBackButtonClick = {},
+            onCompleteButtonClick = {}
+        )
     }
 }
