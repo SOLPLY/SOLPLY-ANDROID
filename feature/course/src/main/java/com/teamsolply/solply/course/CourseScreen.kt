@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.course.favoriteTown.FavoriteTownDialog
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -33,7 +34,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun CourseRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String, Long, Long) -> Unit,
-    navigateToTownSelect: () -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -69,12 +69,26 @@ fun CourseRoute(
         navigateToMaps = { courseId ->
             viewModel.sendIntent(CourseIntent.CourseCardClick(courseId = courseId))
         },
-        navigateToTownSelect = navigateToTownSelect,
+        navigateToTownSelect = {
+            viewModel.sendIntent(CourseIntent.ChangeFavoriteDialogVisibility(visible = true, selectedTownId = state.user.selectedTown.townId))
+        },
         changeSearchDialogVisibility = { visible ->
             viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = visible))
         },
         modifier = Modifier.padding(paddingValues)
     )
+
+    if (state.isFavoriteDialogVisible) {
+        FavoriteTownDialog(
+            paddingValues = paddingValues,
+            selectedTownId = state.user.selectedTown.townId,
+            navigateToBack = { selectedTownId ->
+                viewModel.sendIntent(
+                    CourseIntent.ChangeFavoriteDialogVisibility(visible = false, selectedTownId = selectedTownId)
+                )
+            }
+        )
+    }
 
     if (state.isSearchDialogVisible) {
         SearchDialog(

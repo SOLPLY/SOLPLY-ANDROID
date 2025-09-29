@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,9 +28,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamsolply.solply.course.component.FavoriteTownTopBar
-import com.teamsolply.solply.course.favoriteTown.model.CourseState
 import com.teamsolply.solply.course.favoriteTown.model.Region
 import com.teamsolply.solply.course.favoriteTown.model.TownLite
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
@@ -36,97 +39,97 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
-fun FavoriteTownRoute(
+fun FavoriteTownDialog(
     paddingValues: PaddingValues,
-    onBoardingIntent: (FavoriteTownIntent) -> Unit,
-    navigateToBack: () -> Unit,
-    viewModel: FavoriteViewModel = hiltViewModel()
+    selectedTownId: Long,
+    navigateToBack: (Long?) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: FavoriteViewModel = hiltViewModel(),
 ) {
-    val s = viewModel.uiState.collectAsState().value
-
-    val courseState = CourseState(
-        selectedTownId = s.selectedTownId ?: s.townInfo?.selectedTown?.townId,
-        selectedRegionId = s.selectedRegionId,
-        regions = s.regions,
-        townsByRegion = s.townsByRegion
-    )
-
-    FavoriteTownScreen(
-        state = courseState,
-        onBoardingIntent = { intent -> viewModel.handleIntent(intent) },
-        onNextClick = navigateToBack,
-        onReturnToHomeClick = navigateToBack,
-        onBackButtonClick = navigateToBack,
-        modifier = Modifier
-            .background(SolplyTheme.colors.white)
-            .padding(paddingValues)
-    )
-}
-
-@Composable
-fun FavoriteTownScreen(
-    state: CourseState,
-    onNextClick: () -> Unit,
-    onBoardingIntent: (FavoriteTownIntent) -> Unit,
-    onBackButtonClick: () -> Unit,
-    onReturnToHomeClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+    val state = viewModel.uiState.collectAsState().value
     val isButtonEnabled = state.selectedTownId != null
     val regions = state.regions
     val towns = state.townsByRegion[state.selectedRegionId] ?: emptyList()
+    val handleDismiss = {
+        navigateToBack(state.selectedTownId)
+    }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 14.dp)
-    ) {
-        FavoriteTownTopBar(
-            onBackButtonClick = onBackButtonClick,
-            onReturnToHomeButtonClick = onReturnToHomeClick
-        )
-
-        Row(
-            modifier = Modifier
-                .weight(1f)
-                .padding(top = 16.dp)
-                .background(SolplyTheme.colors.white)
-        ) {
-            LeftRegionPane(
-                regions = regions,
-                selectedRegionId = state.selectedRegionId,
-                onSelect = { id -> onBoardingIntent(FavoriteTownIntent.SelectRegion(id)) }
-            )
-
-            VerticalDivider(
-                modifier = Modifier.fillMaxHeight(),
-                color = SolplyTheme.colors.gray100,
-                thickness = 1.dp
-            )
-
-            RightTownPane(
-                towns = towns,
-                selectedTownId = state.selectedTownId,
-                onSelect = { id -> onBoardingIntent(FavoriteTownIntent.SelectTown(id)) }
-            )
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { sideEffect ->
+            when(sideEffect) {
+                is FavoriteTownSideEffect.DismissWithResult -> navigateToBack(sideEffect.selectedTownId)
+            }
         }
+    }
 
-        SolplyBasicButton(
-            text = "완료",
-            modifier = Modifier
-                .padding(bottom = 24.dp, start = 20.dp, end = 20.dp),
-            onClick = {
-                if (isButtonEnabled) {
-                    onBoardingIntent(FavoriteTownIntent.ConfirmSelection)
-                    onNextClick()
-                }
-            },
-            selected = isButtonEnabled,
-            textStyle = SolplyTheme.typography.button16M,
-            textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
-            enabledBackgroundColor = SolplyTheme.colors.gray900,
-            disabledBackgroundColor = SolplyTheme.colors.gray300
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent((FavoriteTownIntent.LoadFavoriteTownList(selectedTownId = selectedTownId)))
+    }
+
+    Dialog(
+        onDismissRequest = handleDismiss,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = false,
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false
         )
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = SolplyTheme.colors.white,
+            shadowElevation = 32.dp
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                FavoriteTownTopBar(
+                    onBackButtonClick = handleDismiss,
+                    onReturnToHomeButtonClick = handleDismiss
+                )
+
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 16.dp)
+                        .background(SolplyTheme.colors.white)
+                ) {
+                    LeftRegionPane(
+                        regions = regions,
+                        selectedRegionId = state.selectedRegionId,
+                        onSelect = { id -> viewModel.sendIntent(FavoriteTownIntent.SelectRegion(id)) }
+                    )
+
+                    VerticalDivider(
+                        modifier = Modifier.fillMaxHeight(),
+                        color = SolplyTheme.colors.gray100,
+                        thickness = 1.dp
+                    )
+
+                    RightTownPane(
+                        towns = towns,
+                        selectedTownId = state.selectedTownId,
+                        onSelect = { id -> viewModel.sendIntent(FavoriteTownIntent.SelectTown(id)) }
+                    )
+                }
+
+                SolplyBasicButton(
+                    text = "완료",
+                    modifier = Modifier
+                        .padding(bottom = 24.dp, start = 20.dp, end = 20.dp),
+                    onClick = {
+                        if (isButtonEnabled) { viewModel.sendIntent(FavoriteTownIntent.ConfirmSelection) }
+                    },
+                    selected = isButtonEnabled,
+                    textStyle = SolplyTheme.typography.button16M,
+                    textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
+                    enabledBackgroundColor = SolplyTheme.colors.gray900,
+                    disabledBackgroundColor = SolplyTheme.colors.gray300
+                )
+            }
+        }
     }
 }
 
@@ -147,7 +150,8 @@ private fun LeftRegionPane(
         items(regions, key = { it.id }) { region ->
             val selected = region.id == selectedRegionId
             val bg = if (selected) SolplyTheme.colors.white else SolplyTheme.colors.gray100
-            val textColor = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
+            val textColor =
+                if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
             val fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
 
             Box(
@@ -205,7 +209,8 @@ private fun RightTownPane(
     ) {
         items(towns, key = { it.id }) { town ->
             val selected = town.id == selectedTownId
-            val textColor = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
+            val textColor =
+                if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
             val fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
 
             Row(

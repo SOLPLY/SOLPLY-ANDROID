@@ -1,5 +1,6 @@
 package com.teamsolply.solply.course
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.course.repository.CourseRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -38,6 +39,18 @@ class CourseViewModel @Inject constructor(
                         errorMessage = intent.message
                     )
                 }
+            }
+
+            is CourseIntent.ChangeFavoriteDialogVisibility -> {
+                if (uiState.value.user.selectedTown.townId != intent.selectedTownId) {
+                    intent.selectedTownId?.let { id ->
+                        viewModelScope.launch {
+                            getUserInfo()
+                            getCourseList(id)
+                        }
+                    }
+                }
+                reduce { copy(isFavoriteDialogVisible = intent.visible) }
             }
 
             is CourseIntent.ChangeSearchDialogVisibility -> reduce {

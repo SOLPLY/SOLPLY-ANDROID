@@ -2,7 +2,6 @@ package com.teamsolply.solply.course.favoriteTown
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.course.CourseSideEffect
 import com.teamsolply.solply.course.favoriteTown.model.CourseState
 import com.teamsolply.solply.course.favoriteTown.repository.FavoriteTownRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -13,21 +12,18 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     private val favoriteRepository: FavoriteTownRepository
-) : BaseViewModel<CourseState, FavoriteTownIntent, CourseSideEffect>(CourseState()) {
-
-    init { handleIntent(FavoriteTownIntent.LoadFavoriteTownList) }
+) : BaseViewModel<CourseState, FavoriteTownIntent, FavoriteTownSideEffect>(CourseState()) {
 
     override fun handleIntent(intent: FavoriteTownIntent) {
         when (intent) {
-            is FavoriteTownIntent.LoadFavoriteTownList -> loadTownTree()
+            is FavoriteTownIntent.LoadFavoriteTownList -> loadTownTree(intent.selectedTownId)
             is FavoriteTownIntent.SelectTown -> reduce { copy(selectedTownId = intent.townId) }
             is FavoriteTownIntent.SelectRegion -> reduce { copy(selectedRegionId = intent.regionId) }
             is FavoriteTownIntent.ConfirmSelection -> patchUserFavoriteTown()
-            is FavoriteTownIntent.OnRetry -> loadTownTree()
         }
     }
 
-    private fun loadTownTree() {
+    private fun loadTownTree(selectedTownId: Long?) {
         viewModelScope.launch {
             favoriteRepository.getTownTree()
                 .onSuccess { (regions, townsByRegion) ->
@@ -36,7 +32,7 @@ class FavoriteViewModel @Inject constructor(
                             regions = regions,
                             townsByRegion = townsByRegion,
                             selectedRegionId = regions.firstOrNull()?.id,
-                            selectedTownId = null
+                            selectedTownId = selectedTownId
                         )
                     }
                 }
@@ -53,7 +49,10 @@ class FavoriteViewModel @Inject constructor(
 
         viewModelScope.launch {
             favoriteRepository.patchUserFavoriteTown(selectedTownId, favoriteTownIdList)
-                .onSuccess { Log.d("FavoriteViewModel", "패치 성공") }
+                .onSuccess {
+                    postSideEffect(FavoriteTownSideEffect.DismissWithResult(selectedTownId = selectedTownId))
+                    Log.d("FavoriteViewModel", "패치 성공")
+                }
                 .onFailure { e -> Log.e("FavoriteViewModel", "패치 실패 ${e.message}", e) }
         }
     }

@@ -24,6 +24,8 @@ data class CourseState(
 
     val courseList: PersistentList<CourseEntity> = persistentListOf(),
     val errorMessage: String? = null,
+    // favoriteTown
+    val isFavoriteDialogVisible: Boolean = false,
     // search
     val isSearchDialogVisible: Boolean = false
 ) : UiState {
@@ -49,6 +51,12 @@ sealed interface CourseIntent : UiIntent {
 
     data class LoadFailed(
         val message: String
+    ) : CourseIntent
+
+    // favoriteTown
+    data class ChangeFavoriteDialogVisibility(
+        val visible: Boolean,
+        val selectedTownId: Long?
     ) : CourseIntent
 
     // search

@@ -19,11 +19,12 @@ data class FavoriteTownState(
 ) : UiState
 
 sealed interface FavoriteTownIntent : UiIntent {
-    object LoadFavoriteTownList : FavoriteTownIntent
+    data class LoadFavoriteTownList(val selectedTownId: Long?) : FavoriteTownIntent
     data class SelectRegion(val regionId: Long) : FavoriteTownIntent
     data class SelectTown(val townId: Long) : FavoriteTownIntent
-    object OnRetry : FavoriteTownIntent
-    object ConfirmSelection : FavoriteTownIntent
+    data object ConfirmSelection : FavoriteTownIntent
 }
 
-sealed interface CourseSideEffect : SideEffect
+sealed interface FavoriteTownSideEffect: SideEffect {
+    data class DismissWithResult(val selectedTownId: Long): FavoriteTownSideEffect
+}

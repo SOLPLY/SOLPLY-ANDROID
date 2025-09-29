@@ -5,7 +5,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.teamsolply.solply.course.favoriteTown.FavoriteTownRoute
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
 
@@ -19,13 +18,6 @@ fun NavGraphBuilder.favoriteTownNavGraph(
     paddingValues: PaddingValues,
     navigateToBack: () -> Unit
 ) {
-    composable<FavoriteTown> {
-        FavoriteTownRoute(
-            paddingValues = paddingValues,
-            navigateToBack = navigateToBack,
-            onBoardingIntent = { }
-        )
-    }
 }
 
 @Serializable

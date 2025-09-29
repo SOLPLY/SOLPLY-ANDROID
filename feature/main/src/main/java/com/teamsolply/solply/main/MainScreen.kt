@@ -209,9 +209,6 @@ internal fun MainScreen(
                                 navOptions = navOptions
                             )
                         },
-                        navigateToTownSelect = {
-                            navigator.navigateToFavoriteTown()
-                        }
                     )
                     collectionNavGraph(
                         paddingValues = innerPadding,
