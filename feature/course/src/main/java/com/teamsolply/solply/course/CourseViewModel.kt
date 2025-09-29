@@ -1,6 +1,5 @@
 package com.teamsolply.solply.course
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.course.repository.CourseRepository
 import com.teamsolply.solply.ui.base.BaseViewModel

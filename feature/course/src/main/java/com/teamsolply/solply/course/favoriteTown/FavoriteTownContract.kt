@@ -25,6 +25,6 @@ sealed interface FavoriteTownIntent : UiIntent {
     data object ConfirmSelection : FavoriteTownIntent
 }
 
-sealed interface FavoriteTownSideEffect: SideEffect {
-    data class DismissWithResult(val selectedTownId: Long): FavoriteTownSideEffect
+sealed interface FavoriteTownSideEffect : SideEffect {
+    data class DismissWithResult(val selectedTownId: Long) : FavoriteTownSideEffect
 }

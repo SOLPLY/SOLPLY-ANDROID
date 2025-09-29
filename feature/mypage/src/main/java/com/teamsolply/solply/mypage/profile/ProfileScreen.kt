@@ -43,7 +43,7 @@ fun ProfileRoute(
     ProfileScreen(
         onBackButtonClick = navigateToBack,
         onCompleteButtonClick = navigateToMypage,
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier.padding(paddingValues)
     )
 }
 

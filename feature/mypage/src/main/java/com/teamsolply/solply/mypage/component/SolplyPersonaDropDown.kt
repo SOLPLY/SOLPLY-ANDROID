@@ -101,7 +101,7 @@ private fun SolplyPersonaDropDownPreview() {
                     ),
                     DropDownPersonaItem(
                         "조용한 공간에 오래 머물고 싶어요"
-                    ),
+                    )
                 ),
                 isDropped = false,
                 selectedIndex = 0,
@@ -127,7 +127,7 @@ private fun SolplyPersonaDropDownPreview() {
                     ),
                     DropDownPersonaItem(
                         "조용한 공간에 오래 머물고 싶어요"
-                    ),
+                    )
                 ),
                 selectedIndex = selectedIndex,
                 isSelected = isSelected

@@ -44,7 +44,7 @@ fun FavoriteTownDialog(
     selectedTownId: Long,
     navigateToBack: (Long?) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FavoriteViewModel = hiltViewModel(),
+    viewModel: FavoriteViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
     val isButtonEnabled = state.selectedTownId != null
@@ -56,7 +56,7 @@ fun FavoriteTownDialog(
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
-            when(sideEffect) {
+            when (sideEffect) {
                 is FavoriteTownSideEffect.DismissWithResult -> navigateToBack(sideEffect.selectedTownId)
             }
         }

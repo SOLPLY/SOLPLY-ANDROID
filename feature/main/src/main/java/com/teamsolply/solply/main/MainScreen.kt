@@ -192,7 +192,7 @@ internal fun MainScreen(
                                 placeId = placeId,
                                 navOptions = navOptions
                             )
-                        },
+                        }
                     )
                     courseNavGraph(
                         paddingValues = innerPadding,
@@ -204,7 +204,7 @@ internal fun MainScreen(
                                 courseId = courseId,
                                 navOptions = navOptions
                             )
-                        },
+                        }
                     )
                     collectionNavGraph(
                         paddingValues = innerPadding,
