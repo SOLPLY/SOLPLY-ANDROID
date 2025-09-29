@@ -35,6 +35,9 @@ data class PlaceState(
     val selectedOptionAFilter: PersistentList<Int> = persistentListOf(),
     val selectedOptionBFilter: PersistentList<Int> = persistentListOf(),
 
+    // favoriteTown
+    val isFavoriteDialogVisible: Boolean = false,
+
     // search
     val isSearchDialogVisible: Boolean = false
 ) : UiState
@@ -61,6 +64,12 @@ sealed interface PlaceIntent : UiIntent {
     data class SubFilterClick(
         val optionFilterId: Int,
         val selectedTagType: String
+    ) : PlaceIntent
+
+    // favoriteTown
+    data class ChangeFavoriteDialogVisibility(
+        val visible: Boolean,
+        val selectedTownId: Long?
     ) : PlaceIntent
 
     // search

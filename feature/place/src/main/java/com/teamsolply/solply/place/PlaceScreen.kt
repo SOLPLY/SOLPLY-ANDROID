@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.teamsolply.solply.course.favoriteTown.FavoriteTownDialog
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -67,7 +68,6 @@ import toPlaceTypeFilterItem
 fun PlaceRoute(
     paddingValues: PaddingValues,
     navigateToMaps: (String, Long, Long) -> Unit,
-    navigateToTownSelect: () -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -105,7 +105,14 @@ fun PlaceRoute(
         onClickSubFilterChip = {
             viewModel.sendIntent(PlaceIntent.SubFilterChipClick)
         },
-        navigateToTownSelect = navigateToTownSelect,
+        navigateToTownSelect = {
+            viewModel.sendIntent(
+                PlaceIntent.ChangeFavoriteDialogVisibility(
+                    visible = true,
+                    selectedTownId = state.userInfo.selectedTown.townId
+                )
+            )
+        },
         changeSearchDialogVisibility = { visible ->
             viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = visible))
         },
@@ -180,6 +187,21 @@ fun PlaceRoute(
             },
             navigateToRegisterPlace = {
                 // TODO. 장소 등록하기
+            }
+        )
+    }
+
+    if (state.isFavoriteDialogVisible) {
+        FavoriteTownDialog(
+            paddingValues = paddingValues,
+            selectedTownId = state.userInfo.selectedTown.townId,
+            navigateToBack = { selectedTownId ->
+                viewModel.sendIntent(
+                    PlaceIntent.ChangeFavoriteDialogVisibility(
+                        visible = false,
+                        selectedTownId = selectedTownId
+                    )
+                )
             }
         )
     }
