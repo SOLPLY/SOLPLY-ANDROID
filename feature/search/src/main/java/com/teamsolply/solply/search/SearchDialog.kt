@@ -15,7 +15,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -96,8 +95,7 @@ fun SearchDialog(
             ) {
                 Row(
                     modifier = Modifier
-                        .padding(start = 16.dp, top = 56.dp, bottom = 32.dp)
-                        .minimumInteractiveComponentSize()
+                        .padding(start = 16.dp, top = 56.dp, bottom = 33.dp)
                         .customClickable(rippleEnabled = false) {
                             handleDismiss()
                         }
@@ -188,7 +186,7 @@ fun SearchDialog(
                 } else if (uiState.hasQuery) {
                     Text(
                         text = "검색 결과가 없어요.\n" +
-                            "직접 장소 등록을 솔플리에 요청해보세요.",
+                                "직접 장소 등록을 솔플리에 요청해보세요.",
                         style = SolplyTheme.typography.body16R,
                         color = SolplyTheme.colors.black,
                         modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 17.dp)
@@ -203,7 +201,7 @@ fun SearchDialog(
                     ) {
                         Text(
                             text = "장소 등록하러 가기",
-                            style = SolplyTheme.typography.button14M,
+                            style = SolplyTheme.typography.button16M,
                             color = SolplyTheme.colors.purple600
                         )
                         Icon(

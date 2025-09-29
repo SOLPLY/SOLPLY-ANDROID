@@ -341,7 +341,7 @@ fun SolplyFixedReportTextField(
             .border(
                 width = 1.dp,
                 color = SolplyTheme.colors.gray300,
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(16.dp)
             ),
         contentAlignment = Alignment.TopStart
     ) {
@@ -384,7 +384,7 @@ fun SolplyFixedReportTextField(
             decorationBox = { inner ->
                 if (value.isEmpty()) {
                     Text(
-                        text = "(최대 200자 입력 가능)",
+                        text = "최대 200자 입력 가능",
                         color = SolplyTheme.colors.gray500,
                         style = SolplyTheme.typography.caption12M
                     )

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -254,7 +255,7 @@ fun ReportTypesScreen(
                                 strokeWidth = strokeWidth
                             )
                         }
-                        .padding(horizontal = 20.dp, vertical = 11.dp)
+                        .padding(vertical = 11.dp)
                         .customClickable(rippleEnabled = false) {
                             onReportTypeClick(type)
                         },
@@ -443,15 +444,14 @@ private fun ReportSubmittingScreen() {
 
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(182.dp))
         LottieAnimation(
             composition = composition,
             progress = { progress },
             modifier = Modifier
                 .size(270.dp)
-                .padding(bottom = 39.dp)
         )
         Text(
             text = "소중한 제보 감사합니다!",

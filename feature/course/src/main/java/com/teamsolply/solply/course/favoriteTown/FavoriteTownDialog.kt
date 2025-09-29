@@ -152,7 +152,6 @@ private fun LeftRegionPane(
             val bg = if (selected) SolplyTheme.colors.white else SolplyTheme.colors.gray100
             val textColor =
                 if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
-            val fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
 
             Box(
                 modifier = Modifier
@@ -186,7 +185,7 @@ private fun LeftRegionPane(
             ) {
                 Text(
                     text = region.name,
-                    style = SolplyTheme.typography.body14M.copy(fontWeight = fontWeight),
+                    style = SolplyTheme.typography.body16M,
                     color = textColor
                 )
             }
@@ -211,7 +210,6 @@ private fun RightTownPane(
             val selected = town.id == selectedTownId
             val textColor =
                 if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
-            val fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
 
             Row(
                 modifier = Modifier
@@ -242,7 +240,7 @@ private fun RightTownPane(
             ) {
                 Text(
                     text = town.name,
-                    style = SolplyTheme.typography.body16M.copy(fontWeight = fontWeight),
+                    style = SolplyTheme.typography.body16R,
                     color = textColor,
                     modifier = Modifier
                         .weight(1f)

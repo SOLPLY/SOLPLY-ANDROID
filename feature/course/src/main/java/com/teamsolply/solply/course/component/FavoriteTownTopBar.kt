@@ -39,7 +39,7 @@ internal fun FavoriteTownTopBar(
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
         Text(
-            text = "자주 가는 동네",
+            text = "동네 설정",
             style = SolplyTheme.typography.head16M,
             color = SolplyTheme.colors.black
         )
