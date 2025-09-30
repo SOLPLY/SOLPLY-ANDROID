@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="mypage_logout">로그아웃</string>
+
     <string name="profile_edit">프로필 수정</string>
     <string name="profile_img">기본 프로필</string>
     <string name="profile_nickname">닉네임</string>
     <string name="profile_solply_style">나의 솔플 스타일</string>
+
+    <string name="logout_dialog">로그아웃하시겠습니까?</string>
+    <string name="mypage_dialog_cancel">취소</string>
+    <string name="logout_dialog_confirm">로그아웃</string>
 </resources>

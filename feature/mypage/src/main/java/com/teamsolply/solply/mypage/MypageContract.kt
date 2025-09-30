@@ -16,10 +16,16 @@ data class MypageState(
     ),
     val nickname: String = "",
     val placeList: List<PlaceInfoEntity> = emptyList(),
+    val dialogState: Boolean = false
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
     data object Init : MypageIntent
+
+    data object LogOutButtonClick : MypageIntent
+
+    data object DialogConfirmClick : MypageIntent
+    data object DialogDismissClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {

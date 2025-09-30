@@ -24,11 +24,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.component.EmptyPlaceContainer
 import com.teamsolply.solply.mypage.component.MypageSettingItem
@@ -51,8 +53,12 @@ fun MypageRoute(
 
     MypageScreen(
         savedPlaceList = uiState.placeList,
+        dialogState = uiState.dialogState,
         onBackButtonClick = navigateToBack,
         onProfileEditClick = navigateToProfile,
+        onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
+        onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.DialogConfirmClick) },
+        onDialogDismissClick = { viewModel.sendIntent(MypageIntent.DialogDismissClick) },
         modifier = Modifier.padding(paddingValues),
     )
 }
@@ -60,11 +66,23 @@ fun MypageRoute(
 @Composable
 fun MypageScreen(
     savedPlaceList: List<PlaceInfoEntity>,
+    dialogState: Boolean,
     onBackButtonClick: () -> Unit,
     onProfileEditClick: () -> Unit,
+    onLogOutClick: () -> Unit,
+    onDialogConfirmClick: () -> Unit,
+    onDialogDismissClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
+    if (dialogState) {
+        SolplyConfirmDialog(
+            text = stringResource(R.string.logout_dialog),
+            confirmButtonText = stringResource(R.string.logout_dialog_confirm),
+            dismissButtonText = stringResource(R.string.mypage_dialog_cancel),
+            onClickConfirm = onDialogConfirmClick,
+            onClickDismiss = onDialogDismissClick
+        )
+    }
     Column(
         modifier
             .fillMaxSize()
@@ -118,7 +136,7 @@ fun MypageScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "프로필 수정",
+                text = stringResource(R.string.profile_edit),
                 color = SolplyTheme.colors.gray600,
                 style = SolplyTheme.typography.button14M,
                 modifier = Modifier.padding(start = 16.dp)
@@ -198,8 +216,8 @@ fun MypageScreen(
                 isBorderEnabled = true
             )
             MypageSettingItem(
-                text = "로그아웃",
-                onClick = { /* TODO */ },
+                text = stringResource(R.string.mypage_logout),
+                onClick = onLogOutClick,
                 isBorderEnabled = true
             )
             MypageSettingItem(
@@ -218,8 +236,12 @@ private fun MypageScreenPreview() {
     SolplyTheme {
         MypageScreen(
             savedPlaceList = emptyList(),
+            dialogState = false,
             onBackButtonClick = {},
-            onProfileEditClick = {}
+            onProfileEditClick = {},
+            onLogOutClick = {},
+            onDialogConfirmClick = {},
+            onDialogDismissClick = {},
         )
     }
 }

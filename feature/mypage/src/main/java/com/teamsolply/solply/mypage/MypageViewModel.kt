@@ -15,11 +15,32 @@ class MypageViewModel @Inject constructor(
     BaseViewModel<MypageState, MypageIntent, MypageSideEffect>(MypageState()) {
     override fun handleIntent(intent: MypageIntent) {
         when (intent) {
-            MypageIntent.Init -> fetchInitInfo()
+            MypageIntent.Init -> getInitInfo()
+
+            MypageIntent.LogOutButtonClick -> {
+                reduce {
+                    copy(
+                        dialogState = true
+                    )
+                }
+            }
+
+            MypageIntent.DialogConfirmClick -> {
+                // TODO 로그아웃 api
+                reduce {
+                    copy(dialogState = false)
+                }
+            }
+
+            MypageIntent.DialogDismissClick -> {
+                reduce {
+                    copy(dialogState = false)
+                }
+            }
         }
     }
 
-    private fun fetchInitInfo() {
+    private fun getInitInfo() {
         viewModelScope.launch {
             mypageRepository.getUserInfo()
                 .onSuccess { userInfo ->
