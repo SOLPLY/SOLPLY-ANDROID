@@ -1,3 +1,9 @@
 package com.teamsolply.solply.mypage.datasource
 
-interface MypageRemoteDataSource
+import com.teamsolply.solply.mypage.dto.response.GetUserInfoResponseDto
+import com.teamsolply.solply.mypage.dto.response.PlaceListResponseDto
+
+interface MypageRemoteDataSource {
+    suspend fun getUserInfo(): GetUserInfoResponseDto
+    suspend fun getPlaceList(townId: Long): PlaceListResponseDto
+}

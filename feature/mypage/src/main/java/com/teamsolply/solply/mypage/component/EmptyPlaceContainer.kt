@@ -17,7 +17,6 @@ fun EmptyPlaceContainer(
 ) {
     Box(
         modifier = modifier
-            .padding(bottom = 16.dp)
             .height(40.dp)
             .fillMaxWidth(),
         contentAlignment = Alignment.Center

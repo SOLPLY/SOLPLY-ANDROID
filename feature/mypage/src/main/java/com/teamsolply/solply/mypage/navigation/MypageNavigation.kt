@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.teamsolply.solply.mypage.MypageRoute
 import com.teamsolply.solply.mypage.MypageViewModel
 import com.teamsolply.solply.navigation.Route

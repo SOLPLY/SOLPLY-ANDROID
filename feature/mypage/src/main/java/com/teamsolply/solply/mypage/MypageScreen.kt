@@ -16,18 +16,24 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.component.EmptyPlaceContainer
 import com.teamsolply.solply.mypage.component.MypageSettingItem
+import com.teamsolply.solply.mypage.component.SavedPlaceListContainer
+import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
@@ -37,7 +43,14 @@ fun MypageRoute(
     navigateToProfile: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent(MypageIntent.Init)
+    }
+
     MypageScreen(
+        savedPlaceList = uiState.placeList,
         onBackButtonClick = navigateToBack,
         onProfileEditClick = navigateToProfile,
         modifier = Modifier.padding(paddingValues),
@@ -46,10 +59,12 @@ fun MypageRoute(
 
 @Composable
 fun MypageScreen(
+    savedPlaceList: List<PlaceInfoEntity>,
     onBackButtonClick: () -> Unit,
     onProfileEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     Column(
         modifier
             .fillMaxSize()
@@ -85,11 +100,16 @@ fun MypageScreen(
         Text(
             text = "닉네임",
             color = SolplyTheme.colors.black,
-            style = SolplyTheme.typography.display20Sb
+            style = SolplyTheme.typography.display20Sb.copy(
+                lineHeightStyle = LineHeightStyle(
+                    alignment = LineHeightStyle.Alignment.Center,
+                    trim = LineHeightStyle.Trim.None
+                )
+            ),
         )
+        Spacer(modifier = Modifier.height(12.dp))
         Row(
             modifier = Modifier
-                .padding(top = 12.dp)
                 .customClickable(
                     rippleEnabled = false,
                     onClick = onProfileEditClick
@@ -128,7 +148,18 @@ fun MypageScreen(
                     style = SolplyTheme.typography.body16M
                 )
             }
-            EmptyPlaceContainer()
+            if (savedPlaceList.isEmpty()) {
+                EmptyPlaceContainer(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                )
+            } else {
+                SavedPlaceListContainer(
+                    savedPlaceList = savedPlaceList,
+                    modifier = Modifier
+                        .padding(start = 20.dp, bottom = 16.dp)
+                )
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Column(
@@ -177,9 +208,6 @@ fun MypageScreen(
                 isBorderEnabled = false
             )
         }
-        Spacer(
-            modifier = Modifier.weight(36f)
-        )
     }
 }
 
@@ -188,6 +216,7 @@ fun MypageScreen(
 private fun MypageScreenPreview() {
     SolplyTheme {
         MypageScreen(
+            savedPlaceList = emptyList(),
             onBackButtonClick = {},
             onProfileEditClick = {}
         )
