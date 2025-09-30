@@ -93,12 +93,20 @@ fun MypageScreen(
                 .customClickable(
                     rippleEnabled = false,
                     onClick = onProfileEditClick
-                )
+                ),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "프로필 수정",
                 color = SolplyTheme.colors.gray600,
-                style = SolplyTheme.typography.button14M
+                style = SolplyTheme.typography.button14M,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+            Icon(
+                painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_next_arrow),
+                contentDescription = "",
+                tint = SolplyTheme.colors.gray600
             )
         }
         Spacer(modifier = Modifier.height(44.dp))
