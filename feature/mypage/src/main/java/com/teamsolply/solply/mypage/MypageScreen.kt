@@ -207,6 +207,7 @@ fun MypageScreen(
                 onClick = { /* TODO */ },
                 isBorderEnabled = false
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
