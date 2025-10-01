@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.service
 
+import com.teamsolply.solply.mypage.dto.response.GetPersonaListResponseDto
 import com.teamsolply.solply.mypage.dto.response.GetUserInfoResponseDto
 import com.teamsolply.solply.mypage.dto.response.PlaceListResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
@@ -15,4 +16,7 @@ interface MypageService {
         @Query("townId") townId: Long,
         @Query("isBookmarkSearch") isBookmarkedSearch: Boolean = true
     ): BaseResponse<PlaceListResponseDto>
+
+    @GET("api/onboarding/questions/persona")
+    suspend fun getPersonaList(): BaseResponse<GetPersonaListResponseDto>
 }

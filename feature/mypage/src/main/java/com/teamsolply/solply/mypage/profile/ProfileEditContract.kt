@@ -1,6 +1,6 @@
 package com.teamsolply.solply.mypage.profile
 
-import com.teamsolply.solply.mypage.model.PlaceInfoEntity
+import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.mypage.model.SelectedTownInfo
 import com.teamsolply.solply.mypage.model.UserInfo
 import com.teamsolply.solply.ui.base.SideEffect
@@ -14,14 +14,13 @@ data class ProfileEditState(
         selectedTown = SelectedTownInfo(0, "망원동"),
         persona = "REST"
     ),
-    val personaList: List<String> = emptyList()
+    val personaList: List<PersonaEntity> = emptyList()
 ) : UiState
 
 sealed interface ProfileEditIntent : UiIntent {
     data object Init : ProfileEditIntent
 
-    data object DialogConfirmClick : ProfileEditIntent
-    data object DialogDismissClick : ProfileEditIntent
+    data object CompleteButtonClick : ProfileEditIntent
 }
 
 sealed interface ProfileEditSideEffect : SideEffect {

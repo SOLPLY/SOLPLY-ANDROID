@@ -1,6 +1,7 @@
 package com.teamsolply.solply.mypage.repository
 
 import com.teamsolply.solply.mypage.datasource.MypageRemoteDataSource
+import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.SelectedTownInfo
 import com.teamsolply.solply.mypage.model.UserInfo
@@ -33,6 +34,17 @@ class MypageRepositoryImpl @Inject constructor(
                 placeType = place.tag,
                 imageUrls = place.imageUrl,
                 isSaved = place.isSaved
+            )
+        }
+    }
+
+    override suspend fun getPersonaList(): Result<List<PersonaEntity>> = runCatching {
+        mypageRemoteDataSource.getPersonaList().personaDtoList
+    }.mapCatching { personaList ->
+        personaList.map { persona ->
+            PersonaEntity(
+                personaType = persona.personaType,
+                description = persona.description
             )
         }
     }

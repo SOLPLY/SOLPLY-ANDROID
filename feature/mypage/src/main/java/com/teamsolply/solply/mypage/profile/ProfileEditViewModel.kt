@@ -14,7 +14,21 @@ class ProfileEditViewModel @Inject constructor(
     BaseViewModel<ProfileEditState, ProfileEditIntent, ProfileEditSideEffect>(ProfileEditState()) {
 
     override fun handleIntent(intent: ProfileEditIntent) {
-        TODO("Not yet implemented")
+        when (intent) {
+            ProfileEditIntent.Init -> init()
+
+            ProfileEditIntent.CompleteButtonClick -> TODO()
+        }
+    }
+
+    private fun init() {
+        getUserInfo()
+        getPersonaList()
+        reduce {
+            copy(
+                // TODO
+            )
+        }
     }
 
     private fun getUserInfo() {
@@ -22,6 +36,15 @@ class ProfileEditViewModel @Inject constructor(
             mypageRepository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
+                }
+        }
+    }
+
+    private fun getPersonaList() {
+        viewModelScope.launch {
+            mypageRepository.getPersonaList()
+                .onSuccess { personaList ->
+                    reduce { copy(personaList = personaList) }
                 }
         }
     }

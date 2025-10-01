@@ -38,7 +38,7 @@ fun ProfileRoute(
     paddingValues: PaddingValues,
     navigateToBack: () -> Unit,
     navigateToMypage: () -> Unit,
-    viewModel: MypageViewModel = hiltViewModel()
+    viewModel: ProfileEditViewModel = hiltViewModel()
 ) {
     ProfileEditScreen(
         onBackButtonClick = navigateToBack,
