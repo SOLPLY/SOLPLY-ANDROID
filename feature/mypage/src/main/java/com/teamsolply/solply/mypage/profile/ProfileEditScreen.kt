@@ -40,7 +40,7 @@ fun ProfileRoute(
     navigateToMypage: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
-    ProfileScreen(
+    ProfileEditScreen(
         onBackButtonClick = navigateToBack,
         onCompleteButtonClick = navigateToMypage,
         modifier = Modifier.padding(paddingValues),
@@ -48,7 +48,7 @@ fun ProfileRoute(
 }
 
 @Composable
-fun ProfileScreen(
+fun ProfileEditScreen(
     onBackButtonClick: () -> Unit,
     onCompleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -141,7 +141,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreenPreview() {
     SolplyTheme {
-        ProfileScreen(
+        ProfileEditScreen(
             onBackButtonClick = {},
             onCompleteButtonClick = {}
         )

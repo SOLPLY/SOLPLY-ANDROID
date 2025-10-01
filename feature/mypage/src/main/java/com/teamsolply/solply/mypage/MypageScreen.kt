@@ -193,13 +193,13 @@ fun MypageScreen(
                     .padding(top = 16.dp, start = 20.dp, end = 16.dp, bottom = 12.dp)
             ) {
                 Text(
-                    text = "계정 설정",
+                    text = stringResource(R.string.mypage_account_setting),
                     color = SolplyTheme.colors.black,
                     style = SolplyTheme.typography.body16M
                 )
             }
             MypageSettingItem(
-                text = "고객센터",
+                text = stringResource(R.string.mypage_customer_service),
                 onClick = { /* TODO */ },
                 isBorderEnabled = true
             )

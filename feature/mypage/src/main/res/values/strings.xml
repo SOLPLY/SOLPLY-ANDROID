@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="mypage_account_setting">계정 설정</string>
+    <string name="mypage_customer_service">고객센터</string>
     <string name="mypage_logout">로그아웃</string>
 
     <string name="profile_edit">프로필 수정</string>
