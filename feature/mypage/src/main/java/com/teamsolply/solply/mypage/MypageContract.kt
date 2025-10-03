@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage
 
+import com.teamsolply.solply.model.Persona
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.SelectedTownInfo
 import com.teamsolply.solply.mypage.model.UserInfo
@@ -12,7 +13,7 @@ data class MypageState(
         userId = 1,
         nickname = "숭이숭이숭이",
         selectedTown = SelectedTownInfo(0, "망원동"),
-        persona = "REST"
+        persona = Persona.REST
     ),
     val nickname: String = "",
     val placeList: List<PlaceInfoEntity> = emptyList(),

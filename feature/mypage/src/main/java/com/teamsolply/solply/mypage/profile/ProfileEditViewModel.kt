@@ -22,30 +22,19 @@ class ProfileEditViewModel @Inject constructor(
     }
 
     private fun init() {
-        getUserInfo()
-        getPersonaList()
-        reduce {
-            copy(
-                // TODO
-            )
-        }
-    }
-
-    private fun getUserInfo() {
         viewModelScope.launch {
             mypageRepository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
                 }
-        }
-    }
-
-    private fun getPersonaList() {
-        viewModelScope.launch {
             mypageRepository.getPersonaList()
                 .onSuccess { personaList ->
                     reduce { copy(personaList = personaList) }
                 }
+            reduce {
+                val selectedIndex = personaList.indexOfFirst { it.personaType == userInfo.persona }
+                copy(selectedPersonaIndex = selectedIndex)
+            }
         }
     }
 }

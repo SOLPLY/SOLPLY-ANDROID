@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.mypage.MypageRoute
 import com.teamsolply.solply.mypage.MypageViewModel
+import com.teamsolply.solply.mypage.profile.ProfileEditViewModel
 import com.teamsolply.solply.mypage.profile.ProfileRoute
 import com.teamsolply.solply.navigation.Route
 import kotlinx.serialization.Serializable
@@ -24,7 +25,7 @@ fun NavGraphBuilder.profileNavGraph(
     navigateToMypage: () -> Unit,
 ) {
     composable<Profile> { backStackEntry ->
-        val viewModel: MypageViewModel = hiltViewModel(backStackEntry)
+        val viewModel: ProfileEditViewModel = hiltViewModel(backStackEntry)
         ProfileRoute(
             paddingValues = paddingValues,
             navigateToBack = navigateToBack,

@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.profile
 
+import com.teamsolply.solply.model.Persona
 import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.mypage.model.SelectedTownInfo
 import com.teamsolply.solply.mypage.model.UserInfo
@@ -12,9 +13,10 @@ data class ProfileEditState(
         userId = 1,
         nickname = "숭이숭이숭이",
         selectedTown = SelectedTownInfo(0, "망원동"),
-        persona = "REST"
+        persona = Persona.REST
     ),
-    val personaList: List<PersonaEntity> = emptyList()
+    val personaList: List<PersonaEntity> = emptyList(),
+    val selectedPersonaIndex: Int = -1,
 ) : UiState
 
 sealed interface ProfileEditIntent : UiIntent {

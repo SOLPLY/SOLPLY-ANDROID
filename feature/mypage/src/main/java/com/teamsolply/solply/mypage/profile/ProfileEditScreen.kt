@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,14 +26,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.textfield.SolplyNicknameTextField
 import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.mypage.MypageViewModel
 import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.mypage.component.SolplyPersonaDropDown
+import com.teamsolply.solply.mypage.model.PersonaEntity
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileRoute(
@@ -40,7 +45,19 @@ fun ProfileRoute(
     navigateToMypage: () -> Unit,
     viewModel: ProfileEditViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent(ProfileEditIntent.Init)
+    }
+
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { }
+    }
+
     ProfileEditScreen(
+        selectedPersonaIndex = uiState.selectedPersonaIndex,
+        personaList = uiState.personaList,
         onBackButtonClick = navigateToBack,
         onCompleteButtonClick = navigateToMypage,
         modifier = Modifier.padding(paddingValues),
@@ -49,6 +66,8 @@ fun ProfileRoute(
 
 @Composable
 fun ProfileEditScreen(
+    selectedPersonaIndex: Int,
+    personaList: List<PersonaEntity>,
     onBackButtonClick: () -> Unit,
     onCompleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -123,15 +142,15 @@ fun ProfileEditScreen(
                 placeholder = "선택해주세요.",
                 onClickItem = {},
                 onClickDropIcon = {},
-                dropDownContents = persistentListOf(),
-                selectedIndex = -1,
+                dropDownContents = personaList,
+                selectedIndex = selectedPersonaIndex,
                 modifier = Modifier.padding(vertical = 12.dp)
             )
         }
         Spacer(modifier = Modifier.weight(12f))
         SolplyBasicButton(
             text = "완료",
-            onClick = {},
+            onClick = onCompleteButtonClick,
             modifier = Modifier.padding(vertical = 24.dp, horizontal = 16.dp)
         )
     }
@@ -142,6 +161,8 @@ fun ProfileEditScreen(
 private fun ProfileScreenPreview() {
     SolplyTheme {
         ProfileEditScreen(
+            selectedPersonaIndex = -1,
+            personaList = persistentListOf(),
             onBackButtonClick = {},
             onCompleteButtonClick = {}
         )

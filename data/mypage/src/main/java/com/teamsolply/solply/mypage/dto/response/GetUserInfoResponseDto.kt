@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.dto.response
 
+import com.teamsolply.solply.model.Persona
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,7 +13,7 @@ data class GetUserInfoResponseDto(
     @SerialName("selectedTown")
     val selectedTown: SelectedTownDto,
     @SerialName("persona")
-    val persona: String
+    val persona: Persona
 )
 
 @Serializable
