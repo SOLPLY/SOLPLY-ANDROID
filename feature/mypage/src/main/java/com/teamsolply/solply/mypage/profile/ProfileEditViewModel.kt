@@ -29,7 +29,6 @@ class ProfileEditViewModel @Inject constructor(
             }
 
             ProfileEditIntent.ValidateNickname -> {
-
             }
 
             ProfileEditIntent.BackButtonClick -> {

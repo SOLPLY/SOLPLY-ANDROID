@@ -71,7 +71,7 @@ fun MypageRoute(
         onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(MypageIntent.DialogDismissClick) },
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier.padding(paddingValues)
     )
 }
 
@@ -136,7 +136,7 @@ fun MypageScreen(
                     alignment = LineHeightStyle.Alignment.Center,
                     trim = LineHeightStyle.Trim.None
                 )
-            ),
+            )
         )
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -256,7 +256,7 @@ private fun MypageScreenPreview() {
             onProfileEditClick = {},
             onLogOutClick = {},
             onDialogConfirmClick = {},
-            onDialogDismissClick = {},
+            onDialogDismissClick = {}
         )
     }
 }

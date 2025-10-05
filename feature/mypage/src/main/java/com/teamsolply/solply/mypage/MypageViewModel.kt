@@ -54,7 +54,7 @@ class MypageViewModel @Inject constructor(
                     reduce { copy(userInfo = userInfo) }
 
                     getPlaceList(
-                        townId = userInfo.selectedTown.townId,
+                        townId = userInfo.selectedTown.townId
                     )
                 }
         }

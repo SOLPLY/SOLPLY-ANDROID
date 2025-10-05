@@ -34,7 +34,7 @@ fun SolplyBasicDropDown(
     onClickDropIcon: () -> Unit,
     modifier: Modifier = Modifier,
     isDropped: Boolean = false,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         modifier = modifier

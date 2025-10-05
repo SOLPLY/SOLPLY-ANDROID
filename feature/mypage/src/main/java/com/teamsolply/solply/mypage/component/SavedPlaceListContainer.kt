@@ -15,11 +15,11 @@ import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 @Composable
 fun SavedPlaceListContainer(
     savedPlaceList: List<PlaceInfoEntity>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     LazyRow(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
     ) {
         items(savedPlaceList) {
             SolplyPlaceCard(

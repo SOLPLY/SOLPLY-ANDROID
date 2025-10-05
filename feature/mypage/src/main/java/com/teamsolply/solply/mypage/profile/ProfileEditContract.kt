@@ -23,7 +23,7 @@ data class ProfileEditState(
     val selectedPersonaIndex: Int = -1,
     val isDropped: Boolean = false,
     val completeButtonEnabled: Boolean = false,
-    val dialogState: Boolean = false,
+    val dialogState: Boolean = false
 ) : UiState
 
 sealed interface ProfileEditIntent : UiIntent {

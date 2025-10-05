@@ -25,5 +25,4 @@ interface MypageService {
     suspend fun checkNicknameDuplicate(
         @Query("nickname") nickname: String
     ): BaseResponse<NicknameDuplicateResponseDto>
-
 }

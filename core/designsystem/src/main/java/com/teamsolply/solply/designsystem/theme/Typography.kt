@@ -208,7 +208,7 @@ fun SolplyTypography(): SolplyTypography {
             fontFamily = PretendardSemiBold,
             fontWeight = FontWeight.SemiBold,
             fontSize = 20.sp,
-            lineHeight = (20 * 1.5).sp,
+            lineHeight = (20 * 1.5).sp
         ),
         display16Sb = TextStyle(
             fontFamily = PretendardSemiBold,

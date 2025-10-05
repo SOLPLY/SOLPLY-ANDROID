@@ -34,7 +34,7 @@ class MypageRepositoryImpl @Inject constructor(
     override suspend fun getPersonaList(): Result<List<PersonaEntity>> = runCatching {
         mypageRemoteDataSource.getPersonaList().personaDtoList
     }.mapCatching { personaList ->
-        Log.d("persona: ","repo impl start")
+        Log.d("persona: ", "repo impl start")
         personaList.map { persona ->
             PersonaEntity(
                 personaType = persona.personaType,

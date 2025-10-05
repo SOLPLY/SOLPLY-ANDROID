@@ -6,7 +6,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.teamsolply.solply.mypage.MypageRoute
 import com.teamsolply.solply.mypage.MypageViewModel
 import com.teamsolply.solply.navigation.Route
@@ -21,7 +20,7 @@ fun NavController.navigateMypage(
 fun NavGraphBuilder.mypageNavGraph(
     navigateToBack: () -> Unit,
     navigateToProfile: () -> Unit,
-    paddingValues: PaddingValues,
+    paddingValues: PaddingValues
 ) {
     composable<Mypage> { backStackEntry ->
         val viewModel: MypageViewModel = hiltViewModel(backStackEntry)

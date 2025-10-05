@@ -37,5 +37,5 @@ fun GetUserInfoResponseDto.toDomain(): UserInfo =
             townName = selectedTown.townName
         ),
         persona = persona,
-        profileImageUrl = profileImageUrl ?: ""   // 서버 null → 도메인 기본값
+        profileImageUrl = profileImageUrl ?: "" // 서버 null → 도메인 기본값
     )

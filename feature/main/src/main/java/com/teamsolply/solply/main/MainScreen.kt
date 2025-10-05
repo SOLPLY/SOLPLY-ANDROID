@@ -41,7 +41,6 @@ import com.teamsolply.solply.maps.navigation.mapsNavGraph
 import com.teamsolply.solply.model.SnackBarType
 import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
-import com.teamsolply.solply.mypage.profile.navigation.Profile
 import com.teamsolply.solply.mypage.profile.navigation.profileNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph

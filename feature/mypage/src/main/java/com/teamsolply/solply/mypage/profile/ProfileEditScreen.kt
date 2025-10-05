@@ -82,7 +82,7 @@ fun ProfileRoute(
         onCompleteButtonClick = { viewModel.sendIntent(ProfileEditIntent.CompleteButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(ProfileEditIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(ProfileEditIntent.DialogDismissClick) },
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier.padding(paddingValues)
     )
 }
 
