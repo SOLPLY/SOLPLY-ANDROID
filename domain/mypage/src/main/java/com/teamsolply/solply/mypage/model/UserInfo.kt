@@ -6,7 +6,8 @@ data class UserInfo(
     val userId: Long,
     val nickname: String,
     val selectedTown: SelectedTownInfo,
-    val persona: Persona
+    val persona: Persona,
+    val profileImageUrl: String = ""
 )
 
 data class SelectedTownInfo(

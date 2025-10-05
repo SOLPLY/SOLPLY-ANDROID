@@ -37,6 +37,8 @@ import com.teamsolply.solply.mypage.component.MypageSettingItem
 import com.teamsolply.solply.mypage.component.SavedPlaceListContainer
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun MypageRoute(
@@ -51,11 +53,21 @@ fun MypageRoute(
         viewModel.sendIntent(MypageIntent.Init)
     }
 
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            when (sideEffect) {
+                MypageSideEffect.NavigateToBack -> navigateToBack()
+                MypageSideEffect.NavigateToProfile -> navigateToProfile()
+            }
+        }
+    }
+
     MypageScreen(
+        nickname = uiState.userInfo.nickname,
         savedPlaceList = uiState.placeList,
         dialogState = uiState.dialogState,
         onBackButtonClick = navigateToBack,
-        onProfileEditClick = navigateToProfile,
+        onProfileEditClick = { viewModel.sendIntent(MypageIntent.ProfileEditClick) },
         onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(MypageIntent.DialogDismissClick) },
@@ -65,6 +77,7 @@ fun MypageRoute(
 
 @Composable
 fun MypageScreen(
+    nickname: String,
     savedPlaceList: List<PlaceInfoEntity>,
     dialogState: Boolean,
     onBackButtonClick: () -> Unit,
@@ -116,7 +129,7 @@ fun MypageScreen(
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "닉네임",
+            text = nickname,
             color = SolplyTheme.colors.black,
             style = SolplyTheme.typography.display20Sb.copy(
                 lineHeightStyle = LineHeightStyle(
@@ -175,6 +188,7 @@ fun MypageScreen(
                 SavedPlaceListContainer(
                     savedPlaceList = savedPlaceList,
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(start = 20.dp, bottom = 16.dp)
                 )
             }
@@ -235,6 +249,7 @@ fun MypageScreen(
 private fun MypageScreenPreview() {
     SolplyTheme {
         MypageScreen(
+            nickname = "닉네임",
             savedPlaceList = emptyList(),
             dialogState = false,
             onBackButtonClick = {},

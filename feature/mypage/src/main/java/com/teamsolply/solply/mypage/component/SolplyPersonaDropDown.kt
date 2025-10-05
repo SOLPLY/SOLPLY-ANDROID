@@ -36,7 +36,7 @@ fun SolplyPersonaDropDown(
     isSelected: Boolean = false
 ) {
     SolplyBasicDropDown(
-        defaultLabel = if (isSelected) dropDownContents.get(selectedIndex).description else placeholder,
+        defaultLabel = if (isSelected) dropDownContents[selectedIndex].description else placeholder,
         onClickDropIcon = onClickDropIcon,
         isDropped = isDropped,
         modifier = modifier

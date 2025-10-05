@@ -25,6 +25,9 @@ class MypageViewModel @Inject constructor(
                 }
             }
 
+            MypageIntent.WithdrawButtonClick -> {
+            }
+
             MypageIntent.DialogConfirmClick -> {
                 // TODO 로그아웃 api
                 reduce {
@@ -36,6 +39,10 @@ class MypageViewModel @Inject constructor(
                 reduce {
                     copy(dialogState = false)
                 }
+            }
+
+            MypageIntent.ProfileEditClick -> {
+                postSideEffect(MypageSideEffect.NavigateToProfile)
             }
         }
     }

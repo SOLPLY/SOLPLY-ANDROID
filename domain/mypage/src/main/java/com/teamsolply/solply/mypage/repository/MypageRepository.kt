@@ -8,4 +8,5 @@ interface MypageRepository {
     suspend fun getUserInfo(): Result<UserInfo>
     suspend fun getPlaceList(townId: Long): Result<List<PlaceInfoEntity>>
     suspend fun getPersonaList(): Result<List<PersonaEntity>>
+    suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean>
 }
