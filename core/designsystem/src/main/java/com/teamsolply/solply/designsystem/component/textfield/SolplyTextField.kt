@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -62,6 +63,7 @@ private fun BaseTextField(
     maxLength: Int = 8,
     maxLines: Int = 1,
     textAlignment: Alignment = Alignment.CenterStart,
+    innerPadding: PaddingValues,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Box(
@@ -77,7 +79,7 @@ private fun BaseTextField(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(innerPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -133,7 +135,7 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value, isNicknameDuplicate) {
         if (value.isNotEmpty()) {
@@ -202,6 +204,7 @@ fun SolplyNicknameTextField(
             borderColor = borderColor,
             borderWidth = 1f,
             placeholder = placeholder,
+            innerPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             trailingIcon = {
                 if (value.isNotEmpty() && value.length <= maxLength) {
                     val iconRes =
@@ -307,6 +310,7 @@ fun SolplyRenameCourseTextField(
     minLength: Int = 2,
     textAlignment: Alignment = Alignment.TopStart,
     singleLine: Boolean = true,
+    innerPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     BaseTextField(
@@ -319,7 +323,8 @@ fun SolplyRenameCourseTextField(
         borderWidth = 1f,
         textAlignment = textAlignment,
         singleLine = singleLine,
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+        innerPadding = innerPadding
     )
 }
 

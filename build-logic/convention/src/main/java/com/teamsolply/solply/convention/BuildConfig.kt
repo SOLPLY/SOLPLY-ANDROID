@@ -24,6 +24,16 @@ internal fun Project.configureBuildConfig(
                 "NAVER_CLIENT_ID",
                 gradleLocalProperties(rootDir, providers).getProperty("naver.client.id")
             )
+            buildConfigField(
+                "String",
+                "NAVER_DEVELOPERS_CLIENT_ID",
+                gradleLocalProperties(rootDir, providers).getProperty("naver.developers.client.id")
+            )
+            buildConfigField(
+                "String",
+                "NAVER_DEVELOPERS_CLIENT_SECRET",
+                gradleLocalProperties(rootDir, providers).getProperty("naver.developers.client.secret")
+            )
         }
 
         buildFeatures {

@@ -5,10 +5,13 @@ import com.teamsolply.solply.ui.base.UiIntent
 import com.teamsolply.solply.ui.base.UiState
 
 data class RegisterPlaceState(
-    val d: String = ""
+    val placeName: String = ""
 ) : UiState
 
 sealed interface RegisterPlaceIntent : UiIntent {
+    data class InputPlaceNameText(
+        val text: String
+    ) : RegisterPlaceIntent
 }
 
 sealed interface RegisterPlaceSideEffect : SideEffect
