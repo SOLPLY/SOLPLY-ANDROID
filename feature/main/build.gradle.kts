@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.feature.maps)
     implementation(projects.feature.collection)
     implementation(projects.feature.mypage)
+    implementation(projects.feature.search)
     implementation(libs.androidx.splashscreen)
     implementation(libs.lottie)
     implementation(libs.lottie.compose)

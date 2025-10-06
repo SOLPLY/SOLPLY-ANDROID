@@ -15,11 +15,15 @@ fun NavController.navigatePlace(navOptions: NavOptions) {
 
 fun NavGraphBuilder.placeNavGraph(
     paddingValues: PaddingValues,
+    navigateToFavoriteTown: (Long) -> Unit,
+    navigateToSearch: () -> Unit,
     navigateToMaps: (String, Long, Long) -> Unit
 ) {
     composable<Place> {
         PlaceRoute(
             paddingValues = paddingValues,
+            navigateToFavoriteTown = navigateToFavoriteTown,
+            navigateToSearch = navigateToSearch,
             navigateToMaps = navigateToMaps
         )
     }

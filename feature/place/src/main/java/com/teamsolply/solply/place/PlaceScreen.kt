@@ -42,7 +42,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamsolply.solply.course.favoriteTown.FavoriteTownDialog
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
@@ -57,7 +56,6 @@ import com.teamsolply.solply.place.model.PlaceData
 import com.teamsolply.solply.place.model.RecommendPlaceInfo
 import com.teamsolply.solply.place.model.TagEntity
 import com.teamsolply.solply.place.util.LocationPermissionRequest
-import com.teamsolply.solply.search.SearchDialog
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import toPlaceType
@@ -67,6 +65,8 @@ import toPlaceTypeFilterItem
 @Composable
 fun PlaceRoute(
     paddingValues: PaddingValues,
+    navigateToFavoriteTown: (Long) -> Unit,
+    navigateToSearch: () -> Unit,
     navigateToMaps: (String, Long, Long) -> Unit,
     viewModel: PlaceViewModel = hiltViewModel()
 ) {
@@ -77,6 +77,8 @@ fun PlaceRoute(
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
+                is PlaceSideEffect.NavigateToFavoriteTown -> navigateToFavoriteTown(state.userInfo.selectedTown.townId)
+                PlaceSideEffect.NavigateToSearch -> navigateToSearch()
                 is PlaceSideEffect.NavigateToMap -> {
                     navigateToMaps(
                         MapsType.PLACE_DETAIL.name,
@@ -107,14 +109,13 @@ fun PlaceRoute(
         },
         navigateToTownSelect = {
             viewModel.sendIntent(
-                PlaceIntent.ChangeFavoriteDialogVisibility(
-                    visible = true,
+                PlaceIntent.NavigateToFavoriteTown(
                     selectedTownId = state.userInfo.selectedTown.townId
                 )
             )
         },
-        changeSearchDialogVisibility = { visible ->
-            viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = visible))
+        changeSearchDialogVisibility = {
+            viewModel.sendIntent(PlaceIntent.NavigateToSearch)
         },
         modifier = Modifier.padding(paddingValues)
     )
@@ -176,35 +177,6 @@ fun PlaceRoute(
             )
         }
     }
-
-    if (state.isSearchDialogVisible) {
-        SearchDialog(
-            onDismissRequest = {
-                viewModel.sendIntent(PlaceIntent.ChangeSearchDialogVisibility(visible = false))
-            },
-            navigateToPlaceDetail = { placeId, townId ->
-                viewModel.sendIntent(PlaceIntent.PlaceClicked(placeId = placeId, townId = townId))
-            },
-            navigateToRegisterPlace = {
-                // TODO. 장소 등록하기
-            }
-        )
-    }
-
-    if (state.isFavoriteDialogVisible) {
-        FavoriteTownDialog(
-            paddingValues = paddingValues,
-            selectedTownId = state.userInfo.selectedTown.townId,
-            navigateToBack = { selectedTownId ->
-                viewModel.sendIntent(
-                    PlaceIntent.ChangeFavoriteDialogVisibility(
-                        visible = false,
-                        selectedTownId = selectedTownId
-                    )
-                )
-            }
-        )
-    }
 }
 
 @Composable
@@ -215,7 +187,7 @@ fun PlaceScreen(
     onClickMainFilterChip: () -> Unit,
     onClickSubFilterChip: () -> Unit,
     navigateToTownSelect: () -> Unit,
-    changeSearchDialogVisibility: (Boolean) -> Unit,
+    changeSearchDialogVisibility: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp

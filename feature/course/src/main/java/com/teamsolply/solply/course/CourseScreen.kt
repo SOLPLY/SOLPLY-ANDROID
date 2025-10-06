@@ -21,18 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teamsolply.solply.course.favoriteTown.FavoriteTownDialog
 import com.teamsolply.solply.designsystem.component.card.SolplyCourseCard
 import com.teamsolply.solply.designsystem.component.header.SolplyHomeHeader
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.search.SearchDialog
 import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun CourseRoute(
     paddingValues: PaddingValues,
+    navigateToFavoriteTown: (Long) -> Unit,
+    navigateToSearch: () -> Unit,
     navigateToMaps: (String, Long, Long) -> Unit,
     viewModel: CourseViewModel = hiltViewModel()
 ) {
@@ -45,6 +45,8 @@ fun CourseRoute(
     LaunchedEffectWithLifecycle {
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
+                is CourseSideEffect.NavigateToFavoriteTown -> navigateToFavoriteTown(state.user.selectedTown.townId)
+                CourseSideEffect.NavigateToSearch -> navigateToSearch()
                 is CourseSideEffect.NavigateToCourseMap -> {
                     navigateToMaps(
                         MapsType.ADD_COURSE.name,
@@ -70,39 +72,17 @@ fun CourseRoute(
             viewModel.sendIntent(CourseIntent.CourseCardClick(courseId = courseId))
         },
         navigateToTownSelect = {
-            viewModel.sendIntent(CourseIntent.ChangeFavoriteDialogVisibility(visible = true, selectedTownId = state.user.selectedTown.townId))
+            viewModel.sendIntent(
+                CourseIntent.NavigateToFavoriteTown(
+                    selectedTownId = state.user.selectedTown.townId
+                )
+            )
         },
-        changeSearchDialogVisibility = { visible ->
-            viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = visible))
+        changeSearchDialogVisibility = {
+            viewModel.sendIntent(CourseIntent.NavigateToSearch)
         },
         modifier = Modifier.padding(paddingValues)
     )
-
-    if (state.isFavoriteDialogVisible) {
-        FavoriteTownDialog(
-            paddingValues = paddingValues,
-            selectedTownId = state.user.selectedTown.townId,
-            navigateToBack = { selectedTownId ->
-                viewModel.sendIntent(
-                    CourseIntent.ChangeFavoriteDialogVisibility(visible = false, selectedTownId = selectedTownId)
-                )
-            }
-        )
-    }
-
-    if (state.isSearchDialogVisible) {
-        SearchDialog(
-            onDismissRequest = {
-                viewModel.sendIntent(CourseIntent.ChangeSearchDialogVisibility(visible = false))
-            },
-            navigateToPlaceDetail = { placeId, townId ->
-                viewModel.sendIntent(CourseIntent.PlaceClicked(placeId = placeId, townId = townId))
-            },
-            navigateToRegisterPlace = {
-                // TODO. 장소 등록하기
-            }
-        )
-    }
 }
 
 @Composable
@@ -110,7 +90,7 @@ fun CourseScreen(
     state: CourseState,
     navigateToMaps: (Long) -> Unit,
     navigateToTownSelect: () -> Unit,
-    changeSearchDialogVisibility: (Boolean) -> Unit,
+    changeSearchDialogVisibility: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val courseList = state.courseList

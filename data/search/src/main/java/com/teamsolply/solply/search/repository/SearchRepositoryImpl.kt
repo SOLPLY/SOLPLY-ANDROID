@@ -19,7 +19,8 @@ class SearchRepositoryImpl @Inject constructor(
                     thumbnailImageUrl = searchResult.thumbnailImageUrl,
                     primaryTag = PlaceType.fromApiCode(searchResult.primaryTag),
                     address = searchResult.address,
-                    isBookmarked = searchResult.isBookmarked
+                    isBookmarked = searchResult.isBookmarked,
+                    townId = searchResult.townId
                 )
             }
         }

@@ -24,7 +24,7 @@ fun SolplyHomeHeader(
     townName: String,
     modifier: Modifier = Modifier,
     onClickTownName: () -> Unit,
-    changeSearchDialogVisibility: (Boolean) -> Unit
+    changeSearchDialogVisibility: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -76,7 +76,7 @@ fun SolplyHomeHeader(
                 modifier = Modifier
                     .padding(1.dp)
                     .size(24.dp)
-                    .customClickable(rippleEnabled = false) { changeSearchDialogVisibility(true) }
+                    .customClickable(rippleEnabled = false) { changeSearchDialogVisibility() }
             )
         }
     }

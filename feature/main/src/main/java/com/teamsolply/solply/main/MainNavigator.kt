@@ -21,6 +21,7 @@ import com.teamsolply.solply.mypage.profile.navigation.navigateProfile
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
+import com.teamsolply.solply.search.navigation.navigateSearch
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -114,6 +115,13 @@ internal class MainNavigator(
         navController.popBackStack()
     }
 
+    fun navigateFavoriteTownToMain(selectedTownId: Long?) {
+        navController.previousBackStackEntry
+            ?.savedStateHandle
+            ?.set("selectedTownId", selectedTownId)
+        navController.popBackStack()
+    }
+
     fun navigateToPlaceCollection(
         townId: Long,
         townName: String,
@@ -154,8 +162,15 @@ internal class MainNavigator(
         )
     }
 
-    fun navigateToFavoriteTown(navOptions: NavOptions = navOptions {}) {
-        navController.navigateFavoriteTown(navOptions)
+    fun navigateToFavoriteTown(navOptions: NavOptions = navOptions {}, selectedTownId: Long) {
+        navController.navigateFavoriteTown(navOptions = navOptions, selectedTownId = selectedTownId)
+    }
+
+    fun navigateToSearch() {
+        val navOptions = navOptions {}
+        navController.navigateSearch(
+            navOptions = navOptions
+        )
     }
 
     @Composable

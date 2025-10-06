@@ -22,5 +22,7 @@ data class SearchResult(
     @SerialName("address")
     val address: String,
     @SerialName("isBookmarked")
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean,
+    @SerialName("townId")
+    val townId: Long
 )

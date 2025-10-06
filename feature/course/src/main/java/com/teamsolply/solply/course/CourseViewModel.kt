@@ -40,21 +40,13 @@ class CourseViewModel @Inject constructor(
                 }
             }
 
-            is CourseIntent.ChangeFavoriteDialogVisibility -> {
-                if (uiState.value.user.selectedTown.townId != intent.selectedTownId) {
-                    intent.selectedTownId?.let { id ->
-                        viewModelScope.launch {
-                            getUserInfo()
-                            getCourseList(id)
-                        }
-                    }
-                }
-                reduce { copy(isFavoriteDialogVisible = intent.visible) }
-            }
+            is CourseIntent.NavigateToFavoriteTown -> postSideEffect(
+                CourseSideEffect.NavigateToFavoriteTown(
+                    selectedTownId = intent.selectedTownId
+                )
+            )
 
-            is CourseIntent.ChangeSearchDialogVisibility -> reduce {
-                copy(isSearchDialogVisible = intent.visible)
-            }
+            is CourseIntent.NavigateToSearch -> postSideEffect(CourseSideEffect.NavigateToSearch)
 
             is CourseIntent.PlaceClicked -> {
                 postSideEffect(

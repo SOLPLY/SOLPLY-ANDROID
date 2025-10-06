@@ -139,20 +139,13 @@ class PlaceViewModel @Inject constructor(
                 )
             }
 
-            is PlaceIntent.ChangeSearchDialogVisibility -> reduce {
-                copy(isSearchDialogVisible = intent.visible)
-            }
+            is PlaceIntent.NavigateToSearch -> postSideEffect(PlaceSideEffect.NavigateToSearch)
 
-            is PlaceIntent.ChangeFavoriteDialogVisibility -> {
-                if (!intent.visible && uiState.value.userInfo.selectedTown.townId != intent.selectedTownId) {
-                    intent.selectedTownId?.let {
-                        viewModelScope.launch {
-                            fetchInitInfo()
-                        }
-                    }
-                }
-                reduce { copy(isFavoriteDialogVisible = intent.visible) }
-            }
+            is PlaceIntent.NavigateToFavoriteTown -> postSideEffect(
+                PlaceSideEffect.NavigateToFavoriteTown(
+                    selectedTownId = intent.selectedTownId
+                )
+            )
         }
     }
 
