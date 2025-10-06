@@ -1,6 +1,5 @@
 package com.teamsolply.solply.search
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -39,10 +38,12 @@ import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.search.component.SearchItem
 import com.teamsolply.solply.ui.extension.clearFocusOnTapOutside
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SearchDialog(
+fun SearchScreen(
     paddingValues: PaddingValues,
     navigateToPlaceDetail: (String, Long, Long) -> Unit,
     navigateToRegisterPlace: () -> Unit,
@@ -53,13 +54,19 @@ fun SearchDialog(
     val focusManager = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
     val blankFocus = remember { FocusRequester() }
-    val handleDismiss = {
-        viewModel.resetSearchState()
-        focusManager.clearFocus(force = true)
-        keyboard?.hide()
-        navigateToBack()
-    }
 
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            when (sideEffect) {
+                SearchSideEffect.NavigateToRegisterPlace -> navigateToRegisterPlace()
+                is SearchSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
+                    MapsType.PLACE_DETAIL.name,
+                    sideEffect.placeId,
+                    sideEffect.townId
+                )
+            }
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +98,7 @@ fun SearchDialog(
                 modifier = Modifier
                     .padding(start = 16.dp, top = 16.dp, bottom = 33.dp)
                     .customClickable(rippleEnabled = false) {
-                        handleDismiss()
+                        navigateToBack()
                     }
             ) {
                 Icon(
@@ -140,12 +147,12 @@ fun SearchDialog(
                                 placeAddress = item.address,
                                 placeImageUrl = item.thumbnailImageUrl,
                                 onClick = {
-                                    navigateToPlaceDetail(
-                                        MapsType.PLACE_DETAIL.name,
-                                        item.placeId,
-                                        item.townId
+                                    viewModel.sendIntent(
+                                        SearchIntent.PlaceDetailClick(
+                                            placeId = item.placeId,
+                                            townId = item.townId
+                                        )
                                     )
-                                    handleDismiss()
                                 }
                             )
                         }
@@ -164,7 +171,7 @@ fun SearchDialog(
                                     bottom = 250.dp
                                 )
                                 .customClickable(rippleEnabled = false) {
-                                    navigateToRegisterPlace()
+                                    viewModel.sendIntent(SearchIntent.RegisterPlaceClick)
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -193,7 +200,7 @@ fun SearchDialog(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .customClickable(rippleEnabled = false) {
-                            navigateToRegisterPlace()
+                            viewModel.sendIntent(SearchIntent.RegisterPlaceClick)
                         },
                     verticalAlignment = Alignment.CenterVertically
                 ) {

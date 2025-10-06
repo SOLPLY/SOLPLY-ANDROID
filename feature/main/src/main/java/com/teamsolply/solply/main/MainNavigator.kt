@@ -21,6 +21,7 @@ import com.teamsolply.solply.mypage.profile.navigation.navigateProfile
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
+import com.teamsolply.solply.registerplace.navigation.navigateRegisterPlace
 import com.teamsolply.solply.search.navigation.navigateSearch
 
 internal class MainNavigator(
@@ -171,6 +172,11 @@ internal class MainNavigator(
         navController.navigateSearch(
             navOptions = navOptions
         )
+    }
+
+    fun navigateToRegisterPlace() {
+        val navOptions = navOptions {}
+        navController.navigateRegisterPlace(navOptions = navOptions)
     }
 
     @Composable

@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.teamsolply.solply.navigation.Route
-import com.teamsolply.solply.search.SearchDialog
+import com.teamsolply.solply.search.SearchScreen
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateSearch(navOptions: NavOptions) {
@@ -20,7 +20,7 @@ fun NavGraphBuilder.searchNavGraph(
     navigateToBack: () -> Unit
 ) {
     composable<Search> {
-        SearchDialog(
+        SearchScreen(
             paddingValues = paddingValues,
             navigateToPlaceDetail = navigateToPlaceDetail,
             navigateToRegisterPlace = navigateToRegisterPlace,

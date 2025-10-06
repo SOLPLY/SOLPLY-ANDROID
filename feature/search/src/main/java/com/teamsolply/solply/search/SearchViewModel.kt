@@ -35,6 +35,14 @@ class SearchViewModel @Inject constructor(
                     }
                 }
             }
+
+            SearchIntent.RegisterPlaceClick -> postSideEffect(SearchSideEffect.NavigateToRegisterPlace)
+            is SearchIntent.PlaceDetailClick -> postSideEffect(
+                SearchSideEffect.NavigateToPlaceDetail(
+                    placeId = intent.placeId,
+                    townId = intent.townId
+                )
+            )
         }
     }
 

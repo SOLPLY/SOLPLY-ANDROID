@@ -45,6 +45,7 @@ import com.teamsolply.solply.mypage.profile.navigation.profileNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
 import com.teamsolply.solply.place.navigation.placeNavGraph
+import com.teamsolply.solply.registerplace.navigation.registerPlaceNavGraph
 import com.teamsolply.solply.search.navigation.Search
 import com.teamsolply.solply.search.navigation.searchNavGraph
 import kotlinx.collections.immutable.toPersistentList
@@ -376,7 +377,11 @@ internal fun MainScreen(
                                 navOptions = navOptions
                             )
                         },
-                        navigateToRegisterPlace = {},
+                        navigateToRegisterPlace = navigator::navigateToRegisterPlace,
+                        navigateToBack = navigator::navigateToBack
+                    )
+                    registerPlaceNavGraph(
+                        paddingValues = innerPadding,
                         navigateToBack = navigator::navigateToBack
                     )
                 }

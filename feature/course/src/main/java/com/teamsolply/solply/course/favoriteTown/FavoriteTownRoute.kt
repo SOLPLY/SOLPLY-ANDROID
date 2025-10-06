@@ -62,63 +62,58 @@ fun FavoriteTownRoute(
         viewModel.sendIntent((FavoriteTownIntent.LoadFavoriteTownList(selectedTownId = selectedTownId)))
     }
 
-    Box(
-        modifier = Modifier
+    Column(
+        modifier = modifier
             .fillMaxSize()
-            .background(color = SolplyTheme.colors.white)
             .padding(paddingValues)
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
+        FavoriteTownTopBar(
+            onBackButtonClick = handleDismiss,
+            onReturnToHomeButtonClick = handleDismiss
+        )
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 16.dp)
+                .background(SolplyTheme.colors.white)
         ) {
-            FavoriteTownTopBar(
-                onBackButtonClick = handleDismiss,
-                onReturnToHomeButtonClick = handleDismiss
+            LeftRegionPane(
+                regions = regions,
+                selectedRegionId = state.selectedRegionId,
+                onSelect = { id -> viewModel.sendIntent(FavoriteTownIntent.SelectRegion(id)) }
             )
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 16.dp)
-                    .background(SolplyTheme.colors.white)
-            ) {
-                LeftRegionPane(
-                    regions = regions,
-                    selectedRegionId = state.selectedRegionId,
-                    onSelect = { id -> viewModel.sendIntent(FavoriteTownIntent.SelectRegion(id)) }
-                )
 
-                VerticalDivider(
-                    modifier = Modifier.fillMaxHeight(),
-                    color = SolplyTheme.colors.gray100,
-                    thickness = 1.dp
-                )
+            VerticalDivider(
+                modifier = Modifier.fillMaxHeight(),
+                color = SolplyTheme.colors.gray100,
+                thickness = 1.dp
+            )
 
-                RightTownPane(
-                    towns = towns,
-                    selectedTownId = state.selectedTownId,
-                    onSelect = { id -> viewModel.sendIntent(FavoriteTownIntent.SelectTown(id)) }
-                )
-            }
-
-            SolplyBasicButton(
-                text = "완료",
-                modifier = Modifier
-                    .padding(bottom = 24.dp, start = 20.dp, end = 20.dp),
-                onClick = {
-                    if (isButtonEnabled) {
-                        viewModel.sendIntent(FavoriteTownIntent.ConfirmSelection)
-                    }
-                },
-                selected = isButtonEnabled,
-                textStyle = SolplyTheme.typography.button16M,
-                textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
-                enabledBackgroundColor = SolplyTheme.colors.gray900,
-                disabledBackgroundColor = SolplyTheme.colors.gray300
+            RightTownPane(
+                towns = towns,
+                selectedTownId = state.selectedTownId,
+                onSelect = { id -> viewModel.sendIntent(FavoriteTownIntent.SelectTown(id)) }
             )
         }
+
+        SolplyBasicButton(
+            text = "완료",
+            modifier = Modifier
+                .padding(bottom = 24.dp, start = 20.dp, end = 20.dp),
+            onClick = {
+                if (isButtonEnabled) {
+                    viewModel.sendIntent(FavoriteTownIntent.ConfirmSelection)
+                }
+            },
+            selected = isButtonEnabled,
+            textStyle = SolplyTheme.typography.button16M,
+            textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
+            enabledBackgroundColor = SolplyTheme.colors.gray900,
+            disabledBackgroundColor = SolplyTheme.colors.gray300
+        )
     }
 }
+
 
 @Composable
 private fun LeftRegionPane(
