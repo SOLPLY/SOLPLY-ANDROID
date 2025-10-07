@@ -1,6 +1,8 @@
 package com.teamsolply.solply.designsystem.component.dropdown
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -90,8 +92,8 @@ fun SolplyBasicDropDown(
         HorizontalDivider(color = SolplyTheme.colors.gray300)
         AnimatedVisibility(
             visible = isDropped,
-            enter = slideInVertically(),
-            exit = slideOutVertically()
+            enter = expandVertically(expandFrom = Alignment.Top),
+            exit = shrinkVertically(shrinkTowards = Alignment.Top)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
