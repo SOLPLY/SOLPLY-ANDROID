@@ -2,7 +2,7 @@ package com.teamsolply.solply.maps
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.teamsolply.solply.maps.component.dialog.getFileName
+import com.teamsolply.solply.designsystem.component.card.getFileName
 import com.teamsolply.solply.maps.model.CoursePlace
 import com.teamsolply.solply.maps.model.CourseSaveEntity
 import com.teamsolply.solply.maps.model.CourseSaveType

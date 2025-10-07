@@ -1,14 +1,10 @@
 package com.teamsolply.solply.maps.component.dialog
 
-import android.content.ContentResolver
 import android.net.Uri
-import android.provider.OpenableColumns
-import android.webkit.MimeTypeMap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -25,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,19 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -63,13 +52,14 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
+import com.teamsolply.solply.designsystem.component.card.RegisterPlaceImage
+import com.teamsolply.solply.designsystem.component.card.getFileName
 import com.teamsolply.solply.designsystem.component.chip.CheckedCircle
 import com.teamsolply.solply.designsystem.component.textfield.SolplyFixedReportTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.ui.extension.clearFocusOnTapOutside
 import com.teamsolply.solply.ui.extension.customClickable
-import com.teamsolply.solply.ui.image.AdaptationImage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -329,7 +319,7 @@ fun ReportContentScreen(
             )
         }
 
-        ReportPlaceImage(
+        RegisterPlaceImage(
             selectedUris = selectedUris,
             onAddClick = {
                 when {
@@ -349,83 +339,6 @@ fun ReportContentScreen(
                 }
             }
         )
-    }
-}
-
-@Composable
-fun ReportPlaceImage(
-    selectedUris: List<Uri>,
-    onAddClick: () -> Unit
-) {
-    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        repeat(3) { index ->
-            when {
-                index < selectedUris.size -> {
-                    Box(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(SolplyTheme.colors.gray100),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        AdaptationImage(
-                            imageUrl = selectedUris[index].toString(),
-                            contentDescription = "selected image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                }
-
-                index == selectedUris.size && selectedUris.size < 3 -> {
-                    Box(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .background(
-                                color = SolplyTheme.colors.gray200,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .customClickable(rippleEnabled = false) {
-                                onAddClick()
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_cross),
-                            contentDescription = "add_picture",
-                            tint = SolplyTheme.colors.gray400
-                        )
-                    }
-                }
-
-                else -> {
-                    val borderColor = SolplyTheme.colors.gray400
-                    Box(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .drawBehind {
-                                val strokeWidth = 1.dp.toPx()
-                                val corner = 16.dp.toPx()
-                                val dash = floatArrayOf(4.dp.toPx(), 4.dp.toPx())
-                                val inset = strokeWidth / 2f
-                                drawRoundRect(
-                                    color = borderColor,
-                                    topLeft = Offset(inset, inset),
-                                    size = Size(
-                                        size.width - strokeWidth,
-                                        size.height - strokeWidth
-                                    ),
-                                    cornerRadius = CornerRadius(corner, corner),
-                                    style = Stroke(
-                                        width = strokeWidth,
-                                        pathEffect = PathEffect.dashPathEffect(dash)
-                                    )
-                                )
-                            }
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -460,19 +373,4 @@ private fun ReportSubmittingScreen() {
             style = SolplyTheme.typography.display20Sb
         )
     }
-}
-
-fun ContentResolver.getFileName(uri: Uri): String {
-    query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
-        val idx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-        if (idx >= 0 && cursor.moveToFirst()) {
-            val name = cursor.getString(idx)
-            if (!name.isNullOrBlank()) return name
-        }
-    }
-    uri.path?.substringAfterLast('/')?.takeIf { it.isNotBlank() && it.contains('.') }
-        ?.let { return it }
-    val mime = getType(uri)
-    val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime) ?: "jpg"
-    return "image_${System.currentTimeMillis()}.$ext"
 }

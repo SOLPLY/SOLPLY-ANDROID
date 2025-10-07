@@ -58,6 +58,41 @@ class RegisterPlaceViewModel @Inject constructor(
                     )
                 }
             }
+
+            is RegisterPlaceIntent.ClickPlaceKeyword -> {
+                reduce {
+                    val updatedKeywords =
+                        if (selectedPlaceKeyword.contains(intent.placeKeywordId)) {
+                            selectedPlaceKeyword - intent.placeKeywordId
+                        } else {
+                            selectedPlaceKeyword + intent.placeKeywordId
+                        }
+                    copy(selectedPlaceKeyword = updatedKeywords)
+                }
+            }
+
+            is RegisterPlaceIntent.ClickPlaceFeature -> {
+                reduce {
+                    val updatedFeatures =
+                        if (selectedPlaceKeyword.contains(intent.placeFeatureId)) {
+                            selectedPlaceKeyword - intent.placeFeatureId
+                        } else {
+                            selectedPlaceKeyword + intent.placeFeatureId
+                        }
+                    copy(selectedPlaceFeature = updatedFeatures)
+                }
+            }
+
+            is RegisterPlaceIntent.InputRegisterPlaceReason -> reduce {
+                copy(registerPlaceReason = intent.text)
+            }
+
+            is RegisterPlaceIntent.SelectedReportUris -> reduce {
+                val current = selectedReportUris
+                val remain = (3 - current.size).coerceAtLeast(0)
+                val income = intent.uris.take(remain)
+                copy(selectedReportUris = (current + income))
+            }
         }
     }
 

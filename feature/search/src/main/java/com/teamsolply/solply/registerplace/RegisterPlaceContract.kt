@@ -1,5 +1,6 @@
 package com.teamsolply.solply.registerplace
 
+import android.net.Uri
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.search.model.NaverLocalSearchResponseEntity
 import com.teamsolply.solply.ui.base.SideEffect
@@ -18,6 +19,15 @@ data class RegisterPlaceState(
 
     // 두번째
     val isPlaceTypeDropdownExpanded: Boolean = false,
+
+    // 장소 키워드
+    val selectedPlaceKeyword: List<Long> = persistentListOf(),
+    // 장소 특징
+    val selectedPlaceFeature: List<Long> = persistentListOf(),
+    // 장소 이유
+    val registerPlaceReason: String = "",
+    // 장소 사진
+    val selectedReportUris: List<Uri> = persistentListOf(),
 ) : UiState {
     val resultCount: Int get() = searchResults.size
     val hasQuery: Boolean get() = placeName.isNotBlank()
@@ -35,6 +45,10 @@ sealed interface RegisterPlaceIntent : UiIntent {
 
     data object ChangePlaceTypeDropDownVisible : RegisterPlaceIntent
     data class ClickDropDownItem(val placeType: PlaceType) : RegisterPlaceIntent
+    data class ClickPlaceKeyword(val placeKeywordId: Long) : RegisterPlaceIntent
+    data class ClickPlaceFeature(val placeFeatureId: Long) : RegisterPlaceIntent
+    data class InputRegisterPlaceReason(val text: String) : RegisterPlaceIntent
+    data class SelectedReportUris(val uris: List<Uri>) : RegisterPlaceIntent
 }
 
 sealed interface RegisterPlaceSideEffect : SideEffect
