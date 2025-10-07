@@ -216,12 +216,15 @@ fun RegisterPlaceScreen(
                 placeholder = "장소 유형을 선택해주세요.",
                 onClickItem = clickDropDownItem,
                 onClickDropIcon = changePlaceTypeDropDownVisible,
-                dropDownContents = listOf(PlaceType.CAFE, PlaceType.FOOD),
+                dropDownContents = PlaceType.entries.filterNot { it == PlaceType.ALL },
                 selectedPlaceType = selectedPlaceType,
                 modifier = Modifier.padding(horizontal = 20.dp),
-                isSelected = selectedPlaceType != null,
                 isDropped = isPlaceTypeDropdownExpanded
             )
+        }
+
+        if (uiState.selectedPlaceType != null && !uiState.isPlaceTypeDropdownExpanded) {
+            Text("asd")
         }
     }
 }
