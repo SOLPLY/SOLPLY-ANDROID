@@ -33,9 +33,8 @@ sealed interface RegisterPlaceIntent : UiIntent {
         val placeAddress: String
     ) : RegisterPlaceIntent
 
-    data class SelectPlaceType(
-        val placeType: PlaceType?
-    ) : RegisterPlaceIntent
+    data object ChangePlaceTypeDropDownVisible : RegisterPlaceIntent
+    data class ClickDropDownItem(val placeType: PlaceType) : RegisterPlaceIntent
 }
 
 sealed interface RegisterPlaceSideEffect : SideEffect

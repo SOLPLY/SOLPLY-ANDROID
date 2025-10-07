@@ -71,7 +71,7 @@ fun SolplyBasicDropDown(
                 modifier = Modifier.padding(start = 20.dp)
             )
             Icon(
-                painter = painterResource(R.drawable.ic_arrow_down),
+                painter = painterResource(R.drawable.ic_arrow_down_lg),
                 contentDescription = "",
                 modifier = Modifier
                     .padding(end = 20.dp, top = 14.dp, bottom = 14.dp)

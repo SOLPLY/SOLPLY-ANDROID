@@ -42,11 +42,19 @@ class RegisterPlaceViewModel @Inject constructor(
                 }
             }
 
-            is RegisterPlaceIntent.SelectPlaceType -> {
+            is RegisterPlaceIntent.ChangePlaceTypeDropDownVisible -> {
                 reduce {
                     copy(
                         isPlaceTypeDropdownExpanded = !isPlaceTypeDropdownExpanded,
-                        selectedPlaceType = intent.placeType
+                    )
+                }
+            }
+
+            is RegisterPlaceIntent.ClickDropDownItem -> {
+                reduce {
+                    copy(
+                        selectedPlaceType = intent.placeType,
+                        isPlaceTypeDropdownExpanded = !isPlaceTypeDropdownExpanded
                     )
                 }
             }

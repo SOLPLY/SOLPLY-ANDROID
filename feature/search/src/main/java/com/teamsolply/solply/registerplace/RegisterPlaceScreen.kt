@@ -2,7 +2,6 @@ package com.teamsolply.solply.registerplace
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,7 @@ import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.textfield.SolplyRenameCourseTextField
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.PlaceType
+import com.teamsolply.solply.registerplace.component.PlaceTypeDropDown
 import com.teamsolply.solply.registerplace.component.RegisterPlaceItem
 import com.teamsolply.solply.ui.extension.addFocusCleaner
 import com.teamsolply.solply.ui.extension.customClickable
@@ -64,10 +64,11 @@ fun RegisterPlaceRoute(
         },
 
         // 장소 유형
-        selectPlaceType = { placeType ->
-            viewModel.sendIntent(
-                RegisterPlaceIntent.SelectPlaceType(placeType = placeType)
-            )
+        selectedPlaceType = uiState.selectedPlaceType,
+        isPlaceTypeDropdownExpanded = uiState.isPlaceTypeDropdownExpanded,
+        changePlaceTypeDropDownVisible = { viewModel.sendIntent(RegisterPlaceIntent.ChangePlaceTypeDropDownVisible) },
+        clickDropDownItem = { placeType ->
+            viewModel.sendIntent(RegisterPlaceIntent.ClickDropDownItem(placeType = placeType))
         }
     )
 }
@@ -82,7 +83,10 @@ fun RegisterPlaceScreen(
     selectPlaceName: (String, String) -> Unit,
 
     // 장소 유형
-    selectPlaceType: (PlaceType?) -> Unit
+    selectedPlaceType: PlaceType?,
+    isPlaceTypeDropdownExpanded: Boolean,
+    changePlaceTypeDropDownVisible: () -> Unit,
+    clickDropDownItem: (PlaceType) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     Column(
@@ -202,41 +206,22 @@ fun RegisterPlaceScreen(
         }
 
         if (uiState.isPlaceNameSuccess) {
-            //TODO 드롭다운 완성 mypage에서 가져오기
             Text(
                 text = "장소 유형",
                 modifier = Modifier.padding(start = 20.dp, top = 40.dp, bottom = 12.dp),
                 color = SolplyTheme.colors.black,
                 style = SolplyTheme.typography.body16M
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .border(
-                        width = 1.dp,
-                        color = SolplyTheme.colors.gray300,
-                        shape = RoundedCornerShape(20.dp)
-                    )
-                    .padding(horizontal = 20.dp, vertical = 14.dp)
-                    .customClickable(rippleEnabled = false) {
-                        selectPlaceType(
-                            if (uiState.isPlaceTypeDropdownExpanded) PlaceType.CAFE
-                            else null
-                        )
-                    },
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "장소 유형을 선택해주세요.",
-                    style = SolplyTheme.typography.body16R,
-                    color = SolplyTheme.colors.black
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow_down_lg),
-                    contentDescription = "under arrow"
-                )
-            }
+            PlaceTypeDropDown(
+                placeholder = "장소 유형을 선택해주세요.",
+                onClickItem = clickDropDownItem,
+                onClickDropIcon = changePlaceTypeDropDownVisible,
+                dropDownContents = listOf(PlaceType.CAFE, PlaceType.FOOD),
+                selectedPlaceType = selectedPlaceType,
+                modifier = Modifier.padding(horizontal = 20.dp),
+                isSelected = selectedPlaceType != null,
+                isDropped = isPlaceTypeDropdownExpanded
+            )
         }
     }
 }
