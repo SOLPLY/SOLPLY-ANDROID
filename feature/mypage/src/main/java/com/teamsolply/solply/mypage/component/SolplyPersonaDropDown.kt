@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.dropdown.SolplyBasicDropDown
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
-import com.teamsolply.solply.mypage.model.DropDownPersonaItem
+import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.persistentListOf
 
@@ -29,14 +29,14 @@ fun SolplyPersonaDropDown(
     placeholder: String,
     onClickItem: (Int) -> Unit,
     onClickDropIcon: () -> Unit,
-    dropDownContents: List<DropDownPersonaItem>,
+    dropDownContents: List<PersonaEntity>,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
     isDropped: Boolean = false,
     isSelected: Boolean = false
 ) {
     SolplyBasicDropDown(
-        defaultLabel = if (isSelected) dropDownContents.get(selectedIndex).label else placeholder,
+        defaultLabel = if (isSelected) dropDownContents[selectedIndex].description else placeholder,
         onClickDropIcon = onClickDropIcon,
         isDropped = isDropped,
         modifier = modifier
@@ -57,7 +57,7 @@ fun SolplyPersonaDropDown(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     Text(
-                        text = item.label,
+                        text = item.description,
                         color = SolplyTheme.colors.gray900,
                         style = SolplyTheme.typography.body16M,
                         modifier = Modifier.padding(
@@ -89,20 +89,7 @@ private fun SolplyPersonaDropDownPreview() {
                 placeholder = "조용한 공간에 오래 머물고 싶어요",
                 onClickItem = {},
                 onClickDropIcon = {},
-                dropDownContents = persistentListOf(
-                    DropDownPersonaItem(
-                        "이곳저곳 둘러보고 싶어요"
-                    ),
-                    DropDownPersonaItem(
-                        "취향이 담긴 곳을 찾고 싶어요"
-                    ),
-                    DropDownPersonaItem(
-                        "자연을 감상하며 쉬고 싶어요"
-                    ),
-                    DropDownPersonaItem(
-                        "조용한 공간에 오래 머물고 싶어요"
-                    ),
-                ),
+                dropDownContents = persistentListOf(),
                 isDropped = false,
                 selectedIndex = 0,
                 isSelected = false
@@ -115,20 +102,7 @@ private fun SolplyPersonaDropDownPreview() {
                     isSelected = true
                 },
                 onClickDropIcon = { isDropped = !isDropped },
-                dropDownContents = persistentListOf(
-                    DropDownPersonaItem(
-                        "이곳저곳 둘러보고 싶어요"
-                    ),
-                    DropDownPersonaItem(
-                        "취향이 담긴 곳을 찾고 싶어요"
-                    ),
-                    DropDownPersonaItem(
-                        "자연을 감상하며 쉬고 싶어요"
-                    ),
-                    DropDownPersonaItem(
-                        "조용한 공간에 오래 머물고 싶어요"
-                    ),
-                ),
+                dropDownContents = persistentListOf(),
                 selectedIndex = selectedIndex,
                 isSelected = isSelected
             )

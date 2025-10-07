@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun MypageSettingItem(
@@ -41,6 +42,10 @@ fun MypageSettingItem(
                 } else {
                     Modifier
                 }
+            )
+            .customClickable(
+                rippleEnabled = false,
+                onClick = onClick
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (info.isNotEmpty()) {
