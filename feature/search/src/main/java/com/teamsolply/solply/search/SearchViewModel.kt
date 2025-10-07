@@ -52,13 +52,4 @@ class SearchViewModel @Inject constructor(
                 reduce { copy(searchResult = searchResults.toPersistentList()) }
             }
     }
-
-    fun resetSearchState() {
-        reduce {
-            copy(
-                searchText = "",
-                searchResult = persistentListOf()
-            )
-        }
-    }
 }

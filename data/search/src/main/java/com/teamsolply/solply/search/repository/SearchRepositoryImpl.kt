@@ -1,8 +1,8 @@
 package com.teamsolply.solply.search.repository
 
+import androidx.core.text.HtmlCompat
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.network.service.NaverLocalSearchService
-import com.teamsolply.solply.search.mapper.toEntity
 import com.teamsolply.solply.search.model.NaverLocalSearchResponseEntity
 import com.teamsolply.solply.search.model.SearchResultEntity
 import com.teamsolply.solply.search.source.SearchRemoteDataSource
@@ -29,7 +29,24 @@ class SearchRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun searchAddress(query: String): Result<NaverLocalSearchResponseEntity> =
-        runCatching { naverLocalSearchService.searchLocal(query = query) }
-            .mapCatching { it.toEntity() }
+    override suspend fun searchAddress(query: String): Result<List<NaverLocalSearchResponseEntity>> =
+        runCatching { naverLocalSearchService.searchLocal(query = query).items }
+            .mapCatching {
+                it.map { localSearchItem ->
+                    NaverLocalSearchResponseEntity(
+                        title = HtmlCompat.fromHtml(
+                            localSearchItem.title,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        ).toString(),
+                        link = localSearchItem.link,
+                        category = localSearchItem.category,
+                        description = localSearchItem.description,
+                        telephone = localSearchItem.telephone,
+                        address = localSearchItem.address,
+                        roadAddress = localSearchItem.roadAddress,
+                        mapx = localSearchItem.mapx,
+                        mapy = localSearchItem.mapy
+                    )
+                }
+            }
 }

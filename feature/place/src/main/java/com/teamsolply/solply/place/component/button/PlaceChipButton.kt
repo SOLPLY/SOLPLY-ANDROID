@@ -47,7 +47,7 @@ fun PlaceChipButton(
             color = contentColor
         )
         Icon(
-            painter = painterResource(R.drawable.ic_under_arrow),
+            painter = painterResource(R.drawable.ic_arrow_down),
             contentDescription = null,
             tint = contentColor
         )

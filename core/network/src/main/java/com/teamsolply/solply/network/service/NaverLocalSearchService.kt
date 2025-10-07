@@ -8,7 +8,7 @@ interface NaverLocalSearchService {
     @GET("v1/search/local.json")
     suspend fun searchLocal(
         @Query("query") query: String,
-        @Query("display") display: Int = 10,
+        @Query("display") display: Int = 5,
         @Query("start") start: Int = 1,
         @Query("sort") sort: String = "random"
     ): NaverLocalSearchResponseDto
