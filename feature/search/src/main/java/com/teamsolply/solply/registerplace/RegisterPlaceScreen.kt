@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -24,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -43,6 +49,7 @@ import com.teamsolply.solply.registerplace.component.RegisterPlaceItem
 import com.teamsolply.solply.ui.extension.addFocusCleaner
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterPlaceRoute(
@@ -130,6 +137,10 @@ fun RegisterPlaceScreen(
     onSelectUris: (List<Uri>) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+
     val placeKeywords = listOf(
         PlaceKeywordItem(7L, "커피/디저트"),
         PlaceKeywordItem(8L, "작업"),
@@ -159,16 +170,18 @@ fun RegisterPlaceScreen(
     ) { uris ->
         if (uris.isNotEmpty()) onSelectUris(uris.take(remainSelectedUris))
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
             .background(color = SolplyTheme.colors.white)
             .addFocusCleaner(focusManager)
+            .imePadding()
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 16.dp, top = 16.dp, bottom = 32.dp)
+                .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
                 .customClickable(rippleEnabled = false) {
                     navigateToBack()
                 }
@@ -185,9 +198,13 @@ fun RegisterPlaceScreen(
                 style = SolplyTheme.typography.head16M
             )
         }
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = lazyListState,
+        ) {
             item {
-                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                     Text(
                         text = "장소 이름",
                         modifier = Modifier.padding(bottom = 12.dp),
@@ -255,28 +272,24 @@ fun RegisterPlaceScreen(
                         color = SolplyTheme.colors.gray800,
                         modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 16.dp)
                     )
-                    LazyColumn {
-                        val items = uiState.searchResults.toImmutableList()
-                        itemsIndexed(items) { _, item ->
-                            Column {
-                                HorizontalDivider(
-                                    thickness = 1.dp,
-                                    color = SolplyTheme.colors.gray200
-                                )
-                                RegisterPlaceItem(
-                                    placeName = item.title,
-                                    placeAddress = item.address,
-                                    onClick = selectPlaceName
-                                )
-                            }
-                        }
-                        item {
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                color = SolplyTheme.colors.gray200
-                            )
-                        }
-                    }
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = SolplyTheme.colors.gray200
+                    )
+                }
+            }
+            if (!uiState.isPlaceNameSuccess && uiState.hasQuery && uiState.resultCount > 0) {
+                val items = uiState.searchResults.toImmutableList()
+                itemsIndexed(items) { _, item ->
+                    RegisterPlaceItem(
+                        placeName = item.title,
+                        placeAddress = item.address,
+                        onClick = selectPlaceName
+                    )
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = SolplyTheme.colors.gray200
+                    )
                 }
             }
 
@@ -362,7 +375,17 @@ fun RegisterPlaceScreen(
                     SolplyFixedReportTextField(
                         value = registerPlaceReason,
                         onValueChange = inputRegisterPlaceReason,
-                        modifier = Modifier.padding(horizontal = 20.dp)
+                        onFocusChanged = { isFocused ->
+                            if (isFocused) {
+                                coroutineScope.launch {
+                                    kotlinx.coroutines.delay(200)
+                                    bringIntoViewRequester.bringIntoView()
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .bringIntoViewRequester(bringIntoViewRequester)
                     )
                     Row(
                         modifier = Modifier.padding(start = 20.dp, top = 40.dp, bottom = 12.dp),
@@ -404,7 +427,10 @@ fun RegisterPlaceScreen(
                     SolplyBasicButton(
                         text = "완료",
                         onClick = {},
-                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 24.dp)
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 72.dp),
+                        selected = uiState.placeName.isNotEmpty() && uiState.selectedPlaceKeyword.isNotEmpty() && uiState.selectedPlaceFeature.isNotEmpty(),
+                        enabledBackgroundColor = SolplyTheme.colors.gray900,
+                        disabledBackgroundColor = SolplyTheme.colors.gray300
                     )
                 }
             }

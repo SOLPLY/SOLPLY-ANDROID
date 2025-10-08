@@ -5,7 +5,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/activity_main"
-            android:theme="@style/Theme.Solply.Splash">
+            android:theme="@style/Theme.Solply.Splash"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

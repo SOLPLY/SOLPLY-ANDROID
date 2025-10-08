@@ -74,10 +74,10 @@ class RegisterPlaceViewModel @Inject constructor(
             is RegisterPlaceIntent.ClickPlaceFeature -> {
                 reduce {
                     val updatedFeatures =
-                        if (selectedPlaceKeyword.contains(intent.placeFeatureId)) {
-                            selectedPlaceKeyword - intent.placeFeatureId
+                        if (selectedPlaceFeature.contains(intent.placeFeatureId)) {
+                            selectedPlaceFeature - intent.placeFeatureId
                         } else {
-                            selectedPlaceKeyword + intent.placeFeatureId
+                            selectedPlaceFeature + intent.placeFeatureId
                         }
                     copy(selectedPlaceFeature = updatedFeatures)
                 }

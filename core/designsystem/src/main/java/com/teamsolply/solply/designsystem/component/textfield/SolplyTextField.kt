@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
@@ -332,7 +333,8 @@ fun SolplyRenameCourseTextField(
 fun SolplyFixedReportTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFocusChanged: (Boolean) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     var viewportHeightPx by remember { mutableIntStateOf(0) }
@@ -347,7 +349,8 @@ fun SolplyFixedReportTextField(
                 width = 1.dp,
                 color = SolplyTheme.colors.gray300,
                 shape = RoundedCornerShape(16.dp)
-            ),
+            )
+            .padding(start = 21.dp, top = 17.dp, end = 21.dp, bottom = 17.dp),
         contentAlignment = Alignment.TopStart
     ) {
         BasicTextField(
@@ -359,10 +362,12 @@ fun SolplyFixedReportTextField(
             maxLines = Int.MAX_VALUE,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 21.dp, top = 17.dp, end = 21.dp, bottom = 17.dp)
                 .verticalScroll(scrollState)
                 .onGloballyPositioned {
                     viewportHeightPx = it.size.height
+                }
+                .onFocusEvent { focusState ->
+                    onFocusChanged(focusState.isFocused)
                 },
             onTextLayout = { layout ->
                 if (viewportHeightPx == 0) return@BasicTextField
