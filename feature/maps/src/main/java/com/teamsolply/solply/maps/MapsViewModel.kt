@@ -514,9 +514,11 @@ internal class MapsViewModel @Inject constructor(
                         imageKeys = emptyList()
                     )
                 ).onSuccess {
+                    android.util.Log.d("PresignedUrl", "✅ 신고 성공 (이미지 없음)")
                     delay(2500)
                     sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
-                }.onFailure {
+                }.onFailure { error ->
+                    android.util.Log.e("PresignedUrl", "❌ 신고 실패 (이미지 없음): ${error.message}", error)
                     // TODO. 신고 실패 처리
                     delay(5000)
                     sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
@@ -529,6 +531,7 @@ internal class MapsViewModel @Inject constructor(
                     files = selectedFilesName.map { File(it) }
                 )
             ).onSuccess { response ->
+                android.util.Log.d("PresignedUrl", "✅ Presigned URL 발급 성공")
                 val infos = response.presignedUrlInfos
                 val resolver = context.contentResolver
                 val uris = uiState.value.selectedReportUris
@@ -551,6 +554,8 @@ internal class MapsViewModel @Inject constructor(
                     }
                 }
                 result.onSuccess { tempKeys ->
+                    android.util.Log.d("PresignedUrl", "✅ 모든 파일 업로드 완료")
+
                     mapsRepository.postReportWrongPlace(
                         placeId = uiState.value.placeDetailInfo.placeId,
                         reportRequestEntity = ReportRequestEntity(
@@ -558,15 +563,22 @@ internal class MapsViewModel @Inject constructor(
                             reportType = uiState.value.selectedReportType.name,
                             imageKeys = tempKeys
                         )
-                    ).onSuccess {
+                    ).onSuccess { error ->
+                        android.util.Log.d("PresignedUrl", "✅ 신고 완료!")
                         delay(2500)
                         sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
-                    }.onFailure {
+                    }.onFailure { error ->
+                        android.util.Log.e("PresignedUrl", "❌ 신고 API 실패: ${error.message}", error)
                         delay(5000)
                         sendIntent(MapsIntent.ChangeReportPlaceDialogVisibility(visible = false))
                     }
+                }.onFailure { error ->
+                    android.util.Log.e("PresignedUrl", "❌ 파일 업로드 실패: ${error.message}", error)
+
                 }
-            }.onFailure {
+            }.onFailure { error ->
+                android.util.Log.e("PresignedUrl", "❌ Presigned URL 발급 실패: ${error.message}", error)
+
                 // TODO. presigned url 발급 실패
             }
         }

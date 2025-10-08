@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PresignedUrlsResponseDto(
-    @SerialName("presignedUrlInfos")
+    @SerialName("presignedGetUrlInfos")
     val presignedUrlInfos: List<PresignedUrlInfo>
 )
 
