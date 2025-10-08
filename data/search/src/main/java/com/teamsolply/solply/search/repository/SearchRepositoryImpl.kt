@@ -3,7 +3,11 @@ package com.teamsolply.solply.search.repository
 import androidx.core.text.HtmlCompat
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.network.service.NaverLocalSearchService
+import com.teamsolply.solply.search.dto.request.PlaceImageDto
+import com.teamsolply.solply.search.dto.request.RegisterPlaceRequestDto
 import com.teamsolply.solply.search.model.NaverLocalSearchResponseEntity
+import com.teamsolply.solply.search.model.RegisterPlaceEntity
+import com.teamsolply.solply.search.model.RegisterPlaceResponseEntity
 import com.teamsolply.solply.search.model.SearchResultEntity
 import com.teamsolply.solply.search.source.SearchRemoteDataSource
 import javax.inject.Inject
@@ -49,4 +53,29 @@ class SearchRepositoryImpl @Inject constructor(
                     )
                 }
             }
+
+    override suspend fun requestsPlaces(registerPlaceEntity: RegisterPlaceEntity): Result<RegisterPlaceResponseEntity> =
+        runCatching {
+            searchRemoteDataSource.requestsPlaces(
+                registerPlaceRequestDto = RegisterPlaceRequestDto(
+                    placeName = registerPlaceEntity.placeName,
+                    address = registerPlaceEntity.address,
+                    mainTagId = registerPlaceEntity.mainTagId,
+                    subTagAIds = registerPlaceEntity.subTagAIds,
+                    subTagBIds = registerPlaceEntity.subTagBIds,
+                    reason = registerPlaceEntity.reason,
+                    images = registerPlaceEntity.images.map {
+                        PlaceImageDto(
+                            displayOrder = it.displayOrder,
+                            tempFileKey = it.tempFileKey
+                        )
+                    }
+                )
+            )
+        }.mapCatching {
+            RegisterPlaceResponseEntity(
+                placeRequestId = it.placeRequestId,
+                userId = it.userId
+            )
+        }
 }

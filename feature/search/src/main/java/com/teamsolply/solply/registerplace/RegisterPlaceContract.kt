@@ -49,6 +49,7 @@ sealed interface RegisterPlaceIntent : UiIntent {
     data class ClickPlaceFeature(val placeFeatureId: Long) : RegisterPlaceIntent
     data class InputRegisterPlaceReason(val text: String) : RegisterPlaceIntent
     data class SelectedReportUris(val uris: List<Uri>) : RegisterPlaceIntent
+    data object ClickRegisterPlace : RegisterPlaceIntent
 }
 
 sealed interface RegisterPlaceSideEffect : SideEffect

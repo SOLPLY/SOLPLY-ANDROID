@@ -1,6 +1,8 @@
 package com.teamsolply.solply.registerplace
 
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.model.PlaceType.Companion.toId
+import com.teamsolply.solply.search.model.RegisterPlaceEntity
 import com.teamsolply.solply.search.repository.SearchRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -93,6 +95,8 @@ class RegisterPlaceViewModel @Inject constructor(
                 val income = intent.uris.take(remain)
                 copy(selectedReportUris = (current + income))
             }
+
+            is RegisterPlaceIntent.ClickRegisterPlace -> registerPlace()
         }
     }
 
@@ -104,6 +108,22 @@ class RegisterPlaceViewModel @Inject constructor(
                         copy(searchResults = it)
                     }
                 }
+        }
+    }
+
+    private fun registerPlace() {
+        viewModelScope.launch {
+            searchRepository.requestsPlaces(
+                registerPlaceEntity = RegisterPlaceEntity(
+                    placeName = uiState.value.placeName,
+                    address = uiState.value.placeAddress,
+                    mainTagId = uiState.value.selectedPlaceType.toId(),
+                    subTagAIds = uiState.value.selectedPlaceKeyword,
+                    subTagBIds = uiState.value.selectedPlaceFeature,
+                    reason = uiState.value.registerPlaceReason,
+                    images = listOf()
+                )
+            )
         }
     }
 }

@@ -13,6 +13,16 @@ enum class PlaceType(val displayName: String) {
     UNIQUE_SPACE("이색공간");
 
     companion object {
+        fun PlaceType?.toId(): Long = when (this) {
+            CAFE -> 1L
+            FOOD -> 2L
+            BOOKSTORE -> 3L
+            WALKING -> 4L
+            SHOPPING -> 5L
+            UNIQUE_SPACE -> 6L
+            else -> -1
+        }
+
         fun fromApiName(displayName: String): PlaceType = when (displayName) {
             "카페" -> CAFE
             "음식" -> FOOD

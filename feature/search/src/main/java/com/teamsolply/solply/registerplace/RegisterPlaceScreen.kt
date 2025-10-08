@@ -104,6 +104,7 @@ fun RegisterPlaceRoute(
         onSelectUris = { uris ->
             viewModel.sendIntent(RegisterPlaceIntent.SelectedReportUris(uris = uris))
         },
+        clickRegisterPlace = { viewModel.sendIntent(RegisterPlaceIntent.ClickRegisterPlace) }
     )
 }
 
@@ -134,7 +135,8 @@ fun RegisterPlaceScreen(
     inputRegisterPlaceReason: (String) -> Unit,
     // 장소 사진
     selectedUris: List<Uri>,
-    onSelectUris: (List<Uri>) -> Unit
+    onSelectUris: (List<Uri>) -> Unit,
+    clickRegisterPlace: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
@@ -426,7 +428,7 @@ fun RegisterPlaceScreen(
                     )
                     SolplyBasicButton(
                         text = "완료",
-                        onClick = {},
+                        onClick = clickRegisterPlace,
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 72.dp),
                         selected = uiState.placeName.isNotEmpty() && uiState.selectedPlaceKeyword.isNotEmpty() && uiState.selectedPlaceFeature.isNotEmpty(),
                         enabledBackgroundColor = SolplyTheme.colors.gray900,
