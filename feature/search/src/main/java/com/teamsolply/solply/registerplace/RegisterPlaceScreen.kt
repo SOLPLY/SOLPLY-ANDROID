@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +13,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,11 +36,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
 import com.teamsolply.solply.designsystem.component.card.RegisterPlaceImage
@@ -48,7 +58,9 @@ import com.teamsolply.solply.registerplace.component.PlaceTypeDropDown
 import com.teamsolply.solply.registerplace.component.RegisterPlaceItem
 import com.teamsolply.solply.ui.extension.addFocusCleaner
 import com.teamsolply.solply.ui.extension.customClickable
+import com.teamsolply.solply.ui.lifecycle.LaunchedEffectWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -58,6 +70,14 @@ fun RegisterPlaceRoute(
     viewModel: RegisterPlaceViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffectWithLifecycle {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            when (sideEffect) {
+                RegisterPlaceSideEffect.NavigateToBack -> navigateToBack()
+            }
+        }
+    }
 
     RegisterPlaceScreen(
         uiState = uiState,
@@ -106,6 +126,17 @@ fun RegisterPlaceRoute(
         },
         clickRegisterPlace = { viewModel.sendIntent(RegisterPlaceIntent.ClickRegisterPlace) }
     )
+
+    if (uiState.registerLottieVisibility) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(SolplyTheme.colors.white),
+            contentAlignment = Alignment.Center
+        ) {
+            RegisterPlaceSubmittingScreen(isSuccess = uiState.isRegisterSuccess)
+        }
+    }
 }
 
 @Composable
@@ -136,7 +167,7 @@ fun RegisterPlaceScreen(
     // 장소 사진
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
-    clickRegisterPlace: () -> Unit
+    clickRegisterPlace: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
@@ -172,7 +203,6 @@ fun RegisterPlaceScreen(
     ) { uris ->
         if (uris.isNotEmpty()) onSelectUris(uris.take(remainSelectedUris))
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -430,13 +460,46 @@ fun RegisterPlaceScreen(
                         text = "완료",
                         onClick = clickRegisterPlace,
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 72.dp),
-                        selected = uiState.placeName.isNotEmpty() && uiState.selectedPlaceKeyword.isNotEmpty() && uiState.selectedPlaceFeature.isNotEmpty(),
+                        selected = uiState.placeName.isNotEmpty() && uiState.selectedPlaceType != null && uiState.selectedPlaceKeyword.isNotEmpty() && uiState.selectedPlaceFeature.isNotEmpty(),
                         enabledBackgroundColor = SolplyTheme.colors.gray900,
                         disabledBackgroundColor = SolplyTheme.colors.gray300
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun RegisterPlaceSubmittingScreen(isSuccess: Boolean) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.finish_onboarding))
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true
+    )
+    val targetAlpha = remember(progress) {
+        1f - ((progress - 0.6f) / 0.4f).coerceIn(0f, 1f)
+    }
+    val textAlpha by animateFloatAsState(targetValue = targetAlpha, label = "textAlpha")
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(182.dp))
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier
+                .size(270.dp)
+        )
+        Text(
+            text = "소중한 제보 감사합니다!",
+            modifier = Modifier.graphicsLayer { alpha = textAlpha },
+            color = SolplyTheme.colors.black,
+            style = SolplyTheme.typography.display20Sb
+        )
     }
 }
 

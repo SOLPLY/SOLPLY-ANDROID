@@ -9,4 +9,6 @@ android {
 dependencies {
     implementation(projects.domain.search)
     implementation(projects.domain.maps)
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
 }

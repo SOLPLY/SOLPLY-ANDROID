@@ -174,8 +174,7 @@ internal class MainNavigator(
         )
     }
 
-    fun navigateToRegisterPlace() {
-        val navOptions = navOptions {}
+    fun navigateToRegisterPlace(navOptions: NavOptions) {
         navController.navigateRegisterPlace(navOptions = navOptions)
     }
 

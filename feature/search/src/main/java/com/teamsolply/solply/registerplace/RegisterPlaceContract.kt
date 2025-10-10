@@ -13,13 +13,10 @@ data class RegisterPlaceState(
     val placeAddress: String = "",
     val selectedPlaceType: PlaceType? = null,
     val searchResults: List<NaverLocalSearchResponseEntity> = persistentListOf(),
-
     // 첫번쨰
     val isPlaceNameSuccess: Boolean = false,
-
     // 두번째
     val isPlaceTypeDropdownExpanded: Boolean = false,
-
     // 장소 키워드
     val selectedPlaceKeyword: List<Long> = persistentListOf(),
     // 장소 특징
@@ -28,6 +25,9 @@ data class RegisterPlaceState(
     val registerPlaceReason: String = "",
     // 장소 사진
     val selectedReportUris: List<Uri> = persistentListOf(),
+    // 로티
+    val registerLottieVisibility: Boolean = false,
+    val isRegisterSuccess: Boolean = false
 ) : UiState {
     val resultCount: Int get() = searchResults.size
     val hasQuery: Boolean get() = placeName.isNotBlank()
@@ -50,6 +50,9 @@ sealed interface RegisterPlaceIntent : UiIntent {
     data class InputRegisterPlaceReason(val text: String) : RegisterPlaceIntent
     data class SelectedReportUris(val uris: List<Uri>) : RegisterPlaceIntent
     data object ClickRegisterPlace : RegisterPlaceIntent
+    data class ChangeRegisterLottieVisibility(val visible: Boolean) : RegisterPlaceIntent
 }
 
-sealed interface RegisterPlaceSideEffect : SideEffect
+sealed interface RegisterPlaceSideEffect : SideEffect {
+    data object NavigateToBack : RegisterPlaceSideEffect
+}

@@ -111,6 +111,17 @@ class RegisterPlaceViewModel @Inject constructor(
             }
 
             is RegisterPlaceIntent.ClickRegisterPlace -> registerPlace()
+
+            is RegisterPlaceIntent.ChangeRegisterLottieVisibility -> reduce {
+                if (intent.visible) {
+                    copy(registerLottieVisibility = true)
+                } else {
+                    copy(
+                        registerLottieVisibility = false,
+                        isRegisterSuccess = false
+                    )
+                }
+            }
         }
     }
 
@@ -127,6 +138,12 @@ class RegisterPlaceViewModel @Inject constructor(
 
     private fun registerPlace() {
         viewModelScope.launch(Dispatchers.IO) {
+            reduce {
+                copy(
+                    registerLottieVisibility = true,
+                    isRegisterSuccess = false
+                )
+            }
             // 이미지가 없는 경우
             if (uiState.value.selectedReportUris.isEmpty()) {
                 searchRepository.requestsPlaces(
@@ -141,6 +158,11 @@ class RegisterPlaceViewModel @Inject constructor(
                     )
                 ).onSuccess {
                     android.util.Log.d("RegisterPlace", "✅ 장소 등록 성공 (이미지 없음)")
+                    reduce {
+                        copy(isRegisterSuccess = true)
+                    }
+                    delay(2500)
+                    postSideEffect(RegisterPlaceSideEffect.NavigateToBack)
                     // TODO: 성공 처리
                 }.onFailure { error ->
                     android.util.Log.e(
@@ -148,6 +170,11 @@ class RegisterPlaceViewModel @Inject constructor(
                         "❌ 장소 등록 실패 (이미지 없음): ${error.message}",
                         error
                     )
+                    reduce {
+                        copy(isRegisterSuccess = false)
+                    }
+                    delay(5000)
+                    sendIntent(RegisterPlaceIntent.ChangeRegisterLottieVisibility(visible = false))
                     // TODO: 실패 처리
                 }
                 return@launch
@@ -207,6 +234,11 @@ class RegisterPlaceViewModel @Inject constructor(
                         )
                     ).onSuccess {
                         android.util.Log.d("RegisterPlace", "✅ 장소 등록 완료!")
+                        reduce {
+                            copy(isRegisterSuccess = true)
+                        }
+                        delay(2500)
+                        postSideEffect(RegisterPlaceSideEffect.NavigateToBack)
                         // TODO: 성공 처리
                     }.onFailure { error ->
                         android.util.Log.e(
@@ -214,10 +246,20 @@ class RegisterPlaceViewModel @Inject constructor(
                             "❌ 장소 등록 API 실패: ${error.message}",
                             error
                         )
+                        reduce {
+                            copy(isRegisterSuccess = false)
+                        }
+                        delay(5000)
+                        sendIntent(RegisterPlaceIntent.ChangeRegisterLottieVisibility(visible = false))
                         // TODO: 실패 처리
                     }
                 }.onFailure { error ->
                     android.util.Log.e("RegisterPlace", "❌ 파일 업로드 실패: ${error.message}", error)
+                    reduce {
+                        copy(isRegisterSuccess = false)
+                    }
+                    delay(5000)
+                    sendIntent(RegisterPlaceIntent.ChangeRegisterLottieVisibility(visible = false))
                     // TODO: 업로드 실패 처리
                 }
             }.onFailure { error ->
@@ -226,6 +268,11 @@ class RegisterPlaceViewModel @Inject constructor(
                     "❌ Presigned URL 발급 실패: ${error.message}",
                     error
                 )
+                reduce {
+                    copy(isRegisterSuccess = false)
+                }
+                delay(5000)
+                sendIntent(RegisterPlaceIntent.ChangeRegisterLottieVisibility(visible = false))
                 // TODO: presigned url 발급 실패 처리
             }
         }

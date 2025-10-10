@@ -377,7 +377,12 @@ internal fun MainScreen(
                                 navOptions = navOptions
                             )
                         },
-                        navigateToRegisterPlace = navigator::navigateToRegisterPlace,
+                        navigateToRegisterPlace = {
+                            val navOptions = navOptions {
+                                popUpTo(Search) { inclusive = true }  // ⭐ Search를 스택에서 제거
+                            }
+                            navigator.navigateToRegisterPlace(navOptions = navOptions)
+                        },
                         navigateToBack = navigator::navigateToBack
                     )
                     registerPlaceNavGraph(
