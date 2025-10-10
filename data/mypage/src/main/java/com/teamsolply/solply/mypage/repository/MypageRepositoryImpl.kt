@@ -6,6 +6,7 @@ import com.teamsolply.solply.mypage.dto.response.toDomain
 import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.UserInfo
+import com.teamsolply.solply.mypage.model.WithdrawEntity
 import javax.inject.Inject
 
 class MypageRepositoryImpl @Inject constructor(
@@ -45,5 +46,16 @@ class MypageRepositoryImpl @Inject constructor(
 
     override suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean> = runCatching {
         mypageRemoteDataSource.checkNicknameDuplicate(nickname = nickname).isDuplicated
+    }
+
+    override suspend fun getWithdrawList(): Result<List<WithdrawEntity>> = runCatching {
+        mypageRemoteDataSource.getWithdrawList().withdrawList
+    }.mapCatching { list ->
+        list.map { reason ->
+            WithdrawEntity(
+                withdrawType = reason.withdrawType,
+                description = reason.description
+            )
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.teamsolply.solply.mypage.service
 
 import com.teamsolply.solply.mypage.dto.response.GetPersonaListResponseDto
 import com.teamsolply.solply.mypage.dto.response.GetUserInfoResponseDto
+import com.teamsolply.solply.mypage.dto.response.GetWithdrawListResponseDto
 import com.teamsolply.solply.mypage.dto.response.NicknameDuplicateResponseDto
 import com.teamsolply.solply.mypage.dto.response.PlaceListResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
@@ -25,4 +26,7 @@ interface MypageService {
     suspend fun checkNicknameDuplicate(
         @Query("nickname") nickname: String
     ): BaseResponse<NicknameDuplicateResponseDto>
+
+    @GET("api/users/withdraw/reasons")
+    suspend fun getWithdrawList(): BaseResponse<GetWithdrawListResponseDto>
 }

@@ -91,7 +91,7 @@ fun MypageScreen(
         SolplyConfirmDialog(
             text = stringResource(R.string.logout_dialog),
             confirmButtonText = stringResource(R.string.logout_dialog_confirm),
-            dismissButtonText = stringResource(R.string.mypage_dialog_cancel),
+            dismissButtonText = stringResource(R.string.dialog_cancel),
             onClickConfirm = onDialogConfirmClick,
             onClickDismiss = onDialogDismissClick
         )
