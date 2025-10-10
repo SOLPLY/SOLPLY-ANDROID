@@ -70,6 +70,7 @@ fun WithdrawRoute(
         onWithdrawButtonClick = { viewModel.sendIntent(WithdrawIntent.WithdrawButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(WithdrawIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(WithdrawIntent.DialogDismissClick) },
+        onBackButtonClick = { viewModel.sendIntent(WithdrawIntent.BackButtonClick) },
         modifier = Modifier.padding(paddingValues)
     )
 }
@@ -86,6 +87,7 @@ fun WithdrawScreen(
     onWithdrawButtonClick: () -> Unit,
     onDialogConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
+    onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (dialogState) {
@@ -108,7 +110,7 @@ fun WithdrawScreen(
             item {
                 SolplyTopBar(
                     barText = stringResource(R.string.mypage_withdraw),
-                    onBackButtonClick = {}
+                    onBackButtonClick = onBackButtonClick
                 )
             }
             itemsIndexed(withdrawList) { index, item ->
@@ -206,6 +208,7 @@ private fun WithdrawScreenPreview() {
             onDialogConfirmClick = {},
             onTextFieldValueChange = {},
             onDialogDismissClick = {},
+            onBackButtonClick = {},
             modifier = Modifier.fillMaxSize()
         )
     }

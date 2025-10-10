@@ -16,6 +16,8 @@ data class WithdrawState(
 sealed interface WithdrawIntent : UiIntent {
     data object Init : WithdrawIntent
 
+    data object BackButtonClick : WithdrawIntent
+
     data class WithdrawItemClick(val index: Int) : WithdrawIntent
     data object WithdrawButtonClick : WithdrawIntent
     data class WithdrawReasonInput(val reason: String) : WithdrawIntent

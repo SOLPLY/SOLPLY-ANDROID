@@ -18,6 +18,10 @@ class WithdrawViewModel @Inject constructor(
                 getWithdrawList()
             }
 
+            WithdrawIntent.BackButtonClick -> {
+                postSideEffect(WithdrawSideEffect.NavigateToBack)
+            }
+
             is WithdrawIntent.WithdrawReasonInput -> {
                 reduce {
                     copy(
