@@ -11,4 +11,5 @@ interface MypageRepository {
     suspend fun getPersonaList(): Result<List<PersonaEntity>>
     suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean>
     suspend fun getWithdrawList(): Result<List<WithdrawEntity>>
+    suspend fun deleteUser(): Result<Unit>
 }

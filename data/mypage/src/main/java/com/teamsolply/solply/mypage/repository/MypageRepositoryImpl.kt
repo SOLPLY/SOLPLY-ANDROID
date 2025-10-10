@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage.repository
 
-import android.util.Log
 import com.teamsolply.solply.mypage.datasource.MypageRemoteDataSource
 import com.teamsolply.solply.mypage.dto.response.toDomain
 import com.teamsolply.solply.mypage.model.PersonaEntity
@@ -35,7 +34,6 @@ class MypageRepositoryImpl @Inject constructor(
     override suspend fun getPersonaList(): Result<List<PersonaEntity>> = runCatching {
         mypageRemoteDataSource.getPersonaList().personaDtoList
     }.mapCatching { personaList ->
-        Log.d("persona: ", "repo impl start")
         personaList.map { persona ->
             PersonaEntity(
                 personaType = persona.personaType,
@@ -58,4 +56,8 @@ class MypageRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun deleteUser(): Result<Unit> =
+        runCatching { mypageRemoteDataSource.deleteUser() }
+
 }

@@ -18,8 +18,38 @@ class WithdrawViewModel @Inject constructor(
                 getWithdrawList()
             }
 
+            is WithdrawIntent.WithdrawReasonInput -> {
+                reduce {
+                    copy(
+                        withdrawReason = intent.reason,
+                        buttonEnabled = intent.reason.isNotEmpty()
+                    )
+                }
+            }
+
+            is WithdrawIntent.WithdrawItemClick -> {
+                reduce {
+                    copy(
+                        selectedIndex = intent.index,
+                        buttonEnabled = intent.index != withdrawList.lastIndex
+                    )
+                }
+            }
+
+            WithdrawIntent.WithdrawButtonClick -> {
+                reduce {
+                    copy(
+                        dialogState = true
+                    )
+                }
+            }
+
             WithdrawIntent.DialogConfirmClick -> TODO()
-            WithdrawIntent.DialogDismissClick -> TODO()
+            WithdrawIntent.DialogDismissClick -> {
+                reduce {
+                    copy(dialogState = false)
+                }
+            }
         }
     }
 
@@ -33,4 +63,11 @@ class WithdrawViewModel @Inject constructor(
         }
     }
 
+    private fun fetchWithdraw() {
+        viewModelScope.launch {
+            mypageRepository.deleteUser().onSuccess {
+                // TODO
+            }
+        }
+    }
 }

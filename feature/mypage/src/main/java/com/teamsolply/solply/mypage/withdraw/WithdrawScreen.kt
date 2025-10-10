@@ -60,14 +60,16 @@ fun WithdrawRoute(
     }
 
     WithdrawScreen(
-        withdrawList = emptyList(),
-        selectedIndex = -1,
+        withdrawList = uiState.withdrawList,
+        withdrawReason = uiState.withdrawReason,
+        selectedIndex = uiState.selectedIndex,
         buttonEnabled = uiState.buttonEnabled,
         dialogState = uiState.dialogState,
-        onWithdrawItemClick = {},
-        onTextFieldValueChange = {},
-        onDialogConfirmClick = {},
-        onDialogDismissClick = {},
+        onWithdrawItemClick = { viewModel.sendIntent(WithdrawIntent.WithdrawItemClick(it)) },
+        onTextFieldValueChange = { viewModel.sendIntent(WithdrawIntent.WithdrawReasonInput(it)) },
+        onWithdrawButtonClick = { viewModel.sendIntent(WithdrawIntent.WithdrawButtonClick) },
+        onDialogConfirmClick = { viewModel.sendIntent(WithdrawIntent.DialogConfirmClick) },
+        onDialogDismissClick = { viewModel.sendIntent(WithdrawIntent.DialogDismissClick) },
         modifier = Modifier.padding(paddingValues)
     )
 }
@@ -75,11 +77,13 @@ fun WithdrawRoute(
 @Composable
 fun WithdrawScreen(
     withdrawList: List<WithdrawEntity>,
+    withdrawReason: String,
     selectedIndex: Int,
     buttonEnabled: Boolean,
     dialogState: Boolean,
     onWithdrawItemClick: (Int) -> Unit,
     onTextFieldValueChange: (String) -> Unit,
+    onWithdrawButtonClick: () -> Unit,
     onDialogConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -140,7 +144,7 @@ fun WithdrawScreen(
                     }
                     if (index == withdrawList.lastIndex && selectedIndex == withdrawList.lastIndex) {
                         SolplyFixedReportTextField(
-                            value = "",
+                            value = withdrawReason,
                             onValueChange = { onTextFieldValueChange(it) },
                         )
                     } else {
@@ -154,7 +158,11 @@ fun WithdrawScreen(
         }
         SolplyBasicButton(
             text = stringResource(R.string.mypage_withdraw),
-            onClick = {},
+            onClick = {
+                if (buttonEnabled) {
+                    onWithdrawButtonClick()
+                }
+            },
             enabledBackgroundColor = if (buttonEnabled) {
                 SolplyTheme.colors.gray900
             } else {
@@ -189,10 +197,12 @@ private fun WithdrawScreenPreview() {
                     description = "기타 (직접 입력)"
                 )
             ),
+            withdrawReason = "",
             selectedIndex = 2,
             buttonEnabled = false,
             dialogState = false,
             onWithdrawItemClick = {},
+            onWithdrawButtonClick = {},
             onDialogConfirmClick = {},
             onTextFieldValueChange = {},
             onDialogDismissClick = {},

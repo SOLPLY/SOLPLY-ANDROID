@@ -18,13 +18,14 @@ fun NavController.navigateWithdraw(
 }
 
 fun NavGraphBuilder.withdrawNavGraph(
+    navigateToBack: () -> Unit,
     paddingValues: PaddingValues
 ) {
     composable<Withdraw> { backStackEntry ->
         val viewModel: WithdrawViewModel = hiltViewModel(backStackEntry)
         WithdrawRoute(
             paddingValues = paddingValues,
-            navigateToBack = {},
+            navigateToBack = navigateToBack,
             navigateToProfile = {},
             viewModel = viewModel
         )

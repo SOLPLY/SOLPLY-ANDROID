@@ -45,6 +45,7 @@ fun MypageRoute(
     paddingValues: PaddingValues,
     navigateToBack: () -> Unit,
     navigateToProfile: () -> Unit,
+    navigateToWithdraw: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -58,6 +59,7 @@ fun MypageRoute(
             when (sideEffect) {
                 MypageSideEffect.NavigateToBack -> navigateToBack()
                 MypageSideEffect.NavigateToProfile -> navigateToProfile()
+                MypageSideEffect.NavigateToWithdraw -> navigateToWithdraw()
             }
         }
     }
@@ -69,6 +71,7 @@ fun MypageRoute(
         onBackButtonClick = navigateToBack,
         onProfileEditClick = { viewModel.sendIntent(MypageIntent.ProfileEditClick) },
         onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
+        onWithdrawClick = { viewModel.sendIntent(MypageIntent.WithdrawClick) },
         onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(MypageIntent.DialogDismissClick) },
         modifier = Modifier.padding(paddingValues)
@@ -83,6 +86,7 @@ fun MypageScreen(
     onBackButtonClick: () -> Unit,
     onProfileEditClick: () -> Unit,
     onLogOutClick: () -> Unit,
+    onWithdrawClick: () -> Unit,
     onDialogConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -235,8 +239,8 @@ fun MypageScreen(
                 isBorderEnabled = true
             )
             MypageSettingItem(
-                text = "탈퇴하기",
-                onClick = { /* TODO */ },
+                text = stringResource(R.string.mypage_withdraw),
+                onClick = onWithdrawClick,
                 isBorderEnabled = false
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -255,6 +259,7 @@ private fun MypageScreenPreview() {
             onBackButtonClick = {},
             onProfileEditClick = {},
             onLogOutClick = {},
+            onWithdrawClick = {},
             onDialogConfirmClick = {},
             onDialogDismissClick = {}
         )

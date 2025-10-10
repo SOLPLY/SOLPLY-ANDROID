@@ -5,6 +5,7 @@ import com.teamsolply.solply.mypage.dto.response.GetUserInfoResponseDto
 import com.teamsolply.solply.mypage.dto.response.GetWithdrawListResponseDto
 import com.teamsolply.solply.mypage.dto.response.NicknameDuplicateResponseDto
 import com.teamsolply.solply.mypage.dto.response.PlaceListResponseDto
+import com.teamsolply.solply.network.model.NullableBaseResponse
 
 interface MypageRemoteDataSource {
     suspend fun getUserInfo(): GetUserInfoResponseDto
@@ -12,4 +13,5 @@ interface MypageRemoteDataSource {
     suspend fun getPersonaList(): GetPersonaListResponseDto
     suspend fun checkNicknameDuplicate(nickname: String): NicknameDuplicateResponseDto
     suspend fun getWithdrawList(): GetWithdrawListResponseDto
+    suspend fun deleteUser(): NullableBaseResponse<Unit>
 }

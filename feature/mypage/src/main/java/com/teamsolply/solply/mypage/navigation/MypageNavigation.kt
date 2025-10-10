@@ -20,6 +20,7 @@ fun NavController.navigateMypage(
 fun NavGraphBuilder.mypageNavGraph(
     navigateToBack: () -> Unit,
     navigateToProfile: () -> Unit,
+    navigateToWithdraw: () -> Unit,
     paddingValues: PaddingValues
 ) {
     composable<Mypage> { backStackEntry ->
@@ -28,6 +29,7 @@ fun NavGraphBuilder.mypageNavGraph(
             paddingValues = paddingValues,
             navigateToBack = navigateToBack,
             navigateToProfile = navigateToProfile,
+            navigateToWithdraw = navigateToWithdraw,
             viewModel = viewModel
         )
     }

@@ -19,6 +19,7 @@
     <string name="dialog_cancel">취소</string>
     <string name="logout_dialog_confirm">로그아웃</string>
 
+    <string name="withdraw_dialog">탈퇴하시겠습니까?</string>
     <string name="withdraw_dialog_confirm">탈퇴</string>
 
 </resources>

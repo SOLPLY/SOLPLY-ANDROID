@@ -13,7 +13,6 @@ class MypageRemoteDataSourceImpl @Inject constructor(
 ) : MypageRemoteDataSource {
     override suspend fun getUserInfo(): GetUserInfoResponseDto {
         val user = mypageService.getUserInfo().data
-        Log.d("getUser ", user.nickname)
         return user
     }
 
@@ -28,4 +27,7 @@ class MypageRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getWithdrawList(): GetWithdrawListResponseDto =
         mypageService.getWithdrawList().data
+
+    override suspend fun deleteUser() =
+        mypageService.deleteUser()
 }

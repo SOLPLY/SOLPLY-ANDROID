@@ -24,15 +24,16 @@ sealed interface MypageIntent : UiIntent {
     data object Init : MypageIntent
 
     data object LogOutButtonClick : MypageIntent
-    data object WithdrawButtonClick : MypageIntent
 
     data object DialogConfirmClick : MypageIntent
     data object DialogDismissClick : MypageIntent
 
     data object ProfileEditClick : MypageIntent
+    data object WithdrawClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
     data object NavigateToProfile : MypageSideEffect
+    data object NavigateToWithdraw : MypageSideEffect
 }

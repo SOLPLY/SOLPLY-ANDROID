@@ -42,6 +42,7 @@ import com.teamsolply.solply.model.SnackBarType
 import com.teamsolply.solply.mypage.navigation.Mypage
 import com.teamsolply.solply.mypage.navigation.mypageNavGraph
 import com.teamsolply.solply.mypage.profile.navigation.profileNavGraph
+import com.teamsolply.solply.mypage.withdraw.navigation.withdrawNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
 import com.teamsolply.solply.place.navigation.placeNavGraph
@@ -339,6 +340,10 @@ internal fun MainScreen(
                         navigateToProfile = {
                             val navOptions = navOptions { }
                             navigator.navigateToProfile(navOptions)
+                        },
+                        navigateToWithdraw = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToWithdraw(navOptions)
                         }
                     )
                     profileNavGraph(
@@ -351,6 +356,10 @@ internal fun MainScreen(
                             }
                             navigator.navigateToMypage(navOptions = navOptions)
                         }
+                    )
+                    withdrawNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToBack = navigator::navigateToBack
                     )
                     favoriteTownNavGraph(
                         paddingValues = innerPadding,

@@ -25,11 +25,8 @@ class MypageViewModel @Inject constructor(
                 }
             }
 
-            MypageIntent.WithdrawButtonClick -> {
-            }
-
             MypageIntent.DialogConfirmClick -> {
-                // TODO 로그아웃 api
+                fetchLogout()
                 reduce {
                     copy(dialogState = false)
                 }
@@ -43,6 +40,10 @@ class MypageViewModel @Inject constructor(
 
             MypageIntent.ProfileEditClick -> {
                 postSideEffect(MypageSideEffect.NavigateToProfile)
+            }
+
+            MypageIntent.WithdrawClick -> {
+                postSideEffect(MypageSideEffect.NavigateToWithdraw)
             }
         }
     }
@@ -70,5 +71,9 @@ class MypageViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun fetchLogout() {
+        // TODO 로그아웃 api
     }
 }
