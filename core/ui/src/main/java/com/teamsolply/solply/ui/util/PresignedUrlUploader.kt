@@ -1,4 +1,4 @@
-package com.teamsolply.solply.maps.util
+package com.teamsolply.solply.ui.util
 
 import android.content.ContentResolver
 import android.content.Context

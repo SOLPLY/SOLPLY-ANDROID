@@ -11,8 +11,8 @@ import com.teamsolply.solply.maps.model.PresignedUrlsRequestEntity
 import com.teamsolply.solply.maps.model.ReportRequestEntity
 import com.teamsolply.solply.maps.model.ReportType
 import com.teamsolply.solply.maps.repository.MapsRepository
-import com.teamsolply.solply.maps.util.uploadToPresignedUrl
 import com.teamsolply.solply.ui.base.BaseViewModel
+import com.teamsolply.solply.ui.util.uploadToPresignedUrl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.persistentListOf
