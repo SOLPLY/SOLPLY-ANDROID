@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,7 +20,8 @@ fun SavedPlaceListContainer(
 ) {
     LazyRow(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(savedPlaceList) {
             SolplyPlaceCard(
