@@ -4,6 +4,7 @@ import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.UserInfo
 import com.teamsolply.solply.mypage.model.WithdrawEntity
+import com.teamsolply.solply.mypage.model.WithdrawType
 
 interface MypageRepository {
     suspend fun getUserInfo(): Result<UserInfo>
@@ -11,5 +12,6 @@ interface MypageRepository {
     suspend fun getPersonaList(): Result<List<PersonaEntity>>
     suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean>
     suspend fun getWithdrawList(): Result<List<WithdrawEntity>>
-    suspend fun deleteUser(): Result<Unit>
+    suspend fun saveAutoSignIn(autoSignIn: Boolean): Result<Unit>
+    suspend fun deleteUser(withdrawType: WithdrawType, reason: String): Result<Unit>
 }

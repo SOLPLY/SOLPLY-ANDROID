@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -25,14 +26,19 @@ class MypageViewModel @Inject constructor(
                 }
             }
 
-            MypageIntent.DialogConfirmClick -> {
-                fetchLogout()
-                reduce {
-                    copy(dialogState = false)
+            MypageIntent.LogOutDialogConfirmClick -> {
+                viewModelScope.launch {
+                    mypageRepository.saveAutoSignIn(false).onSuccess {
+                        Log.d("logout:", "success")
+                        reduce {
+                            copy(dialogState = false)
+                        }
+                        postSideEffect(MypageSideEffect.NavigateToOauth)
+                    }
                 }
             }
 
-            MypageIntent.DialogDismissClick -> {
+            MypageIntent.LogOutDialogDismissClick -> {
                 reduce {
                     copy(dialogState = false)
                 }
@@ -71,9 +77,5 @@ class MypageViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun fetchLogout() {
-        // TODO 로그아웃 api
     }
 }

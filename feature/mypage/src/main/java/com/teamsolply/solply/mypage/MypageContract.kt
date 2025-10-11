@@ -25,8 +25,8 @@ sealed interface MypageIntent : UiIntent {
 
     data object LogOutButtonClick : MypageIntent
 
-    data object DialogConfirmClick : MypageIntent
-    data object DialogDismissClick : MypageIntent
+    data object LogOutDialogConfirmClick : MypageIntent
+    data object LogOutDialogDismissClick : MypageIntent
 
     data object ProfileEditClick : MypageIntent
     data object WithdrawClick : MypageIntent
@@ -36,4 +36,5 @@ sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
     data object NavigateToProfile : MypageSideEffect
     data object NavigateToWithdraw : MypageSideEffect
+    data object NavigateToOauth : MypageSideEffect
 }

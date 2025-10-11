@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun WithdrawRoute(
     paddingValues: PaddingValues,
     navigateToBack: () -> Unit,
-    navigateToProfile: () -> Unit,
+    navigateToOauth: () -> Unit,
     viewModel: WithdrawViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,7 +54,7 @@ fun WithdrawRoute(
         viewModel.sideEffect.collectLatest { sideEffect ->
             when (sideEffect) {
                 WithdrawSideEffect.NavigateToBack -> navigateToBack()
-                WithdrawSideEffect.NavigateToProfile -> navigateToProfile()
+                WithdrawSideEffect.NavigateToOauth -> navigateToOauth()
             }
         }
     }

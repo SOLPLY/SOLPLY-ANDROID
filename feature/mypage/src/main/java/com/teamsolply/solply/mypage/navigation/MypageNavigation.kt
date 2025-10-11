@@ -21,6 +21,7 @@ fun NavGraphBuilder.mypageNavGraph(
     navigateToBack: () -> Unit,
     navigateToProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    navigateToOauth: () -> Unit,
     paddingValues: PaddingValues
 ) {
     composable<Mypage> { backStackEntry ->
@@ -30,6 +31,7 @@ fun NavGraphBuilder.mypageNavGraph(
             navigateToBack = navigateToBack,
             navigateToProfile = navigateToProfile,
             navigateToWithdraw = navigateToWithdraw,
+            navigateToOauth = navigateToOauth,
             viewModel = viewModel
         )
     }

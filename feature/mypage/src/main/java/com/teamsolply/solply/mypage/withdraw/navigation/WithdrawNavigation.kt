@@ -19,6 +19,7 @@ fun NavController.navigateWithdraw(
 
 fun NavGraphBuilder.withdrawNavGraph(
     navigateToBack: () -> Unit,
+    navigateToOauth: () -> Unit,
     paddingValues: PaddingValues
 ) {
     composable<Withdraw> { backStackEntry ->
@@ -26,7 +27,7 @@ fun NavGraphBuilder.withdrawNavGraph(
         WithdrawRoute(
             paddingValues = paddingValues,
             navigateToBack = navigateToBack,
-            navigateToProfile = {},
+            navigateToOauth = navigateToOauth,
             viewModel = viewModel
         )
     }

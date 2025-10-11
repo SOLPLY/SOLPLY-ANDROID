@@ -1,15 +1,20 @@
 package com.teamsolply.solply.mypage.repository
 
+import android.util.Log
+import com.teamsolply.solply.mypage.datasource.MypageLocalDataSource
 import com.teamsolply.solply.mypage.datasource.MypageRemoteDataSource
+import com.teamsolply.solply.mypage.dto.request.DeleteUserRequestDto
 import com.teamsolply.solply.mypage.dto.response.toDomain
 import com.teamsolply.solply.mypage.model.PersonaEntity
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.mypage.model.UserInfo
 import com.teamsolply.solply.mypage.model.WithdrawEntity
+import com.teamsolply.solply.mypage.model.WithdrawType
 import javax.inject.Inject
 
 class MypageRepositoryImpl @Inject constructor(
-    private val mypageRemoteDataSource: MypageRemoteDataSource
+    private val mypageRemoteDataSource: MypageRemoteDataSource,
+    private val mypageLocalDataSource: MypageLocalDataSource
 ) : MypageRepository {
     override suspend fun getUserInfo(): Result<UserInfo> = runCatching {
         mypageRemoteDataSource.getUserInfo()
@@ -57,7 +62,21 @@ class MypageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteUser(): Result<Unit> =
-        runCatching { mypageRemoteDataSource.deleteUser() }
+    override suspend fun deleteUser(withdrawType: WithdrawType, reason: String): Result<Unit> =
+        runCatching {
+            Log.d("withdraw: ","repo impl start")
+            mypageRemoteDataSource.deleteUser(
+                DeleteUserRequestDto(
+                    withdrawType = withdrawType,
+                    reasonText = reason
+                )
+            )
+        }
+
+
+    override suspend fun saveAutoSignIn(autoSignIn: Boolean): Result<Unit> =
+        runCatching {
+            mypageLocalDataSource.saveAutoSignIn(autoSignIn)
+        }
 
 }

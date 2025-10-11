@@ -46,6 +46,7 @@ fun MypageRoute(
     navigateToBack: () -> Unit,
     navigateToProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    navigateToOauth: () -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -60,6 +61,7 @@ fun MypageRoute(
                 MypageSideEffect.NavigateToBack -> navigateToBack()
                 MypageSideEffect.NavigateToProfile -> navigateToProfile()
                 MypageSideEffect.NavigateToWithdraw -> navigateToWithdraw()
+                MypageSideEffect.NavigateToOauth -> navigateToOauth()
             }
         }
     }
@@ -72,8 +74,8 @@ fun MypageRoute(
         onProfileEditClick = { viewModel.sendIntent(MypageIntent.ProfileEditClick) },
         onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
         onWithdrawClick = { viewModel.sendIntent(MypageIntent.WithdrawClick) },
-        onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.DialogConfirmClick) },
-        onDialogDismissClick = { viewModel.sendIntent(MypageIntent.DialogDismissClick) },
+        onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.LogOutDialogConfirmClick) },
+        onDialogDismissClick = { viewModel.sendIntent(MypageIntent.LogOutDialogDismissClick) },
         modifier = Modifier.padding(paddingValues)
     )
 }

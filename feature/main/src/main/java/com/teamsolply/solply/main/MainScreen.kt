@@ -344,6 +344,10 @@ internal fun MainScreen(
                         navigateToWithdraw = {
                             val navOptions = navOptions { }
                             navigator.navigateToWithdraw(navOptions)
+                        },
+                        navigateToOauth = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToOauth(navOptions)
                         }
                     )
                     profileNavGraph(
@@ -359,7 +363,11 @@ internal fun MainScreen(
                     )
                     withdrawNavGraph(
                         paddingValues = innerPadding,
-                        navigateToBack = navigator::navigateToBack
+                        navigateToBack = navigator::navigateToBack,
+                        navigateToOauth = {
+                            val navOptions = navOptions { }
+                            navigator.navigateToOauth(navOptions)
+                        }
                     )
                     favoriteTownNavGraph(
                         paddingValues = innerPadding,

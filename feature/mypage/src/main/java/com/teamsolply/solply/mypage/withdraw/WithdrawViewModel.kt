@@ -1,5 +1,6 @@
 package com.teamsolply.solply.mypage.withdraw
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -48,7 +49,24 @@ class WithdrawViewModel @Inject constructor(
                 }
             }
 
-            WithdrawIntent.DialogConfirmClick -> TODO()
+            WithdrawIntent.DialogConfirmClick -> {
+                val current = uiState.value
+                viewModelScope.launch {
+                    Log.d("withdraw:", "success")
+                    mypageRepository.deleteUser(
+                        withdrawType = current.withdrawList[current.selectedIndex].withdrawType,
+                        reason = current.withdrawReason
+                    ).onSuccess {
+                        mypageRepository.saveAutoSignIn(false).onSuccess {
+                            reduce {
+                                copy(dialogState = false)
+                            }
+                            postSideEffect(WithdrawSideEffect.NavigateToOauth)
+                        }
+                    }
+                }
+            }
+
             WithdrawIntent.DialogDismissClick -> {
                 reduce {
                     copy(dialogState = false)
@@ -63,14 +81,6 @@ class WithdrawViewModel @Inject constructor(
                 reduce {
                     copy(withdrawList = it)
                 }
-            }
-        }
-    }
-
-    private fun fetchWithdraw() {
-        viewModelScope.launch {
-            mypageRepository.deleteUser().onSuccess {
-                // TODO
             }
         }
     }

@@ -28,5 +28,5 @@ sealed interface WithdrawIntent : UiIntent {
 
 sealed interface WithdrawSideEffect : SideEffect {
     data object NavigateToBack : WithdrawSideEffect
-    data object NavigateToProfile : WithdrawSideEffect
+    data object NavigateToOauth : WithdrawSideEffect
 }
