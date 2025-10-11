@@ -17,17 +17,22 @@ data class MypageState(
         profileImageUrl = ""
     ),
     val placeList: List<PlaceInfoEntity> = emptyList(),
+    val placeAllState: Boolean = false,
     val dialogState: Boolean = false
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
     data object Init : MypageIntent
 
+    data object MypageBackButtonClick : MypageIntent
+    data object PlaceAllBackButtonClick : MypageIntent
+
     data object LogOutButtonClick : MypageIntent
 
     data object LogOutDialogConfirmClick : MypageIntent
     data object LogOutDialogDismissClick : MypageIntent
 
+    data object PlaceAllClick : MypageIntent
     data object ProfileEditClick : MypageIntent
     data object WithdrawClick : MypageIntent
 }

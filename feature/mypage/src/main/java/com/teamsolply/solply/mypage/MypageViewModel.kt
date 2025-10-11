@@ -18,6 +18,10 @@ class MypageViewModel @Inject constructor(
         when (intent) {
             MypageIntent.Init -> getInitInfo()
 
+            MypageIntent.MypageBackButtonClick -> {
+                postSideEffect(MypageSideEffect.NavigateToBack)
+            }
+
             MypageIntent.LogOutButtonClick -> {
                 reduce {
                     copy(
@@ -29,7 +33,6 @@ class MypageViewModel @Inject constructor(
             MypageIntent.LogOutDialogConfirmClick -> {
                 viewModelScope.launch {
                     mypageRepository.saveAutoSignIn(false).onSuccess {
-                        Log.d("logout:", "success")
                         reduce {
                             copy(dialogState = false)
                         }
@@ -41,6 +44,18 @@ class MypageViewModel @Inject constructor(
             MypageIntent.LogOutDialogDismissClick -> {
                 reduce {
                     copy(dialogState = false)
+                }
+            }
+
+            MypageIntent.PlaceAllClick -> {
+                reduce {
+                    copy(placeAllState = true)
+                }
+            }
+
+            MypageIntent.PlaceAllBackButtonClick -> {
+                reduce {
+                    copy(placeAllState = false)
                 }
             }
 

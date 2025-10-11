@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.mypage.component.EmptyPlaceContainer
+import com.teamsolply.solply.mypage.component.MypagePlaceAllScreen
 import com.teamsolply.solply.mypage.component.MypageSettingItem
 import com.teamsolply.solply.mypage.component.SavedPlaceListContainer
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
@@ -65,19 +66,26 @@ fun MypageRoute(
             }
         }
     }
-
-    MypageScreen(
-        nickname = uiState.userInfo.nickname,
-        savedPlaceList = uiState.placeList,
-        dialogState = uiState.dialogState,
-        onBackButtonClick = navigateToBack,
-        onProfileEditClick = { viewModel.sendIntent(MypageIntent.ProfileEditClick) },
-        onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
-        onWithdrawClick = { viewModel.sendIntent(MypageIntent.WithdrawClick) },
-        onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.LogOutDialogConfirmClick) },
-        onDialogDismissClick = { viewModel.sendIntent(MypageIntent.LogOutDialogDismissClick) },
-        modifier = Modifier.padding(paddingValues)
-    )
+    if (uiState.placeAllState) {
+        MypagePlaceAllScreen(
+            placeList = uiState.placeList,
+            onBackButtonClick = { viewModel.sendIntent(MypageIntent.PlaceAllBackButtonClick) },
+            modifier = Modifier.padding(paddingValues)
+        )
+    } else
+        MypageScreen(
+            nickname = uiState.userInfo.nickname,
+            savedPlaceList = uiState.placeList.take(3),
+            dialogState = uiState.dialogState,
+            onBackButtonClick = { viewModel.sendIntent(MypageIntent.MypageBackButtonClick) },
+            onProfileEditClick = { viewModel.sendIntent(MypageIntent.ProfileEditClick) },
+            onAllClick = { viewModel.sendIntent(MypageIntent.PlaceAllClick) },
+            onLogOutClick = { viewModel.sendIntent(MypageIntent.LogOutButtonClick) },
+            onWithdrawClick = { viewModel.sendIntent(MypageIntent.WithdrawClick) },
+            onDialogConfirmClick = { viewModel.sendIntent(MypageIntent.LogOutDialogConfirmClick) },
+            onDialogDismissClick = { viewModel.sendIntent(MypageIntent.LogOutDialogDismissClick) },
+            modifier = Modifier.padding(paddingValues)
+        )
 }
 
 @Composable
@@ -87,6 +95,7 @@ fun MypageScreen(
     dialogState: Boolean,
     onBackButtonClick: () -> Unit,
     onProfileEditClick: () -> Unit,
+    onAllClick: () -> Unit,
     onLogOutClick: () -> Unit,
     onWithdrawClick: () -> Unit,
     onDialogConfirmClick: () -> Unit,
@@ -177,13 +186,36 @@ fun MypageScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "내가 등록한 장소",
+                    text = stringResource(R.string.mypage_place),
                     color = SolplyTheme.colors.black,
                     style = SolplyTheme.typography.body16M
                 )
+                if (savedPlaceList.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier
+                            .customClickable(
+                                rippleEnabled = false,
+                                onClick = onAllClick
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.mypage_place_all),
+                            style = SolplyTheme.typography.body14R,
+                            color = SolplyTheme.colors.gray600
+                        )
+                        Icon(
+                            painter = painterResource(com.teamsolply.solply.designsystem.R.drawable.ic_next_arrow),
+                            contentDescription = "",
+                            tint = SolplyTheme.colors.gray600
+                        )
+                    }
+                }
             }
             if (savedPlaceList.isEmpty()) {
                 EmptyPlaceContainer(
@@ -260,6 +292,7 @@ private fun MypageScreenPreview() {
             dialogState = false,
             onBackButtonClick = {},
             onProfileEditClick = {},
+            onAllClick = {},
             onLogOutClick = {},
             onWithdrawClick = {},
             onDialogConfirmClick = {},

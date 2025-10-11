@@ -2,6 +2,8 @@
 <resources>
     <string name="mypage_account_setting">계정 설정</string>
     <string name="mypage_customer_service">고객센터</string>
+    <string name="mypage_place">내가 등록한 장소</string>
+    <string name="mypage_place_all">전체보기</string>
     <string name="mypage_logout">로그아웃</string>
     <string name="mypage_withdraw">탈퇴하기</string>
 
