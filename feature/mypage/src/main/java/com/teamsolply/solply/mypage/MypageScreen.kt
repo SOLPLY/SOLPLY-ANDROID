@@ -32,6 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.model.MapsType
+import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.component.EmptyPlaceContainer
 import com.teamsolply.solply.mypage.component.MypagePlaceAllScreen
 import com.teamsolply.solply.mypage.component.MypageSettingItem
@@ -48,6 +50,7 @@ fun MypageRoute(
     navigateToProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
     navigateToOauth: () -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit,
     viewModel: MypageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -63,6 +66,11 @@ fun MypageRoute(
                 MypageSideEffect.NavigateToProfile -> navigateToProfile()
                 MypageSideEffect.NavigateToWithdraw -> navigateToWithdraw()
                 MypageSideEffect.NavigateToOauth -> navigateToOauth()
+                is MypageSideEffect.NavigateToMap -> navigateToMaps(
+                    MapsType.PLACE_DETAIL.name,
+                    sideEffect.placeId,
+                    sideEffect.townId
+                )
             }
         }
     }
@@ -70,6 +78,9 @@ fun MypageRoute(
         MypagePlaceAllScreen(
             placeList = uiState.placeList,
             onBackButtonClick = { viewModel.sendIntent(MypageIntent.PlaceAllBackButtonClick) },
+            onPlaceCardClick = { placeId, townId ->
+                viewModel.sendIntent(MypageIntent.PlaceCardClick(placeId, townId))
+            },
             modifier = Modifier.padding(paddingValues)
         )
     } else

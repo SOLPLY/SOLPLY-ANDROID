@@ -348,6 +348,15 @@ internal fun MainScreen(
                         navigateToOauth = {
                             val navOptions = navOptions { }
                             navigator.navigateToOauth(navOptions)
+                        },
+                        navigateToMaps = { mapsType, townId, placeId ->
+                            val navOptions = navOptions {}
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = townId,
+                                placeId = placeId,
+                                navOptions = navOptions
+                            )
                         }
                     )
                     profileNavGraph(

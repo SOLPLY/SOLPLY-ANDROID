@@ -26,6 +26,7 @@ sealed interface MypageIntent : UiIntent {
 
     data object MypageBackButtonClick : MypageIntent
     data object PlaceAllBackButtonClick : MypageIntent
+    data class PlaceCardClick(val placeId: Long, val townId: Long) : MypageIntent
 
     data object LogOutButtonClick : MypageIntent
 
@@ -42,4 +43,5 @@ sealed interface MypageSideEffect : SideEffect {
     data object NavigateToProfile : MypageSideEffect
     data object NavigateToWithdraw : MypageSideEffect
     data object NavigateToOauth : MypageSideEffect
+    data class NavigateToMap(val placeId: Long, val townId: Long) : MypageSideEffect
 }

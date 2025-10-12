@@ -31,7 +31,8 @@ class MypageRepositoryImpl @Inject constructor(
                 placeName = place.placeName,
                 placeType = place.tag,
                 imageUrls = place.imageUrl,
-                isSaved = place.isSaved
+                isSaved = place.isSaved,
+                townId = place.townId
             )
         }
     }
@@ -64,7 +65,7 @@ class MypageRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUser(withdrawType: WithdrawType, reason: String): Result<Unit> =
         runCatching {
-            Log.d("withdraw: ","repo impl start")
+            Log.d("withdraw: ", "repo impl start")
             mypageRemoteDataSource.deleteUser(
                 DeleteUserRequestDto(
                     withdrawType = withdrawType,

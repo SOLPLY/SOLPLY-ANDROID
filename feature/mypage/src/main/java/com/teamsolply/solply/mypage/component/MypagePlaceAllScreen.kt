@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.designsystem.component.topbar.SolplyTopBar
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
+import com.teamsolply.solply.mypage.MypageIntent
 import com.teamsolply.solply.mypage.R
 import com.teamsolply.solply.mypage.model.PlaceInfoEntity
 import com.teamsolply.solply.ui.extension.customClickable
@@ -29,6 +30,7 @@ import com.teamsolply.solply.ui.extension.customClickable
 fun MypagePlaceAllScreen(
     placeList: List<PlaceInfoEntity>,
     onBackButtonClick: () -> Unit,
+    onPlaceCardClick: (Long, Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -57,6 +59,7 @@ fun MypagePlaceAllScreen(
                             .customClickable(
                                 rippleEnabled = false
                             ) {
+                                onPlaceCardClick(it.townId, it.placeId)
                             },
                         contentAlignment = if (index % 2 == 0) {
                             Alignment.CenterEnd
