@@ -9,10 +9,9 @@ import com.teamsolply.solply.mypage.dto.response.PlaceListResponseDto
 import com.teamsolply.solply.network.model.BaseResponse
 import com.teamsolply.solply.network.model.NullableBaseResponse
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
-import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MypageService {
@@ -23,6 +22,13 @@ interface MypageService {
     suspend fun getPlaceList(
         @Query("townId") townId: Long,
         @Query("isBookmarkSearch") isBookmarkedSearch: Boolean = true
+    ): BaseResponse<PlaceListResponseDto>
+
+    @GET("api/users/{userId}/places")
+    suspend fun getMyReportPlaceList(
+        @Path("userId") userId: Long,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 20
     ): BaseResponse<PlaceListResponseDto>
 
     @GET("api/users/persona")

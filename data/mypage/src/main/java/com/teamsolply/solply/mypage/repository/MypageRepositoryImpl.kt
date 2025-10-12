@@ -37,6 +37,22 @@ class MypageRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getReportPlaceList(userId: Long): Result<List<PlaceInfoEntity>> =
+        runCatching {
+            mypageRemoteDataSource.getReportPlaceList(userId = userId).placeList
+        }.mapCatching { placeList ->
+            placeList.map { place ->
+                PlaceInfoEntity(
+                    placeId = place.placeId,
+                    placeName = place.placeName,
+                    placeType = place.tag,
+                    imageUrls = place.imageUrl,
+                    isSaved = place.isSaved,
+                    townId = place.townId
+                )
+            }
+        }
+
     override suspend fun getPersonaList(): Result<List<PersonaEntity>> = runCatching {
         mypageRemoteDataSource.getPersonaList().personaDtoList
     }.mapCatching { personaList ->
@@ -65,7 +81,6 @@ class MypageRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUser(withdrawType: WithdrawType, reason: String): Result<Unit> =
         runCatching {
-            Log.d("withdraw: ", "repo impl start")
             mypageRemoteDataSource.deleteUser(
                 DeleteUserRequestDto(
                     withdrawType = withdrawType,

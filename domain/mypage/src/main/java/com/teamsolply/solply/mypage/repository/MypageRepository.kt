@@ -9,6 +9,7 @@ import com.teamsolply.solply.mypage.model.WithdrawType
 interface MypageRepository {
     suspend fun getUserInfo(): Result<UserInfo>
     suspend fun getPlaceList(townId: Long): Result<List<PlaceInfoEntity>>
+    suspend fun getReportPlaceList(userId: Long): Result<List<PlaceInfoEntity>>
     suspend fun getPersonaList(): Result<List<PersonaEntity>>
     suspend fun checkNicknameDuplicate(nickname: String): Result<Boolean>
     suspend fun getWithdrawList(): Result<List<WithdrawEntity>>

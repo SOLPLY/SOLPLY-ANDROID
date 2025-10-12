@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.mypage.repository.MypageRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -90,6 +89,18 @@ class MypageViewModel @Inject constructor(
     private fun getPlaceList(townId: Long) {
         viewModelScope.launch {
             mypageRepository.getPlaceList(townId).onSuccess {
+                reduce {
+                    copy(
+                        placeList = it.toPersistentList()
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getReportPlaceList(userId: Long) {
+        viewModelScope.launch {
+            mypageRepository.getReportPlaceList(userId).onSuccess {
                 reduce {
                     copy(
                         placeList = it.toPersistentList()

@@ -21,6 +21,9 @@ class MypageRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPlaceList(townId: Long) =
         mypageService.getPlaceList(townId = townId).data
 
+    override suspend fun getReportPlaceList(userId: Long) =
+        mypageService.getMyReportPlaceList(userId = userId).data
+
     override suspend fun getPersonaList(): GetPersonaListResponseDto =
         mypageService.getPersonaList().data
 

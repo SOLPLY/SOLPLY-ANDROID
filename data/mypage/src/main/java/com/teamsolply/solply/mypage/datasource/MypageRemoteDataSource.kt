@@ -15,4 +15,5 @@ interface MypageRemoteDataSource {
     suspend fun checkNicknameDuplicate(nickname: String): NicknameDuplicateResponseDto
     suspend fun getWithdrawList(): GetWithdrawListResponseDto
     suspend fun deleteUser(deleteUserRequestDto: DeleteUserRequestDto): NullableBaseResponse<Unit>
+    suspend fun getReportPlaceList(userId: Long): PlaceListResponseDto
 }
