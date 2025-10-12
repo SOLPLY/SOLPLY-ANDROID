@@ -33,7 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.model.MapsType
-import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.mypage.component.EmptyPlaceContainer
 import com.teamsolply.solply.mypage.component.MypagePlaceAllScreen
 import com.teamsolply.solply.mypage.component.MypageSettingItem
@@ -83,7 +82,7 @@ fun MypageRoute(
             },
             modifier = Modifier.padding(paddingValues)
         )
-    } else
+    } else {
         MypageScreen(
             nickname = uiState.userInfo.nickname,
             savedPlaceList = uiState.placeList.take(3),
@@ -97,6 +96,7 @@ fun MypageRoute(
             onDialogDismissClick = { viewModel.sendIntent(MypageIntent.LogOutDialogDismissClick) },
             modifier = Modifier.padding(paddingValues)
         )
+    }
 }
 
 @Composable

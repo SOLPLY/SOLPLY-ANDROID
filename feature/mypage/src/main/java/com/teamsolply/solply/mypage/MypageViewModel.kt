@@ -60,7 +60,6 @@ class MypageViewModel @Inject constructor(
 
             is MypageIntent.PlaceCardClick -> {
                 postSideEffect(MypageSideEffect.NavigateToMap(intent.placeId, intent.townId))
-
             }
 
             MypageIntent.ProfileEditClick -> {

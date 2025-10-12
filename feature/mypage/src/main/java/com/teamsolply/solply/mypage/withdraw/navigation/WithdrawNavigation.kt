@@ -31,7 +31,6 @@ fun NavGraphBuilder.withdrawNavGraph(
             viewModel = viewModel
         )
     }
-
 }
 
 @Serializable

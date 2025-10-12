@@ -147,7 +147,7 @@ fun WithdrawScreen(
                     if (index == withdrawList.lastIndex && selectedIndex == withdrawList.lastIndex) {
                         SolplyFixedReportTextField(
                             value = withdrawReason,
-                            onValueChange = { onTextFieldValueChange(it) },
+                            onValueChange = { onTextFieldValueChange(it) }
                         )
                     } else {
                         HorizontalDivider(

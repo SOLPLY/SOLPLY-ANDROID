@@ -10,7 +10,7 @@ data class WithdrawState(
     val selectedIndex: Int = -1,
     val withdrawReason: String = "",
     val buttonEnabled: Boolean = false,
-    val dialogState: Boolean = false,
+    val dialogState: Boolean = false
 ) : UiState
 
 sealed interface WithdrawIntent : UiIntent {

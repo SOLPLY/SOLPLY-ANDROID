@@ -1,6 +1,5 @@
 package com.teamsolply.solply.mypage.repository
 
-import android.util.Log
 import com.teamsolply.solply.mypage.datasource.MypageLocalDataSource
 import com.teamsolply.solply.mypage.datasource.MypageRemoteDataSource
 import com.teamsolply.solply.mypage.dto.request.DeleteUserRequestDto
@@ -89,10 +88,8 @@ class MypageRepositoryImpl @Inject constructor(
             )
         }
 
-
     override suspend fun saveAutoSignIn(autoSignIn: Boolean): Result<Unit> =
         runCatching {
             mypageLocalDataSource.saveAutoSignIn(autoSignIn)
         }
-
 }
