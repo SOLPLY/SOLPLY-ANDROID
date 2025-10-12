@@ -18,6 +18,7 @@ import com.teamsolply.solply.main.splash.Splash
 import com.teamsolply.solply.maps.navigation.navigateMaps
 import com.teamsolply.solply.mypage.navigation.navigateMypage
 import com.teamsolply.solply.mypage.profile.navigation.navigateProfile
+import com.teamsolply.solply.mypage.withdraw.navigation.navigateWithdraw
 import com.teamsolply.solply.oauth.navigation.navigateOauth
 import com.teamsolply.solply.onboarding.navigation.navigateOnBoarding
 import com.teamsolply.solply.place.navigation.navigatePlace
@@ -176,6 +177,12 @@ internal class MainNavigator(
 
     fun navigateToRegisterPlace(navOptions: NavOptions) {
         navController.navigateRegisterPlace(navOptions = navOptions)
+    }
+
+    fun navigateToWithdraw(
+        navOptions: NavOptions
+    ) {
+        navController.navigateWithdraw(navOptions)
     }
 
     @Composable

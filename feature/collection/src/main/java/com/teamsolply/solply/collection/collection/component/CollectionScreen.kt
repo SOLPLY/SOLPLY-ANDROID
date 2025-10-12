@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.collection.R
 import com.teamsolply.solply.designsystem.component.dialog.SolplyConfirmDialog
@@ -24,10 +26,6 @@ fun CollectionScreen(
     onBackButtonClick: () -> Unit,
     onDialogConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
-    selectMode: Boolean,
-    onSelectButtonClick: () -> Unit,
-    onDeleteButtonClick: () -> Unit,
-    onCancelButtonClick: () -> Unit,
     dialogState: Boolean,
     content: LazyGridScope.() -> Unit,
     modifier: Modifier = Modifier
@@ -52,20 +50,38 @@ fun CollectionScreen(
             barText = town,
             onBackButtonClick = { onBackButtonClick() }
         )
-        SelectModeBar(
-            selectMode = selectMode,
-            onSelectButtonClick = onSelectButtonClick,
-            onDeleteButtonClick = onDeleteButtonClick,
-            onCancelButtonClick = onCancelButtonClick
-        )
         LazyVerticalGrid(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize(),
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalArrangement = Arrangement.Center,
-            contentPadding = PaddingValues(top = 16.dp, start = 16.dp, end = 16.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
             content = content
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CollectionScreenPreview() {
+    SolplyTheme {
+        CollectionScreen(
+            town = "",
+            onBackButtonClick = {},
+            onDialogConfirmClick = {},
+            onDialogDismissClick = {},
+            content = {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    SelectModeBar(
+                        selectMode = false,
+                        onSelectButtonClick = { },
+                        onDeleteButtonClick = { },
+                        onCancelButtonClick = { }
+                    )
+                }
+            },
+            dialogState = false
         )
     }
 }

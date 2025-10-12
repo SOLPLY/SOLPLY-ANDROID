@@ -13,7 +13,7 @@ import retrofit2.http.Query
 
 interface OnBoardingService {
 
-    @GET("api/onboarding/questions/persona")
+    @GET("api/users/persona")
     suspend fun getPersonaQuestions(): BaseResponse<GetPersonaQuestionsResponseDto>
 
     @GET("api/towns")
@@ -24,7 +24,7 @@ interface OnBoardingService {
         @Query("nickname") nickname: String
     ): BaseResponse<NicknameDuplicateResponseDto>
 
-    @PATCH("api/onboarding/users")
+    @PATCH("api/users/onboarding")
     suspend fun patchUserInfo(
         @Body patchUserInfoRequestDto: PatchUserInfoRequestDto
     ): BaseResponse<PatchUserInfoResponseDto>

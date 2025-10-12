@@ -59,6 +59,7 @@ dependencies {
     implementation(projects.data.search)
     implementation(projects.local.main)
     implementation(projects.local.oauth)
+    implementation(projects.local.mypage)
     implementation(projects.local.place)
     implementation(projects.remote.oauth)
     implementation(projects.remote.onboarding)

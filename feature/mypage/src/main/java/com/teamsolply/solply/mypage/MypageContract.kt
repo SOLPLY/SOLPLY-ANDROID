@@ -17,22 +17,31 @@ data class MypageState(
         profileImageUrl = ""
     ),
     val placeList: List<PlaceInfoEntity> = emptyList(),
+    val placeAllState: Boolean = false,
     val dialogState: Boolean = false
 ) : UiState
 
 sealed interface MypageIntent : UiIntent {
     data object Init : MypageIntent
 
+    data object MypageBackButtonClick : MypageIntent
+    data object PlaceAllBackButtonClick : MypageIntent
+    data class PlaceCardClick(val placeId: Long, val townId: Long) : MypageIntent
+
     data object LogOutButtonClick : MypageIntent
-    data object WithdrawButtonClick : MypageIntent
 
-    data object DialogConfirmClick : MypageIntent
-    data object DialogDismissClick : MypageIntent
+    data object LogOutDialogConfirmClick : MypageIntent
+    data object LogOutDialogDismissClick : MypageIntent
 
+    data object PlaceAllClick : MypageIntent
     data object ProfileEditClick : MypageIntent
+    data object WithdrawClick : MypageIntent
 }
 
 sealed interface MypageSideEffect : SideEffect {
     data object NavigateToBack : MypageSideEffect
     data object NavigateToProfile : MypageSideEffect
+    data object NavigateToWithdraw : MypageSideEffect
+    data object NavigateToOauth : MypageSideEffect
+    data class NavigateToMap(val placeId: Long, val townId: Long) : MypageSideEffect
 }

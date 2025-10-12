@@ -19,6 +19,9 @@ data class PlaceResponseDto(
     @SerialName("placeName")
     val placeName: String,
 
+    @SerialName("townId")
+    val townId: Long,
+
     @SerialName("thumbnailImageUrl")
     val imageUrl: String,
 
