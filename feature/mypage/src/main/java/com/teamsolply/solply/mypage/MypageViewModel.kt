@@ -17,6 +17,10 @@ class MypageViewModel @Inject constructor(
         when (intent) {
             MypageIntent.Init -> getInitInfo()
 
+            MypageIntent.MypageBackButtonClick -> {
+                postSideEffect(MypageSideEffect.NavigateToBack)
+            }
+
             MypageIntent.LogOutButtonClick -> {
                 reduce {
                     copy(
@@ -25,24 +29,45 @@ class MypageViewModel @Inject constructor(
                 }
             }
 
-            MypageIntent.WithdrawButtonClick -> {
+            MypageIntent.LogOutDialogConfirmClick -> {
+                viewModelScope.launch {
+                    mypageRepository.saveAutoSignIn(false).onSuccess {
+                        reduce {
+                            copy(dialogState = false)
+                        }
+                        postSideEffect(MypageSideEffect.NavigateToOauth)
+                    }
+                }
             }
 
-            MypageIntent.DialogConfirmClick -> {
-                // TODO 로그아웃 api
+            MypageIntent.LogOutDialogDismissClick -> {
                 reduce {
                     copy(dialogState = false)
                 }
             }
 
-            MypageIntent.DialogDismissClick -> {
+            MypageIntent.PlaceAllClick -> {
                 reduce {
-                    copy(dialogState = false)
+                    copy(placeAllState = true)
                 }
+            }
+
+            MypageIntent.PlaceAllBackButtonClick -> {
+                reduce {
+                    copy(placeAllState = false)
+                }
+            }
+
+            is MypageIntent.PlaceCardClick -> {
+                postSideEffect(MypageSideEffect.NavigateToMap(intent.placeId, intent.townId))
             }
 
             MypageIntent.ProfileEditClick -> {
                 postSideEffect(MypageSideEffect.NavigateToProfile)
+            }
+
+            MypageIntent.WithdrawClick -> {
+                postSideEffect(MypageSideEffect.NavigateToWithdraw)
             }
         }
     }
@@ -63,6 +88,18 @@ class MypageViewModel @Inject constructor(
     private fun getPlaceList(townId: Long) {
         viewModelScope.launch {
             mypageRepository.getPlaceList(townId).onSuccess {
+                reduce {
+                    copy(
+                        placeList = it.toPersistentList()
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getReportPlaceList(userId: Long) {
+        viewModelScope.launch {
+            mypageRepository.getReportPlaceList(userId).onSuccess {
                 reduce {
                     copy(
                         placeList = it.toPersistentList()

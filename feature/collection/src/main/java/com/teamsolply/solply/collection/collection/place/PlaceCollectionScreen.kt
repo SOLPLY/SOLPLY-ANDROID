@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamsolply.solply.collection.R
 import com.teamsolply.solply.collection.collection.component.CollectionScreen
+import com.teamsolply.solply.collection.collection.component.SelectModeBar
 import com.teamsolply.solply.designsystem.component.card.SolplyPlaceCard
 import com.teamsolply.solply.model.MapsType
 import com.teamsolply.solply.ui.extension.customClickable
@@ -61,12 +62,16 @@ fun PlaceCollectionRoute(
         onBackButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.BackButtonClick) },
         onDialogConfirmClick = { viewModel.sendIntent(PlaceCollectionIntent.DialogConfirmClick) },
         onDialogDismissClick = { viewModel.sendIntent(PlaceCollectionIntent.DialogDismissClick) },
-        selectMode = uiState.selectMode,
-        onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectButtonClick) },
-        onDeleteButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.DeleteButtonClick) },
-        onCancelButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.CancelButtonClick) },
         dialogState = uiState.dialogState,
         content = {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                SelectModeBar(
+                    selectMode = uiState.selectMode,
+                    onSelectButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.SelectButtonClick) },
+                    onDeleteButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.DeleteButtonClick) },
+                    onCancelButtonClick = { viewModel.sendIntent(PlaceCollectionIntent.CancelButtonClick) }
+                )
+            }
             itemsIndexed(uiState.places) { index, it ->
                 Box(
                     modifier = Modifier
