@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.onboarding.component.BackHeader
 import com.teamsolply.solply.onboarding.component.ProgressBar
+import com.teamsolply.solply.onboarding.screen.AllowClauseScreen
 import com.teamsolply.solply.onboarding.screen.NamingScreen
 import com.teamsolply.solply.onboarding.screen.SelectPersonaScreen
 import com.teamsolply.solply.onboarding.screen.SelectTownScreen
@@ -123,6 +124,7 @@ fun OnBoardingScreen(
                 0 -> ""
                 1 -> ""
                 2 -> ""
+                3 -> ""
                 else -> ""
             },
             onBackButtonClick = {
@@ -137,7 +139,8 @@ fun OnBoardingScreen(
             isTownSelected = when (pagerState.currentPage) {
                 0 -> state.selectedTownId != null
                 1 -> state.selectedPersona != null
-                2 -> state.userNickname.isNotBlank()
+                2 -> state.selectedPersona != null
+                3 -> state.userNickname.isNotBlank()
                 else -> false
             }
         )
@@ -154,7 +157,7 @@ fun OnBoardingScreen(
             userScrollEnabled = false
         ) { page ->
             when (page) {
-                0 -> SelectTownScreen(
+                0 -> AllowClauseScreen(
                     state = state,
                     onNextClick = {
                         scope.launch {
@@ -164,7 +167,7 @@ fun OnBoardingScreen(
                     onBoardingIntent = onBoardingIntent
                 )
 
-                1 -> SelectPersonaScreen(
+                1 -> SelectTownScreen(
                     state = state,
                     onNextClick = {
                         scope.launch {
@@ -174,7 +177,17 @@ fun OnBoardingScreen(
                     onBoardingIntent = onBoardingIntent
                 )
 
-                2 -> NamingScreen(
+                2 -> SelectPersonaScreen(
+                    state = state,
+                    onNextClick = {
+                        scope.launch {
+                            pagerState.scrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
+                    onBoardingIntent = onBoardingIntent
+                )
+
+                3 -> NamingScreen(
                     state = state,
                     inputNickname = state.userNickname,
                     isNicknameDuplicate = state.isNicknameDuplicate,
