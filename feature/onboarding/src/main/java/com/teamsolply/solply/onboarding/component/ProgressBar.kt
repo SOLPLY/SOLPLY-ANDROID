@@ -39,9 +39,14 @@ fun ProgressBar(
         label = "animation"
     )
 
-    LaunchedEffect(key1 = pageState.currentPage) {
-        progress = ((pageState.currentPage + 1).toFloat() / totalpageCount) * 0.95f
+    LaunchedEffect(pageState.currentPage) {
+        val start = 0.10f
+        val end = 0.95f
+        val ratio = pageState.currentPage.toFloat() / (totalpageCount - 1)
+
+        progress = start + ratio * (end - start)
     }
+
 
     Box(
         modifier = Modifier
