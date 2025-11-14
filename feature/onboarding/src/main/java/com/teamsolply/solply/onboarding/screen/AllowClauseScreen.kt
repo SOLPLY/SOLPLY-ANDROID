@@ -3,10 +3,25 @@ package com.teamsolply.solply.onboarding.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,26 +53,26 @@ fun AllowClauseScreen(
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-
         Column(modifier = Modifier.padding(top = 40.dp)) {
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isAllChecked)
+                        color = if (isAllChecked) {
                             SolplyTheme.colors.red300
-                        else
-                            SolplyTheme.colors.gray300,
+                        } else {
+                            SolplyTheme.colors.gray300
+                        },
                         shape = RoundedCornerShape(20.dp)
                     )
                     .background(
-                        color = if (isAllChecked)
+                        color = if (isAllChecked) {
                             SolplyTheme.colors.red100
-                        else
-                            SolplyTheme.colors.gray100,
+                        } else {
+                            SolplyTheme.colors.gray100
+                        },
                         shape = RoundedCornerShape(20.dp)
                     )
                     .customClickable(rippleEnabled = false) {
@@ -83,10 +98,11 @@ fun AllowClauseScreen(
 
                     Image(
                         painter = painterResource(
-                            id = if (isAllChecked)
+                            id = if (isAllChecked) {
                                 com.teamsolply.solply.designsystem.R.drawable.ic_filter_selected
-                            else
+                            } else {
                                 com.teamsolply.solply.designsystem.R.drawable.ic_select_before
+                            }
                         ),
                         contentDescription = null
                     )
@@ -152,10 +168,11 @@ fun AgreementItem(
     ) {
         Image(
             painter = painterResource(
-                id = if (checked)
+                id = if (checked) {
                     com.teamsolply.solply.designsystem.R.drawable.ic_agree_mini_option_checked
-                else
+                } else {
                     com.teamsolply.solply.designsystem.R.drawable.ic_agree_mini_option_before_check
+                }
             ),
             contentDescription = null,
             modifier = Modifier.size(20.dp)

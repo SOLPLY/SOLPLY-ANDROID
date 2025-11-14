@@ -47,7 +47,6 @@ fun ProgressBar(
         progress = start + ratio * (end - start)
     }
 
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
