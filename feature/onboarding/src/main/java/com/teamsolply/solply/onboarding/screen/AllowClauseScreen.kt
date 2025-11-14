@@ -104,13 +104,21 @@ fun AllowClauseScreen(
             AgreementItem(
                 text = "(필수) 서비스 이용 약관",
                 checked = agreeService,
-                onClick = { agreeService = !agreeService }
+                onClick = { agreeService = !agreeService },
+                showArrow = true,
+                onArrowClick = {
+                    // TODO: 서비스 이용 약관 이동
+                }
             )
 
             AgreementItem(
                 text = "(필수) 개인정보 처리방침",
                 checked = agreePrivacy,
-                onClick = { agreePrivacy = !agreePrivacy }
+                onClick = { agreePrivacy = !agreePrivacy },
+                showArrow = true,
+                onArrowClick = {
+                    // TODO: 개인정보 처리방침 이동
+                }
             )
         }
 
@@ -131,12 +139,14 @@ fun AllowClauseScreen(
 fun AgreementItem(
     text: String,
     checked: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    showArrow: Boolean = false,
+    onArrowClick: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)     // ★ 첫 번째 코드 dp
+            .height(48.dp)
             .customClickable(rippleEnabled = false) { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -147,7 +157,8 @@ fun AgreementItem(
                 else
                     com.teamsolply.solply.designsystem.R.drawable.ic_agree_mini_option_before_check
             ),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.size(20.dp)
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -155,7 +166,23 @@ fun AgreementItem(
         Text(
             text = text,
             style = SolplyTheme.typography.body14M,
-            color = SolplyTheme.colors.black
+            color = SolplyTheme.colors.black,
+            modifier = Modifier.weight(1f)
         )
+
+        if (showArrow) {
+            Image(
+                painter = painterResource(
+                    id = com.teamsolply.solply.designsystem.R.drawable.ic_arrow_right
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(16.dp)
+                    .padding(start = 8.dp)
+                    .customClickable(rippleEnabled = false) {
+                        onArrowClick?.invoke()
+                    }
+            )
+        }
     }
 }
