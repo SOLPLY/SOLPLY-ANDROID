@@ -29,12 +29,12 @@ internal fun RegisterPlaceItem(
             text = placeName,
             modifier = Modifier.padding(bottom = 7.dp),
             style = SolplyTheme.typography.title15M,
-            color = SolplyTheme.colors.black,
+            color = SolplyTheme.colors.black
         )
         Text(
             text = placeAddress,
             style = SolplyTheme.typography.caption12R,
-            color = SolplyTheme.colors.gray700,
+            color = SolplyTheme.colors.gray700
         )
     }
 }

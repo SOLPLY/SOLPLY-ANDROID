@@ -47,9 +47,11 @@ object NaverApiModule {
         @NaverApi naverApiInterceptor: Interceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .retryOnConnectionFailure(true)
-        .addInterceptor(loggingInterceptor.apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
-        })
+        .addInterceptor(
+            loggingInterceptor.apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
+            }
+        )
         .addInterceptor(naverApiInterceptor)
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)

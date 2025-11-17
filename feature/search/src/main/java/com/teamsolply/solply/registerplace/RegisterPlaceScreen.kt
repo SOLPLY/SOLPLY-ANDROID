@@ -167,7 +167,7 @@ fun RegisterPlaceScreen(
     // 장소 사진
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
-    clickRegisterPlace: () -> Unit,
+    clickRegisterPlace: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
@@ -186,7 +186,7 @@ fun RegisterPlaceScreen(
         PlaceKeywordItem(13L, "콘센트 많음"),
         PlaceKeywordItem(14L, "시간제한 없음"),
         PlaceKeywordItem(15L, "채광 좋음"),
-        PlaceKeywordItem(16L, "바테이블"),
+        PlaceKeywordItem(16L, "바테이블")
     )
     val remainSelectedUris = (3 - selectedUris.size).coerceAtLeast(0)
     val singlePicker = rememberLauncherForActivityResult(
@@ -233,7 +233,7 @@ fun RegisterPlaceScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
-            state = lazyListState,
+            state = lazyListState
         ) {
             item {
                 Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
@@ -376,7 +376,7 @@ fun RegisterPlaceScreen(
                     FlowRow(
                         modifier = Modifier.padding(horizontal = 20.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         placeFeatures.forEach { keyword ->
                             PlaceKeyWord(
@@ -507,7 +507,7 @@ private fun RegisterPlaceSubmittingScreen(isSuccess: Boolean) {
 fun PlaceKeyWord(
     text: String,
     isSelected: Boolean,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     val (textColor, backgroundColor, borderColor) = if (isSelected) {
         Triple(
@@ -532,7 +532,7 @@ fun PlaceKeyWord(
             .border(
                 width = 1.dp,
                 shape = RoundedCornerShape(16.dp),
-                color = borderColor,
+                color = borderColor
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .customClickable(rippleEnabled = false) { onClick() }

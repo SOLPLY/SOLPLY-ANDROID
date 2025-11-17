@@ -405,7 +405,7 @@ internal fun MainScreen(
                         },
                         navigateToRegisterPlace = {
                             val navOptions = navOptions {
-                                popUpTo(Search) { inclusive = true }  // ⭐ Search를 스택에서 제거
+                                popUpTo(Search) { inclusive = true } // ⭐ Search를 스택에서 제거
                             }
                             navigator.navigateToRegisterPlace(navOptions = navOptions)
                         },

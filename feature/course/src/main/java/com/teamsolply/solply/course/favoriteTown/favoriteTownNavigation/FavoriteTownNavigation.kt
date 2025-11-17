@@ -26,7 +26,7 @@ fun NavGraphBuilder.favoriteTownNavGraph(
         FavoriteTownRoute(
             paddingValues = paddingValues,
             selectedTownId = selectedTownId,
-            navigateToBack = navigateToBack,
+            navigateToBack = navigateToBack
         )
     }
 }

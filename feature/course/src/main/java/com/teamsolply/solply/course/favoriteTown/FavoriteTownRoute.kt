@@ -114,7 +114,6 @@ fun FavoriteTownRoute(
     }
 }
 
-
 @Composable
 private fun LeftRegionPane(
     regions: List<Region>,

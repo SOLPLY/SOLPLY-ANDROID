@@ -61,7 +61,7 @@ class RegisterPlaceViewModel @Inject constructor(
             is RegisterPlaceIntent.ChangePlaceTypeDropDownVisible -> {
                 reduce {
                     copy(
-                        isPlaceTypeDropdownExpanded = !isPlaceTypeDropdownExpanded,
+                        isPlaceTypeDropdownExpanded = !isPlaceTypeDropdownExpanded
                     )
                 }
             }

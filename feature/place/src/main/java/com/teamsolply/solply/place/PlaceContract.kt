@@ -33,7 +33,7 @@ data class PlaceState(
 
     val isOptionFilterBottomSheetVisible: Boolean = false,
     val selectedOptionAFilter: PersistentList<Int> = persistentListOf(),
-    val selectedOptionBFilter: PersistentList<Int> = persistentListOf(),
+    val selectedOptionBFilter: PersistentList<Int> = persistentListOf()
 ) : UiState
 
 sealed interface PlaceIntent : UiIntent {

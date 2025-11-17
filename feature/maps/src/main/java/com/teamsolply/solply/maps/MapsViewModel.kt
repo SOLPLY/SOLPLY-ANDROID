@@ -574,7 +574,6 @@ internal class MapsViewModel @Inject constructor(
                     }
                 }.onFailure { error ->
                     android.util.Log.e("PresignedUrl", "❌ 파일 업로드 실패: ${error.message}", error)
-
                 }
             }.onFailure { error ->
                 android.util.Log.e("PresignedUrl", "❌ Presigned URL 발급 실패: ${error.message}", error)

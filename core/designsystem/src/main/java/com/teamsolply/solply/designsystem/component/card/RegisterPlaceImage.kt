@@ -34,7 +34,7 @@ import com.teamsolply.solply.ui.image.AdaptationImage
 fun RegisterPlaceImage(
     selectedUris: List<Uri>,
     onAddClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -110,7 +110,6 @@ fun RegisterPlaceImage(
         }
     }
 }
-
 
 fun ContentResolver.getFileName(uri: Uri): String {
     query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->

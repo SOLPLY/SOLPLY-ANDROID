@@ -23,7 +23,7 @@ data class CourseState(
     ),
 
     val courseList: PersistentList<CourseEntity> = persistentListOf(),
-    val errorMessage: String? = null,
+    val errorMessage: String? = null
 ) : UiState {
     val recommendText: String
         get() = when (user.persona) {

@@ -27,7 +27,7 @@ internal fun PlaceTypeDropDown(
     dropDownContents: List<PlaceType>,
     selectedPlaceType: PlaceType?,
     modifier: Modifier = Modifier,
-    isDropped: Boolean = false,
+    isDropped: Boolean = false
 ) {
     val defaultText = selectedPlaceType?.displayName ?: placeholder
 
@@ -48,7 +48,7 @@ internal fun PlaceTypeDropDown(
                 Text(
                     text = defaultText,
                     color = SolplyTheme.colors.gray900,
-                    style = SolplyTheme.typography.body16M,
+                    style = SolplyTheme.typography.body16M
                 )
             }
         },
@@ -85,7 +85,7 @@ internal fun PlaceTypeDropDown(
                     Text(
                         text = item.displayName,
                         color = SolplyTheme.colors.gray900,
-                        style = SolplyTheme.typography.body16R,
+                        style = SolplyTheme.typography.body16R
                     )
                 }
                 HorizontalDivider(color = SolplyTheme.colors.gray300)
