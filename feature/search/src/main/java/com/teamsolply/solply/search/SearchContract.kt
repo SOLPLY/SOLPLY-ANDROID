@@ -19,6 +19,18 @@ sealed interface SearchIntent : UiIntent {
     data class ChangeSearchText(
         val searchText: String
     ) : SearchIntent
+
+    data object RegisterPlaceClick : SearchIntent
+    data class PlaceDetailClick(
+        val placeId: Long,
+        val townId: Long
+    ) : SearchIntent
 }
 
-sealed interface SearchSideEffect : SideEffect
+sealed interface SearchSideEffect : SideEffect {
+    data object NavigateToRegisterPlace : SearchSideEffect
+    data class NavigateToPlaceDetail(
+        val placeId: Long,
+        val townId: Long
+    ) : SearchSideEffect
+}

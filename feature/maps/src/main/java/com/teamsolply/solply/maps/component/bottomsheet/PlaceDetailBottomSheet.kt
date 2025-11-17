@@ -36,7 +36,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
@@ -307,9 +306,7 @@ fun PlaceDetailBottomSheet(
                                     if (placeAddress.isNotEmpty()) {
                                         ClickableAnnotatedText(
                                             originalText = "$placeAddress $copyText",
-                                            originalTextStyle = SolplyTheme.typography.caption14R.copy(
-                                                lineHeight = 15.sp
-                                            ),
+                                            originalTextStyle = SolplyTheme.typography.caption14R,
                                             targetText = copyText,
                                             spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
                                             onClick = {
@@ -334,9 +331,7 @@ fun PlaceDetailBottomSheet(
                                     if (placeContactNumber.isNotEmpty()) {
                                         ClickableAnnotatedText(
                                             originalText = "$placeContactNumber $copyText",
-                                            originalTextStyle = SolplyTheme.typography.caption14R.copy(
-                                                lineHeight = 15.sp
-                                            ),
+                                            originalTextStyle = SolplyTheme.typography.caption14R,
                                             targetText = copyText,
                                             spanStyle = SpanStyle(textDecoration = TextDecoration.Underline),
                                             onClick = {
@@ -361,7 +356,7 @@ fun PlaceDetailBottomSheet(
                                     Text(
                                         text = placeOpeningHours.replace("\\n", "\n"),
                                         color = SolplyTheme.colors.black,
-                                        style = SolplyTheme.typography.caption14R.copy(lineHeight = 15.sp)
+                                        style = SolplyTheme.typography.caption14R
                                     )
                                 }
                                 Row(modifier = Modifier.padding(bottom = 8.dp)) {
@@ -386,7 +381,6 @@ fun PlaceDetailBottomSheet(
                                                 },
                                                 color = SolplyTheme.colors.black,
                                                 style = SolplyTheme.typography.caption14R.copy(
-                                                    lineHeight = 15.sp,
                                                     textDecoration = TextDecoration.Underline
                                                 )
                                             )
@@ -442,7 +436,7 @@ fun PlaceDetailBottomSheet(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(40.dp))
+                        Spacer(modifier = Modifier.height(49.dp))
                     }
                 }
             }

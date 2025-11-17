@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -30,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
@@ -62,6 +64,7 @@ private fun BaseTextField(
     maxLength: Int = 8,
     maxLines: Int = 1,
     textAlignment: Alignment = Alignment.CenterStart,
+    innerPadding: PaddingValues,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Box(
@@ -77,7 +80,7 @@ private fun BaseTextField(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(innerPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -133,7 +136,7 @@ fun SolplyNicknameTextField(
         NickNameValidateState.MaxLength,
         NickNameValidateState.Typing
     ) ||
-        (validationState == NickNameValidateState.Empty && value.isNotEmpty())
+            (validationState == NickNameValidateState.Empty && value.isNotEmpty())
 
     LaunchedEffect(value, isNicknameDuplicate) {
         if (value.isNotEmpty()) {
@@ -202,6 +205,7 @@ fun SolplyNicknameTextField(
             borderColor = borderColor,
             borderWidth = 1f,
             placeholder = placeholder,
+            innerPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             trailingIcon = {
                 if (value.isNotEmpty() && value.length <= maxLength) {
                     val iconRes =
@@ -307,6 +311,7 @@ fun SolplyRenameCourseTextField(
     minLength: Int = 2,
     textAlignment: Alignment = Alignment.TopStart,
     singleLine: Boolean = true,
+    innerPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     BaseTextField(
@@ -319,7 +324,8 @@ fun SolplyRenameCourseTextField(
         borderWidth = 1f,
         textAlignment = textAlignment,
         singleLine = singleLine,
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+        innerPadding = innerPadding
     )
 }
 
@@ -327,7 +333,8 @@ fun SolplyRenameCourseTextField(
 fun SolplyFixedReportTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFocusChanged: (Boolean) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     var viewportHeightPx by remember { mutableIntStateOf(0) }
@@ -341,8 +348,9 @@ fun SolplyFixedReportTextField(
             .border(
                 width = 1.dp,
                 color = SolplyTheme.colors.gray300,
-                shape = RoundedCornerShape(20.dp)
-            ),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(start = 21.dp, top = 17.dp, end = 21.dp, bottom = 17.dp),
         contentAlignment = Alignment.TopStart
     ) {
         BasicTextField(
@@ -354,10 +362,12 @@ fun SolplyFixedReportTextField(
             maxLines = Int.MAX_VALUE,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 21.dp, top = 17.dp, end = 21.dp, bottom = 17.dp)
                 .verticalScroll(scrollState)
                 .onGloballyPositioned {
                     viewportHeightPx = it.size.height
+                }
+                .onFocusEvent { focusState ->
+                    onFocusChanged(focusState.isFocused)
                 },
             onTextLayout = { layout ->
                 if (viewportHeightPx == 0) return@BasicTextField
@@ -384,7 +394,7 @@ fun SolplyFixedReportTextField(
             decorationBox = { inner ->
                 if (value.isEmpty()) {
                     Text(
-                        text = "(최대 200자 입력 가능)",
+                        text = "최대 200자 입력 가능",
                         color = SolplyTheme.colors.gray500,
                         style = SolplyTheme.typography.caption12M
                     )

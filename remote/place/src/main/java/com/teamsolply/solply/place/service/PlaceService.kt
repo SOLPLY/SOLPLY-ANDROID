@@ -29,7 +29,7 @@ interface PlaceService {
         @Query("townId") townId: Long,
         @Query("isBookmarkSearch") isBookmarkSearch: Boolean = false,
         @Query("mainTagId") mainTagId: Int?,
-        @Query("subTagAIdList") subTagAIdList: String?,
-        @Query("subTagBIdList") subTagBIdList: String?
+        @Query("subTag1Ids") subTag1Ids: String?,
+        @Query("subTag2Ids") subTag2Ids: String?
     ): BaseResponse<GetPlacesResponseDto>
 }

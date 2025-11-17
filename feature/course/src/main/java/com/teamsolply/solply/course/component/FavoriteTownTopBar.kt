@@ -26,7 +26,7 @@ internal fun FavoriteTownTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 4.dp),
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -39,7 +39,7 @@ internal fun FavoriteTownTopBar(
                 .customClickable(rippleEnabled = false) { onBackButtonClick() }
         )
         Text(
-            text = "자주 가는 동네",
+            text = "동네 설정",
             style = SolplyTheme.typography.head16M,
             color = SolplyTheme.colors.black
         )

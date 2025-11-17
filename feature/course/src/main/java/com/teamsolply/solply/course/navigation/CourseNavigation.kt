@@ -17,14 +17,16 @@ fun NavController.navigateCourse(
 
 fun NavGraphBuilder.courseNavGraph(
     paddingValues: PaddingValues,
-    navigateToMaps: (String, Long, Long) -> Unit,
-    navigateToTownSelect: () -> Unit
+    navigateToFavoriteTown: (Long) -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToMaps: (String, Long, Long) -> Unit
 ) {
     composable<Course> {
         CourseRoute(
             paddingValues = paddingValues,
-            navigateToMaps = navigateToMaps,
-            navigateToTownSelect = navigateToTownSelect
+            navigateToFavoriteTown = navigateToFavoriteTown,
+            navigateToSearch = navigateToSearch,
+            navigateToMaps = navigateToMaps
         )
     }
 }

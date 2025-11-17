@@ -24,8 +24,6 @@ data class CourseState(
 
     val courseList: PersistentList<CourseEntity> = persistentListOf(),
     val errorMessage: String? = null,
-    // search
-    val isSearchDialogVisible: Boolean = false
 ) : UiState {
     val recommendText: String
         get() = when (user.persona) {
@@ -51,10 +49,13 @@ sealed interface CourseIntent : UiIntent {
         val message: String
     ) : CourseIntent
 
-    // search
-    data class ChangeSearchDialogVisibility(
-        val visible: Boolean
+    // favoriteTown
+    data class NavigateToFavoriteTown(
+        val selectedTownId: Long?
     ) : CourseIntent
+
+    // search
+    data object NavigateToSearch : CourseIntent
 
     data class PlaceClicked(
         val placeId: Long,
@@ -63,6 +64,11 @@ sealed interface CourseIntent : UiIntent {
 }
 
 sealed interface CourseSideEffect : SideEffect {
+    data class NavigateToFavoriteTown(
+        val selectedTownId: Long?
+    ) : CourseSideEffect
+
+    data object NavigateToSearch : CourseSideEffect
     data class NavigateToCourseMap(val courseId: Long) : CourseSideEffect
     data class NavigateToPlaceDetail(
         val placeId: Long,

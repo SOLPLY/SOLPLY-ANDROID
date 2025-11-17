@@ -3,6 +3,8 @@ package com.teamsolply.solply.buildconfig.impl
 import com.teamsolply.solply.buildconfig.BuildConfig.BASE_URL
 import com.teamsolply.solply.buildconfig.BuildConfig.KAKAO_NATIVE_KEY
 import com.teamsolply.solply.buildconfig.BuildConfig.NAVER_CLIENT_ID
+import com.teamsolply.solply.buildconfig.BuildConfig.NAVER_DEVELOPERS_CLIENT_ID
+import com.teamsolply.solply.buildconfig.BuildConfig.NAVER_DEVELOPERS_CLIENT_SECRET
 import com.teamsolply.solply.common.buildconfig.BuildConfigFieldProvider
 import com.teamsolply.solply.common.buildconfig.BuildConfigFields
 import javax.inject.Inject
@@ -13,6 +15,8 @@ class BuildConfigFieldsProviderImpl @Inject constructor() : BuildConfigFieldProv
             baseUrl = BASE_URL,
             kakaoNativeKey = KAKAO_NATIVE_KEY,
             naverClientId = NAVER_CLIENT_ID,
+            naverDevelopersClientId = NAVER_DEVELOPERS_CLIENT_ID,
+            naverDevelopersClientSecret = NAVER_DEVELOPERS_CLIENT_SECRET,
             isDebug = true
         )
 }

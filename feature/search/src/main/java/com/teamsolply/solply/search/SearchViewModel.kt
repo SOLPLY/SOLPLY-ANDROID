@@ -35,6 +35,14 @@ class SearchViewModel @Inject constructor(
                     }
                 }
             }
+
+            SearchIntent.RegisterPlaceClick -> postSideEffect(SearchSideEffect.NavigateToRegisterPlace)
+            is SearchIntent.PlaceDetailClick -> postSideEffect(
+                SearchSideEffect.NavigateToPlaceDetail(
+                    placeId = intent.placeId,
+                    townId = intent.townId
+                )
+            )
         }
     }
 
@@ -43,14 +51,5 @@ class SearchViewModel @Inject constructor(
             .onSuccess { searchResults ->
                 reduce { copy(searchResult = searchResults.toPersistentList()) }
             }
-    }
-
-    fun resetSearchState() {
-        reduce {
-            copy(
-                searchText = "",
-                searchResult = persistentListOf()
-            )
-        }
     }
 }

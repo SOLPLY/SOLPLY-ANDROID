@@ -4,5 +4,7 @@ data class BuildConfigFields(
     val baseUrl: String,
     val kakaoNativeKey: String,
     val naverClientId: String,
+    val naverDevelopersClientId: String,
+    val naverDevelopersClientSecret: String,
     val isDebug: Boolean
 )

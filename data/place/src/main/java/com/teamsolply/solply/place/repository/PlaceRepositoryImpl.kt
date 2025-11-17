@@ -80,7 +80,7 @@ class PlaceRepositoryImpl @Inject constructor(
                     placeId = it.placeId,
                     placeName = it.placeName,
                     thumbnailImageUrl = it.thumbnailImageUrl,
-                    primaryTag = it.primaryTag,
+                    primaryTag = it.mainTag,
                     introduction = it.introduction
                 )
             }.take(3)
@@ -105,7 +105,7 @@ class PlaceRepositoryImpl @Inject constructor(
                 placeId = dto.placeId,
                 placeName = dto.placeName,
                 thumbnailImageUrl = dto.thumbnailImageUrl,
-                primaryTag = dto.primaryTag,
+                primaryTag = dto.mainTag,
                 isBookmarked = dto.isBookmarked
             )
         }

@@ -9,5 +9,6 @@ android {
 dependencies {
     implementation(projects.domain.place)
     implementation(projects.feature.search)
+    implementation(projects.feature.course)
     implementation(libs.accompanist.permissions)
 }

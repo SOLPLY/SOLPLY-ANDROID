@@ -40,9 +40,13 @@ class CourseViewModel @Inject constructor(
                 }
             }
 
-            is CourseIntent.ChangeSearchDialogVisibility -> reduce {
-                copy(isSearchDialogVisible = intent.visible)
-            }
+            is CourseIntent.NavigateToFavoriteTown -> postSideEffect(
+                CourseSideEffect.NavigateToFavoriteTown(
+                    selectedTownId = intent.selectedTownId
+                )
+            )
+
+            is CourseIntent.NavigateToSearch -> postSideEffect(CourseSideEffect.NavigateToSearch)
 
             is CourseIntent.PlaceClicked -> {
                 postSideEffect(

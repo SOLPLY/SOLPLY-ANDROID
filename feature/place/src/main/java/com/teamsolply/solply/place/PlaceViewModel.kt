@@ -62,7 +62,12 @@ class PlaceViewModel @Inject constructor(
                 }
             }
 
-            is PlaceIntent.PlaceClicked -> postSideEffect(PlaceSideEffect.NavigateToMap(intent.placeId, intent.townId))
+            is PlaceIntent.PlaceClicked -> postSideEffect(
+                PlaceSideEffect.NavigateToMap(
+                    intent.placeId,
+                    intent.townId
+                )
+            )
 
             // 서브 필터 인텐트
             PlaceIntent.SubFilterChipClick -> reduce {
@@ -134,9 +139,13 @@ class PlaceViewModel @Inject constructor(
                 )
             }
 
-            is PlaceIntent.ChangeSearchDialogVisibility -> reduce {
-                copy(isSearchDialogVisible = intent.visible)
-            }
+            is PlaceIntent.NavigateToSearch -> postSideEffect(PlaceSideEffect.NavigateToSearch)
+
+            is PlaceIntent.NavigateToFavoriteTown -> postSideEffect(
+                PlaceSideEffect.NavigateToFavoriteTown(
+                    selectedTownId = intent.selectedTownId
+                )
+            )
         }
     }
 

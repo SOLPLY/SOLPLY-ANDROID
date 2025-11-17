@@ -46,6 +46,9 @@ import com.teamsolply.solply.mypage.withdraw.navigation.withdrawNavGraph
 import com.teamsolply.solply.oauth.navigation.oauthNavGraph
 import com.teamsolply.solply.onboarding.navigation.onBoardingNavGraph
 import com.teamsolply.solply.place.navigation.placeNavGraph
+import com.teamsolply.solply.registerplace.navigation.registerPlaceNavGraph
+import com.teamsolply.solply.search.navigation.Search
+import com.teamsolply.solply.search.navigation.searchNavGraph
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -185,6 +188,10 @@ internal fun MainScreen(
                     )
                     placeNavGraph(
                         paddingValues = innerPadding,
+                        navigateToFavoriteTown = { selectedTownId ->
+                            navigator.navigateToFavoriteTown(selectedTownId = selectedTownId)
+                        },
+                        navigateToSearch = navigator::navigateToSearch,
                         navigateToMaps = { mapsType, townId, placeId ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(
@@ -193,13 +200,14 @@ internal fun MainScreen(
                                 placeId = placeId,
                                 navOptions = navOptions
                             )
-                        },
-                        navigateToTownSelect = {
-                            navigator.navigateToFavoriteTown()
                         }
                     )
                     courseNavGraph(
                         paddingValues = innerPadding,
+                        navigateToFavoriteTown = { selectedTownId ->
+                            navigator.navigateToFavoriteTown(selectedTownId = selectedTownId)
+                        },
+                        navigateToSearch = navigator::navigateToSearch,
                         navigateToMaps = { mapsType, townId, courseId ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(
@@ -208,9 +216,6 @@ internal fun MainScreen(
                                 courseId = courseId,
                                 navOptions = navOptions
                             )
-                        },
-                        navigateToTownSelect = {
-                            navigator.navigateToFavoriteTown()
                         }
                     )
                     collectionNavGraph(
@@ -379,6 +384,34 @@ internal fun MainScreen(
                         }
                     )
                     favoriteTownNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToBack = { selectedTownId ->
+                            navigator.navigateFavoriteTownToMain(selectedTownId = selectedTownId)
+                        }
+                    )
+                    searchNavGraph(
+                        paddingValues = innerPadding,
+                        navigateToPlaceDetail = { mapsType, townId, placeId ->
+                            val navOptions = navOptions {
+                                popUpTo(Search) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                            navigator.navigateToMaps(
+                                mapsType = mapsType,
+                                townId = townId,
+                                placeId = placeId,
+                                navOptions = navOptions
+                            )
+                        },
+                        navigateToRegisterPlace = {
+                            val navOptions = navOptions {
+                                popUpTo(Search) { inclusive = true }  // ⭐ Search를 스택에서 제거
+                            }
+                            navigator.navigateToRegisterPlace(navOptions = navOptions)
+                        },
+                        navigateToBack = navigator::navigateToBack
+                    )
+                    registerPlaceNavGraph(
                         paddingValues = innerPadding,
                         navigateToBack = navigator::navigateToBack
                     )

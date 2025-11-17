@@ -8,5 +8,6 @@ data class SearchResultEntity(
     val thumbnailImageUrl: String,
     val primaryTag: PlaceType,
     val address: String,
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean,
+    val townId: Long
 )

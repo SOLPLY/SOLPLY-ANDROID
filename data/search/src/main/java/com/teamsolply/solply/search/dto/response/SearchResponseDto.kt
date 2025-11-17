@@ -1,4 +1,4 @@
-package com.teamsolply.solply.search.dto
+package com.teamsolply.solply.search.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -22,5 +22,7 @@ data class SearchResult(
     @SerialName("address")
     val address: String,
     @SerialName("isBookmarked")
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean,
+    @SerialName("townId")
+    val townId: Long
 )

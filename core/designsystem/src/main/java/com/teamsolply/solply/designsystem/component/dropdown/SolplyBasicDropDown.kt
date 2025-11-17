@@ -1,14 +1,15 @@
 package com.teamsolply.solply.designsystem.component.dropdown
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,7 +31,7 @@ import com.teamsolply.solply.ui.extension.customClickable
 
 @Composable
 fun SolplyBasicDropDown(
-    defaultLabel: String,
+    defaultLabel: @Composable RowScope.() -> Unit,
     onClickDropIcon: () -> Unit,
     modifier: Modifier = Modifier,
     isDropped: Boolean = false,
@@ -64,14 +65,9 @@ fun SolplyBasicDropDown(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = defaultLabel,
-                color = SolplyTheme.colors.gray900,
-                style = SolplyTheme.typography.body16M,
-                modifier = Modifier.padding(start = 20.dp)
-            )
+            defaultLabel()
             Icon(
-                painter = painterResource(R.drawable.ic_arrow_down),
+                painter = painterResource(R.drawable.ic_arrow_down_lg),
                 contentDescription = "",
                 modifier = Modifier
                     .padding(end = 20.dp, top = 14.dp, bottom = 14.dp)
@@ -90,8 +86,8 @@ fun SolplyBasicDropDown(
         HorizontalDivider(color = SolplyTheme.colors.gray300)
         AnimatedVisibility(
             visible = isDropped,
-            enter = slideInVertically(),
-            exit = slideOutVertically()
+            enter = expandVertically(expandFrom = Alignment.Top),
+            exit = shrinkVertically(shrinkTowards = Alignment.Top)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()

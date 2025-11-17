@@ -36,7 +36,14 @@ fun SolplyPersonaDropDown(
     isSelected: Boolean = false
 ) {
     SolplyBasicDropDown(
-        defaultLabel = if (isSelected) dropDownContents[selectedIndex].description else placeholder,
+        defaultLabel = {
+            Text(
+                text = if (isSelected) dropDownContents[selectedIndex].description else placeholder,
+                color = SolplyTheme.colors.gray900,
+                style = SolplyTheme.typography.body16M,
+                modifier = Modifier.padding(start = 20.dp)
+            )
+        },
         onClickDropIcon = onClickDropIcon,
         isDropped = isDropped,
         modifier = modifier
