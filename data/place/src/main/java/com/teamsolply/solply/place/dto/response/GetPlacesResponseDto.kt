@@ -20,8 +20,8 @@ data class PlaceDto(
     @SerialName("thumbnailImageUrl")
     val thumbnailImageUrl: String,
 
-    @SerialName("primaryTag")
-    val primaryTag: String,
+    @SerialName("mainTag")
+    val mainTag: String,
 
     @SerialName("isBookmarked")
     val isBookmarked: Boolean

@@ -18,8 +18,8 @@ data class GetRecommendPlaceDto(
     val placeName: String,
     @SerialName("thumbnailImageUrl")
     val thumbnailImageUrl: String,
-    @SerialName("primaryTag")
-    val primaryTag: PlaceType,
+    @SerialName("mainTag")
+    val mainTag: PlaceType,
     @SerialName("introduction")
     val introduction: String
 )
