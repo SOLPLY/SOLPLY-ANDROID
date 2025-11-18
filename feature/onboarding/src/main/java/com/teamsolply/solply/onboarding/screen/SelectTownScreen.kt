@@ -82,7 +82,9 @@ fun SelectTownScreen(
                                 .flatMap { it.subTowns }
                                 .find { it.townId == state.selectedTownId }
                                 ?.townName ?: "",
-                            onClick = {},
+                            onClick = {
+                                onBoardingIntent(OnBoardingIntent.ChangeTownBottomSheetShown)
+                            },
                             selected = true
                         )
                     }
@@ -222,7 +224,7 @@ private fun LeftRegionPane(
             ) {
                 Text(
                     text = item.townName,
-                    style = SolplyTheme.typography.body14M.copy(fontWeight = fontWeight),
+                    style = SolplyTheme.typography.body16M.copy(fontWeight = fontWeight),
                     color = textColor
                 )
             }
