@@ -43,4 +43,3 @@ fun TownDto.toSubEntity(): SubTownEntity {
         townName = townName
     )
 }
-

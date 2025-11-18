@@ -27,8 +27,7 @@ data class OnBoardingState(
     val agree14: Boolean = false,
     val agreeService: Boolean = false,
     val agreePrivacy: Boolean = false
-    ) : UiState
-
+) : UiState
 
 sealed interface OnBoardingIntent : UiIntent {
     data object OnBoardingButtonClick : OnBoardingIntent
@@ -48,7 +47,6 @@ sealed interface OnBoardingIntent : UiIntent {
     data class ChangeAgree14(val isChecked: Boolean) : OnBoardingIntent
     data class ChangeAgreeService(val isChecked: Boolean) : OnBoardingIntent
     data class ChangeAgreePrivacy(val isChecked: Boolean) : OnBoardingIntent
-
 }
 
 sealed interface OnBoardingSideEffect : SideEffect {

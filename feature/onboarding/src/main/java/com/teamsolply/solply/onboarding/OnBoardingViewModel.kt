@@ -95,7 +95,6 @@ class OnBoardingViewModel @Inject constructor(
             is OnBoardingIntent.ChangeAgreePrivacy -> {
                 reduce { copy(agreePrivacy = intent.isChecked) }
             }
-
         }
     }
 
@@ -142,7 +141,7 @@ class OnBoardingViewModel @Inject constructor(
                         selectedTownId = selectedTownId,
                         persona = selectedPersona,
                         nickname = uiState.value.userNickname,
-                        policyAgreementInfos = policyInfos,
+                        policyAgreementInfos = policyInfos
                     ).onSuccess {
                         reduce { copy(showStartingScreen = true) }
                     }

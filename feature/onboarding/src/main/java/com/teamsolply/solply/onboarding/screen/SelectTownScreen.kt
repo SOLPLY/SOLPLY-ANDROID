@@ -186,7 +186,7 @@ private fun LeftRegionPane(
             .background(SolplyTheme.colors.gray100)
     ) {
         itemsIndexed(items = regions) { index: Int, item: ParentTownEntity ->
-        val selected = selectedRegionId == item.townId
+            val selected = selectedRegionId == item.townId
             val bg = if (selected) SolplyTheme.colors.white else SolplyTheme.colors.gray100
             val textColor = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
             val fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium

@@ -132,7 +132,6 @@ fun AllowClauseScreen(
                     // TODO: 개인정보 처리방침 이동
                 }
             )
-
         }
 
         SolplyBasicButton(

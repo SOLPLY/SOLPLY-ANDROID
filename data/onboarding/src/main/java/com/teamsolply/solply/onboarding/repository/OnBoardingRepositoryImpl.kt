@@ -35,7 +35,6 @@ class OnBoardingRepositoryImpl @Inject constructor(
         nickname: String,
         policyAgreementInfos: List<PolicyAgreementInfoEntity>
     ): Result<UserInfoEntity> = runCatching {
-
         onBoardingRemoteDataSource.patchUserInfo(
             PatchUserInfoRequestDto(
                 selectedTownId = selectedTownId,
