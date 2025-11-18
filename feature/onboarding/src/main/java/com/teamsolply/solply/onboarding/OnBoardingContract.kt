@@ -8,7 +8,7 @@ import com.teamsolply.solply.ui.base.UiState
 
 data class OnBoardingState(
     val currentPage: Int = 0,
-    val totalPageCount: Int = 3,
+    val totalPageCount: Int = 4,
     val townList: TownEntity = TownEntity(
         parentTowns = emptyList()
     ),
