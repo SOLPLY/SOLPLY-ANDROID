@@ -17,11 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,14 +33,10 @@ fun AllowClauseScreen(
     onNextClick: () -> Unit,
     onBoardingIntent: (OnBoardingIntent) -> Unit
 ) {
-    var isAllChecked by remember { mutableStateOf(false) }
-    var agree14 by remember { mutableStateOf(false) }
-    var agreeService by remember { mutableStateOf(false) }
-    var agreePrivacy by remember { mutableStateOf(false) }
-
-    LaunchedEffect(agree14, agreeService, agreePrivacy) {
-        isAllChecked = agree14 && agreeService && agreePrivacy
-    }
+    val agree14 = state.agree14
+    val agreeService = state.agreeService
+    val agreePrivacy = state.agreePrivacy
+    val isAllChecked = agree14 && agreeService && agreePrivacy
 
     Column(
         modifier = Modifier
@@ -77,10 +68,9 @@ fun AllowClauseScreen(
                     )
                     .customClickable(rippleEnabled = false) {
                         val toggle = !isAllChecked
-                        isAllChecked = toggle
-                        agree14 = toggle
-                        agreeService = toggle
-                        agreePrivacy = toggle
+                        onBoardingIntent(OnBoardingIntent.ChangeAgree14(toggle))
+                        onBoardingIntent(OnBoardingIntent.ChangeAgreeService(toggle))
+                        onBoardingIntent(OnBoardingIntent.ChangeAgreePrivacy(toggle))
                     }
             ) {
                 Row(
@@ -114,13 +104,17 @@ fun AllowClauseScreen(
             AgreementItem(
                 text = "(필수) 만 14세 이상입니다",
                 checked = agree14,
-                onClick = { agree14 = !agree14 }
+                onClick = {
+                    onBoardingIntent(OnBoardingIntent.ChangeAgree14(!agree14))
+                }
             )
 
             AgreementItem(
                 text = "(필수) 서비스 이용 약관",
                 checked = agreeService,
-                onClick = { agreeService = !agreeService },
+                onClick = {
+                    onBoardingIntent(OnBoardingIntent.ChangeAgreeService(!agreeService))
+                },
                 showArrow = true,
                 onArrowClick = {
                     // TODO: 서비스 이용 약관 이동
@@ -130,12 +124,15 @@ fun AllowClauseScreen(
             AgreementItem(
                 text = "(필수) 개인정보 처리방침",
                 checked = agreePrivacy,
-                onClick = { agreePrivacy = !agreePrivacy },
+                onClick = {
+                    onBoardingIntent(OnBoardingIntent.ChangeAgreePrivacy(!agreePrivacy))
+                },
                 showArrow = true,
                 onArrowClick = {
                     // TODO: 개인정보 처리방침 이동
                 }
             )
+
         }
 
         SolplyBasicButton(

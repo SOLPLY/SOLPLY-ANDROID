@@ -1,8 +1,10 @@
 package com.teamsolply.solply.onboarding.repository
 
 import com.teamsolply.solply.onboarding.dto.request.PatchUserInfoRequestDto
+import com.teamsolply.solply.onboarding.mapper.toDto
 import com.teamsolply.solply.onboarding.mapper.toEntity
 import com.teamsolply.solply.onboarding.model.PersonaEntity
+import com.teamsolply.solply.onboarding.model.PolicyAgreementInfoEntity
 import com.teamsolply.solply.onboarding.model.TownEntity
 import com.teamsolply.solply.onboarding.model.UserInfoEntity
 import com.teamsolply.solply.onboarding.source.remote.OnBoardingRemoteDataSource
@@ -29,16 +31,17 @@ class OnBoardingRepositoryImpl @Inject constructor(
 
     override suspend fun patchUserInfo(
         selectedTownId: Long,
-        favoriteTownIdList: List<Long>,
         persona: String,
-        nickname: String
+        nickname: String,
+        policyAgreementInfos: List<PolicyAgreementInfoEntity>
     ): Result<UserInfoEntity> = runCatching {
+
         onBoardingRemoteDataSource.patchUserInfo(
             PatchUserInfoRequestDto(
                 selectedTownId = selectedTownId,
-                favoriteTownIdList = favoriteTownIdList,
                 persona = persona,
-                nickname = nickname
+                nickname = nickname,
+                policyAgreementInfos = policyAgreementInfos.map { it.toDto() }
             )
         )
     }.mapCatching {

@@ -23,8 +23,11 @@ data class OnBoardingState(
     val userNickname: String = "",
     val isNicknameDuplicate: Boolean = false,
     val showStartingScreen: Boolean = false,
-    val isOnBoardingSuccess: Boolean = false
-) : UiState
+    val isOnBoardingSuccess: Boolean = false,
+    val agree14: Boolean = false,
+    val agreeService: Boolean = false,
+    val agreePrivacy: Boolean = false
+    ) : UiState
 
 
 sealed interface OnBoardingIntent : UiIntent {
@@ -42,6 +45,10 @@ sealed interface OnBoardingIntent : UiIntent {
     ) : OnBoardingIntent
 
     data object ShowStartingScreen : OnBoardingIntent
+    data class ChangeAgree14(val isChecked: Boolean) : OnBoardingIntent
+    data class ChangeAgreeService(val isChecked: Boolean) : OnBoardingIntent
+    data class ChangeAgreePrivacy(val isChecked: Boolean) : OnBoardingIntent
+
 }
 
 sealed interface OnBoardingSideEffect : SideEffect {
