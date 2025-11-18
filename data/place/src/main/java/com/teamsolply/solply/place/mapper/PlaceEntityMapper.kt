@@ -8,7 +8,7 @@ fun PlaceDto.toEntity(): PlaceEntity {
         placeId = this.placeId,
         placeName = this.placeName,
         thumbnailImageUrl = this.thumbnailImageUrl,
-        primaryTag = this.mainTag,
+        primaryTag = this.primaryTag,
         isBookmarked = this.isBookmarked
     )
 }

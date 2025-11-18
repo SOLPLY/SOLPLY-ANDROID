@@ -34,14 +34,14 @@ class PlaceRemoteDataSourceImpl @Inject constructor(
             townId = townId,
             isBookmarkSearch = isBookmarkSearch,
             mainTagId = mainTagId,
-            subTag1Ids = if (subTagAIdList.isNullOrEmpty()) {
+            subTagAIdList = if (subTagAIdList.isNullOrEmpty()) {
                 null
             } else {
                 subTagAIdList.joinToString(
                     separator = ","
                 )
             },
-            subTag2Ids = if (subTagBIdList.isNullOrEmpty()) {
+            subTagBIdList = if (subTagBIdList.isNullOrEmpty()) {
                 null
             } else {
                 subTagBIdList.joinToString(

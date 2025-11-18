@@ -1,5 +1,6 @@
 package com.teamsolply.solply.search
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -61,8 +62,8 @@ fun SearchScreen(
                 SearchSideEffect.NavigateToRegisterPlace -> navigateToRegisterPlace()
                 is SearchSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
                     MapsType.PLACE_DETAIL.name,
-                    sideEffect.placeId,
-                    sideEffect.townId
+                    sideEffect.townId,
+                    sideEffect.placeId
                 )
             }
         }

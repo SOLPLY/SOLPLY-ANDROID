@@ -18,11 +18,14 @@ data class PlaceDto(
     val placeName: String,
 
     @SerialName("thumbnailImageUrl")
-    val thumbnailImageUrl: String,
+    val thumbnailImageUrl: String?,
 
-    @SerialName("mainTag")
-    val mainTag: String,
+    @SerialName("primaryTag")
+    val primaryTag: String,
 
     @SerialName("isBookmarked")
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean,
+
+    @SerialName("townId")
+    val townId: Long
 )

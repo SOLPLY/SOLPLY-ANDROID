@@ -39,7 +39,7 @@ import com.teamsolply.solply.ui.image.AdaptationImage
 @Composable
 fun SolplyPlaceCard(
     name: String,
-    imgRes: String,
+    imgRes: String?,
     placeType: PlaceType,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -84,18 +84,20 @@ fun SolplyPlaceCard(
                 )
             }
 
-            AdaptationImage(
-                imageUrl = imgRes,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp)),
-                contentScale = ContentScale.Crop,
-                onLoadingStateChange = { state ->
-                    if (state is AsyncImagePainter.State.Success) {
-                        isImageReady = true
+            if (imgRes != null) {
+                AdaptationImage(
+                    imageUrl = imgRes,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentScale = ContentScale.Crop,
+                    onLoadingStateChange = { state ->
+                        if (state is AsyncImagePainter.State.Success) {
+                            isImageReady = true
+                        }
                     }
-                }
-            )
+                )
+            }
 
             if (saved && isImageReady) {
                 Icon(
