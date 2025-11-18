@@ -297,7 +297,7 @@ fun ReportContentScreen(
             text = "잘못된 정보에 대한 설명을 입력해주세요",
             modifier = Modifier.padding(bottom = 12.dp),
             color = SolplyTheme.colors.black,
-            style = SolplyTheme.typography.body16R
+            style = SolplyTheme.typography.body16M
         )
         SolplyFixedReportTextField(
             value = reportContent,

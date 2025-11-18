@@ -60,7 +60,9 @@ internal fun AddCourseBottomSheet(
             Icon(
                 painter = painterResource(if (courseSelected) R.drawable.ic_bookmark_fill else R.drawable.ic_bookmark_empty),
                 contentDescription = "place_bookmarked",
-                modifier = Modifier.customClickable(rippleEnabled = false) {
+                modifier = Modifier
+                    .size(28.dp)
+                    .customClickable(rippleEnabled = false) {
                     saveCourse()
                 },
                 tint = SolplyTheme.colors.gray900
