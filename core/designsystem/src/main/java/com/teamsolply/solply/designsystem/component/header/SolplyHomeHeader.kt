@@ -1,5 +1,6 @@
 package com.teamsolply.solply.designsystem.component.header
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,8 +30,8 @@ fun SolplyHomeHeader(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 11.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .background(color = SolplyTheme.colors.white)
+            .padding(top = 48.dp),
     ) {
         Row(
             modifier = Modifier
@@ -59,7 +60,6 @@ fun SolplyHomeHeader(
                     style = SolplyTheme.typography.body16M,
                     modifier = Modifier
                         .padding(start = 4.dp)
-                        .height(21.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
