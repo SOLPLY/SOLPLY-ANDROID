@@ -10,12 +10,13 @@ data class OnBoardingState(
     val currentPage: Int = 0,
     val totalPageCount: Int = 3,
     val townList: TownEntity = TownEntity(
-        towns = emptyList()
+        parentTowns = emptyList()
     ),
 
     val selectedRegionId: Long? = 1,
     val selectedTownId: Long? = null,
     val townBottomSheetShown: Boolean = false,
+
     val personaList: PersonaEntity = PersonaEntity(personaList = emptyList()),
     val selectedPersona: String? = null,
 
@@ -24,6 +25,7 @@ data class OnBoardingState(
     val showStartingScreen: Boolean = false,
     val isOnBoardingSuccess: Boolean = false
 ) : UiState
+
 
 sealed interface OnBoardingIntent : UiIntent {
     data object OnBoardingButtonClick : OnBoardingIntent
