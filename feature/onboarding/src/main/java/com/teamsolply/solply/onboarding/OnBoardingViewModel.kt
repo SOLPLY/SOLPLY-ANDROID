@@ -1,6 +1,7 @@
 package com.teamsolply.solply.onboarding
 
 import androidx.lifecycle.viewModelScope
+import com.teamsolply.solply.onboarding.model.PolicyAgreementInfoEntity
 import com.teamsolply.solply.onboarding.repository.OnBoardingRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -83,6 +84,17 @@ class OnBoardingViewModel @Inject constructor(
             is OnBoardingIntent.ShowStartingScreen -> {
                 patchUserInfo()
             }
+            is OnBoardingIntent.ChangeAgree14 -> {
+                reduce { copy(agree14 = intent.isChecked) }
+            }
+
+            is OnBoardingIntent.ChangeAgreeService -> {
+                reduce { copy(agreeService = intent.isChecked) }
+            }
+
+            is OnBoardingIntent.ChangeAgreePrivacy -> {
+                reduce { copy(agreePrivacy = intent.isChecked) }
+            }
         }
     }
 
@@ -118,11 +130,18 @@ class OnBoardingViewModel @Inject constructor(
         viewModelScope.launch {
             uiState.value.selectedTownId?.let { selectedTownId ->
                 uiState.value.selectedPersona?.let { selectedPersona ->
+
+                    val policyInfos = listOf(
+                        PolicyAgreementInfoEntity(1, uiState.value.agree14),
+                        PolicyAgreementInfoEntity(2, uiState.value.agreeService),
+                        PolicyAgreementInfoEntity(3, uiState.value.agreePrivacy)
+                    )
+
                     onBoardingRepository.patchUserInfo(
                         selectedTownId = selectedTownId,
-                        favoriteTownIdList = uiState.value.townList.towns.map { it.townId },
                         persona = selectedPersona,
-                        nickname = uiState.value.userNickname
+                        nickname = uiState.value.userNickname,
+                        policyAgreementInfos = policyInfos
                     ).onSuccess {
                         reduce { copy(showStartingScreen = true) }
                     }

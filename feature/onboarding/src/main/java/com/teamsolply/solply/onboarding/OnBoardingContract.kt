@@ -8,21 +8,25 @@ import com.teamsolply.solply.ui.base.UiState
 
 data class OnBoardingState(
     val currentPage: Int = 0,
-    val totalPageCount: Int = 3,
+    val totalPageCount: Int = 4,
     val townList: TownEntity = TownEntity(
-        towns = emptyList()
+        parentTowns = emptyList()
     ),
 
     val selectedRegionId: Long? = 1,
     val selectedTownId: Long? = null,
     val townBottomSheetShown: Boolean = false,
+
     val personaList: PersonaEntity = PersonaEntity(personaList = emptyList()),
     val selectedPersona: String? = null,
 
     val userNickname: String = "",
     val isNicknameDuplicate: Boolean = false,
     val showStartingScreen: Boolean = false,
-    val isOnBoardingSuccess: Boolean = false
+    val isOnBoardingSuccess: Boolean = false,
+    val agree14: Boolean = false,
+    val agreeService: Boolean = false,
+    val agreePrivacy: Boolean = false
 ) : UiState
 
 sealed interface OnBoardingIntent : UiIntent {
@@ -40,6 +44,9 @@ sealed interface OnBoardingIntent : UiIntent {
     ) : OnBoardingIntent
 
     data object ShowStartingScreen : OnBoardingIntent
+    data class ChangeAgree14(val isChecked: Boolean) : OnBoardingIntent
+    data class ChangeAgreeService(val isChecked: Boolean) : OnBoardingIntent
+    data class ChangeAgreePrivacy(val isChecked: Boolean) : OnBoardingIntent
 }
 
 sealed interface OnBoardingSideEffect : SideEffect {

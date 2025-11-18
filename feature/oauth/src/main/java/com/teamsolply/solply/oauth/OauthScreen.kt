@@ -82,7 +82,7 @@ fun OauthScreen(
     Column(
         modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(115.dp))
+        Spacer(modifier = Modifier.height(180.dp))
         Image(
             painter = painterResource(R.drawable.ic_logo_full_vector),
             contentDescription = "app_logo",
@@ -151,7 +151,7 @@ fun OauthScreen(
                 .height(52.dp)
                 .padding(start = 20.dp, end = 20.dp)
                 .background(
-                    color = SolplyTheme.colors.black,
+                    color = SolplyTheme.colors.white,
                     shape = RoundedCornerShape(12.dp)
                 )
                 .customClickable(
@@ -163,16 +163,16 @@ fun OauthScreen(
             horizontalArrangement = Arrangement.Start
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_apple_logo),
-                contentDescription = "kakao_logo",
+                painter = painterResource(R.drawable.ic_google_logo),
+                contentDescription = "google_logo",
                 tint = Color.Unspecified,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
             )
             Text(
-                text = stringResource(com.teamsolply.solply.oauth.R.string.apple_login),
+                text = stringResource(com.teamsolply.solply.oauth.R.string.google_login),
                 style = SolplyTheme.typography.button16M,
-                color = SolplyTheme.colors.white
+                color = SolplyTheme.colors.black
             )
         }
         Spacer(modifier = Modifier.height(48.dp))

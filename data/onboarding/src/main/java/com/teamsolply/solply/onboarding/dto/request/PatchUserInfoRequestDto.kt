@@ -8,12 +8,12 @@ data class PatchUserInfoRequestDto(
     @SerialName("selectedTownId")
     val selectedTownId: Long,
 
-    @SerialName("favoriteTownIdList")
-    val favoriteTownIdList: List<Long>,
-
     @SerialName("persona")
     val persona: String,
 
     @SerialName("nickname")
-    val nickname: String
+    val nickname: String,
+
+    @SerialName("policyAgreementInfos")
+    val policyAgreementInfos: List<PolicyAgreementInfoDto>
 )
