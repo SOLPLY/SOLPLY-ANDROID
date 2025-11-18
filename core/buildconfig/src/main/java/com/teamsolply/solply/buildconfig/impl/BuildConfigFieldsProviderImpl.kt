@@ -1,6 +1,7 @@
 package com.teamsolply.solply.buildconfig.impl
 
 import com.teamsolply.solply.buildconfig.BuildConfig.BASE_URL
+import com.teamsolply.solply.buildconfig.BuildConfig.GOOGLE_CLIENT_ID
 import com.teamsolply.solply.buildconfig.BuildConfig.KAKAO_NATIVE_KEY
 import com.teamsolply.solply.buildconfig.BuildConfig.NAVER_CLIENT_ID
 import com.teamsolply.solply.buildconfig.BuildConfig.NAVER_DEVELOPERS_CLIENT_ID
@@ -14,6 +15,7 @@ class BuildConfigFieldsProviderImpl @Inject constructor() : BuildConfigFieldProv
         BuildConfigFields(
             baseUrl = BASE_URL,
             kakaoNativeKey = KAKAO_NATIVE_KEY,
+            googleClientId = GOOGLE_CLIENT_ID,
             naverClientId = NAVER_CLIENT_ID,
             naverDevelopersClientId = NAVER_DEVELOPERS_CLIENT_ID,
             naverDevelopersClientSecret = NAVER_DEVELOPERS_CLIENT_SECRET,
