@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -527,11 +528,11 @@ fun PlaceKeyWord(
         modifier = Modifier
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(16.dp)
+                shape = CircleShape
             )
             .border(
                 width = 1.dp,
-                shape = RoundedCornerShape(16.dp),
+                shape = CircleShape,
                 color = borderColor
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)

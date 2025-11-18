@@ -282,7 +282,7 @@ internal fun MapsRoute(
                 )
             )
         },
-        modifier = Modifier.padding(paddingValues)
+        //modifier = Modifier.padding(paddingValues)
     )
 
     if (uiState.exitEditCourseDialogVisibility) {

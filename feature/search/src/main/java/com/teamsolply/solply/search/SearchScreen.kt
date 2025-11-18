@@ -1,6 +1,5 @@
 package com.teamsolply.solply.search
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -97,14 +96,15 @@ fun SearchScreen(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp, bottom = 33.dp)
-                    .customClickable(rippleEnabled = false) {
-                        navigateToBack()
-                    }
+                    .padding(start = 16.dp, top = 20.dp, bottom = 33.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back_long_arrow),
-                    modifier = Modifier.padding(end = 12.dp),
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .customClickable(rippleEnabled = false) {
+                            navigateToBack()
+                        },
                     contentDescription = "back_arrow",
                     tint = SolplyTheme.colors.gray900
                 )
@@ -192,7 +192,7 @@ fun SearchScreen(
             } else if (uiState.hasQuery) {
                 Text(
                     text = "검색 결과가 없어요.\n" +
-                        "직접 장소 등록을 솔플리에 요청해보세요.",
+                            "직접 장소 등록을 솔플리에 요청해보세요.",
                     style = SolplyTheme.typography.body16R,
                     color = SolplyTheme.colors.black,
                     modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 17.dp)

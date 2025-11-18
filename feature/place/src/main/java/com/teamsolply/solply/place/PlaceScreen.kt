@@ -212,7 +212,8 @@ fun PlaceScreen(
         targetValue = if (isCenter[2]) 240.dp else 180.dp
     )
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
     ) {
         SolplyHomeHeader(
             townName = uiState.userInfo.selectedTown.townName,

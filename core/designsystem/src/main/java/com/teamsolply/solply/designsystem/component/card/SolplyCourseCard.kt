@@ -79,6 +79,8 @@ fun SolplyCourseCard(
                 .background(
                     color = SolplyTheme.colors.black.copy(alpha = 0.3f),
                     shape = RoundedCornerShape(
+                        topStart = 4.dp,
+                        topEnd = 4.dp,
                         bottomStart = 20.dp,
                         bottomEnd = 20.dp
                     )

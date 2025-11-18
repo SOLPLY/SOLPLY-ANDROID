@@ -114,7 +114,7 @@ internal fun MainScreen(
         modifier = modifier,
         content = { innerPadding ->
             val layoutDirection = LocalLayoutDirection.current
-            val mapsPadding = PaddingValues(
+            val paddingValue = PaddingValues(
                 start = innerPadding.calculateStartPadding(layoutDirection),
                 top = 0.dp,
                 end = innerPadding.calculateEndPadding(layoutDirection),
@@ -156,7 +156,7 @@ internal fun MainScreen(
                         }
                     )
                     oauthNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToOnBoarding = {
                             val navOptions = navOptions {
                                 launchSingleTop = true
@@ -175,7 +175,7 @@ internal fun MainScreen(
                     )
                     onBoardingNavGraph(
                         navController = navigator.navController,
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToPlace = {
                             val navOptions = navOptions {
                                 popUpTo(0) {
@@ -187,7 +187,7 @@ internal fun MainScreen(
                         }
                     )
                     placeNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToFavoriteTown = { selectedTownId ->
                             navigator.navigateToFavoriteTown(selectedTownId = selectedTownId)
                         },
@@ -203,7 +203,7 @@ internal fun MainScreen(
                         }
                     )
                     courseNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToFavoriteTown = { selectedTownId ->
                             navigator.navigateToFavoriteTown(selectedTownId = selectedTownId)
                         },
@@ -219,7 +219,7 @@ internal fun MainScreen(
                         }
                     )
                     collectionNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToPlaceCollection = { townId, townName ->
                             val navOptions = navOptions { }
@@ -261,7 +261,7 @@ internal fun MainScreen(
                         }
                     )
                     mapsNavGraph(
-                        paddingValues = mapsPadding,
+                        paddingValues = paddingValue,
                         showTextSnackBar = { message ->
                             coroutineScope.launch {
                                 showTextSnackBar(message)
@@ -314,7 +314,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     placeCollectionNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToMaps = { mapsType, townId, placeId ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(
@@ -327,7 +327,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     courseCollectionNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToMaps = { mapsType, townId, courseId ->
                             val navOptions = navOptions { }
                             navigator.navigateToMaps(
@@ -340,7 +340,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     mypageNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToProfile = {
                             val navOptions = navOptions { }
@@ -365,7 +365,7 @@ internal fun MainScreen(
                         }
                     )
                     profileNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToMypage = {
                             val navOptions = navOptions {
@@ -376,7 +376,7 @@ internal fun MainScreen(
                         }
                     )
                     withdrawNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToOauth = {
                             val navOptions = navOptions { }
@@ -384,13 +384,13 @@ internal fun MainScreen(
                         }
                     )
                     favoriteTownNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = { selectedTownId ->
                             navigator.navigateFavoriteTownToMain(selectedTownId = selectedTownId)
                         }
                     )
                     searchNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToPlaceDetail = { mapsType, townId, placeId ->
                             val navOptions = navOptions {
                                 popUpTo(Search) { inclusive = true }
@@ -412,7 +412,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     registerPlaceNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack
                     )
                 }

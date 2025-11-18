@@ -24,7 +24,7 @@ fun SolplyBasicBottomSheet(
         skipSlightlyExpanded = false,
         containSystemBars = false,
         flexibleSheetSize = FlexibleSheetSize(
-            fullyExpanded = 0.85f,
+            fullyExpanded = 0.86f,
             intermediatelyExpanded = 0.5f,
             slightlyExpanded = 0.14f
         )
