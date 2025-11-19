@@ -218,7 +218,7 @@ fun RegisterPlaceScreen(
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+                .padding(start = 16.dp, top = 50.dp, bottom = 16.dp)
                 .customClickable(rippleEnabled = false) {
                     navigateToBack()
                 }

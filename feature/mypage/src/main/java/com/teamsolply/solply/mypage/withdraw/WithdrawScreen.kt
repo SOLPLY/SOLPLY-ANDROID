@@ -102,7 +102,8 @@ fun WithdrawScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(SolplyTheme.colors.white),
+            .background(SolplyTheme.colors.white)
+            .padding(top = 50.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

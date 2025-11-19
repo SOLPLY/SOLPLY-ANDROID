@@ -117,7 +117,8 @@ fun ProfileEditScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SolplyTheme.colors.white),
+            .background(color = SolplyTheme.colors.white)
+            .padding(top = 50.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

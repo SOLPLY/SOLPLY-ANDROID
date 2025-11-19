@@ -96,7 +96,7 @@ fun SearchScreen(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 20.dp, bottom = 33.dp)
+                    .padding(start = 16.dp, top = 50.dp, bottom = 33.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back_long_arrow),

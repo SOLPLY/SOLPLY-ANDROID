@@ -46,7 +46,6 @@ fun SolplyTopBar(
             text = barText,
             style = SolplyTheme.typography.head16M,
             color = SolplyTheme.colors.black,
-            modifier = Modifier.padding(vertical = 16.dp)
         )
     }
 }
