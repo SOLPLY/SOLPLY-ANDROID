@@ -11,7 +11,6 @@ data class TownTreeResponseDto(
 @Serializable
 data class TownNodeDto(
     @SerialName("townId") val townId: Long,
-    @SerialName("townName") val townName: String? = null,
-    @SerialName("name") val name: String? = null,
-    @SerialName("subTowns") val subTowns: List<TownNodeDto>? = null
+    @SerialName("townName") val townName: String,
+    @SerialName("parentTownId") val parentTownId: Long?
 )
