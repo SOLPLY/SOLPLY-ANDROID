@@ -77,7 +77,8 @@ fun ReportPlaceDialog(
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
     reportWrongPlace: (List<String>) -> Unit,
-    reportLottieVisibility: Boolean
+    reportLottieVisibility: Boolean,
+    resetSelectedUris: (Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
@@ -186,7 +187,8 @@ fun ReportPlaceDialog(
                                             selectedUris = selectedUris,
                                             reportContent = reportContent,
                                             inputReportContent = inputReportContent,
-                                            onSelectUris = onSelectUris
+                                            onSelectUris = onSelectUris,
+                                            resetSelectedUris = resetSelectedUris
                                         )
                                     }
                                 }
@@ -292,7 +294,8 @@ fun ReportContentScreen(
     selectedUris: List<Uri>,
     reportContent: String,
     inputReportContent: (String) -> Unit,
-    onSelectUris: (List<Uri>) -> Unit
+    onSelectUris: (List<Uri>) -> Unit,
+    resetSelectedUris: (Int) -> Unit,
 ) {
     val remainSelectedUris = (3 - selectedUris.size).coerceAtLeast(0)
     val singlePicker = rememberLauncherForActivityResult(
@@ -359,7 +362,8 @@ fun ReportContentScreen(
 
                     else -> Unit
                 }
-            }
+            },
+            resetSelectedUris = resetSelectedUris
         )
     }
 }

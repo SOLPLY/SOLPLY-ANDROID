@@ -323,6 +323,14 @@ internal class MapsViewModel @Inject constructor(
                 presignedUrl(selectedFilesName = intent.selectedFilesName)
             }
 
+            is MapsIntent.ResetSelectedUris -> reduce {
+                val target = selectedReportUris.toMutableList()
+                if (target.isEmpty() || intent.index !in target.indices) return@reduce this
+                target.removeAt(intent.index)
+                copy(selectedReportUris = target)
+            }
+
+
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)

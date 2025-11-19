@@ -125,7 +125,10 @@ fun RegisterPlaceRoute(
         onSelectUris = { uris ->
             viewModel.sendIntent(RegisterPlaceIntent.SelectedReportUris(uris = uris))
         },
-        clickRegisterPlace = { viewModel.sendIntent(RegisterPlaceIntent.ClickRegisterPlace) }
+        clickRegisterPlace = { viewModel.sendIntent(RegisterPlaceIntent.ClickRegisterPlace) },
+        resetSelectedUris = { index ->
+            viewModel.sendIntent(RegisterPlaceIntent.ResetSelectedUris(index = index))
+        }
     )
 
     if (uiState.registerLottieVisibility) {
@@ -168,7 +171,8 @@ fun RegisterPlaceScreen(
     // 장소 사진
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
-    clickRegisterPlace: () -> Unit
+    clickRegisterPlace: () -> Unit,
+    resetSelectedUris: (Int) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
@@ -455,7 +459,8 @@ fun RegisterPlaceScreen(
                                 else -> Unit
                             }
                         },
-                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 76.dp)
+                        resetSelectedUris = resetSelectedUris,
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 76.dp),
                     )
                     SolplyBasicButton(
                         text = "완료",
