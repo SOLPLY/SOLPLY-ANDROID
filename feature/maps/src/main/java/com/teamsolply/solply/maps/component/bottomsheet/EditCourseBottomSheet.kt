@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,7 +57,6 @@ import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.ui.extension.customClickable
 import kotlinx.collections.immutable.PersistentList
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditCourseBottomSheet(
     context: Context,
@@ -83,7 +80,8 @@ internal fun EditCourseBottomSheet(
     onStartRenameCourseClick: () -> Unit,
     courseSaveDialogVisibility: Boolean,
     courseSaveDialogClick: (CourseSaveType) -> Unit,
-    changeCourseSaveDialogInVisibility: () -> Unit
+    changeCourseSaveDialogInVisibility: () -> Unit,
+    finishEditCourseClick: () -> Unit,
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }
@@ -157,7 +155,11 @@ internal fun EditCourseBottomSheet(
                 if (startEditCourse) {
                     Icon(
                         painter = painterResource(R.drawable.ic_course_edit),
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier
+                            .size(28.dp)
+                            .customClickable(rippleEnabled = false) {
+                                onStartRenameCourseClick()
+                            },
                         contentDescription = "start_course_edit",
                         tint = SolplyTheme.colors.gray500
                     )
@@ -295,7 +297,7 @@ internal fun EditCourseBottomSheet(
         if (startEditCourse && !courseSaveDialogVisibility) {
             SolplyBasicButton(
                 text = "완료",
-                onClick = { onStartRenameCourseClick() },
+                onClick = { finishEditCourseClick() },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(start = 20.dp, end = 20.dp, bottom = 36.dp),

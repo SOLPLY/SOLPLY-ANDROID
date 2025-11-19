@@ -266,9 +266,20 @@ internal class MapsViewModel @Inject constructor(
                 )
             }
 
-            MapsIntent.ChangeRenameCourseBottomSheetVisibility -> reduce {
+            is MapsIntent.ChangeRenameCourseBottomSheetVisibility -> reduce {
                 copy(
-                    renameCourseBottomSheetVisibility = !renameCourseBottomSheetVisibility
+                    renameCourseBottomSheetVisibility = !renameCourseBottomSheetVisibility,
+                    newCourseName = courseDetailInfo.courseName,
+                    newCourseIntroduction = courseDetailInfo.introduction
+                )
+            }
+
+            is MapsIntent.ChangeRenameCourse -> reduce {
+                copy(
+                    courseDetailInfo = uiState.value.courseDetailInfo.copy(
+                        courseName = intent.courseName,
+                        introduction = intent.courseIntroduction
+                    )
                 )
             }
 

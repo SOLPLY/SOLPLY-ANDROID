@@ -32,7 +32,7 @@ fun SolplyBasicBottomSheet(
         flexibleSheetSize = FlexibleSheetSize(
             fullyExpanded = 0.86f,
             intermediatelyExpanded = 0.5f,
-            slightlyExpanded = 0.11f
+            slightlyExpanded = 0.12f
         )
     )
 
