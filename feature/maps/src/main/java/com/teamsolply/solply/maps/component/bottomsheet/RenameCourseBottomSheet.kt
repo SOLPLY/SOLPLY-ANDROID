@@ -111,7 +111,6 @@ fun RenameCourseBottomSheet(
                 Icon(
                     painter = painterResource(R.drawable.ic_close),
                     modifier = Modifier
-                        .minimumInteractiveComponentSize()
                         .customClickable(rippleEnabled = false) {
                             onStartRenameCourseClick()
                         },
@@ -177,7 +176,7 @@ fun RenameCourseBottomSheet(
                     }
                 },
                 modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, bottom = 36.dp),
+                    .padding(start = 4.dp, end = 4.dp, bottom = 36.dp),
                 selected = isButtonEnabled,
                 textPadding = PaddingValues(vertical = 21.dp),
                 enabledBackgroundColor = SolplyTheme.colors.gray900

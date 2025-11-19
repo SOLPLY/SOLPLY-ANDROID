@@ -148,7 +148,7 @@ internal fun EditCourseBottomSheet(
             ) {
                 Text(
                     text = courseName,
-                    modifier = Modifier.padding(bottom = 4.dp),
+                    modifier = Modifier.padding(bottom = 8.dp),
                     color = SolplyTheme.colors.black,
                     style = SolplyTheme.typography.title18Sb
                 )
