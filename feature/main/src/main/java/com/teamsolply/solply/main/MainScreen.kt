@@ -15,6 +15,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.teamsolply.solply.collection.collection.course.courseCollectionNavGraph
@@ -62,6 +65,9 @@ internal fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val currentSnackbarJob = remember { mutableStateOf<Job?>(null) }
     val currentSnackbarState = remember { mutableStateOf(SolplySnackBarData()) }
+    val isSnackbarVisible = remember {
+        derivedStateOf { snackbarHostState.currentSnackbarData != null }
+    }
 
     suspend fun showTextSnackBar(message: String) {
         currentSnackbarJob.value?.join()
@@ -428,39 +434,51 @@ internal fun MainScreen(
             }
         },
         snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
-                snackbar = { snackbarData ->
-                    when (currentSnackbarState.value.type) {
-                        SnackBarType.TEXT -> {
-                            SolplyTextSnackBar(text = snackbarData.visuals.message)
-                        }
-
-                        SnackBarType.NOTIFICATION -> {
-                            SolplyNotificationSnackBar(text = snackbarData.visuals.message)
-                        }
-
-                        SnackBarType.NAVIGATE -> {
-                            SolplyNavigateSnackBar(
-                                text = snackbarData.visuals.message,
-                                navigateToRoute = {
-                                    currentSnackbarState.value.action?.invoke()
+            if (isSnackbarVisible.value) {
+                Popup(
+                    alignment = Alignment.BottomCenter,
+                    offset = androidx.compose.ui.unit.IntOffset(0, -32),
+                    properties = PopupProperties(
+                        dismissOnBackPress = false,
+                        dismissOnClickOutside = false,
+                        focusable = false
+                    )
+                ) {
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
+                        snackbar = { snackbarData ->
+                            when (currentSnackbarState.value.type) {
+                                SnackBarType.TEXT -> {
+                                    SolplyTextSnackBar(text = snackbarData.visuals.message)
                                 }
-                            )
-                        }
 
-                        SnackBarType.NAVIGATE_SIMPLE -> {
-                            SolplyNavigateSimpleSnackBar(
-                                navigateToRoute = {
-                                    currentSnackbarState.value.action?.invoke()
+                                SnackBarType.NOTIFICATION -> {
+                                    SolplyNotificationSnackBar(text = snackbarData.visuals.message)
                                 }
-                            )
+
+                                SnackBarType.NAVIGATE -> {
+                                    SolplyNavigateSnackBar(
+                                        text = snackbarData.visuals.message,
+                                        navigateToRoute = {
+                                            currentSnackbarState.value.action?.invoke()
+                                        }
+                                    )
+                                }
+
+                                SnackBarType.NAVIGATE_SIMPLE -> {
+                                    SolplyNavigateSimpleSnackBar(
+                                        navigateToRoute = {
+                                            currentSnackbarState.value.action?.invoke()
+                                        }
+                                    )
+                                }
+                            }
                         }
-                    }
+                    )
                 }
-            )
+            }
         }
     )
 }
