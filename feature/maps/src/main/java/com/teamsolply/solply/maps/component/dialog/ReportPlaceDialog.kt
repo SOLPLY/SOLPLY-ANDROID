@@ -144,7 +144,7 @@ fun ReportPlaceDialog(
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .padding(start = 16.dp, top = 56.dp, bottom = 24.dp)
+                                    .padding(start = 16.dp, top = 11.dp, bottom = 24.dp)
                                     .minimumInteractiveComponentSize()
                                     .customClickable(rippleEnabled = false) {
                                         when (pagerState.currentPage) {
@@ -224,7 +224,7 @@ fun ReportPlaceDialog(
                                 modifier = Modifier.padding(
                                     start = 20.dp,
                                     end = 20.dp,
-                                    bottom = 72.dp
+                                    bottom = 24.dp
                                 ),
                                 selected = when (pagerState.currentPage) {
                                     0 -> selectedReportType != ReportType.EMPTY
