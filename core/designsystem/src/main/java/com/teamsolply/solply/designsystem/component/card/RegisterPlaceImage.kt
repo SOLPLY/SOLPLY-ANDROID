@@ -3,7 +3,6 @@ package com.teamsolply.solply.designsystem.component.card
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

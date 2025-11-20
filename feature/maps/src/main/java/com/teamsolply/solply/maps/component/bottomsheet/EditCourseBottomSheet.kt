@@ -81,7 +81,7 @@ internal fun EditCourseBottomSheet(
     courseSaveDialogVisibility: Boolean,
     courseSaveDialogClick: (CourseSaveType) -> Unit,
     changeCourseSaveDialogInVisibility: () -> Unit,
-    finishEditCourseClick: () -> Unit,
+    finishEditCourseClick: () -> Unit
 ) {
     val draggableItemSize by remember(courseDetailEntity.places.size) {
         derivedStateOf { courseDetailEntity.places.size }

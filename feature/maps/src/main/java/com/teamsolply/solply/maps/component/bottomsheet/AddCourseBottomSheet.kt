@@ -63,8 +63,8 @@ internal fun AddCourseBottomSheet(
                 modifier = Modifier
                     .size(28.dp)
                     .customClickable(rippleEnabled = false) {
-                    saveCourse()
-                },
+                        saveCourse()
+                    },
                 tint = SolplyTheme.colors.gray900
             )
         }

@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
@@ -10,9 +9,9 @@ import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.async
 
 @HiltViewModel
 class PlaceViewModel @Inject constructor(
@@ -196,7 +195,6 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace(townId)
                 .onSuccess { placesList ->
-                    Log.d("asdasdasd", "asd")
                     reduce { copy(recommendPlaces = placesList.toPersistentList()) }
                 }
         }

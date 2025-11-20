@@ -45,7 +45,7 @@ fun SolplyTopBar(
         Text(
             text = barText,
             style = SolplyTheme.typography.head16M,
-            color = SolplyTheme.colors.black,
+            color = SolplyTheme.colors.black
         )
     }
 }

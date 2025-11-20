@@ -47,7 +47,7 @@ fun RenameCourseBottomSheet(
     renameCourseName: (String) -> Unit,
     renameCourseIntroduction: (String) -> Unit,
     onStartRenameCourseClick: () -> Unit,
-    onChangeRenameCourse: (String, String) -> Unit,
+    onChangeRenameCourse: (String, String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -62,9 +62,9 @@ fun RenameCourseBottomSheet(
     val blankFocus = remember { FocusRequester() }
 
     val isButtonEnabled = newCourseName.isNotEmpty() &&
-            newCourseName.length != 18 &&
-            newCourseIntroduction.isNotEmpty() &&
-            newCourseIntroduction.length != 20
+        newCourseName.length != 18 &&
+        newCourseIntroduction.isNotEmpty() &&
+        newCourseIntroduction.length != 20
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -105,7 +105,7 @@ fun RenameCourseBottomSheet(
                 Text(
                     text = "코스 정보 수정",
                     color = SolplyTheme.colors.black,
-                    style = SolplyTheme.typography.head16M,
+                    style = SolplyTheme.typography.head16M
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_close),

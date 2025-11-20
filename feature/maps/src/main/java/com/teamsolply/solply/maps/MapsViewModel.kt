@@ -341,7 +341,6 @@ internal class MapsViewModel @Inject constructor(
                 copy(selectedReportUris = target)
             }
 
-
             // Shared
             is MapsIntent.EmptyCourseClick -> postSideEffect(MapsSideEffect.NavigateToCourse)
             is MapsIntent.ShowMaxSizeCourseSnackBar -> postSideEffect(MapsSideEffect.ShowMaxSizeCourseSnackBar)

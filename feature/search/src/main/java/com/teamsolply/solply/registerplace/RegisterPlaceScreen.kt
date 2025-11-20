@@ -172,7 +172,7 @@ fun RegisterPlaceScreen(
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
     clickRegisterPlace: () -> Unit,
-    resetSelectedUris: (Int) -> Unit,
+    resetSelectedUris: (Int) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
@@ -460,7 +460,7 @@ fun RegisterPlaceScreen(
                             }
                         },
                         resetSelectedUris = resetSelectedUris,
-                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 76.dp),
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 76.dp)
                     )
                     SolplyBasicButton(
                         text = "완료",

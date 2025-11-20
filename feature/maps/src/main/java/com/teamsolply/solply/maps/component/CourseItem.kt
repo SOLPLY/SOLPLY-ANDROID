@@ -106,7 +106,7 @@ internal fun CourseItem(
                                 modifier = Modifier,
                                 color = SolplyTheme.colors.black,
                                 style = SolplyTheme.typography.title15M,
-                                maxLines = 1,
+                                maxLines = 1
                             )
                         }
                         Text(

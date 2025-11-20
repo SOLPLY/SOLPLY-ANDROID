@@ -192,7 +192,7 @@ fun SearchScreen(
             } else if (uiState.hasQuery) {
                 Text(
                     text = "검색 결과가 없어요.\n" +
-                            "직접 장소 등록을 솔플리에 요청해보세요.",
+                        "직접 장소 등록을 솔플리에 요청해보세요.",
                     style = SolplyTheme.typography.body16R,
                     color = SolplyTheme.colors.black,
                     modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 17.dp)

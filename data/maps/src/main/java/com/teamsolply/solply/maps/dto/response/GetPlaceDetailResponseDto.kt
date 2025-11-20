@@ -46,7 +46,7 @@ data class GetPlaceDetailResponseDto(
     val placeType: String,
 
     @SerialName("placeDefaultId")
-    val placeDefaultId: Long,
+    val placeDefaultId: Long
 )
 
 @Serializable

@@ -11,7 +11,7 @@ class FavoriteTownRepositoryImpl @Inject constructor(
 ) : FavoriteTownRepository {
 
     override suspend fun getTownTree():
-            Result<Pair<List<Region>, Map<Long, List<TownLite>>>> = runCatching {
+        Result<Pair<List<Region>, Map<Long, List<TownLite>>>> = runCatching {
         val towns = remoteDataSource.getTownTree().towns
 
         val regions = towns
