@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.async
 
 @HiltViewModel
 class PlaceViewModel @Inject constructor(
@@ -154,17 +155,6 @@ class PlaceViewModel @Inject constructor(
             repository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
-
-                    fetchPlaces(
-                        townId = userInfo.selectedTown.townId,
-                        mainTagId = null,
-                        subTagAIdList = null,
-                        subTagBIdList = null
-                    )
-                    fetchRecommendPlace(
-                        townId = userInfo.selectedTown.townId
-                    )
-                    fetchMainTags()
                     reduce {
                         copy(
                             selectedMainFilter = "ALL",
@@ -172,6 +162,23 @@ class PlaceViewModel @Inject constructor(
                             subFilterItems = persistentListOf()
                         )
                     }
+
+                    val placesJob = async {
+                        fetchPlaces(
+                            townId = userInfo.selectedTown.townId,
+                            mainTagId = null,
+                            subTagAIdList = null,
+                            subTagBIdList = null
+                        )
+                    }
+                    val recommendJob = async {
+                        fetchRecommendPlace(townId = userInfo.selectedTown.townId)
+                    }
+                    val mainTagsJob = async { fetchMainTags() }
+
+                    placesJob.await()
+                    recommendJob.await()
+                    mainTagsJob.await()
                 }
         }
     }
