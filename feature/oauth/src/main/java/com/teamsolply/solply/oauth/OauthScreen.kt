@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +47,7 @@ fun OauthRoute(
     viewModel: OauthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val googleLoginHelper = remember { GoogleLoginHelper(context = context) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffectWithLifecycle {
@@ -63,6 +65,18 @@ fun OauthRoute(
                     }
                 )
 
+                OauthSideEffect.StartGoogleLogin -> googleLoginHelper.requestGoogleLogin(
+                    onSuccess = { accessToken ->
+                        viewModel.sendIntent(
+                            OauthIntent.GoogleLoginSuccess(
+                                provider = "GOOGLE",
+                                accessToken = accessToken
+                            )
+                        )
+                    },
+                    onFailure = {}
+                )
+
                 OauthSideEffect.NavigateToOnBoarding -> navigateToOnBoarding()
                 OauthSideEffect.NavigateToPlace -> navigateToPlace()
             }
@@ -70,13 +84,15 @@ fun OauthRoute(
     }
 
     OauthScreen(
-        kakaoLoginClick = { viewModel.sendIntent(OauthIntent.KakaoLoginClick) }
+        kakaoLoginClick = { viewModel.sendIntent(OauthIntent.KakaoLoginClick) },
+        googleLoginClick = { viewModel.sendIntent(OauthIntent.GoogleLoginClick) }
     )
 }
 
 @Composable
 fun OauthScreen(
     kakaoLoginClick: () -> Unit,
+    googleLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -151,28 +167,28 @@ fun OauthScreen(
                 .height(52.dp)
                 .padding(start = 20.dp, end = 20.dp)
                 .background(
-                    color = SolplyTheme.colors.black,
+                    color = SolplyTheme.colors.white,
                     shape = RoundedCornerShape(12.dp)
                 )
                 .customClickable(
                     rippleEnabled = false
                 ) {
-                    kakaoLoginClick()
+                    googleLoginClick()
                 },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_apple_logo),
-                contentDescription = "kakao_logo",
+                painter = painterResource(R.drawable.ic_google_logo),
+                contentDescription = "google_logo",
                 tint = Color.Unspecified,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 12.dp)
             )
             Text(
-                text = stringResource(com.teamsolply.solply.oauth.R.string.apple_login),
+                text = stringResource(com.teamsolply.solply.oauth.R.string.google_login),
                 style = SolplyTheme.typography.button16M,
-                color = SolplyTheme.colors.white
+                color = SolplyTheme.colors.black
             )
         }
         Spacer(modifier = Modifier.height(48.dp))
