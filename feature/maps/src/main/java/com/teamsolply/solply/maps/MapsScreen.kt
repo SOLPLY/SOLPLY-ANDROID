@@ -34,6 +34,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
@@ -479,7 +480,11 @@ private fun MapsScreen(
     ) {
         NaverMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            uiSettings = MapUiSettings(
+                isZoomControlEnabled = false,
+                isCompassEnabled = false
+            )
         ) {
             if (mapsType == MapsType.PLACE_DETAIL) {
                 Marker(

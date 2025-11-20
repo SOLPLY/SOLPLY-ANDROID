@@ -92,7 +92,7 @@ fun PlaceOptionFilterSheet(
                 text = "초기화",
                 onClick = onReset,
                 modifier = Modifier.weight(1f),
-                selected = false,
+                selected = true,
                 textColor = SolplyTheme.colors.gray900,
                 textStyle = SolplyTheme.typography.body16M,
                 enabledBackgroundColor = SolplyTheme.colors.white,

@@ -198,11 +198,7 @@ fun ProfileEditScreen(
         SolplyBasicButton(
             text = "완료",
             selected = isEditSuccess,
-            onClick = {
-                if (isEditSuccess) {
-                    onCompleteButtonClick()
-                }
-            },
+            onClick = { onCompleteButtonClick() },
             enabledBackgroundColor = SolplyTheme.colors.gray900,
             disabledBackgroundColor = SolplyTheme.colors.gray300,
             modifier = Modifier.padding(vertical = 24.dp, horizontal = 16.dp)

@@ -100,11 +100,7 @@ fun FavoriteTownRoute(
             text = "완료",
             modifier = Modifier
                 .padding(bottom = 24.dp, start = 20.dp, end = 20.dp),
-            onClick = {
-                if (isButtonEnabled) {
-                    viewModel.sendIntent(FavoriteTownIntent.ConfirmSelection)
-                }
-            },
+            onClick = { viewModel.sendIntent(FavoriteTownIntent.ConfirmSelection) },
             selected = isButtonEnabled,
             textStyle = SolplyTheme.typography.button16M,
             textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,

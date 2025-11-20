@@ -16,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -170,10 +169,8 @@ fun RenameCourseBottomSheet(
             SolplyBasicButton(
                 text = "완료",
                 onClick = {
-                    if (isButtonEnabled) {
-                        onChangeRenameCourse(newCourseName, newCourseIntroduction)
-                        onStartRenameCourseClick()
-                    }
+                    onChangeRenameCourse(newCourseName, newCourseIntroduction)
+                    onStartRenameCourseClick()
                 },
                 modifier = Modifier
                     .padding(start = 4.dp, end = 4.dp, bottom = 36.dp),

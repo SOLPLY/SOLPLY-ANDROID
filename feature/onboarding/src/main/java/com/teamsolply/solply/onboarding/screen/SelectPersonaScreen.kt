@@ -67,9 +67,7 @@ fun SelectPersonaScreen(
         SolplyBasicButton(
             text = "다음",
             modifier = Modifier.padding(bottom = 24.dp),
-            onClick = {
-                if (isButtonEnabled) onNextClick()
-            },
+            onClick = { onNextClick() },
             selected = isButtonEnabled,
             textStyle = SolplyTheme.typography.button16M,
             textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,

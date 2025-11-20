@@ -137,7 +137,7 @@ fun AllowClauseScreen(
         SolplyBasicButton(
             text = "다음",
             modifier = Modifier.padding(bottom = 24.dp),
-            onClick = { if (isAllChecked) onNextClick() },
+            onClick = { onNextClick() },
             selected = isAllChecked,
             textStyle = SolplyTheme.typography.button16M,
             textColor = if (isAllChecked) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
