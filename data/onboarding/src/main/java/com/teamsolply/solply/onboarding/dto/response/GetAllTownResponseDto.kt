@@ -15,6 +15,8 @@ data class TownDto(
     val townId: Long,
     @SerialName("townName")
     val townName: String,
+    @SerialName("parentTownId")
+    val parentTownId: Long? = null,
     @SerialName("subTowns")
     val subTowns: List<TownDto>? = null
 )

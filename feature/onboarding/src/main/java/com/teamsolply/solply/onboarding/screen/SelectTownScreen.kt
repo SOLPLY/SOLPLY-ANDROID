@@ -33,6 +33,7 @@ import com.teamsolply.solply.designsystem.theme.SolplyTheme
 import com.teamsolply.solply.onboarding.OnBoardingIntent
 import com.teamsolply.solply.onboarding.OnBoardingState
 import com.teamsolply.solply.onboarding.component.OnBoardingTownBottomSheet
+import com.teamsolply.solply.onboarding.model.ParentTownEntity
 import com.teamsolply.solply.onboarding.model.SubTownEntity
 import com.teamsolply.solply.ui.extension.customClickable
 
@@ -77,11 +78,13 @@ fun SelectTownScreen(
                         )
                     } else {
                         AddLocalAreaButton(
-                            text = townList.towns
-                                .flatMap { it.subTowns ?: emptyList() }
+                            text = townList.parentTowns
+                                .flatMap { it.subTowns }
                                 .find { it.townId == state.selectedTownId }
                                 ?.townName ?: "",
-                            onClick = {},
+                            onClick = {
+                                onBoardingIntent(OnBoardingIntent.ChangeTownBottomSheetShown)
+                            },
                             selected = true
                         )
                     }
@@ -112,15 +115,9 @@ fun SelectTownScreen(
                             ) {
                                 LeftRegionPane(
                                     borderColor = borderColor,
-                                    regions = townList.towns,
+                                    regions = townList.parentTowns,
                                     selectedRegionId = state.selectedRegionId,
-                                    onSelect = { id ->
-                                        onBoardingIntent(
-                                            OnBoardingIntent.ChangeRegion(
-                                                id
-                                            )
-                                        )
-                                    }
+                                    onSelect = { id -> onBoardingIntent(OnBoardingIntent.ChangeRegion(id)) }
                                 )
                                 VerticalDivider(
                                     thickness = 1.dp,
@@ -128,17 +125,11 @@ fun SelectTownScreen(
                                 )
                                 RightTownPane(
                                     borderColor = borderColor,
-                                    towns = townList.towns
+                                    towns = townList.parentTowns
                                         .find { it.townId == state.selectedRegionId }
                                         ?.subTowns ?: emptyList(),
                                     selectedTownId = state.selectedTownId,
-                                    onSelect = { id ->
-                                        onBoardingIntent(
-                                            OnBoardingIntent.OnTownSelected(
-                                                id
-                                            )
-                                        )
-                                    }
+                                    onSelect = { id -> onBoardingIntent(OnBoardingIntent.OnTownSelected(id)) }
                                 )
                             }
                         }
@@ -184,7 +175,7 @@ fun SelectTownScreen(
 @Composable
 private fun LeftRegionPane(
     borderColor: Color,
-    regions: List<SubTownEntity>,
+    regions: List<ParentTownEntity>,
     selectedRegionId: Long?,
     onSelect: (Long) -> Unit
 ) {
@@ -194,7 +185,7 @@ private fun LeftRegionPane(
             .fillMaxHeight()
             .background(SolplyTheme.colors.gray100)
     ) {
-        itemsIndexed(items = regions) { index: Int, item: SubTownEntity ->
+        itemsIndexed(items = regions) { index: Int, item: ParentTownEntity ->
             val selected = selectedRegionId == item.townId
             val bg = if (selected) SolplyTheme.colors.white else SolplyTheme.colors.gray100
             val textColor = if (selected) SolplyTheme.colors.black else SolplyTheme.colors.gray600
@@ -233,7 +224,7 @@ private fun LeftRegionPane(
             ) {
                 Text(
                     text = item.townName,
-                    style = SolplyTheme.typography.body14M.copy(fontWeight = fontWeight),
+                    style = SolplyTheme.typography.body16M.copy(fontWeight = fontWeight),
                     color = textColor
                 )
             }

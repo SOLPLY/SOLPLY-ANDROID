@@ -110,7 +110,7 @@ fun OauthScreen(
     Column(
         modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(115.dp))
+        Spacer(modifier = Modifier.height(180.dp))
         Image(
             painter = painterResource(R.drawable.ic_logo_full_vector),
             contentDescription = "app_logo",
