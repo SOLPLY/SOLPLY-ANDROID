@@ -126,7 +126,7 @@ fun ProfileEditScreen(
             onBackButtonClick = onBackButtonClick
         )
         Spacer(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.height(16.dp)
         )
         Image(
             painter = painterResource(R.drawable.img_basic_profile),
@@ -137,7 +137,7 @@ fun ProfileEditScreen(
                 .clip(CircleShape),
             contentScale = ContentScale.Fit
         )
-        Spacer(modifier = Modifier.weight(2f))
+        Spacer(modifier = Modifier.height(32.dp))
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Top,
@@ -165,7 +165,7 @@ fun ProfileEditScreen(
                 modifier = Modifier.padding(top = 12.dp)
             )
         }
-        Spacer(modifier = Modifier.weight(1.5f))
+        Spacer(modifier = Modifier.height(24.dp))
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Top,
