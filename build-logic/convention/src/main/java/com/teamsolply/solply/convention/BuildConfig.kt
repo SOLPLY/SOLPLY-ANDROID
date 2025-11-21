@@ -36,8 +36,8 @@ internal fun Project.configureBuildConfig(
             )
             buildConfigField(
                 "String",
-                "GOOGLE_CLIENT_ID",
-                gradleLocalProperties(rootDir,providers).getProperty("google.client.id")
+                "GOOGLE_WEB_CLIENT_ID",
+                gradleLocalProperties(rootDir, providers).getProperty("google.web.client.id")
             )
         }
 

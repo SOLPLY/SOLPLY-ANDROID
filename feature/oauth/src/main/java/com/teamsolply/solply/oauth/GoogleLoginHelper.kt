@@ -1,18 +1,19 @@
 package com.teamsolply.solply.oauth
 
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
-import androidx.multidex.BuildConfig
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class GoogleLoginHelper(
     private val context: Context
@@ -20,15 +21,16 @@ class GoogleLoginHelper(
 
     companion object {
         const val TAG = "GoogleLogin"
-        const val WEB_CLIENT_ID = BuildConfig.
+        const val WEB_CLIENT_ID = com.teamsolply.solply.buildconfig.BuildConfig.GOOGLE_WEB_CLIENT_ID
         //const val SERVER_URL = ""
     }
 
     private val credentialManager: CredentialManager = CredentialManager.create(context)
+    private val nonce = UUID.randomUUID().toString()
     private val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
         .setServerClientId(WEB_CLIENT_ID) // 웹 클라이언트 ID
-        .setFilterByAuthorizedAccounts(false) // 기존 계정 필터링 해제
-        .setAutoSelectEnabled(true) //이전에 선택한 계정을 기억함
+        .setFilterByAuthorizedAccounts(false)
+//        .setNonce(nonce)
         .build()
     private val request: GetCredentialRequest = GetCredentialRequest.Builder()
         .addCredentialOption(googleIdOption)
@@ -47,7 +49,7 @@ class GoogleLoginHelper(
                 )
                 handleSignInResult(result, onSuccess, onFailure)
             } catch (e: GetCredentialException) {
-                onFailure("Google Sign-in failed: ${e.localizedMessage}")
+                Log.e("Google Sign-in failed", " ${e.localizedMessage}")
             }
         }
     }
@@ -64,7 +66,6 @@ class GoogleLoginHelper(
                         val googleIdTokenCredential =
                             GoogleIdTokenCredential.createFrom(credential.data)
                         val idToken = googleIdTokenCredential.idToken
-                        //sendTokenToServer(token, onSuccess, onFailure) 서버로 토큰을 전송하고 결과에 따른 처리
 //                        Log.d(TAG, idToken) //토큰
 //                        Log.d(TAG, googleIdTokenCredential.id) //이메일
 //                        googleIdTokenCredential.displayName?.let { Log.d(TAG, it) } //이름

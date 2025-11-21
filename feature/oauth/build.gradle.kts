@@ -14,4 +14,5 @@ dependencies {
     implementation(libs.credentials.play.auth)
     implementation(libs.credentials)
     implementation(projects.domain.oauth)
+    implementation(projects.core.buildconfig)
 }

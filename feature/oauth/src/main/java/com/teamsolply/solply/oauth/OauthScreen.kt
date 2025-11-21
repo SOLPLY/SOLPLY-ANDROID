@@ -85,7 +85,19 @@ fun OauthRoute(
 
     OauthScreen(
         kakaoLoginClick = { viewModel.sendIntent(OauthIntent.KakaoLoginClick) },
-        googleLoginClick = { viewModel.sendIntent(OauthIntent.GoogleLoginClick) }
+        googleLoginClick = {
+            googleLoginHelper.requestGoogleLogin(
+                onSuccess = { accessToken ->
+                    viewModel.sendIntent(
+                        OauthIntent.GoogleLoginSuccess(
+                            provider = "GOOGLE",
+                            accessToken = accessToken
+                        )
+                    )
+                },
+                onFailure = {}
+            )
+        }
     )
 }
 
