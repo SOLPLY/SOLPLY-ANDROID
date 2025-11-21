@@ -22,7 +22,7 @@ class GoogleLoginHelper(
     companion object {
         const val TAG = "GoogleLogin"
         const val WEB_CLIENT_ID = com.teamsolply.solply.buildconfig.BuildConfig.GOOGLE_WEB_CLIENT_ID
-        //const val SERVER_URL = ""
+        // const val SERVER_URL = ""
     }
 
     private val credentialManager: CredentialManager = CredentialManager.create(context)
@@ -69,7 +69,7 @@ class GoogleLoginHelper(
 //                        Log.d(TAG, idToken) //토큰
 //                        Log.d(TAG, googleIdTokenCredential.id) //이메일
 //                        googleIdTokenCredential.displayName?.let { Log.d(TAG, it) } //이름
-                        onSuccess(idToken) //성공 시 처리 함수, 서버 응답 후 실행, 여기서는 테스트를 위해 이곳에서 실행
+                        onSuccess(idToken) // 성공 시 처리 함수, 서버 응답 후 실행, 여기서는 테스트를 위해 이곳에서 실행
                     } catch (e: GoogleIdTokenParsingException) {
 //                        Log.e(TAG, "Received an invalid google id token response", e)
                     }
