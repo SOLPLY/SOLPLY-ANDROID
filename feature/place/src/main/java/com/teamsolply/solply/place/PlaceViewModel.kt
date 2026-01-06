@@ -253,7 +253,7 @@ class PlaceViewModel @Inject constructor(
                                     placeId = it.placeId,
                                     placeName = it.placeName,
                                     thumbnailUrl = it.thumbnailImageUrl,
-                                    primaryTag = PlaceType.valueOf(it.primaryTag),
+                                    primaryTag = PlaceType.fromApiName(it.primaryTag),
                                     isBookmarked = it.isBookmarked
                                 )
                             }.toPersistentList()
