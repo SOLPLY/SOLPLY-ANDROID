@@ -66,11 +66,7 @@ fun NamingScreen(
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
-            onClick = {
-                if (state.isOnBoardingSuccess) {
-                    onBoardingIntent(OnBoardingIntent.ShowStartingScreen)
-                }
-            },
+            onClick = { onBoardingIntent(OnBoardingIntent.ShowStartingScreen) },
             selected = state.isOnBoardingSuccess,
             textStyle = SolplyTheme.typography.button16M,
             textColor = if (state.isOnBoardingSuccess) SolplyTheme.colors.white else SolplyTheme.colors.gray800,

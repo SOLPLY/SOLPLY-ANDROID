@@ -122,6 +122,13 @@ class RegisterPlaceViewModel @Inject constructor(
                     )
                 }
             }
+
+            is RegisterPlaceIntent.ResetSelectedUris -> reduce {
+                val target = selectedReportUris.toMutableList()
+                if (target.isEmpty() || intent.index !in target.indices) return@reduce this
+                target.removeAt(intent.index)
+                copy(selectedReportUris = target)
+            }
         }
     }
 

@@ -133,7 +133,8 @@ fun CollectionMenuScreen(
     Column(
         modifier
             .fillMaxSize()
-            .background(color = SolplyTheme.colors.white),
+            .background(color = SolplyTheme.colors.white)
+            .padding(top = 50.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -266,9 +266,20 @@ internal class MapsViewModel @Inject constructor(
                 )
             }
 
-            MapsIntent.ChangeRenameCourseBottomSheetVisibility -> reduce {
+            is MapsIntent.ChangeRenameCourseBottomSheetVisibility -> reduce {
                 copy(
-                    renameCourseBottomSheetVisibility = !renameCourseBottomSheetVisibility
+                    renameCourseBottomSheetVisibility = !renameCourseBottomSheetVisibility,
+                    newCourseName = courseDetailInfo.courseName,
+                    newCourseIntroduction = courseDetailInfo.introduction
+                )
+            }
+
+            is MapsIntent.ChangeRenameCourse -> reduce {
+                copy(
+                    courseDetailInfo = uiState.value.courseDetailInfo.copy(
+                        courseName = intent.courseName,
+                        introduction = intent.courseIntroduction
+                    )
                 )
             }
 
@@ -321,6 +332,13 @@ internal class MapsViewModel @Inject constructor(
                     copy(reportLottieVisibility = true)
                 }
                 presignedUrl(selectedFilesName = intent.selectedFilesName)
+            }
+
+            is MapsIntent.ResetSelectedUris -> reduce {
+                val target = selectedReportUris.toMutableList()
+                if (target.isEmpty() || intent.index !in target.indices) return@reduce this
+                target.removeAt(intent.index)
+                copy(selectedReportUris = target)
             }
 
             // Shared

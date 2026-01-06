@@ -51,6 +51,7 @@ sealed interface RegisterPlaceIntent : UiIntent {
     data class SelectedReportUris(val uris: List<Uri>) : RegisterPlaceIntent
     data object ClickRegisterPlace : RegisterPlaceIntent
     data class ChangeRegisterLottieVisibility(val visible: Boolean) : RegisterPlaceIntent
+    data class ResetSelectedUris(val index: Int) : RegisterPlaceIntent
 }
 
 sealed interface RegisterPlaceSideEffect : SideEffect {

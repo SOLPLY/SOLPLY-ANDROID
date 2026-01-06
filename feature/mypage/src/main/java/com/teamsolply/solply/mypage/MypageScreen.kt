@@ -125,13 +125,13 @@ fun MypageScreen(
     Column(
         modifier
             .fillMaxSize()
-            .background(color = SolplyTheme.colors.gray100),
+            .background(color = SolplyTheme.colors.gray100)
+            .padding(top = 50.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -140,7 +140,7 @@ fun MypageScreen(
                 contentDescription = "back",
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .padding(start = 16.dp, bottom = 16.dp, top = 11.dp)
+                    .padding(start = 16.dp, bottom = 16.dp)
                     .customClickable(rippleEnabled = false) { onBackButtonClick() }
             )
         }

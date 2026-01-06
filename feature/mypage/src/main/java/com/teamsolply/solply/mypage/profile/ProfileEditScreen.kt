@@ -117,7 +117,8 @@ fun ProfileEditScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SolplyTheme.colors.white),
+            .background(color = SolplyTheme.colors.white)
+            .padding(top = 50.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -197,11 +198,7 @@ fun ProfileEditScreen(
         SolplyBasicButton(
             text = "완료",
             selected = isEditSuccess,
-            onClick = {
-                if (isEditSuccess) {
-                    onCompleteButtonClick()
-                }
-            },
+            onClick = { onCompleteButtonClick() },
             enabledBackgroundColor = SolplyTheme.colors.gray900,
             disabledBackgroundColor = SolplyTheme.colors.gray300,
             modifier = Modifier.padding(vertical = 24.dp, horizontal = 16.dp)

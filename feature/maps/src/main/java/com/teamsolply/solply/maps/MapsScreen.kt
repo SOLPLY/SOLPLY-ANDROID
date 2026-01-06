@@ -34,6 +34,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
@@ -282,6 +283,7 @@ internal fun MapsRoute(
                 )
             )
         },
+        finishEditCourseClick = { viewModel.sendIntent(MapsIntent.StartEditCourseIconClick) },
         modifier = Modifier.padding(paddingValues)
     )
 
@@ -329,7 +331,10 @@ internal fun MapsRoute(
             reportWrongPlace = { selectedFilesName ->
                 viewModel.sendIntent(MapsIntent.ReportWrongPlace(selectedFilesName = selectedFilesName))
             },
-            reportLottieVisibility = uiState.reportLottieVisibility
+            reportLottieVisibility = uiState.reportLottieVisibility,
+            resetSelectedUris = { index ->
+                viewModel.sendIntent(MapsIntent.ResetSelectedUris(index = index))
+            }
         )
     }
 
@@ -346,8 +351,10 @@ internal fun MapsRoute(
                     )
                 )
             },
-            onStartEditCourseClick = { viewModel.sendIntent(MapsIntent.StartEditCourseIconClick) },
-            onStartRenameCourseClick = { viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility) }
+            onStartRenameCourseClick = { viewModel.sendIntent(MapsIntent.ChangeRenameCourseBottomSheetVisibility) },
+            onChangeRenameCourse = { courseName, courseIntroduction ->
+                viewModel.sendIntent(MapsIntent.ChangeRenameCourse(courseName = courseName, courseIntroduction = courseIntroduction))
+            }
         )
     }
 }
@@ -394,7 +401,7 @@ private fun MapsScreen(
     onCourseEditTopBarBackClick: () -> Unit,
     onPlaceDetailClick: (Long) -> Unit,
     onStartRenameCourseClick: () -> Unit,
-
+    finishEditCourseClick: () -> Unit,
     changeReportPlaceDialogVisibility: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -473,7 +480,11 @@ private fun MapsScreen(
     ) {
         NaverMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            uiSettings = MapUiSettings(
+                isZoomControlEnabled = false,
+                isCompassEnabled = false
+            )
         ) {
             if (mapsType == MapsType.PLACE_DETAIL) {
                 Marker(
@@ -643,7 +654,8 @@ private fun MapsScreen(
                             onStartRenameCourseClick = onStartRenameCourseClick,
                             courseSaveDialogVisibility = courseSaveDialogVisibility,
                             courseSaveDialogClick = courseSaveDialogClick,
-                            changeCourseSaveDialogInVisibility = changeCourseSaveDialogInVisibility
+                            changeCourseSaveDialogInVisibility = changeCourseSaveDialogInVisibility,
+                            finishEditCourseClick = finishEditCourseClick
                         )
                     }
                 }

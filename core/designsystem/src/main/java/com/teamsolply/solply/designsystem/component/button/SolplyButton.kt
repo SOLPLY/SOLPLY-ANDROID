@@ -69,7 +69,7 @@ fun SolplyBasicButton(
     val backgroundColor = if (selected) enabledBackgroundColor else disabledBackgroundColor
 
     BaseButton(
-        onClick = onClick,
+        onClick = if (selected) onClick else ({}),
         modifier = modifier.fillMaxWidth(),
         backgroundColor = backgroundColor
     ) {

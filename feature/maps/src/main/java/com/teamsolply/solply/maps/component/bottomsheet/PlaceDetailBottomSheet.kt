@@ -389,7 +389,7 @@ fun PlaceDetailBottomSheet(
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
                         Row(
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)

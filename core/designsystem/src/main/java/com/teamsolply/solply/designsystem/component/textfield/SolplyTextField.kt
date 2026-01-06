@@ -395,8 +395,8 @@ fun SolplyFixedReportTextField(
                 if (value.isEmpty()) {
                     Text(
                         text = "최대 200자 입력 가능",
-                        color = SolplyTheme.colors.gray500,
-                        style = SolplyTheme.typography.caption12M
+                        color = SolplyTheme.colors.gray600,
+                        style = SolplyTheme.typography.body14R
                     )
                 }
                 inner()

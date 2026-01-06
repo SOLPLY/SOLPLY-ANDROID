@@ -12,24 +12,28 @@ class FavoriteTownRepositoryImpl @Inject constructor(
 
     override suspend fun getTownTree():
         Result<Pair<List<Region>, Map<Long, List<TownLite>>>> = runCatching {
-        val tree = remoteDataSource.getTownTree()
+        val towns = remoteDataSource.getTownTree().towns
 
-        val regions = tree.towns.map { region ->
-            Region(
-                id = region.townId,
-                name = region.townName ?: region.name.orEmpty()
-            )
-        }
-
-        val townsByRegion: Map<Long, List<TownLite>> = tree.towns.associate { region ->
-            val towns = region.subTowns.orEmpty().map { sub ->
-                TownLite(
-                    id = sub.townId,
-                    name = sub.townName ?: sub.name.orEmpty()
+        val regions = towns
+            .filter { it.parentTownId == null || it.parentTownId == 0L }
+            .map { region ->
+                Region(
+                    id = region.townId,
+                    name = region.townName
                 )
             }
-            region.townId to towns
-        }
+
+        val townsByRegion: Map<Long, List<TownLite>> = towns
+            .filter { it.parentTownId != null && it.parentTownId != 0L }
+            .groupBy { it.parentTownId ?: 0L }
+            .mapValues { (_, children) ->
+                children.map { child ->
+                    TownLite(
+                        id = child.townId,
+                        name = child.townName
+                    )
+                }
+            }
 
         regions to townsByRegion
     }

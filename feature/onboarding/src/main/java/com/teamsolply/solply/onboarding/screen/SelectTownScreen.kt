@@ -138,11 +138,7 @@ fun SelectTownScreen(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .padding(bottom = 24.dp, start = 20.dp, end = 20.dp),
-                            onClick = {
-                                if (isButtonEnabled) {
-                                    onBoardingIntent(OnBoardingIntent.ChangeTownBottomSheetShown)
-                                }
-                            },
+                            onClick = { onBoardingIntent(OnBoardingIntent.ChangeTownBottomSheetShown) },
                             selected = isButtonEnabled,
                             textStyle = SolplyTheme.typography.button16M,
                             textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,
@@ -158,11 +154,7 @@ fun SelectTownScreen(
             text = "다음",
             modifier = Modifier
                 .padding(bottom = 24.dp),
-            onClick = {
-                if (isButtonEnabled) {
-                    onNextClick()
-                }
-            },
+            onClick = { onNextClick() },
             selected = isButtonEnabled,
             textStyle = SolplyTheme.typography.button16M,
             textColor = if (isButtonEnabled) SolplyTheme.colors.white else SolplyTheme.colors.gray800,

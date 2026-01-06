@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.chip.PlaceTag
@@ -61,6 +62,12 @@ internal fun CourseItem(
     val backGroundColor =
         if (selectedPlaceItem) SolplyTheme.colors.gray100 else SolplyTheme.colors.white
 
+    val placeAddressText = if (selectedPlaceItem) {
+        placeAddress
+    } else {
+        placeAddress.formatTextToPlaceItem()
+    }
+
     Column(
         modifier = modifier
             .animateContentSize(animationSpec = tween(durationMillis = 70))
@@ -88,7 +95,7 @@ internal fun CourseItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Column(modifier = Modifier.weight(1f)) {
                         Row(modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)) {
                             PlaceTag(
                                 type = placeTag,
@@ -98,17 +105,24 @@ internal fun CourseItem(
                                 text = placeName.formatTextToPlaceItemTitle(),
                                 modifier = Modifier,
                                 color = SolplyTheme.colors.black,
-                                style = SolplyTheme.typography.title15M
+                                style = SolplyTheme.typography.title15M,
+                                maxLines = 1
                             )
                         }
                         Text(
-                            text = placeAddress.formatTextToPlaceItem(),
+                            text = placeAddressText,
                             modifier = Modifier,
                             color = SolplyTheme.colors.gray700,
-                            style = SolplyTheme.typography.caption12R
+                            style = SolplyTheme.typography.caption12R,
+                            maxLines = if (selectedPlaceItem) 2 else 1,
+                            overflow = if (selectedPlaceItem) {
+                                TextOverflow.Ellipsis
+                            } else {
+                                TextOverflow.Clip
+                            }
                         )
                     }
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Box(modifier = Modifier.padding(top = 10.dp)) {
                         if (isEditing) {
                             Icon(

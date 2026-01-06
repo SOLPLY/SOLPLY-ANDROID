@@ -61,8 +61,8 @@ fun SearchScreen(
                 SearchSideEffect.NavigateToRegisterPlace -> navigateToRegisterPlace()
                 is SearchSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
                     MapsType.PLACE_DETAIL.name,
-                    sideEffect.placeId,
-                    sideEffect.townId
+                    sideEffect.townId,
+                    sideEffect.placeId
                 )
             }
         }
@@ -96,14 +96,15 @@ fun SearchScreen(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp, bottom = 33.dp)
-                    .customClickable(rippleEnabled = false) {
-                        navigateToBack()
-                    }
+                    .padding(start = 16.dp, top = 50.dp, bottom = 33.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back_long_arrow),
-                    modifier = Modifier.padding(end = 12.dp),
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .customClickable(rippleEnabled = false) {
+                            navigateToBack()
+                        },
                     contentDescription = "back_arrow",
                     tint = SolplyTheme.colors.gray900
                 )
