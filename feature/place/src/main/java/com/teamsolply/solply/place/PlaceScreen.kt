@@ -38,6 +38,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -210,13 +212,13 @@ fun PlaceScreen(
         targetValue = if (isCenter[2]) 240.dp else 180.dp
     )
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
     ) {
         SolplyHomeHeader(
             townName = uiState.userInfo.selectedTown.townName,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .fillMaxWidth(),
             onClickTownName = { navigateToTownSelect() },
             changeSearchDialogVisibility = changeSearchDialogVisibility
         )
@@ -227,15 +229,10 @@ fun PlaceScreen(
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             item(span = { GridItemSpan(2) }) {
-                Text(
-                    text = getRecommendText(uiState.userInfo.persona, uiState.userInfo.nickname),
-                    style = SolplyTheme.typography.display20Sb,
-                    modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 28.dp)
-                )
-            }
-            item(span = { GridItemSpan(2) }) {
                 if (uiState.recommendPlaces.isNotEmpty()) {
                     CustomHorizontalPager(
+                        persona = uiState.userInfo.persona,
+                        nickname = uiState.userInfo.nickname,
                         pagerState = pagerState,
                         recommendPlaces = uiState.recommendPlaces,
                         centerItemSize = centerItemSize,
@@ -391,6 +388,8 @@ fun PlaceGridItem(
 
 @Composable
 fun CustomHorizontalPager(
+    persona: String,
+    nickname: String,
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     recommendPlaces: List<RecommendPlaceInfo>,
@@ -402,11 +401,23 @@ fun CustomHorizontalPager(
     page3ItemSize: State<Dp>,
     onPlaceClick: (Long) -> Unit
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(centerItemSize)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        SolplyTheme.colors.white,
+                        Color.Transparent
+                    )
+                )
+            )
     ) {
+        Text(
+            text = getRecommendText(persona, nickname),
+            style = SolplyTheme.typography.display20Sb,
+            modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 28.dp)
+        )
         HorizontalPager(
             state = pagerState,
             pageSpacing = 46.dp,

@@ -115,10 +115,7 @@ fun OnBoardingScreen(
             .fillMaxSize()
             .background(SolplyTheme.colors.gray100)
     ) {
-        Spacer(
-            modifier = Modifier
-                .height(32.dp)
-        )
+        Spacer(modifier = Modifier.height(50.dp))
         BackHeader(
             barText = when (pagerState.currentPage) {
                 0 -> ""

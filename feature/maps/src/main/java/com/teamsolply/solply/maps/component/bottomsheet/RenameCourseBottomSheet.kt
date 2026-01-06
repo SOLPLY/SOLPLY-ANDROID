@@ -4,9 +4,10 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +29,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamsolply.solply.designsystem.R
 import com.teamsolply.solply.designsystem.component.button.SolplyBasicButton
@@ -46,7 +47,7 @@ fun RenameCourseBottomSheet(
     renameCourseName: (String) -> Unit,
     renameCourseIntroduction: (String) -> Unit,
     onStartRenameCourseClick: () -> Unit,
-    onStartEditCourseClick: () -> Unit
+    onChangeRenameCourse: (String, String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -59,6 +60,11 @@ fun RenameCourseBottomSheet(
     val focusManager = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
     val blankFocus = remember { FocusRequester() }
+
+    val isButtonEnabled = newCourseName.isNotEmpty() &&
+        newCourseName.length != 18 &&
+        newCourseIntroduction.isNotEmpty() &&
+        newCourseIntroduction.length != 20
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -89,22 +95,21 @@ fun RenameCourseBottomSheet(
                     }
                 }
         ) {
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 17.dp, bottom = 37.dp)
+                    .padding(start = 4.dp, top = 17.dp, bottom = 37.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = "코스 정보 수정",
                     color = SolplyTheme.colors.black,
-                    style = SolplyTheme.typography.head16M,
-                    modifier = Modifier.align(Alignment.Center)
+                    style = SolplyTheme.typography.head16M
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_close),
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .minimumInteractiveComponentSize()
                         .customClickable(rippleEnabled = false) {
                             onStartRenameCourseClick()
                         },
@@ -120,10 +125,22 @@ fun RenameCourseBottomSheet(
             )
             SolplyRenameCourseTextField(
                 value = newCourseName,
-                onValueChange = { renameCourseName(it) },
-                modifier = Modifier.padding(bottom = 32.dp)
+                onValueChange = { newValue ->
+                    if (newValue.length <= 18) {
+                        renameCourseName(newValue)
+                    }
+                },
+                modifier = Modifier.padding(bottom = 8.dp)
             )
-
+            Text(
+                text = "${newCourseName.length}/18",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
+                textAlign = TextAlign.End,
+                color = SolplyTheme.colors.gray500,
+                style = SolplyTheme.typography.caption12M
+            )
             Text(
                 text = "코스 한 줄 소개",
                 modifier = Modifier
@@ -133,17 +150,31 @@ fun RenameCourseBottomSheet(
             )
             SolplyRenameCourseTextField(
                 value = newCourseIntroduction,
-                onValueChange = { renameCourseIntroduction(it) }
+                onValueChange = { newValue ->
+                    if (newValue.length <= 20) {
+                        renameCourseIntroduction(newValue)
+                    }
+                },
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            Text(
+                text = "${newCourseIntroduction.length}/20",
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.End,
+                color = SolplyTheme.colors.gray500,
+                style = SolplyTheme.typography.caption12M
             )
             Spacer(modifier = Modifier.weight(1f))
             SolplyBasicButton(
                 text = "완료",
                 onClick = {
+                    onChangeRenameCourse(newCourseName, newCourseIntroduction)
                     onStartRenameCourseClick()
-                    onStartEditCourseClick()
                 },
                 modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, bottom = 36.dp),
+                    .padding(start = 4.dp, end = 4.dp, bottom = 36.dp),
+                selected = isButtonEnabled,
                 textPadding = PaddingValues(vertical = 21.dp),
                 enabledBackgroundColor = SolplyTheme.colors.gray900
             )

@@ -15,6 +15,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.teamsolply.solply.collection.collection.course.courseCollectionNavGraph
@@ -62,6 +65,9 @@ internal fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val currentSnackbarJob = remember { mutableStateOf<Job?>(null) }
     val currentSnackbarState = remember { mutableStateOf(SolplySnackBarData()) }
+    val isSnackbarVisible = remember {
+        derivedStateOf { snackbarHostState.currentSnackbarData != null }
+    }
 
     suspend fun showTextSnackBar(message: String) {
         currentSnackbarJob.value?.join()
@@ -114,7 +120,7 @@ internal fun MainScreen(
         modifier = modifier,
         content = { innerPadding ->
             val layoutDirection = LocalLayoutDirection.current
-            val mapsPadding = PaddingValues(
+            val paddingValue = PaddingValues(
                 start = innerPadding.calculateStartPadding(layoutDirection),
                 top = 0.dp,
                 end = innerPadding.calculateEndPadding(layoutDirection),
@@ -156,7 +162,7 @@ internal fun MainScreen(
                         }
                     )
                     oauthNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToOnBoarding = {
                             val navOptions = navOptions {
                                 launchSingleTop = true
@@ -175,7 +181,7 @@ internal fun MainScreen(
                     )
                     onBoardingNavGraph(
                         navController = navigator.navController,
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToPlace = {
                             val navOptions = navOptions {
                                 popUpTo(0) {
@@ -187,7 +193,7 @@ internal fun MainScreen(
                         }
                     )
                     placeNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToFavoriteTown = { selectedTownId ->
                             navigator.navigateToFavoriteTown(selectedTownId = selectedTownId)
                         },
@@ -203,7 +209,7 @@ internal fun MainScreen(
                         }
                     )
                     courseNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToFavoriteTown = { selectedTownId ->
                             navigator.navigateToFavoriteTown(selectedTownId = selectedTownId)
                         },
@@ -219,7 +225,7 @@ internal fun MainScreen(
                         }
                     )
                     collectionNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToPlaceCollection = { townId, townName ->
                             val navOptions = navOptions { }
@@ -261,7 +267,7 @@ internal fun MainScreen(
                         }
                     )
                     mapsNavGraph(
-                        paddingValues = mapsPadding,
+                        paddingValues = paddingValue,
                         showTextSnackBar = { message ->
                             coroutineScope.launch {
                                 showTextSnackBar(message)
@@ -314,7 +320,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     placeCollectionNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToMaps = { mapsType, townId, placeId ->
                             val navOptions = navOptions {}
                             navigator.navigateToMaps(
@@ -327,7 +333,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     courseCollectionNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToMaps = { mapsType, townId, courseId ->
                             val navOptions = navOptions { }
                             navigator.navigateToMaps(
@@ -340,7 +346,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     mypageNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToProfile = {
                             val navOptions = navOptions { }
@@ -365,7 +371,7 @@ internal fun MainScreen(
                         }
                     )
                     profileNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToMypage = {
                             val navOptions = navOptions {
@@ -376,7 +382,7 @@ internal fun MainScreen(
                         }
                     )
                     withdrawNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack,
                         navigateToOauth = {
                             val navOptions = navOptions { }
@@ -384,13 +390,13 @@ internal fun MainScreen(
                         }
                     )
                     favoriteTownNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = { selectedTownId ->
                             navigator.navigateFavoriteTownToMain(selectedTownId = selectedTownId)
                         }
                     )
                     searchNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToPlaceDetail = { mapsType, townId, placeId ->
                             val navOptions = navOptions {
                                 popUpTo(Search) { inclusive = true }
@@ -412,7 +418,7 @@ internal fun MainScreen(
                         navigateToBack = navigator::navigateToBack
                     )
                     registerPlaceNavGraph(
-                        paddingValues = innerPadding,
+                        paddingValues = paddingValue,
                         navigateToBack = navigator::navigateToBack
                     )
                 }
@@ -428,39 +434,51 @@ internal fun MainScreen(
             }
         },
         snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
-                snackbar = { snackbarData ->
-                    when (currentSnackbarState.value.type) {
-                        SnackBarType.TEXT -> {
-                            SolplyTextSnackBar(text = snackbarData.visuals.message)
-                        }
-
-                        SnackBarType.NOTIFICATION -> {
-                            SolplyNotificationSnackBar(text = snackbarData.visuals.message)
-                        }
-
-                        SnackBarType.NAVIGATE -> {
-                            SolplyNavigateSnackBar(
-                                text = snackbarData.visuals.message,
-                                navigateToRoute = {
-                                    currentSnackbarState.value.action?.invoke()
+            if (isSnackbarVisible.value) {
+                Popup(
+                    alignment = Alignment.BottomCenter,
+                    offset = androidx.compose.ui.unit.IntOffset(0, -32),
+                    properties = PopupProperties(
+                        dismissOnBackPress = false,
+                        dismissOnClickOutside = false,
+                        focusable = false
+                    )
+                ) {
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
+                        snackbar = { snackbarData ->
+                            when (currentSnackbarState.value.type) {
+                                SnackBarType.TEXT -> {
+                                    SolplyTextSnackBar(text = snackbarData.visuals.message)
                                 }
-                            )
-                        }
 
-                        SnackBarType.NAVIGATE_SIMPLE -> {
-                            SolplyNavigateSimpleSnackBar(
-                                navigateToRoute = {
-                                    currentSnackbarState.value.action?.invoke()
+                                SnackBarType.NOTIFICATION -> {
+                                    SolplyNotificationSnackBar(text = snackbarData.visuals.message)
                                 }
-                            )
+
+                                SnackBarType.NAVIGATE -> {
+                                    SolplyNavigateSnackBar(
+                                        text = snackbarData.visuals.message,
+                                        navigateToRoute = {
+                                            currentSnackbarState.value.action?.invoke()
+                                        }
+                                    )
+                                }
+
+                                SnackBarType.NAVIGATE_SIMPLE -> {
+                                    SolplyNavigateSimpleSnackBar(
+                                        navigateToRoute = {
+                                            currentSnackbarState.value.action?.invoke()
+                                        }
+                                    )
+                                }
+                            }
                         }
-                    }
+                    )
                 }
-            )
+            }
         }
     )
 }

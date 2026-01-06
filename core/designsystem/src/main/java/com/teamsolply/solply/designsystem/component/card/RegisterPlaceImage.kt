@@ -34,6 +34,7 @@ import com.teamsolply.solply.ui.image.AdaptationImage
 fun RegisterPlaceImage(
     selectedUris: List<Uri>,
     onAddClick: () -> Unit,
+    resetSelectedUris: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -47,7 +48,10 @@ fun RegisterPlaceImage(
                         modifier = Modifier
                             .size(72.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(SolplyTheme.colors.gray100),
+                            .background(SolplyTheme.colors.gray100)
+                            .customClickable(rippleEnabled = false) {
+                                resetSelectedUris(index)
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         AdaptationImage(

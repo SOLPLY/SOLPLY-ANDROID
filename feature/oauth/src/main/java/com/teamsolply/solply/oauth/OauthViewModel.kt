@@ -1,6 +1,5 @@
 package com.teamsolply.solply.oauth
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.oauth.repository.OauthRepository
 import com.teamsolply.solply.ui.base.BaseViewModel
@@ -69,8 +68,6 @@ class OauthViewModel @Inject constructor(
                         isNewUser = it.isNewUser
                     )
                 )
-            }.onFailure {
-                Log.d("asdasdasd", it.toString())
             }
         }
     }

@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -124,7 +125,10 @@ fun RegisterPlaceRoute(
         onSelectUris = { uris ->
             viewModel.sendIntent(RegisterPlaceIntent.SelectedReportUris(uris = uris))
         },
-        clickRegisterPlace = { viewModel.sendIntent(RegisterPlaceIntent.ClickRegisterPlace) }
+        clickRegisterPlace = { viewModel.sendIntent(RegisterPlaceIntent.ClickRegisterPlace) },
+        resetSelectedUris = { index ->
+            viewModel.sendIntent(RegisterPlaceIntent.ResetSelectedUris(index = index))
+        }
     )
 
     if (uiState.registerLottieVisibility) {
@@ -167,7 +171,8 @@ fun RegisterPlaceScreen(
     // 장소 사진
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
-    clickRegisterPlace: () -> Unit
+    clickRegisterPlace: () -> Unit,
+    resetSelectedUris: (Int) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val lazyListState = rememberLazyListState()
@@ -213,7 +218,7 @@ fun RegisterPlaceScreen(
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+                .padding(start = 16.dp, top = 50.dp, bottom = 16.dp)
                 .customClickable(rippleEnabled = false) {
                     navigateToBack()
                 }
@@ -454,6 +459,7 @@ fun RegisterPlaceScreen(
                                 else -> Unit
                             }
                         },
+                        resetSelectedUris = resetSelectedUris,
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 76.dp)
                     )
                     SolplyBasicButton(
@@ -527,11 +533,11 @@ fun PlaceKeyWord(
         modifier = Modifier
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(16.dp)
+                shape = CircleShape
             )
             .border(
                 width = 1.dp,
-                shape = RoundedCornerShape(16.dp),
+                shape = CircleShape,
                 color = borderColor
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)

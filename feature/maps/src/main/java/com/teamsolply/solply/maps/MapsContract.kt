@@ -85,6 +85,8 @@ internal sealed interface MapsIntent : UiIntent {
     data object ChangeRenameCourseBottomSheetVisibility : MapsIntent
     data class RenameCourseName(val courseName: String) : MapsIntent
     data class RenameCourseIntroduction(val courseIntroduction: String) : MapsIntent
+    data class ResetSelectedUris(val index: Int) : MapsIntent
+    data class ChangeRenameCourse(val courseName: String, val courseIntroduction: String) : MapsIntent
 
     // Item Drag and Remove
     data class StartCourseMove(

@@ -105,7 +105,7 @@ class PlaceRepositoryImpl @Inject constructor(
                 placeId = dto.placeId,
                 placeName = dto.placeName,
                 thumbnailImageUrl = dto.thumbnailImageUrl,
-                primaryTag = dto.mainTag,
+                primaryTag = dto.primaryTag,
                 isBookmarked = dto.isBookmarked
             )
         }

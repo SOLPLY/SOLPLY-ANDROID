@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -14,15 +15,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
@@ -35,6 +39,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -43,8 +48,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -72,7 +77,8 @@ fun ReportPlaceDialog(
     selectedUris: List<Uri>,
     onSelectUris: (List<Uri>) -> Unit,
     reportWrongPlace: (List<String>) -> Unit,
-    reportLottieVisibility: Boolean
+    reportLottieVisibility: Boolean,
+    resetSelectedUris: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
@@ -81,135 +87,153 @@ fun ReportPlaceDialog(
     val blankFocus = remember { FocusRequester() }
     val context = LocalContext.current
 
-    Dialog(
+    Popup(
+        alignment = Alignment.TopStart,
+        properties = PopupProperties(
+            focusable = true,
+            dismissOnBackPress = true,
+            dismissOnClickOutside = false,
+            clippingEnabled = false
+        ),
         onDismissRequest = {
             focusManager.clearFocus(force = true)
             keyboard?.hide()
             onDismissRequest(false)
-        },
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
-        )
+        }
     ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = SolplyTheme.colors.white,
-            shadowElevation = 32.dp
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent)
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (reportLottieVisibility) {
-                    ReportSubmittingScreen()
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .focusRequester(blankFocus)
-                            .focusable()
-                            .clearFocusOnTapOutside(
-                                focusManager = focusManager,
-                                keyboard = keyboard
-                            )
-                            .pointerInput(Unit) {
-                                awaitEachGesture {
-                                    awaitFirstDown(
-                                        requireUnconsumed = false,
-                                        pass = PointerEventPass.Final
-                                    )
-                                    blankFocus.requestFocus()
-                                    keyboard?.hide()
-                                    waitForUpOrCancellation()
-                                }
-                            }
-                    ) {
-                        Row(
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(SolplyTheme.colors.white)
+                    .windowInsetsPadding(WindowInsets.systemBars),
+                contentAlignment = Alignment.TopStart
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(WindowInsets.statusBars)
+                ) {
+                    if (reportLottieVisibility) {
+                        ReportSubmittingScreen()
+                    } else {
+                        Column(
                             modifier = Modifier
-                                .padding(start = 16.dp, top = 56.dp, bottom = 24.dp)
-                                .minimumInteractiveComponentSize()
-                                .customClickable(rippleEnabled = false) {
-                                    when (pagerState.currentPage) {
-                                        0 -> onDismissRequest(false)
-                                        1 -> coroutineScope.launch {
-                                            pagerState.animateScrollToPage(0)
-                                        }
+                                .fillMaxSize()
+                                .focusRequester(blankFocus)
+                                .focusable()
+                                .clearFocusOnTapOutside(
+                                    focusManager = focusManager,
+                                    keyboard = keyboard
+                                )
+                                .pointerInput(Unit) {
+                                    awaitEachGesture {
+                                        awaitFirstDown(
+                                            requireUnconsumed = false,
+                                            pass = PointerEventPass.Final
+                                        )
+                                        blankFocus.requestFocus()
+                                        keyboard?.hide()
+                                        waitForUpOrCancellation()
                                     }
-                                },
-                            verticalAlignment = Alignment.CenterVertically
+                                }
                         ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_back_long_arrow),
-                                contentDescription = "back_arrow",
-                                modifier = Modifier.padding(end = 8.dp),
-                                tint = SolplyTheme.colors.gray900
-                            )
-                            Text(
-                                text = "제보하기",
-                                color = SolplyTheme.colors.black,
-                                style = SolplyTheme.typography.head16M
-                            )
-                        }
-                        HorizontalPager(
-                            state = pagerState,
-                            userScrollEnabled = false,
-                            verticalAlignment = Alignment.Top,
-                            modifier = Modifier.fillMaxWidth()
-                        ) { page ->
-                            when (page) {
-                                0 -> {
-                                    ReportTypesScreen(
-                                        selectedReportType = selectedReportType,
-                                        onReportTypeClick = onReportTypeClick
-                                    )
-                                }
-
-                                1 -> {
-                                    ReportContentScreen(
-                                        selectedUris = selectedUris,
-                                        reportContent = reportContent,
-                                        inputReportContent = inputReportContent,
-                                        onSelectUris = onSelectUris
-                                    )
-                                }
-                            }
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        SolplyBasicButton(
-                            text = when (pagerState.currentPage) {
-                                0 -> "다음"
-                                else -> "완료"
-                            },
-                            onClick = {
-                                when (pagerState.currentPage) {
-                                    0 -> if (selectedReportType != ReportType.EMPTY) {
-                                        coroutineScope.launch {
-                                            pagerState.animateScrollToPage(1)
+                            Row(
+                                modifier = Modifier
+                                    .padding(start = 16.dp, top = 11.dp, bottom = 24.dp)
+                                    .minimumInteractiveComponentSize()
+                                    .customClickable(rippleEnabled = false) {
+                                        when (pagerState.currentPage) {
+                                            0 -> onDismissRequest(false)
+                                            1 -> coroutineScope.launch {
+                                                pagerState.animateScrollToPage(0)
+                                            }
                                         }
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_back_long_arrow),
+                                    contentDescription = "back_arrow",
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    tint = SolplyTheme.colors.gray900
+                                )
+                                Text(
+                                    text = "제보하기",
+                                    color = SolplyTheme.colors.black,
+                                    style = SolplyTheme.typography.head16M
+                                )
+                            }
+                            HorizontalPager(
+                                state = pagerState,
+                                userScrollEnabled = false,
+                                verticalAlignment = Alignment.Top,
+                                modifier = Modifier.fillMaxWidth()
+                            ) { page ->
+                                when (page) {
+                                    0 -> {
+                                        ReportTypesScreen(
+                                            selectedReportType = selectedReportType,
+                                            onReportTypeClick = onReportTypeClick
+                                        )
                                     }
 
                                     1 -> {
-                                        if (reportContent.isNotEmpty()) {
-                                            reportWrongPlace(
-                                                selectedUris.map {
-                                                    context.contentResolver.getFileName(
-                                                        uri = it
-                                                    )
-                                                }
-                                            )
-                                        }
+                                        ReportContentScreen(
+                                            selectedUris = selectedUris,
+                                            reportContent = reportContent,
+                                            inputReportContent = inputReportContent,
+                                            onSelectUris = onSelectUris,
+                                            resetSelectedUris = resetSelectedUris
+                                        )
                                     }
                                 }
-                            },
-                            modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 72.dp),
-                            selected = when (pagerState.currentPage) {
-                                0 -> selectedReportType != ReportType.EMPTY
-                                else -> reportContent.isNotEmpty()
-                            },
-                            enabledBackgroundColor = SolplyTheme.colors.gray900,
-                            disabledBackgroundColor = SolplyTheme.colors.gray300
-                        )
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            SolplyBasicButton(
+                                text = when (pagerState.currentPage) {
+                                    0 -> "다음"
+                                    else -> "완료"
+                                },
+                                onClick = {
+                                    when (pagerState.currentPage) {
+                                        0 -> if (selectedReportType != ReportType.EMPTY) {
+                                            coroutineScope.launch {
+                                                pagerState.animateScrollToPage(1)
+                                            }
+                                        }
+
+                                        1 -> {
+                                            if (reportContent.isNotEmpty()) {
+                                                reportWrongPlace(
+                                                    selectedUris.map {
+                                                        context.contentResolver.getFileName(
+                                                            uri = it
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    bottom = 24.dp
+                                ),
+                                selected = when (pagerState.currentPage) {
+                                    0 -> selectedReportType != ReportType.EMPTY
+                                    else -> reportContent.isNotEmpty()
+                                },
+                                enabledBackgroundColor = SolplyTheme.colors.gray900,
+                                disabledBackgroundColor = SolplyTheme.colors.gray300
+                            )
+                        }
                     }
                 }
             }
@@ -270,7 +294,8 @@ fun ReportContentScreen(
     selectedUris: List<Uri>,
     reportContent: String,
     inputReportContent: (String) -> Unit,
-    onSelectUris: (List<Uri>) -> Unit
+    onSelectUris: (List<Uri>) -> Unit,
+    resetSelectedUris: (Int) -> Unit
 ) {
     val remainSelectedUris = (3 - selectedUris.size).coerceAtLeast(0)
     val singlePicker = rememberLauncherForActivityResult(
@@ -297,7 +322,7 @@ fun ReportContentScreen(
             text = "잘못된 정보에 대한 설명을 입력해주세요",
             modifier = Modifier.padding(bottom = 12.dp),
             color = SolplyTheme.colors.black,
-            style = SolplyTheme.typography.body16R
+            style = SolplyTheme.typography.body16M
         )
         SolplyFixedReportTextField(
             value = reportContent,
@@ -337,7 +362,8 @@ fun ReportContentScreen(
 
                     else -> Unit
                 }
-            }
+            },
+            resetSelectedUris = resetSelectedUris
         )
     }
 }

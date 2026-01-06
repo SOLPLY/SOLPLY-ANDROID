@@ -1,6 +1,5 @@
 package com.teamsolply.solply.place
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamsolply.solply.model.PlaceType
 import com.teamsolply.solply.place.model.PlaceData
@@ -10,6 +9,7 @@ import com.teamsolply.solply.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -154,17 +154,6 @@ class PlaceViewModel @Inject constructor(
             repository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce { copy(userInfo = userInfo) }
-
-                    fetchPlaces(
-                        townId = userInfo.selectedTown.townId,
-                        mainTagId = null,
-                        subTagAIdList = null,
-                        subTagBIdList = null
-                    )
-                    fetchRecommendPlace(
-                        townId = userInfo.selectedTown.townId
-                    )
-                    fetchMainTags()
                     reduce {
                         copy(
                             selectedMainFilter = "ALL",
@@ -172,6 +161,23 @@ class PlaceViewModel @Inject constructor(
                             subFilterItems = persistentListOf()
                         )
                     }
+
+                    val placesJob = async {
+                        fetchPlaces(
+                            townId = userInfo.selectedTown.townId,
+                            mainTagId = null,
+                            subTagAIdList = null,
+                            subTagBIdList = null
+                        )
+                    }
+                    val recommendJob = async {
+                        fetchRecommendPlace(townId = userInfo.selectedTown.townId)
+                    }
+                    val mainTagsJob = async { fetchMainTags() }
+
+                    placesJob.await()
+                    recommendJob.await()
+                    mainTagsJob.await()
                 }
         }
     }
@@ -189,7 +195,6 @@ class PlaceViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getRecommendedPlace(townId)
                 .onSuccess { placesList ->
-                    Log.d("asdasdasd", "asd")
                     reduce { copy(recommendPlaces = placesList.toPersistentList()) }
                 }
         }
@@ -248,7 +253,7 @@ class PlaceViewModel @Inject constructor(
                                     placeId = it.placeId,
                                     placeName = it.placeName,
                                     thumbnailUrl = it.thumbnailImageUrl,
-                                    primaryTag = PlaceType.valueOf(it.primaryTag),
+                                    primaryTag = PlaceType.fromApiName(it.primaryTag),
                                     isBookmarked = it.isBookmarked
                                 )
                             }.toPersistentList()
