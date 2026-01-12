@@ -2,4 +2,5 @@
 <resources>
     <string name="kakao_login">카카오로 계속하기</string>
     <string name="google_login">Google로 계속하기</string>
+    <string name="apple_login">Apple로 계속하기</string>
 </resources>

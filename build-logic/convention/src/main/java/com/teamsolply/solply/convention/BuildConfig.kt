@@ -34,6 +34,11 @@ internal fun Project.configureBuildConfig(
                 "NAVER_DEVELOPERS_CLIENT_SECRET",
                 gradleLocalProperties(rootDir, providers).getProperty("naver.developers.client.secret")
             )
+            buildConfigField(
+                "String",
+                "GOOGLE_WEB_CLIENT_ID",
+                gradleLocalProperties(rootDir, providers).getProperty("google.web.client.id")
+            )
         }
 
         buildFeatures {

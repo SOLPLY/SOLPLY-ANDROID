@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +47,7 @@ fun OauthRoute(
     viewModel: OauthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val googleLoginHelper = remember { GoogleLoginHelper(context = context) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffectWithLifecycle {
@@ -63,6 +65,18 @@ fun OauthRoute(
                     }
                 )
 
+                OauthSideEffect.StartGoogleLogin -> googleLoginHelper.requestGoogleLogin(
+                    onSuccess = { accessToken ->
+                        viewModel.sendIntent(
+                            OauthIntent.GoogleLoginSuccess(
+                                provider = "GOOGLE",
+                                accessToken = accessToken
+                            )
+                        )
+                    },
+                    onFailure = {}
+                )
+
                 OauthSideEffect.NavigateToOnBoarding -> navigateToOnBoarding()
                 OauthSideEffect.NavigateToPlace -> navigateToPlace()
             }
@@ -70,13 +84,27 @@ fun OauthRoute(
     }
 
     OauthScreen(
-        kakaoLoginClick = { viewModel.sendIntent(OauthIntent.KakaoLoginClick) }
+        kakaoLoginClick = { viewModel.sendIntent(OauthIntent.KakaoLoginClick) },
+        googleLoginClick = {
+            googleLoginHelper.requestGoogleLogin(
+                onSuccess = { accessToken ->
+                    viewModel.sendIntent(
+                        OauthIntent.GoogleLoginSuccess(
+                            provider = "GOOGLE",
+                            accessToken = accessToken
+                        )
+                    )
+                },
+                onFailure = {}
+            )
+        }
     )
 }
 
 @Composable
 fun OauthScreen(
     kakaoLoginClick: () -> Unit,
+    googleLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -157,7 +185,7 @@ fun OauthScreen(
                 .customClickable(
                     rippleEnabled = false
                 ) {
-                    kakaoLoginClick()
+                    googleLoginClick()
                 },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start

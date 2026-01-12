@@ -12,6 +12,9 @@ sealed interface OauthIntent : UiIntent {
     data object KakaoLoginClick : OauthIntent
     data class KakaoLoginSuccess(val provider: String, val accessToken: String) : OauthIntent
     data class KakaoLoginFailure(val error: Throwable) : OauthIntent
+    data object GoogleLoginClick : OauthIntent
+    data class GoogleLoginSuccess(val provider: String, val accessToken: String) : OauthIntent
+    data class GoogleLoginFailure(val error: Throwable) : OauthIntent
     data class SaveJwtToken(
         val accessToken: String,
         val refreshToken: String,
@@ -21,6 +24,7 @@ sealed interface OauthIntent : UiIntent {
 
 sealed interface OauthSideEffect : SideEffect {
     data object StartKakaoLogin : OauthSideEffect
+    data object StartGoogleLogin : OauthSideEffect
     data object NavigateToOnBoarding : OauthSideEffect
     data object NavigateToPlace : OauthSideEffect
 }

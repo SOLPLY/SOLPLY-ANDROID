@@ -24,6 +24,17 @@ class OauthViewModel @Inject constructor(
                 TODO()
             }
 
+            OauthIntent.GoogleLoginClick -> postSideEffect(OauthSideEffect.StartGoogleLogin)
+
+            is OauthIntent.GoogleLoginSuccess -> postSocialLogin(
+                provider = intent.provider,
+                oauthAccessToken = intent.accessToken
+            )
+
+            is OauthIntent.GoogleLoginFailure -> {
+                TODO()
+            }
+
             is OauthIntent.SaveJwtToken -> {
                 viewModelScope.launch {
                     oauthRepository.saveJwtToken(
